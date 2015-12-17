@@ -7,6 +7,10 @@ using namespace GRT;
 
 GestureRecognitionPipeline pipeline;
 
+ofColor indexToColor(int i, int n) {
+	return ofColor::fromHsb(255 / n * i, 255, 255);
+}
+
 //--------------------------------------------------------------
 void ofApp::setup(){
 	serial.listDevices();
@@ -67,14 +71,15 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
+	int trainingHeight = 250;
 	ofBackground(0);
-	for (int i = incomingData.size() - 1; i > 0 && i > incomingData.size() - ofGetHeight(); i--) {
+	for (int i = incomingData.size() - 1; i > 0 && i > incomingData.size() - (ofGetHeight() - trainingHeight); i--) {
 		for (int j = 0; j < incomingData[i].size(); j++) {
 			int val1 = incomingData[i - 1][j], val2 = incomingData[i][j];
 			val1 = ofMap(val1, 0, 1023, 0, ofGetWidth() / 3);
 			val2 = ofMap(val2, 0, 1023, 0, ofGetWidth() / 3);
-			ofSetColor(ofColor::fromHsb(255 / incomingData[i].size() * j, 255, 255));
-			ofDrawLine(val1, ofGetHeight() - incomingData.size() + i - 1, val2, ofGetHeight() - incomingData.size() + i);
+			ofSetColor(indexToColor(j, incomingData[i].size()));
+			ofDrawLine(val1, ofGetHeight() - incomingData.size() + i - 1 - trainingHeight, val2, ofGetHeight() - incomingData.size() + i - trainingHeight);
 		}
 		ofSetColor(255, 255, 255);
 		ofDrawLine(ofGetWidth() / 3, 0, ofGetWidth() / 3, ofGetHeight());
@@ -82,8 +87,21 @@ void ofApp::draw(){
 			int val1 = featureData[i - 1][j], val2 = featureData[i][j];
 			val1 = ofMap(val1, 0, 1023, 0, ofGetWidth() / 3);
 			val2 = ofMap(val2, 0, 1023, 0, ofGetWidth() / 3);
-			ofSetColor(ofColor::fromHsb(255 / featureData[i].size() * j, 255, 255));
-			ofDrawLine(ofGetWidth() / 3 + val1, ofGetHeight() - featureData.size() + i - 1, ofGetWidth() / 3 + val2, ofGetHeight() - featureData.size() + i);
+			ofSetColor(indexToColor(j, featureData[i].size()));
+			ofDrawLine(ofGetWidth() / 3 + val1, ofGetHeight() - featureData.size() + i - 1 - trainingHeight, ofGetWidth() / 3 + val2, ofGetHeight() - featureData.size() + i - trainingHeight);
+		}
+	}
+	MatrixDouble means = trainingData.getClassMean();
+	MatrixDouble stddevs = trainingData.getClassStdDev();
+	for (int i = 0; i < means.getNumRows(); i++) {
+		ofSetColor(255, 255, 255);
+		ofDrawLine(0, ofGetHeight() - trainingHeight + (i * means.getNumCols()) * 20, ofGetWidth() / 3, ofGetHeight() - trainingHeight + (i * means.getNumCols()) * 20);
+		for (int j = 0; j < means.getNumCols(); j++) {
+			int mean = ofMap(means[i][j], 0, 1023, 0, ofGetWidth() / 3);
+			int stddev = ofMap(stddevs[i][j], 0, 1023, 0, ofGetWidth() / 3);
+			ofSetColor(indexToColor(j, means.getNumCols()));
+			ofDrawLine(mean - stddev, ofGetHeight() - trainingHeight + (i * means.getNumCols() + j) * 20 + 10, mean + stddev, ofGetHeight() - trainingHeight + (i * means.getNumCols() + j) * 20 + 10);
+			ofDrawLine(mean, ofGetHeight() - trainingHeight + (i * means.getNumCols() + j) * 20 + 5, mean, ofGetHeight() - trainingHeight + (i * means.getNumCols() + j) * 20 + 15);
 		}
 	}
 	if (recording) {
@@ -104,6 +122,8 @@ void ofApp::keyPressed(int key){
 	}
 	
 	if (key == 't') pipeline.train(trainingData);
+	
+	if (key == 's') trainingData.saveDatasetToFile("data.txt");
 }
 
 //--------------------------------------------------------------
