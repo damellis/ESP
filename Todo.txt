@@ -1,0 +1,35 @@
+Live Data
+
+* Visualizing raw data streams (both simple sensors and audio data)
+* Visualizing features.
+
+Prediction
+
+* Way to do real-time prediction on the computer.
+* Visualizing predictions.
+
+Training / Model Management
+
+Saving and loading the model.
+To start: only allow loading of the model if the pipeline specified in code still matches the pipeline stored in the model (otherwise, need to retrain the model from the training data).
+Notice of training, estimate of time it will take, and ability to cancel.
+Ability to specify percentage of training data to use.
+
+Data Management
+
+* Saving and loading training data.
+Way to visualize training data.
+Ways to clean training data:
+	⁃	relabeling samples
+	⁃	deleting samples
+	⁃	editing samples
+
+Documentation
+
+Advice on which models are good for what: e.g. which ones are slow to train, which ones are efficient at run-time, etc.
+
+Arduino
+
+SerialStream class (to load GRT models over Serial).
+Arduino example(s) that can accept user.h files from the computer (and load associated models).
+(Does the model data include information about the pipeline, e.g. pre-processing and feature extraction?)
