@@ -4,19 +4,17 @@
  */
 #pragma once
 
-#include <boost/any.hpp>
-
 #include "ofMain.h"
 
-class IStream : public ofBaseApp {
+class IStream {
   public:
     IStream();
-    vector<string> getIStreamList();
-    void useIStream(int i);
-    void audioIn(float *input, int buffer_size, int nChannel);
-    void start();
-    void stop();
-    bool hasStarted() { return is_start_; }
+    virtual ~IStream() = default;
+
+    virtual void start() = 0;
+    virtual void stop() = 0;
+
+    bool hasStarted() { return has_started_; }
 
     typedef std::function<void(vector<double>)> onDataReadyCallback;
 
@@ -30,26 +28,33 @@ class IStream : public ofBaseApp {
         data_ready_callback_ = std::bind(listenerMethod, owner, _1);
     }
 
-  private:
-    bool is_start_ = false;
-
+  protected:
+    bool has_started_;
     onDataReadyCallback data_ready_callback_;
+};
+
+class AudioStream : public ofBaseApp, public IStream {
+  public:
+    AudioStream();
+    void audioIn(float *input, int buffer_size, int nChannel);
+    virtual void start() final;
+    virtual void stop() final;
+  private:
+    unique_ptr<ofSoundStream> sound_stream_;
+};
+
+class SerialStream : public IStream {
+  public:
+    SerialStream(int i);
+    virtual void start() final;
+    virtual void stop() final;
+  private:
+    unique_ptr<ofSerial> serial_;
 
     // A separate reading thread to read data from Serial.
     unique_ptr<std::thread> reading_thread_;
     void readSerial();
 
-    int buffer_size_ = 256;
-
-    // Because ofSoundStream will call the callback, we use this
-    // variable to track whether we have called ofSoundStream::setup
-    // or not. It directly affects the behavior of audioIn.
-    bool has_audio_setup_ = false;
-
-    // TODO(benzh) Figure out a better way to represent different inputs.
-    vector<boost::any> inputs_;
-    vector<string> names_;
-
-    unique_ptr<ofSerial> serial_;
-    unique_ptr<ofSoundStream> sound_stream_;
+    // Serial buffer size
+    int buffer_size_ = 32;
 };

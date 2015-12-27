@@ -10,15 +10,8 @@ void ofApp::setup() {
     buffer_size_ = 256;
     is_recording_ = false;
 
-    istream_.reset(new IStream());
-    vector<string> inputs = istream_->getIStreamList();
+    istream_.reset(new AudioStream());
     istream_->onDataReadyEvent(this, &ofApp::onDataIn);
-    // For now, use whichever will always use built-in audio.
-    istream_->useIStream(0);
-
-    gui_.reset(new ofxDatGui(ofxDatGuiAnchor::TOP_LEFT));
-    dropdown_input_ = gui_->addDropdown("select input device", inputs);
-    gui_->onDropdownEvent(this, &ofApp::onDropdownSelected);
 
     plot_input_.setup(10 * buffer_size_, 1, "Input");
     plot_input_.setDrawGrid(true);
@@ -43,16 +36,27 @@ void ofApp::update() {
         vector<double> data_point = {
             input_data_[i]
         };
+
         plot_input_.update(data_point);
 
         if (istream_->hasStarted()) {
-            pipeline_.preProcessData(data_point);
-            vector<double> feature = pipeline_.getFeatureExtractionData();
-            feature_data_.push_back(feature);
-
-            if (is_recording_) {
-                training_data_.addSample(label_, data_point);
+            if (!pipeline_.preProcessData(data_point)) {
+                ofLog(OF_LOG_ERROR) << "ERROR: Failed to compute features!";
             }
+
+            vector<double> processed_data = pipeline_.getPreProcessedData();
+
+            // The feature vector might be of arbitrary size depending
+            // on the feature selected. But each one could simply be a
+            // time-series.
+            vector<double> feature = pipeline_.getFeatureExtractionData();
+
+            plot_filtered_.update(processed_data);
+            // feature_data_.push_back(feature);
+        }
+
+        if (is_recording_) {
+            training_data_.addSample(label_, data_point);
         }
     }
 }
@@ -61,8 +65,8 @@ void ofApp::update() {
 void ofApp::draw() {
     ofSetColor(255);
 
-    int plotX = 20;
-    int plotY = 100;
+    int plotX = 10;
+    int plotY = 30;
     int plotW = ofGetWidth() - plotX * 2;
     int plotH = 200;
 
@@ -91,15 +95,6 @@ void ofApp::draw() {
 
 void ofApp::exit() {
     istream_->stop();
-}
-
-void ofApp::onDropdownSelected(ofxDatGuiDropdownEvent e) {
-    if (e.target == dropdown_input_) {
-        istream_->useIStream(e.child);
-        return;
-    }
-
-    ofLog(OF_LOG_ERROR) << "Unknown Dropdown selection event";
 }
 
 void ofApp::onDataIn(vector<double> input) {

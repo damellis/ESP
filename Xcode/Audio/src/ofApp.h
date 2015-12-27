@@ -52,8 +52,4 @@ class ofApp : public ofBaseApp {
     // Visuals
     GRT::ofxGrtTimeseriesPlot plot_input_;
     GRT::ofxGrtTimeseriesPlot plot_filtered_;
-
-    // GUIs
-    unique_ptr<ofxDatGui> gui_;
-    ofxDatGuiDropdown* dropdown_input_;
 };

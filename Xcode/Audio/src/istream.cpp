@@ -1,55 +1,28 @@
 #include "istream.h"
 
-IStream::IStream()
-        : is_start_(false), buffer_size_(256),
-          serial_(new ofSerial()), sound_stream_(new ofSoundStream()) {
-}
+IStream::IStream() : has_started_(false), data_ready_callback_(nullptr) {}
 
-vector<string> IStream::getIStreamList() {
-    vector<ofSerialDeviceInfo> serial_devices = serial_->getDeviceList();
-    vector<ofSoundDevice> sound_devices = sound_stream_->getDeviceList();
-
-    for (auto& d : serial_devices) {
-        const string& name = d.getDeviceName();
-        names_.emplace_back(name);
-        inputs_.emplace_back(d);
-    }
-
-    for (const auto& d : sound_devices) {
-        if (d.isDefaultInput) {
-            names_.emplace_back(d.name);
-            inputs_.emplace_back(d);
-        }
-    }
-    return names_;
-}
-
-void IStream::useIStream(int i) {
-    // TODO(benzh) Work on support select different streams.
-    ofLog(OF_LOG_ERROR) << "Unsupported operation yet";
-    ofLog() << "selected " << i;
-
-    // Should use inputs_[i], for now let's hardcode it to audio
-    if (!has_audio_setup_) {
-        ofLog() << "Use Audio!";
-        sound_stream_->setup(this, 0, 2, 44100, buffer_size_, 4);
-        has_audio_setup_ = true;
-    }
+AudioStream::AudioStream() :
+        sound_stream_(new ofSoundStream()) {
+    sound_stream_->setup(this, 0, 2, 44100, 256, 4);
     sound_stream_->stop();
+}
 
-    // TODO(benzh) For now, we are only using built-in microphone.
-    return;
-    vector<ofSerialDeviceInfo> serial_devices = serial_->getDeviceList();
-    for (auto& d : serial_devices) {
-        if (names_[i].compare(d.getDeviceName()) != 0) {
-            serial_->setup(i, 115200);
-            return;
-        }
+void AudioStream::start() {
+    if (!has_started_) {
+        sound_stream_->start();
+        has_started_ = true;
     }
 }
 
-//--------------------------------------------------------------
-void IStream::audioIn(float* input, int buffer_size, int nChannel) {
+void AudioStream::stop() {
+    if (has_started_) {
+        sound_stream_->stop();
+        has_started_ = false;
+    }
+}
+
+void AudioStream::audioIn(float* input, int buffer_size, int nChannel) {
     vector<double> data(buffer_size);
 
     for (int i = 0; i < buffer_size; i++) {
@@ -62,25 +35,28 @@ void IStream::audioIn(float* input, int buffer_size, int nChannel) {
     }
 }
 
-void IStream::start() {
-    if (has_audio_setup_ && !is_start_) {
-        sound_stream_->start();
-        is_start_ = true;
-        return;
-    }
-
-    // Otherwise read from serial.
-    is_start_ = true;
-    reading_thread_.reset(new std::thread(&IStream::readSerial, this));
+SerialStream::SerialStream(int i) : serial_(new ofSerial()) {
+    serial_->setup(i, 115200);
 }
 
-void IStream::readSerial() {
+void SerialStream::start() {
+    if (has_started_) {
+        reading_thread_.reset(new std::thread(&SerialStream::readSerial, this));
+        has_started_ = true;
+    }
+}
+
+void SerialStream::stop() {
+    // TODO(benzh) Stop the serial reading thread.
+}
+
+void SerialStream::readSerial() {
     // TODO(benzh) This readSerial is running in a different thread
     // and performing a busy polling (100% CPU usage). Should be
     // optimized.
-    while (is_start_) {
-        int local_buffer_size = 24;
-        int bytesRequired = local_buffer_size * 2;
+    while (has_started_) {
+        int local_buffer_size = buffer_size_ / 2;
+        int bytesRequired = buffer_size_;
         unsigned char bytes[bytesRequired];
         int bytesRemaining = bytesRequired;
         while (bytesRemaining > 0) {
@@ -116,13 +92,4 @@ void IStream::readSerial() {
             data_ready_callback_(data);
         }
     }
-}
-
-void IStream::stop() {
-    if (has_audio_setup_) {
-        sound_stream_->stop();
-        return;
-    }
-
-    is_start_ = false;
 }
