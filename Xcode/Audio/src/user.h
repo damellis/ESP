@@ -7,7 +7,7 @@ GestureRecognitionPipeline setupPipeline() {
 
     pipeline.addPreProcessingModule(MovingAverageFilter(5, 1));
     pipeline.addFeatureExtractionModule(FFT(512));
-    pipeline.setClassifier(SVM());
+    pipeline.setClassifier(ANBC());
 
     return pipeline;
 }

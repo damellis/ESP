@@ -57,6 +57,7 @@
 		414754D487190BE26FE61075 /* ofxDatGuiConstants.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxDatGuiConstants.h; path = ../../../of_v0.9.0_osx_release/addons/ofxDatGui/src/core/ofxDatGuiConstants.h; sourceTree = SOURCE_ROOT; };
 		49258D7B1C23E14A00182739 /* istream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = istream.cpp; sourceTree = "<group>"; };
 		49258D7C1C23E14A00182739 /* istream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = istream.h; sourceTree = "<group>"; };
+		49FBDC261C287B8300B1BE7A /* user.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = user.h; sourceTree = "<group>"; };
 		4FFAE4689D60CDC212D7B1B6 /* ofxDatGuiComponent.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxDatGuiComponent.cpp; path = ../../../of_v0.9.0_osx_release/addons/ofxDatGui/src/core/ofxDatGuiComponent.cpp; sourceTree = SOURCE_ROOT; };
 		5345FAFD2816B2FD238CE3C6 /* ofxDatGuiFont.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxDatGuiFont.h; path = ../../../of_v0.9.0_osx_release/addons/ofxDatGui/src/core/ofxDatGuiFont.h; sourceTree = SOURCE_ROOT; };
 		5830824BB2158D0127720E32 /* ofxDatGuiIntObject.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxDatGuiIntObject.h; path = ../../../of_v0.9.0_osx_release/addons/ofxDatGui/src/core/ofxDatGuiIntObject.h; sourceTree = SOURCE_ROOT; };
@@ -210,6 +211,7 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				49FBDC261C287B8300B1BE7A /* user.h */,
 				49258D7B1C23E14A00182739 /* istream.cpp */,
 				49258D7C1C23E14A00182739 /* istream.h */,
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
