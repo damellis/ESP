@@ -13,19 +13,30 @@ void ofApp::setup() {
     istream_.reset(new AudioStream());
     istream_->onDataReadyEvent(this, &ofApp::onDataIn);
 
-    plot_input_.setup(10 * buffer_size_, 1, "Input");
-    plot_input_.setDrawGrid(true);
-    plot_input_.setDrawInfoText(true);
+    // setupPipeline is a user-defined function.
+    pipeline_ = setupPipeline();
 
-    plot_filtered_.setup(10 * buffer_size_, 1, "Filtered");
-    plot_filtered_.setDrawGrid(true);
-    plot_filtered_.setDrawInfoText(true);
+    plot_inputs_.setup(buffer_size_, 1, "Input");
+    plot_inputs_.setDrawGrid(true);
+    plot_inputs_.setDrawInfoText(true);
+
+    size_t num_pre_processing = pipeline_.getNumPreProcessingModules();
+    PreProcessing* pp = pipeline_.getPreProcessingModule(0);
+    plot_pre_processed_.setup(buffer_size_, pp->getNumOutputDimensions(),
+                              "PreProcessing");
+    plot_pre_processed_.setDrawGrid(true);
+    plot_pre_processed_.setDrawInfoText(true);
+
+    size_t num_feature_modules = pipeline_.getNumFeatureExtractionModules();
+    FeatureExtraction* fe = pipeline_.getFeatureExtractionModule(1);
+    plot_features_.setup(buffer_size_, fe->getNumOutputDimensions(),
+                         "Features");
+    plot_features_.setDrawGrid(true);
+    plot_features_.setDrawInfoText(true);
 
     training_data_.setNumDimensions(1);
     training_data_.setDatasetName("Audio");
     training_data_.setInfoText("This data contains audio data");
-
-    pipeline_ = setupPipeline();
 
     ofBackground(54, 54, 54);
 }
@@ -37,21 +48,22 @@ void ofApp::update() {
             input_data_[i]
         };
 
-        plot_input_.update(data_point);
+        plot_inputs_.update(data_point);
 
         if (istream_->hasStarted()) {
             if (!pipeline_.preProcessData(data_point)) {
                 ofLog(OF_LOG_ERROR) << "ERROR: Failed to compute features!";
             }
 
-            vector<double> processed_data = pipeline_.getPreProcessedData();
+            vector<double> pre_processed_data = pipeline_.getPreProcessedData();
+            plot_pre_processed_.update(pre_processed_data);
 
             // The feature vector might be of arbitrary size depending
             // on the feature selected. But each one could simply be a
             // time-series.
             vector<double> feature = pipeline_.getFeatureExtractionData();
 
-            plot_filtered_.update(processed_data);
+            plot_features_.update(feature);
             // feature_data_.push_back(feature);
         }
 
@@ -69,14 +81,13 @@ void ofApp::draw() {
     int plotY = 30;
     int plotW = ofGetWidth() - plotX * 2;
     int plotH = 200;
-
     int margin = 10;
 
     ofPushStyle();
     ofPushMatrix();
     {
         ofDrawBitmapString("Input:", plotX, plotY - margin);
-        plot_input_.draw(plotX, plotY, plotW, plotH);
+        plot_inputs_.draw(plotX, plotY, plotW, plotH);
         plotY += plotH + 3 * margin;
     }
     ofPopStyle();
@@ -85,8 +96,18 @@ void ofApp::draw() {
     ofPushStyle();
     ofPushMatrix();
     {
-        ofDrawBitmapString("Filtered:", plotX, plotY - margin);
-        plot_filtered_.draw(plotX, plotY, plotW, plotH);
+        ofDrawBitmapString("PreProcessed:", plotX, plotY - margin);
+        plot_pre_processed_.draw(plotX, plotY, plotW, plotH);
+        plotY += plotH + 3 * margin;
+    }
+    ofPopStyle();
+    ofPopMatrix();
+
+    ofPushStyle();
+    ofPushMatrix();
+    {
+        ofDrawBitmapString("Feature:", plotX, plotY - margin);
+        plot_features_.draw(plotX, plotY, plotW, plotH);
         plotY += plotH + 3 * margin;
     }
     ofPopStyle();

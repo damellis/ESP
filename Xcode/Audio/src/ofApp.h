@@ -50,6 +50,7 @@ class ofApp : public ofBaseApp {
     vector<vector<double>> feature_data_;
 
     // Visuals
-    GRT::ofxGrtTimeseriesPlot plot_input_;
-    GRT::ofxGrtTimeseriesPlot plot_filtered_;
+    GRT::ofxGrtTimeseriesPlot plot_inputs_;
+    GRT::ofxGrtTimeseriesPlot plot_pre_processed_;
+    GRT::ofxGrtTimeseriesPlot plot_features_;
 };
