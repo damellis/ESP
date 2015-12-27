@@ -52,5 +52,5 @@ class ofApp : public ofBaseApp {
     // Visuals
     GRT::ofxGrtTimeseriesPlot plot_inputs_;
     GRT::ofxGrtTimeseriesPlot plot_pre_processed_;
-    GRT::ofxGrtTimeseriesPlot plot_features_;
+    vector<GRT::ofxGrtTimeseriesPlot> plot_features_;
 };

@@ -29,10 +29,13 @@ void ofApp::setup() {
 
     size_t num_feature_modules = pipeline_.getNumFeatureExtractionModules();
     FeatureExtraction* fe = pipeline_.getFeatureExtractionModule(1);
-    plot_features_.setup(buffer_size_, fe->getNumOutputDimensions(),
-                         "Features");
-    plot_features_.setDrawGrid(true);
-    plot_features_.setDrawInfoText(true);
+    for (int i = 0; i < fe->getNumOutputDimensions(); i++) {
+        GRT::ofxGrtTimeseriesPlot plot;
+        plot.setup(buffer_size_, 1, "Feature");
+        plot.setDrawGrid(true);
+        plot.setDrawInfoText(true);
+        plot_features_.push_back(plot);
+    }
 
     training_data_.setNumDimensions(1);
     training_data_.setDatasetName("Audio");
@@ -63,8 +66,10 @@ void ofApp::update() {
             // time-series.
             vector<double> feature = pipeline_.getFeatureExtractionData();
 
-            plot_features_.update(feature);
-            // feature_data_.push_back(feature);
+            for (int i = 0; i < feature.size(); i++) {
+                vector<double> v = { feature[i] };
+                plot_features_[i].update(v);
+            }
         }
 
         if (is_recording_) {
@@ -105,11 +110,14 @@ void ofApp::draw() {
 
     ofPushStyle();
     ofPushMatrix();
-    {
-        ofDrawBitmapString("Feature:", plotX, plotY - margin);
-        plot_features_.draw(plotX, plotY, plotW, plotH);
-        plotY += plotH + 3 * margin;
+    ofDrawBitmapString("Feature:", plotX, plotY - margin);
+
+    int width = plotW / plot_features_.size();
+    for (int i = 0; i < plot_features_.size(); i++) {
+        plot_features_[i].draw(plotX + i * width, plotY, width, plotH);
     }
+    plotY += plotH + 3 * margin;
+
     ofPopStyle();
     ofPopMatrix();
 }
@@ -140,6 +148,15 @@ void ofApp::keyPressed(int key){
         case 'e':
             istream_->stop();
             input_data_.clear();
+            break;
+        case 'p':
+            for (int i = 0; i < input_data_.size(); i++) {
+                vector<double> data_point = {
+                    input_data_[i]
+                };
+                pipeline_.predict(data_point);
+                ofLog() << pipeline_.getPredictedClassLabel();
+            }
             break;
     }
 }
