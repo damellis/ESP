@@ -3,6 +3,8 @@
 #include "ofMain.h"
 #include "ofxGrt.h"
 
+#include <thread>
+
 #include "istream.h"
 
 class ofApp : public ofBaseApp {
@@ -49,4 +51,6 @@ class ofApp : public ofBaseApp {
     GRT::ofxGrtTimeseriesPlot plot_inputs_;
     GRT::ofxGrtTimeseriesPlot plot_pre_processed_;
     vector<GRT::ofxGrtTimeseriesPlot> plot_features_;
+
+    std::thread training_thread_;
 };

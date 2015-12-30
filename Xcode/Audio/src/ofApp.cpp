@@ -1,7 +1,6 @@
 #include "ofApp.h"
 
 #include <algorithm>
-#include <math.h>
 
 #include "user.h"
 
@@ -123,6 +122,9 @@ void ofApp::draw() {
 }
 
 void ofApp::exit() {
+    if (training_thread_.joinable()) {
+        training_thread_.join();
+    }
     istream_->stop();
 }
 
@@ -139,9 +141,27 @@ void ofApp::keyPressed(int key){
     }
 
     switch (key) {
-        case 't':
-            pipeline_.train(training_data_);
+        case 't': {
+            // If prior training has not finished, we wait.
+            if (training_thread_.joinable()) {
+                training_thread_.join();
+            }
+
+            GRT::GestureRecognitionPipeline pipeline_copy = pipeline_;
+            GRT::ClassificationData data_copy = training_data_;
+            auto training_func = [pipeline_copy, data_copy]() mutable {
+                ofLog() << "Training started";
+                if (pipeline_copy.train(data_copy)) {
+                    ofLog() << "Training is successful";
+                } else {
+                    ofLog() << "Failed to train the model";
+                }
+            };
+            training_thread_ = std::thread(training_func);
+            // training_func();
             break;
+        }
+
         case 's':
             istream_->start();
             break;
