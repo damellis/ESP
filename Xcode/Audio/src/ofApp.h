@@ -1,7 +1,6 @@
 #pragma once
 
 #include "ofMain.h"
-#include "ofxDatGui.h"
 #include "ofxGrt.h"
 
 #include "istream.h"
@@ -26,9 +25,6 @@ class ofApp : public ofBaseApp {
     void gotMessage(ofMessage msg);
 
   private:
-    // Callback used for user interaction (dropdown menu).
-    void onDropdownSelected(ofxDatGuiDropdownEvent e);
-
     // Input stream, a callback should be registered upon data arrival
     unique_ptr<IStream> istream_;
     // Callback used for input data stream (istream_)
