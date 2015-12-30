@@ -20,20 +20,24 @@ void ofApp::setup() {
     plot_inputs_.setDrawInfoText(true);
 
     size_t num_pre_processing = pipeline_.getNumPreProcessingModules();
-    PreProcessing* pp = pipeline_.getPreProcessingModule(0);
-    plot_pre_processed_.setup(buffer_size_, pp->getNumOutputDimensions(),
-                              "PreProcessing");
-    plot_pre_processed_.setDrawGrid(true);
-    plot_pre_processed_.setDrawInfoText(true);
+    if (num_pre_processing > 0) {
+        PreProcessing* pp = pipeline_.getPreProcessingModule(0);
+        plot_pre_processed_.setup(buffer_size_, pp->getNumOutputDimensions(),
+                                  "PreProcessing");
+        plot_pre_processed_.setDrawGrid(true);
+        plot_pre_processed_.setDrawInfoText(true);
+    }
 
     size_t num_feature_modules = pipeline_.getNumFeatureExtractionModules();
-    FeatureExtraction* fe = pipeline_.getFeatureExtractionModule(1);
-    for (int i = 0; i < fe->getNumOutputDimensions(); i++) {
-        GRT::ofxGrtTimeseriesPlot plot;
-        plot.setup(buffer_size_, 1, "Feature");
-        plot.setDrawGrid(true);
-        plot.setDrawInfoText(true);
-        plot_features_.push_back(plot);
+    if (num_feature_modules > 0) {
+        FeatureExtraction* fe = pipeline_.getFeatureExtractionModule(1);
+        for (int i = 0; i < fe->getNumOutputDimensions(); i++) {
+            GRT::ofxGrtTimeseriesPlot plot;
+            plot.setup(buffer_size_, 1, "Feature");
+            plot.setDrawGrid(true);
+            plot.setDrawInfoText(true);
+            plot_features_.push_back(plot);
+        }
     }
 
     training_data_.setNumDimensions(1);
@@ -57,22 +61,22 @@ void ofApp::update() {
                 ofLog(OF_LOG_ERROR) << "ERROR: Failed to compute features!";
             }
 
-            vector<double> pre_processed_data = pipeline_.getPreProcessedData();
-            plot_pre_processed_.update(pre_processed_data);
+            // vector<double> pre_processed_data = pipeline_.getPreProcessedData();
+            // plot_pre_processed_.update(pre_processed_data);
 
-            // The feature vector might be of arbitrary size depending
-            // on the feature selected. But each one could simply be a
-            // time-series.
-            vector<double> feature = pipeline_.getFeatureExtractionData();
+            // // The feature vector might be of arbitrary size depending
+            // // on the feature selected. But each one could simply be a
+            // // time-series.
+            // vector<double> feature = pipeline_.getFeatureExtractionData();
 
-            for (int i = 0; i < feature.size(); i++) {
-                vector<double> v = { feature[i] };
-                plot_features_[i].update(v);
-            }
+            // for (int i = 0; i < feature.size(); i++) {
+            //     vector<double> v = { feature[i] };
+            //     plot_features_[i].update(v);
+            // }
         }
 
         if (is_recording_) {
-            training_data_.addSample(label_, data_point);
+            sample_data_.push_back(data_point);
         }
     }
 }
@@ -111,11 +115,11 @@ void ofApp::draw() {
     ofPushMatrix();
     ofDrawBitmapString("Feature:", plotX, plotY - margin);
 
-    int width = plotW / plot_features_.size();
-    for (int i = 0; i < plot_features_.size(); i++) {
-        plot_features_[i].draw(plotX + i * width, plotY, width, plotH);
-    }
-    plotY += plotH + 3 * margin;
+    // int width = plotW / plot_features_.size();
+    // for (int i = 0; i < plot_features_.size(); i++) {
+    //     plot_features_[i].draw(plotX + i * width, plotY, width, plotH);
+    // }
+    // plotY += plotH + 3 * margin;
 
     ofPopStyle();
     ofPopMatrix();
@@ -138,6 +142,7 @@ void ofApp::keyPressed(int key){
     if (key >= '0' && key <= '9') {
         is_recording_ = true;
         label_ = key - '0';
+        sample_data_.clear();
     }
 
     switch (key) {
@@ -147,11 +152,10 @@ void ofApp::keyPressed(int key){
                 training_thread_.join();
             }
 
-            GRT::GestureRecognitionPipeline pipeline_copy = pipeline_;
-            GRT::ClassificationData data_copy = training_data_;
-            auto training_func = [pipeline_copy, data_copy]() mutable {
+            GRT::TimeSeriesClassificationData data_copy = training_data_;
+            auto training_func = [this, data_copy]() mutable {
                 ofLog() << "Training started";
-                if (pipeline_copy.train(data_copy)) {
+                if (pipeline_.train(data_copy)) {
                     ofLog() << "Training is successful";
                 } else {
                     ofLog() << "Failed to train the model";
@@ -170,13 +174,8 @@ void ofApp::keyPressed(int key){
             input_data_.clear();
             break;
         case 'p':
-            for (int i = 0; i < input_data_.size(); i++) {
-                vector<double> data_point = {
-                    input_data_[i]
-                };
-                pipeline_.predict(data_point);
-                ofLog() << pipeline_.getPredictedClassLabel();
-            }
+            sample_data_.clear();
+            is_recording_ = true;
             break;
     }
 }
@@ -184,6 +183,12 @@ void ofApp::keyPressed(int key){
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key) {
     is_recording_ = false;
+    if (key >= '0' && key <= '9') {
+        training_data_.addSample(label_, sample_data_);
+    } else if (key == 'p') {
+        pipeline_.predict(sample_data_);
+        ofLog() << pipeline_.getPredictedClassLabel();
+    }
 }
 
 //--------------------------------------------------------------

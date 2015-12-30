@@ -44,7 +44,7 @@ class ofApp : public ofBaseApp {
 
     // Pipeline
     GRT::GestureRecognitionPipeline pipeline_;
-    GRT::ClassificationData training_data_;
+    GRT::TimeSeriesClassificationData training_data_;
     vector<vector<double>> feature_data_;
 
     // Visuals
@@ -52,5 +52,6 @@ class ofApp : public ofBaseApp {
     GRT::ofxGrtTimeseriesPlot plot_pre_processed_;
     vector<GRT::ofxGrtTimeseriesPlot> plot_features_;
 
+    GRT::MatrixDouble sample_data_;
     std::thread training_thread_;
 };
