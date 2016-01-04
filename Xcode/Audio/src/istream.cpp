@@ -40,7 +40,7 @@ SerialStream::SerialStream(int i) : serial_(new ofSerial()) {
 }
 
 void SerialStream::start() {
-    if (has_started_) {
+    if (!has_started_) {
         reading_thread_.reset(new std::thread(&SerialStream::readSerial, this));
         has_started_ = true;
     }
@@ -84,8 +84,8 @@ void SerialStream::readSerial() {
         }
         vector<double> data(local_buffer_size);
         for (int i = 0; i < local_buffer_size; i++) {
-            int b1 = bytes[i];
-            int b2 = bytes[i + 1];
+            int b1 = bytes[i * 2];
+            int b2 = bytes[i * 2 + 1];
             data[i] = b1 + (b2 << 8);
         }
         if (data_ready_callback_ != nullptr) {
