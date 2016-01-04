@@ -55,11 +55,10 @@ class ofApp : public ofBaseApp {
 
     ofxPanel gui_;
     bool gui_hide_;
-    ofxButton save_sample_button_;
-    void saveSample();
-    ofxButton load_sample_button_;
-    ofxButton save_model_button_;
-    ofxButton load_model_button_;
+    ofxButton save_pipeline_button_;
+    void savePipeline();
+    ofxButton load_pipeline_button_;
+    void loadPipeline();
 
     GRT::MatrixDouble sample_data_;
     std::thread training_thread_;

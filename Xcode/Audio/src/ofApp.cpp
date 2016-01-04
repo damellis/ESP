@@ -46,20 +46,29 @@ void ofApp::setup() {
 
     gui_.setup("", "", ofGetWidth() - 200, 0);
     gui_hide_ = true;
-    gui_.add(save_sample_button_.setup("Save Samples", 200, 30));
-    gui_.add(load_sample_button_.setup("Load Samples", 200, 30));
-    gui_.add(save_model_button_.setup("Save Model", 200, 30));
-    gui_.add(load_model_button_.setup("Load Model", 200, 30));
-    save_sample_button_.addListener(this, &ofApp::saveSample);
-    load_sample_button_.addListener(this, &ofApp::saveSample);
-    save_model_button_.addListener(this, &ofApp::saveSample);
-    load_model_button_.addListener(this, &ofApp::saveSample);
+    gui_.add(save_pipeline_button_.setup("Save Pipeline", 200, 30));
+    gui_.add(load_pipeline_button_.setup("Load Pipeline", 200, 30));
+    save_pipeline_button_.addListener(this, &ofApp::savePipeline);
+    load_pipeline_button_.addListener(this, &ofApp::loadPipeline);
 
     ofBackground(54, 54, 54);
 }
 
-void ofApp::saveSample() {
-    ofLog() << "Save Sample called";
+void ofApp::savePipeline() {
+    if (!pipeline_.save("pipeline.grt")) {
+        ofLog(OF_LOG_ERROR) << "Failed to save the pipeline";
+    }
+}
+
+void ofApp::loadPipeline() {
+    GRT::GestureRecognitionPipeline pipeline;
+    if (!pipeline.load("pipeline.grt")) {
+        ofLog(OF_LOG_ERROR) << "Failed to load the pipeline";
+    }
+
+    // TODO(benzh) Compare the two pipelines and warn the user if the
+    // loaded one is different from his.
+    pipeline_ = pipeline;
 }
 
 //--------------------------------------------------------------
@@ -135,8 +144,30 @@ void ofApp::draw() {
         for (int i = 0; i < plot_features_.size(); i++) {
             plot_features_[i].draw(plotX + i * width, plotY, width, plotH);
         }
-        plotY += plotH + 3 * margin;
     }
+
+    plotY += plotH + 3 * margin;
+
+    ofPopStyle();
+    ofPopMatrix();
+
+    // Training samples management
+    ofPushStyle();
+    ofPushMatrix();
+    ofDrawBitmapString("Training Samples:", plotX, plotY - margin);
+
+    plotY += plotH + 3 * margin;
+
+    ofPopStyle();
+    ofPopMatrix();
+
+    // Instructions
+    ofPushStyle();
+    ofPushMatrix();
+
+    ofDrawBitmapString("`s` - start; `e` - pause; 1-9 training samples;"
+                       "`t` - train; `p` - predict; `h` - panel",
+                       plotX, plotY - margin);
 
     ofPopStyle();
     ofPopMatrix();
@@ -144,8 +175,6 @@ void ofApp::draw() {
     if (!gui_hide_) {
         gui_.draw();
     }
-
-
 }
 
 void ofApp::exit() {
@@ -155,10 +184,8 @@ void ofApp::exit() {
     istream_->stop();
 
     // Clear all listeners.
-    save_sample_button_.removeListener(this, &ofApp::saveSample);
-    load_sample_button_.removeListener(this, &ofApp::saveSample);
-    save_model_button_.removeListener(this, &ofApp::saveSample);
-    load_model_button_.removeListener(this, &ofApp::saveSample);
+    save_pipeline_button_.removeListener(this, &ofApp::savePipeline);
+    load_pipeline_button_.removeListener(this, &ofApp::loadPipeline);
 }
 
 void ofApp::onDataIn(vector<double> input) {
