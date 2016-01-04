@@ -28,6 +28,8 @@ class ofApp : public ofBaseApp {
     void gotMessage(ofMessage msg);
 
   private:
+    const size_t kNumMaxLabels_ = 10;
+
     // Input stream, a callback should be registered upon data arrival
     unique_ptr<IStream> istream_;
     // Callback used for input data stream (istream_)
@@ -52,6 +54,8 @@ class ofApp : public ofBaseApp {
     GRT::ofxGrtTimeseriesPlot plot_inputs_;
     GRT::ofxGrtTimeseriesPlot plot_pre_processed_;
     vector<GRT::ofxGrtTimeseriesPlot> plot_features_;
+    vector<GRT::ofxGrtTimeseriesPlot> plot_samples_;
+    vector<std::string> plot_samples_info_;
 
     ofxPanel gui_;
     bool gui_hide_;

@@ -40,6 +40,16 @@ void ofApp::setup() {
         }
     }
 
+    for (int i = 0; i < kNumMaxLabels_; i++) {
+        GRT::ofxGrtTimeseriesPlot plot;
+        plot.setup(buffer_size_, 1, "Label");
+        plot.setDrawGrid(true);
+        plot.setDrawInfoText(true);
+        plot_samples_.push_back(plot);
+        plot_samples_info_.push_back("");
+    }
+
+
     training_data_.setNumDimensions(1);
     training_data_.setDatasetName("Audio");
     training_data_.setInfoText("This data contains audio data");
@@ -156,6 +166,15 @@ void ofApp::draw() {
     ofPushMatrix();
     ofDrawBitmapString("Training Samples:", plotX, plotY - margin);
 
+    // Currently we support kNumMaxLabels_ labels
+    int width = plotW / kNumMaxLabels_;
+    for (int i = 0; i < kNumMaxLabels_; i++) {
+        int x = plotX + i * width;
+        plot_samples_[i].draw(x, plotY, width, plotH - 3 * margin);
+        ofDrawBitmapString(plot_samples_info_[i], x, plotY + plotH - margin);
+
+    }
+
     plotY += plotH + 3 * margin;
 
     ofPopStyle();
@@ -218,7 +237,6 @@ void ofApp::keyPressed(int key){
                 }
             };
             training_thread_ = std::thread(training_func);
-            // training_func();
             break;
         }
 
@@ -243,6 +261,10 @@ void ofApp::keyReleased(int key) {
     is_recording_ = false;
     if (key >= '0' && key <= '9') {
         training_data_.addSample(label_, sample_data_);
+        plot_samples_[label_].setData(sample_data_);
+        plot_samples_info_[label_] =
+                std::to_string(sample_data_.getNumRows()) + " points";
+
     } else if (key == 'p') {
         pipeline_.predict(sample_data_);
         ofLog() << pipeline_.getPredictedClassLabel();
