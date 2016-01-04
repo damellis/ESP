@@ -44,7 +44,22 @@ void ofApp::setup() {
     training_data_.setDatasetName("Audio");
     training_data_.setInfoText("This data contains audio data");
 
+    gui_.setup("", "", ofGetWidth() - 200, 0);
+    gui_hide_ = true;
+    gui_.add(save_sample_button_.setup("Save Samples", 200, 30));
+    gui_.add(load_sample_button_.setup("Load Samples", 200, 30));
+    gui_.add(save_model_button_.setup("Save Model", 200, 30));
+    gui_.add(load_model_button_.setup("Load Model", 200, 30));
+    save_sample_button_.addListener(this, &ofApp::saveSample);
+    load_sample_button_.addListener(this, &ofApp::saveSample);
+    save_model_button_.addListener(this, &ofApp::saveSample);
+    load_model_button_.addListener(this, &ofApp::saveSample);
+
     ofBackground(54, 54, 54);
+}
+
+void ofApp::saveSample() {
+    ofLog() << "Save Sample called";
 }
 
 //--------------------------------------------------------------
@@ -88,7 +103,7 @@ void ofApp::draw() {
     int plotX = 10;
     int plotY = 30;
     int plotW = ofGetWidth() - plotX * 2;
-    int plotH = 200;
+    int plotH = 150;
     int margin = 10;
 
     ofPushStyle();
@@ -123,6 +138,12 @@ void ofApp::draw() {
 
     ofPopStyle();
     ofPopMatrix();
+
+    if (!gui_hide_) {
+        gui_.draw();
+    }
+
+
 }
 
 void ofApp::exit() {
@@ -130,6 +151,12 @@ void ofApp::exit() {
         training_thread_.join();
     }
     istream_->stop();
+
+    // Clear all listeners.
+    save_sample_button_.removeListener(this, &ofApp::saveSample);
+    load_sample_button_.removeListener(this, &ofApp::saveSample);
+    save_model_button_.removeListener(this, &ofApp::saveSample);
+    load_model_button_.removeListener(this, &ofApp::saveSample);
 }
 
 void ofApp::onDataIn(vector<double> input) {
@@ -166,6 +193,8 @@ void ofApp::keyPressed(int key){
             break;
         }
 
+        case 'h':
+            gui_hide_ = !gui_hide_;
         case 's':
             istream_->start();
             break;

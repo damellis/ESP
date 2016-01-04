@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
+#include "ofxGui.h"
 #include "ofxGrt.h"
 
 #include <thread>
@@ -51,6 +52,14 @@ class ofApp : public ofBaseApp {
     GRT::ofxGrtTimeseriesPlot plot_inputs_;
     GRT::ofxGrtTimeseriesPlot plot_pre_processed_;
     vector<GRT::ofxGrtTimeseriesPlot> plot_features_;
+
+    ofxPanel gui_;
+    bool gui_hide_;
+    ofxButton save_sample_button_;
+    void saveSample();
+    ofxButton load_sample_button_;
+    ofxButton save_model_button_;
+    ofxButton load_model_button_;
 
     GRT::MatrixDouble sample_data_;
     std::thread training_thread_;
