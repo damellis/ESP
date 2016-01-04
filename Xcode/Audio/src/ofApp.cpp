@@ -76,18 +76,18 @@ void ofApp::update() {
                 ofLog(OF_LOG_ERROR) << "ERROR: Failed to compute features!";
             }
 
-            // vector<double> pre_processed_data = pipeline_.getPreProcessedData();
-            // plot_pre_processed_.update(pre_processed_data);
+            vector<double> pre_processed_data = pipeline_.getPreProcessedData();
+            plot_pre_processed_.update(pre_processed_data);
 
-            // // The feature vector might be of arbitrary size depending
-            // // on the feature selected. But each one could simply be a
-            // // time-series.
-            // vector<double> feature = pipeline_.getFeatureExtractionData();
+            // The feature vector might be of arbitrary size depending
+            // on the feature selected. But each one could simply be a
+            // time-series.
+            vector<double> feature = pipeline_.getFeatureExtractionData();
 
-            // for (int i = 0; i < feature.size(); i++) {
-            //     vector<double> v = { feature[i] };
-            //     plot_features_[i].update(v);
-            // }
+            for (int i = 0; i < feature.size(); i++) {
+                vector<double> v = { feature[i] };
+                plot_features_[i].update(v);
+            }
         }
 
         if (is_recording_) {
@@ -130,11 +130,13 @@ void ofApp::draw() {
     ofPushMatrix();
     ofDrawBitmapString("Feature:", plotX, plotY - margin);
 
-    // int width = plotW / plot_features_.size();
-    // for (int i = 0; i < plot_features_.size(); i++) {
-    //     plot_features_[i].draw(plotX + i * width, plotY, width, plotH);
-    // }
-    // plotY += plotH + 3 * margin;
+    if (plot_features_.size() > 0) {
+        int width = plotW / plot_features_.size();
+        for (int i = 0; i < plot_features_.size(); i++) {
+            plot_features_[i].draw(plotX + i * width, plotY, width, plotH);
+        }
+        plotY += plotH + 3 * margin;
+    }
 
     ofPopStyle();
     ofPopMatrix();
