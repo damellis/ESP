@@ -34,7 +34,6 @@ void ofApp::setup() {
         for (int i = 0; i < fe->getNumOutputDimensions(); i++) {
             GRT::ofxGrtTimeseriesPlot plot;
             plot.setup(buffer_size_, 1, "Feature");
-            plot.setDrawGrid(true);
             plot.setDrawInfoText(true);
             plot_features_.push_back(plot);
         }
@@ -43,16 +42,16 @@ void ofApp::setup() {
     for (int i = 0; i < kNumMaxLabels_; i++) {
         GRT::ofxGrtTimeseriesPlot plot;
         plot.setup(buffer_size_, 1, "Label");
-        plot.setDrawGrid(true);
         plot.setDrawInfoText(true);
+        plot.setRanges(-1, 1, true);
         plot_samples_.push_back(plot);
         plot_samples_info_.push_back("");
     }
 
-
     training_data_.setNumDimensions(1);
     training_data_.setDatasetName("Audio");
     training_data_.setInfoText("This data contains audio data");
+    predicted_label_ = 0;
 
     gui_.setup("", "", ofGetWidth() - 200, 0);
     gui_hide_ = true;
@@ -184,7 +183,13 @@ void ofApp::draw() {
     ofPushStyle();
     ofPushMatrix();
 
-    ofDrawBitmapString("`s` - start; `e` - pause; 1-9 training samples;"
+    ofDrawBitmapString(std::to_string(sample_data_.getNumRows()) +
+                       " data points\t" +
+                       "label: " + std::to_string(predicted_label_),
+                       plotX, plotY - 2.5 * margin);
+
+    ofDrawBitmapString("Instructions: "
+                       "`s` - start; `e` - pause; 1-9 training samples;"
                        "`t` - train; `p` - predict; `h` - panel",
                        plotX, plotY - margin);
 
@@ -214,10 +219,12 @@ void ofApp::onDataIn(vector<double> input) {
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-    if (key >= '0' && key <= '9') {
-        is_recording_ = true;
-        label_ = key - '0';
-        sample_data_.clear();
+    if (key >= '1' && key <= '9') {
+        if (!is_recording_) {
+            is_recording_ = true;
+            label_ = key - '0';
+            sample_data_.clear();
+        }
     }
 
     switch (key) {
@@ -227,7 +234,7 @@ void ofApp::keyPressed(int key){
                 training_thread_.join();
             }
 
-            GRT::TimeSeriesClassificationData data_copy = training_data_;
+            GRT::ClassificationData data_copy = training_data_;
             auto training_func = [this, data_copy]() mutable {
                 ofLog() << "Training started";
                 if (pipeline_.train(data_copy)) {
@@ -259,15 +266,20 @@ void ofApp::keyPressed(int key){
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key) {
     is_recording_ = false;
-    if (key >= '0' && key <= '9') {
-        training_data_.addSample(label_, sample_data_);
-        plot_samples_[label_].setData(sample_data_);
-        plot_samples_info_[label_] =
+    if (key >= '1' && key <= '9') {
+        for (int i = 0; i < sample_data_.getNumRows(); i++) {
+            training_data_.addSample(label_, sample_data_.getRowVector(i));
+        }
+
+        plot_samples_[label_ - 1].setData(sample_data_);
+        plot_samples_info_[label_ - 1] =
                 std::to_string(sample_data_.getNumRows()) + " points";
 
     } else if (key == 'p') {
-        pipeline_.predict(sample_data_);
-        ofLog() << pipeline_.getPredictedClassLabel();
+        for (int i = 0; i < sample_data_.getNumRows(); i++) {
+            pipeline_.predict(sample_data_.getRowVector(i));
+        }
+        predicted_label_ = pipeline_.getPredictedClassLabel();
     }
 }
 

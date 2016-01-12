@@ -28,7 +28,7 @@ class ofApp : public ofBaseApp {
     void gotMessage(ofMessage msg);
 
   private:
-    const size_t kNumMaxLabels_ = 10;
+    const size_t kNumMaxLabels_ = 9;
 
     // Input stream, a callback should be registered upon data arrival
     unique_ptr<IStream> istream_;
@@ -47,8 +47,9 @@ class ofApp : public ofBaseApp {
 
     // Pipeline
     GRT::GestureRecognitionPipeline pipeline_;
-    GRT::TimeSeriesClassificationData training_data_;
+    GRT::ClassificationData training_data_;
     vector<vector<double>> feature_data_;
+    int predicted_label_;
 
     // Visuals
     GRT::ofxGrtTimeseriesPlot plot_inputs_;
