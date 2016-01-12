@@ -1,11 +1,17 @@
 #pragma once
 
+// C System
+#include <stdint.h>
+
+// C++ System
+#include <thread>
+
+// of System
 #include "ofMain.h"
 #include "ofxGui.h"
 #include "ofxGrt.h"
 
-#include <thread>
-
+// custom
 #include "istream.h"
 
 class ofApp : public ofBaseApp {
@@ -28,27 +34,31 @@ class ofApp : public ofBaseApp {
     void gotMessage(ofMessage msg);
 
   private:
-    const size_t kNumMaxLabels_ = 9;
+    // Currently, we support labels (stored in label_) from 1 to 9.
+    const uint32_t kNumMaxLabels_ = 9;
+    uint8_t label_;
+
+    // kBufferSize_ controls the number of points in the plot. Note: This is not
+    // the buffer size used for training/prediction.
+    const uint32_t kBufferSize_ = 256;
 
     // Input stream, a callback should be registered upon data arrival
     unique_ptr<IStream> istream_;
     // Callback used for input data stream (istream_)
     void onDataIn(vector<double> in);
 
-    // Training related variables
-    int buffer_size_;
+    // When button 1-9 is pressed, is_recording_ will be set and data will be
+    // added to sample_data_.
     bool is_recording_;
-    int label_;
+    GRT::MatrixDouble sample_data_;
 
-    // Data and mutex
+    // input_data_ is written by istream_ thread and read by GUI thread.
     std::mutex input_data_mutex_;
     vector<double> input_data_;
-    vector<double> features_;
 
     // Pipeline
     GRT::GestureRecognitionPipeline pipeline_;
     GRT::ClassificationData training_data_;
-    vector<vector<double>> feature_data_;
     int predicted_label_;
 
     // Visuals
@@ -58,6 +68,7 @@ class ofApp : public ofBaseApp {
     vector<GRT::ofxGrtTimeseriesPlot> plot_samples_;
     vector<std::string> plot_samples_info_;
 
+    // Panel for storing and loading pipeline.
     ofxPanel gui_;
     bool gui_hide_;
     ofxButton save_pipeline_button_;
@@ -65,6 +76,6 @@ class ofApp : public ofBaseApp {
     ofxButton load_pipeline_button_;
     void loadPipeline();
 
-    GRT::MatrixDouble sample_data_;
+    // Multithreading to avoid GUI blocked.
     std::thread training_thread_;
 };

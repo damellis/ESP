@@ -6,7 +6,6 @@
 
 //--------------------------------------------------------------
 void ofApp::setup() {
-    buffer_size_ = 256;
     is_recording_ = false;
 
     istream_.reset(new AudioStream());
@@ -15,14 +14,14 @@ void ofApp::setup() {
     // setupPipeline is a user-defined function.
     pipeline_ = setupPipeline();
 
-    plot_inputs_.setup(buffer_size_, 1, "Input");
+    plot_inputs_.setup(kBufferSize_, 1, "Input");
     plot_inputs_.setDrawGrid(true);
     plot_inputs_.setDrawInfoText(true);
 
     size_t num_pre_processing = pipeline_.getNumPreProcessingModules();
     if (num_pre_processing > 0) {
         PreProcessing* pp = pipeline_.getPreProcessingModule(0);
-        plot_pre_processed_.setup(buffer_size_, pp->getNumOutputDimensions(),
+        plot_pre_processed_.setup(kBufferSize_, pp->getNumOutputDimensions(),
                                   "PreProcessing");
         plot_pre_processed_.setDrawGrid(true);
         plot_pre_processed_.setDrawInfoText(true);
@@ -33,7 +32,7 @@ void ofApp::setup() {
         FeatureExtraction* fe = pipeline_.getFeatureExtractionModule(1);
         for (int i = 0; i < fe->getNumOutputDimensions(); i++) {
             GRT::ofxGrtTimeseriesPlot plot;
-            plot.setup(buffer_size_, 1, "Feature");
+            plot.setup(kBufferSize_, 1, "Feature");
             plot.setDrawInfoText(true);
             plot_features_.push_back(plot);
         }
@@ -41,7 +40,7 @@ void ofApp::setup() {
 
     for (int i = 0; i < kNumMaxLabels_; i++) {
         GRT::ofxGrtTimeseriesPlot plot;
-        plot.setup(buffer_size_, 1, "Label");
+        plot.setup(kBufferSize_, 1, "Label");
         plot.setDrawInfoText(true);
         plot.setRanges(-1, 1, true);
         plot_samples_.push_back(plot);
