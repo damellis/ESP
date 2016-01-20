@@ -54,7 +54,9 @@ void SerialStream::start() {
 
 void SerialStream::stop() {
     has_started_ = false;
-    reading_thread_->join();
+    if (reading_thread_ != nullptr && reading_thread_->joinable()) {
+        reading_thread_->join();
+    }
 }
 
 void SerialStream::useUSBPort(int i) {
