@@ -35,20 +35,35 @@ void AudioStream::audioIn(float* input, int buffer_size, int nChannel) {
     }
 }
 
-SerialStream::SerialStream(int i) : serial_(new ofSerial()) {
-    serial_->setup(i, 115200);
+SerialStream::SerialStream() : serial_(new ofSerial()) {
+    // Print all devices for convenience.
+    serial_->listDevices();
 }
 
 void SerialStream::start() {
+    if (port_ == -1) {
+        ofLog(OF_LOG_ERROR) << "USB Port has not been properly set";
+    }
+
     if (!has_started_) {
+        serial_->setup(port_, 115200);
         reading_thread_.reset(new std::thread(&SerialStream::readSerial, this));
         has_started_ = true;
     }
 }
 
 void SerialStream::stop() {
-    // TODO(benzh) Stop the serial reading thread.
+    has_started_ = false;
+    reading_thread_->join();
 }
+
+void SerialStream::useUSBPort(int i) {
+    port_ = i;
+};
+
+void SerialStream::useAnalogPin(int i) {
+    pin_ = i;
+};
 
 void SerialStream::readSerial() {
     // TODO(benzh) This readSerial is running in a different thread
@@ -75,8 +90,7 @@ void SerialStream::readSerial() {
                     break;
                 } else if (result == OF_SERIAL_NO_DATA) {
                     // nothing was read, try again
-                }
-                else {
+                } else {
                     // we read some data!
                     bytesRemaining -= result;
                 }
@@ -84,9 +98,8 @@ void SerialStream::readSerial() {
         }
         vector<double> data(local_buffer_size);
         for (int i = 0; i < local_buffer_size; i++) {
-            int b1 = bytes[i * 2];
-            int b2 = bytes[i * 2 + 1];
-            data[i] = b1 + (b2 << 8);
+            int b = bytes[i];
+            data[i] = (normalizer_ != nullptr) ? normalizer_(b) : b;
         }
         if (data_ready_callback_ != nullptr) {
             data_ready_callback_(data);

@@ -43,7 +43,7 @@ class ofApp : public ofBaseApp {
     const uint32_t kBufferSize_ = 256;
 
     // Input stream, a callback should be registered upon data arrival
-    unique_ptr<IStream> istream_;
+    std::unique_ptr<IStream> istream_;
     // Callback used for input data stream (istream_)
     void onDataIn(vector<double> in);
 

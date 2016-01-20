@@ -14,6 +14,15 @@ class IStream {
     virtual void start() = 0;
     virtual void stop() = 0;
 
+    // These two functions are no-op by default.
+    virtual void useUSBPort(int i) {};
+    virtual void useAnalogPin(int i) {};
+
+    typedef std::function<float(int)> normalizeFunc;
+    void useNormalizer(normalizeFunc f) {
+        normalizer_ = f;
+    }
+
     bool hasStarted() { return has_started_; }
 
     typedef std::function<void(vector<double>)> onDataReadyCallback;
@@ -31,6 +40,7 @@ class IStream {
   protected:
     bool has_started_;
     onDataReadyCallback data_ready_callback_;
+    normalizeFunc normalizer_;
 };
 
 class AudioStream : public ofBaseApp, public IStream {
@@ -45,11 +55,15 @@ class AudioStream : public ofBaseApp, public IStream {
 
 class SerialStream : public IStream {
   public:
-    SerialStream(int i);
+    SerialStream();
     virtual void start() final;
     virtual void stop() final;
+    virtual void useUSBPort(int i);
+    virtual void useAnalogPin(int i);
   private:
     unique_ptr<ofSerial> serial_;
+    int port_ = -1;
+    int pin_;
 
     // A separate reading thread to read data from Serial.
     unique_ptr<std::thread> reading_thread_;

@@ -8,11 +8,12 @@
 void ofApp::setup() {
     is_recording_ = false;
 
-    istream_.reset(new AudioStream());
+    istream_.reset(new SerialStream());
     istream_->onDataReadyEvent(this, &ofApp::onDataIn);
 
-    // setupPipeline is a user-defined function.
-    pipeline_ = setupPipeline();
+    // setupInputStream and setupPipeline are user-defined functions.
+    setupInputStream(*(istream_.get()));
+    setupPipeline(pipeline_);
 
     plot_inputs_.setup(kBufferSize_, 1, "Input");
     plot_inputs_.setDrawGrid(true);
