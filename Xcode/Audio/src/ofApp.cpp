@@ -19,6 +19,8 @@ void ofApp::setup() {
     plot_inputs_.setDrawGrid(true);
     plot_inputs_.setDrawInfoText(true);
 
+    // Below is just proof-of-concept. The setup is quite hard-coded and we
+    // should enrich this once the UI design is ready.
     size_t num_pre_processing = pipeline_.getNumPreProcessingModules();
     if (num_pre_processing > 0) {
         PreProcessing* pp = pipeline_.getPreProcessingModule(0);
@@ -30,7 +32,8 @@ void ofApp::setup() {
 
     size_t num_feature_modules = pipeline_.getNumFeatureExtractionModules();
     if (num_feature_modules > 0) {
-        FeatureExtraction* fe = pipeline_.getFeatureExtractionModule(1);
+        FeatureExtraction* fe = pipeline_.getFeatureExtractionModule(
+            num_feature_modules - 1);
         for (int i = 0; i < fe->getNumOutputDimensions(); i++) {
             GRT::ofxGrtTimeseriesPlot plot;
             plot.setup(kBufferSize_, 1, "Feature");

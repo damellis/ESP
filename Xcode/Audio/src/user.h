@@ -6,7 +6,7 @@ using namespace GRT;
 void setupInputStream(IStream& is) {
     is.useUSBPort(0);
     is.useAnalogPin(0);
-    is.useNormalizer([](int i) { return (i - 86) * 1.0 / 172; });
+    is.useNormalizer([](int i) { return (i - 127) * 1.0 / 255; });
 }
 
 void setupPipeline(GestureRecognitionPipeline& pipeline) {

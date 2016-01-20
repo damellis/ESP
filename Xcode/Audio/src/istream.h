@@ -61,6 +61,10 @@ class SerialStream : public IStream {
     virtual void useUSBPort(int i);
     virtual void useAnalogPin(int i);
   private:
+    int kBaud_ = 115200;
+    // Serial buffer size
+    int kBufferSize_ = 64;
+
     unique_ptr<ofSerial> serial_;
     int port_ = -1;
     int pin_;
@@ -68,7 +72,4 @@ class SerialStream : public IStream {
     // A separate reading thread to read data from Serial.
     unique_ptr<std::thread> reading_thread_;
     void readSerial();
-
-    // Serial buffer size
-    int buffer_size_ = 32;
 };

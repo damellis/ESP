@@ -1,5 +1,8 @@
 #include "istream.h"
 
+#include <chrono>         // std::chrono::milliseconds
+#include <thread>         // std::this_thread::sleep_for
+
 IStream::IStream() : has_started_(false), data_ready_callback_(nullptr) {}
 
 AudioStream::AudioStream() :
@@ -46,7 +49,7 @@ void SerialStream::start() {
     }
 
     if (!has_started_) {
-        serial_->setup(port_, 115200);
+        serial_->setup(port_, kBaud_);
         reading_thread_.reset(new std::thread(&SerialStream::readSerial, this));
         has_started_ = true;
     }
@@ -71,9 +74,13 @@ void SerialStream::readSerial() {
     // TODO(benzh) This readSerial is running in a different thread
     // and performing a busy polling (100% CPU usage). Should be
     // optimized.
+    int sleep_time = kBufferSize_ * 1000 / (kBaud_ / 10);
+    ofLog() << "Serial port will be read every " << sleep_time << " ms";
     while (has_started_) {
-        int local_buffer_size = buffer_size_ / 2;
-        int bytesRequired = buffer_size_;
+        std::this_thread::sleep_for(std::chrono::milliseconds(sleep_time));
+
+        int local_buffer_size = kBufferSize_;
+        int bytesRequired = kBufferSize_;
         unsigned char bytes[bytesRequired];
         int bytesRemaining = bytesRequired;
         while (bytesRemaining > 0) {
