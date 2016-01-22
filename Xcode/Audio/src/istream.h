@@ -73,3 +73,21 @@ class SerialStream : public IStream {
     unique_ptr<std::thread> reading_thread_;
     void readSerial();
 };
+
+class FirmataStream : public IStream {
+  public:
+    FirmataStream();
+    virtual void start() final;
+    virtual void stop() final;
+    virtual void useUSBPort(int i);
+    virtual void useAnalogPin(int i);
+  private:
+    int port_ = -1;
+    int pin_ = -1;
+    
+    bool configured_arduino_;
+    
+    ofArduino arduino_;
+    unique_ptr<std::thread> update_thread_;
+    void update();
+};

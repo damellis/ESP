@@ -115,3 +115,64 @@ void SerialStream::readSerial() {
         }
     }
 }
+
+FirmataStream::FirmataStream() {
+    ofSerial serial;
+    serial.listDevices();
+}
+
+void FirmataStream::useUSBPort(int i) {
+    port_ = i;
+};
+
+void FirmataStream::useAnalogPin(int i) {
+    pin_ = i;
+};
+
+void FirmataStream::start() {
+    if (port_ == -1) {
+        ofLog(OF_LOG_ERROR) << "USB Port has not been properly set";
+        return;
+    }
+    
+    if (pin_ == -1) {
+        ofLog(OF_LOG_ERROR) << "Pin has not been properly set";
+        return;
+    }
+    
+    
+    if (!has_started_) {
+        ofSerial serial;
+        configured_arduino_ = false;
+        arduino_.connect(serial.getDeviceList()[port_].getDevicePath());
+        update_thread_.reset(new std::thread(&FirmataStream::update, this));
+        has_started_ = true;
+    }
+}
+
+void FirmataStream::stop() {
+    has_started_ = false;
+    if (update_thread_ != nullptr && update_thread_->joinable()) {
+        update_thread_->join();
+    }
+}
+
+void FirmataStream::update() {
+    int sleep_time = 10;
+    ofLog() << "Serial port will be read every " << sleep_time << " ms";
+    while (has_started_) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(sleep_time));
+        arduino_.update();
+        
+        if (configured_arduino_) {
+            vector<double> data(1);
+            data[0] = arduino_.getAnalog(pin_);
+            if (normalizer_ != nullptr) data[0] = normalizer_(data[0]);
+            if (data_ready_callback_ != nullptr) data_ready_callback_(data);
+        } else if (arduino_.isInitialized()) {
+            ofLog() << "Configuring Arduino.";
+            arduino_.sendAnalogPinReporting(pin_, ARD_ON);
+            configured_arduino_ = true;
+        }
+    }
+}

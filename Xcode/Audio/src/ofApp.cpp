@@ -8,7 +8,7 @@
 void ofApp::setup() {
     is_recording_ = false;
 
-    istream_.reset(new SerialStream());
+    istream_.reset(new FirmataStream());
     istream_->onDataReadyEvent(this, &ofApp::onDataIn);
 
     // setupInputStream and setupPipeline are user-defined functions.
