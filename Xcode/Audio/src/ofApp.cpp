@@ -70,6 +70,10 @@ void ofApp::savePipeline() {
     if (!pipeline_.save("pipeline.grt")) {
         ofLog(OF_LOG_ERROR) << "Failed to save the pipeline";
     }
+    
+    if (!pipeline_.getClassifier()->save("classifier.grt")) {
+        ofLog(OF_LOG_ERROR) << "Failed to save the classifier";
+    }
 }
 
 void ofApp::loadPipeline() {
