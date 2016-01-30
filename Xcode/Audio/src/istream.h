@@ -4,6 +4,7 @@
  */
 #pragma once
 
+#include "GRT/GRT.h"
 #include "ofMain.h"
 
 class IStream {
@@ -18,14 +19,26 @@ class IStream {
     virtual void useUSBPort(int i) {};
     virtual void useAnalogPin(int i) {};
 
-    typedef std::function<float(int)> normalizeFunc;
+    typedef std::function<double(double)> normalizeFunc;
+    typedef std::function<vector<double>(vector<double>)> vectorNormalizeFunc;
+    
+    // Supply a normalization function: double -> double.
+    // Applied to each dimension of each vector of incoming data.
     void useNormalizer(normalizeFunc f) {
         normalizer_ = f;
+        vectorNormalizer_ = nullptr;
+    }
+    
+    // Supply a normalization function: vector<double> -> vector<double>
+    // Applied to each vector of incoming data.
+    void useNormalizer(vectorNormalizeFunc f) {
+        normalizer_ = nullptr;
+        vectorNormalizer_ = f;
     }
 
     bool hasStarted() { return has_started_; }
 
-    typedef std::function<void(vector<double>)> onDataReadyCallback;
+    typedef std::function<void(GRT::MatrixDouble)> onDataReadyCallback;
 
     void onDataReadyEvent(onDataReadyCallback callback) {
         data_ready_callback_ = callback;
@@ -41,6 +54,9 @@ class IStream {
     bool has_started_;
     onDataReadyCallback data_ready_callback_;
     normalizeFunc normalizer_;
+    vectorNormalizeFunc vectorNormalizer_;
+    
+    vector<double> normalize(vector<double>);
 };
 
 class AudioStream : public ofBaseApp, public IStream {
@@ -68,6 +84,23 @@ class SerialStream : public IStream {
     unique_ptr<ofSerial> serial_;
     int port_ = -1;
     int pin_;
+
+    // A separate reading thread to read data from Serial.
+    unique_ptr<std::thread> reading_thread_;
+    void readSerial();
+};
+
+class ASCIISerialStream : public IStream {
+  public:
+    ASCIISerialStream(int kBaud);
+    virtual void start() final;
+    virtual void stop() final;
+    virtual void useUSBPort(int i);
+  private:
+    int kBaud_;
+  
+    unique_ptr<ofSerial> serial_;
+    int port_ = -1;
 
     // A separate reading thread to read data from Serial.
     unique_ptr<std::thread> reading_thread_;

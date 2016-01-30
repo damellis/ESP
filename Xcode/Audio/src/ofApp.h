@@ -45,7 +45,7 @@ class ofApp : public ofBaseApp {
     // Input stream, a callback should be registered upon data arrival
     std::unique_ptr<IStream> istream_;
     // Callback used for input data stream (istream_)
-    void onDataIn(vector<double> in);
+    void onDataIn(GRT::MatrixDouble in);
 
     // When button 1-9 is pressed, is_recording_ will be set and data will be
     // added to sample_data_.
@@ -54,7 +54,7 @@ class ofApp : public ofBaseApp {
 
     // input_data_ is written by istream_ thread and read by GUI thread.
     std::mutex input_data_mutex_;
-    vector<double> input_data_;
+    GRT::MatrixDouble input_data_;
 
     // Pipeline
     GRT::GestureRecognitionPipeline pipeline_;

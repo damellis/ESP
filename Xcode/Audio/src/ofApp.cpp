@@ -8,14 +8,14 @@
 void ofApp::setup() {
     is_recording_ = false;
 
-    istream_.reset(new FirmataStream());
+    istream_.reset(new AudioStream());
     istream_->onDataReadyEvent(this, &ofApp::onDataIn);
 
     // setupInputStream and setupPipeline are user-defined functions.
     setupInputStream(*(istream_.get()));
     setupPipeline(pipeline_);
 
-    plot_inputs_.setup(kBufferSize_, 1, "Input");
+    plot_inputs_.setup(kBufferSize_, 2, "Input");
     plot_inputs_.setDrawGrid(true);
     plot_inputs_.setDrawInfoText(true);
 
@@ -89,11 +89,10 @@ void ofApp::loadPipeline() {
 
 //--------------------------------------------------------------
 void ofApp::update() {
-    for (int i = 0; i < input_data_.size(); i++){
-        vector<double> data_point = {
-            input_data_[i]
-        };
-
+    std::lock_guard<std::mutex> guard(input_data_mutex_);
+    for (int i = 0; i < input_data_.getNumRows(); i++){
+        vector<double> data_point = input_data_.getRowVector(i);
+        
         plot_inputs_.update(data_point);
 
         if (istream_->hasStarted()) {
@@ -219,7 +218,7 @@ void ofApp::exit() {
     load_pipeline_button_.removeListener(this, &ofApp::loadPipeline);
 }
 
-void ofApp::onDataIn(vector<double> input) {
+void ofApp::onDataIn(GRT::MatrixDouble input) {
     std::lock_guard<std::mutex> guard(input_data_mutex_);
     input_data_ = input;
 }

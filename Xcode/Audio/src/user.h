@@ -15,14 +15,26 @@ float analogInputToAcceleration(float val) {
     return voltageToAcceleration(analogInputToVoltage(val));
 }
 
+vector<double> normalizeColor(vector<double> input) {
+    if (input.size() == 4) {
+        vector<double> output;
+        output.push_back(input[0] / input[3]);
+        output.push_back(input[1] / input[3]);
+        output.push_back(input[2] / input[3]);
+        return output;
+    } else {
+        return input;
+    }
+}
+
 void setupInputStream(IStream& is) {
-    is.useUSBPort(0);
-    is.useAnalogPin(0);
-    is.useNormalizer(analogInputToAcceleration);
+    //is.useUSBPort(0);
+    //is.useAnalogPin(0);
+    //is.useNormalizer(normalizeColor);
 }
 
 void setupPipeline(GestureRecognitionPipeline& pipeline) {
-    pipeline.addPreProcessingModule(MovingAverageFilter(5, 1));
-    pipeline.addFeatureExtractionModule(TimeDomainFeatures(10, 1, 1, false, true, true, false, false));
+    pipeline.addPreProcessingModule(MovingAverageFilter(5, 2));
+    pipeline.addFeatureExtractionModule(TimeDomainFeatures(10, 1, 2, false, true, true, false, false));
     pipeline.setClassifier(ANBC());
 }

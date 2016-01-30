@@ -5,6 +5,16 @@
 
 IStream::IStream() : has_started_(false), data_ready_callback_(nullptr) {}
 
+vector<double> IStream::normalize(vector<double> input) {
+    if (vectorNormalizer_ != nullptr) return vectorNormalizer_(input);
+    else if (normalizer_ != nullptr) {
+        vector<double> output;
+        std::transform(input.begin(), input.end(), back_inserter(output), normalizer_);
+    } else {
+        return input;
+    }
+}
+
 AudioStream::AudioStream() :
         sound_stream_(new ofSoundStream()) {
     sound_stream_->setup(this, 0, 2, 44100, 256, 4);
@@ -26,12 +36,11 @@ void AudioStream::stop() {
 }
 
 void AudioStream::audioIn(float* input, int buffer_size, int nChannel) {
-    vector<double> data(buffer_size);
+    GRT::MatrixDouble data(buffer_size / nChannel, nChannel);
 
-    for (int i = 0; i < buffer_size; i++) {
-        // only left channel
-        data[i] = input[i * 2];
-    }
+    for (int i = 0; i < buffer_size / nChannel; i++)
+        for (int j = 0; j < nChannel; j++)
+            data[i][j] = input[i * nChannel + j];
 
     if (data_ready_callback_ != nullptr) {
         data_ready_callback_(data);
@@ -105,13 +114,76 @@ void SerialStream::readSerial() {
                 }
             }
         }
-        vector<double> data(local_buffer_size);
+        GRT::MatrixDouble data(local_buffer_size, 1);
         for (int i = 0; i < local_buffer_size; i++) {
             int b = bytes[i];
-            data[i] = (normalizer_ != nullptr) ? normalizer_(b) : b;
+            data[i][0] = (normalizer_ != nullptr) ? normalizer_(b) : b;
         }
         if (data_ready_callback_ != nullptr) {
             data_ready_callback_(data);
+        }
+    }
+}
+
+ASCIISerialStream::ASCIISerialStream(int kBaud) : serial_(new ofSerial()), kBaud_(kBaud) {
+    // Print all devices for convenience.
+    serial_->listDevices();
+}
+
+void ASCIISerialStream::start() {
+    if (port_ == -1) {
+        ofLog(OF_LOG_ERROR) << "USB Port has not been properly set";
+    }
+
+    if (!has_started_) {
+        serial_->setup(port_, kBaud_);
+        reading_thread_.reset(new std::thread(&ASCIISerialStream::readSerial, this));
+        has_started_ = true;
+    }
+}
+
+void ASCIISerialStream::stop() {
+    has_started_ = false;
+    if (reading_thread_ != nullptr && reading_thread_->joinable()) {
+        reading_thread_->join();
+    }
+}
+
+void ASCIISerialStream::useUSBPort(int i) {
+    port_ = i;
+};
+
+void ASCIISerialStream::readSerial() {
+    // TODO(benzh) This readSerial is running in a different thread
+    // and performing a busy polling (100% CPU usage). Should be
+    // optimized.
+    int sleep_time = 10;
+    ofLog() << "Serial port will be read every " << sleep_time << " ms";
+    while (has_started_) {
+        string s;
+        
+        do {
+            while (serial_->available() < 1) {
+                std::this_thread::sleep_for(std::chrono::milliseconds(sleep_time));
+            }
+            s += serial_->readByte();
+        } while(s[s.length() - 1] != '\n');
+        
+        //ofLog() << "read: '" << s << "'" << endl;
+        
+        if (data_ready_callback_ != nullptr) {
+            istringstream iss(s);
+            vector<double> data;
+            double d;
+            
+            while (iss >> d) data.push_back(d);
+            
+            data = normalize(data);
+            
+            GRT::MatrixDouble matrix;
+            matrix.push_back(data);
+        
+            data_ready_callback_(matrix);
         }
     }
 }
@@ -166,9 +238,11 @@ void FirmataStream::update() {
         
         if (configured_arduino_) {
             vector<double> data(1);
-            data[0] = arduino_.getAnalog(pin_);
-            if (normalizer_ != nullptr) data[0] = normalizer_(data[0]);
-            if (data_ready_callback_ != nullptr) data_ready_callback_(data);
+            data[0] = arduino_.getAnalog(pin_); // TODO(dmellis): support reading more than one analog pin
+            data = normalize(data);
+            GRT::MatrixDouble matrix;
+            matrix.push_back(data);
+            if (data_ready_callback_ != nullptr) data_ready_callback_(matrix);
         } else if (arduino_.isInitialized()) {
             ofLog() << "Configuring Arduino.";
             arduino_.sendAnalogPinReporting(pin_, ARD_ON);
