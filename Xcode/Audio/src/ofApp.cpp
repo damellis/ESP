@@ -4,6 +4,10 @@
 
 #include "user.h"
 
+// If the feature output dimension is larger than 32, making the visualization a
+// single output will be more visual.
+const uint32_t kTooManyFeaturesThreshold = 32;
+
 void ofApp::useStream(IStream &stream) {
     istream_ = &stream;
 }
@@ -39,15 +43,27 @@ void ofApp::setup() {
     }
 
     size_t num_feature_modules = pipeline_->getNumFeatureExtractionModules();
-    if (num_feature_modules > 0) {
-        FeatureExtraction* fe = pipeline_->getFeatureExtractionModule(
-            num_feature_modules - 1);
-        for (int i = 0; i < fe->getNumOutputDimensions(); i++) {
+    for (int i = 0; i < num_feature_modules; i++) {
+        vector<ofxGrtTimeseriesPlot> feature_at_stage_i;
+
+        FeatureExtraction* fe = pipeline_->getFeatureExtractionModule(i);
+        uint32_t feature_dim = fe->getNumOutputDimensions();
+        if (feature_dim < kTooManyFeaturesThreshold) {
+            for (int i = 0; i < fe->getNumOutputDimensions(); i++) {
+                ofxGrtTimeseriesPlot plot;
+                plot.setup(kBufferSize_, 1, "Feature");
+                plot.setDrawInfoText(true);
+                feature_at_stage_i.push_back(plot);
+            }
+        } else {
+            // We will have only one here.
             ofxGrtTimeseriesPlot plot;
-            plot.setup(kBufferSize_, 1, "Feature");
+            plot.setup(feature_dim, 1, "Feature");
             plot.setDrawInfoText(true);
-            plot_features_.push_back(plot);
+            feature_at_stage_i.push_back(plot);
         }
+
+        plot_features_.push_back(feature_at_stage_i);
     }
 
     for (int i = 0; i < kNumMaxLabels_; i++) {
@@ -108,19 +124,23 @@ void ofApp::update() {
                 ofLog(OF_LOG_ERROR) << "ERROR: Failed to compute features!";
             }
 
-            for (int i = 0; i < pipeline_->getNumPreProcessingModules(); i++) {
-                vector<double> data = pipeline_->getPreProcessedData(i);
-                plot_pre_processed_[i].update(data);
+            for (int j = 0; j < pipeline_->getNumPreProcessingModules(); j++) {
+                vector<double> data = pipeline_->getPreProcessedData(j);
+                plot_pre_processed_[j].update(data);
             }
 
-            // The feature vector might be of arbitrary size depending
-            // on the feature selected. But each one could simply be a
-            // time-series.
-            vector<double> feature = pipeline_->getFeatureExtractionData();
-
-            for (int i = 0; i < feature.size(); i++) {
-                vector<double> v = { feature[i] };
-                plot_features_[i].update(v);
+            for (int j = 0; j < pipeline_->getNumFeatureExtractionModules(); j++) {
+                // Working on j-th stage.
+                vector<double> feature = pipeline_->getFeatureExtractionData(j);
+                if (feature.size() < kTooManyFeaturesThreshold) {
+                    for (int k = 0; k < feature.size(); k++) {
+                        vector<double> v = { feature[k] };
+                        plot_features_[j][k].update(v);
+                    }
+                } else {
+                    assert(plot_features_.size() == 1);
+                    plot_features_[j][0].setData(feature);
+                }
             }
         }
 
@@ -151,6 +171,7 @@ void ofApp::draw() {
     ofPopMatrix();
 
     for (int i = 0; i < pipeline_->getNumPreProcessingModules(); i++) {
+        // working on pre-processing stage i.
         ofPushStyle();
         ofPushMatrix();
         {
@@ -163,21 +184,22 @@ void ofApp::draw() {
         ofPopMatrix();
     }
 
-    ofPushStyle();
-    ofPushMatrix();
-    ofDrawBitmapString("Feature:", plotX, plotY - margin);
-
-    if (plot_features_.size() > 0) {
-        int width = plotW / plot_features_.size();
-        for (int i = 0; i < plot_features_.size(); i++) {
-            plot_features_[i].draw(plotX + i * width, plotY, width, plotH);
+    for (int i = 0; i < pipeline_->getNumFeatureExtractionModules(); i++) {
+        // working on feature extraction stage i.
+        ofPushStyle();
+        ofPushMatrix();
+        {
+            ofDrawBitmapString("Feature stage: " + std::to_string(i),
+                               plotX, plotY - margin);
+            int width = plotW / plot_features_[i].size();
+            for (int j = 0; j < plot_features_[i].size(); j++) {
+                plot_features_[i][j].draw(plotX + j * width, plotY, width, plotH);
+            }
+            plotY += plotH + 3 * margin;
         }
+        ofPopStyle();
+        ofPopMatrix();
     }
-
-    plotY += plotH + 3 * margin;
-
-    ofPopStyle();
-    ofPopMatrix();
 
     // Training samples management
     ofPushStyle();
