@@ -69,7 +69,7 @@ class ofApp : public ofBaseApp {
 
     // Visuals
     ofxGrtTimeseriesPlot plot_inputs_;
-    ofxGrtTimeseriesPlot plot_pre_processed_;
+    vector<ofxGrtTimeseriesPlot> plot_pre_processed_;
     vector<ofxGrtTimeseriesPlot> plot_features_;
     vector<ofxGrtTimeseriesPlot> plot_samples_;
     vector<std::string> plot_samples_info_;

@@ -28,12 +28,14 @@ void ofApp::setup() {
     // Below is just proof-of-concept. The setup is quite hard-coded and we
     // should enrich this once the UI design is ready.
     size_t num_pre_processing = pipeline_->getNumPreProcessingModules();
-    if (num_pre_processing > 0) {
-        PreProcessing* pp = pipeline_->getPreProcessingModule(0);
-        plot_pre_processed_.setup(kBufferSize_, pp->getNumOutputDimensions(),
+    for (int i = 0; i < num_pre_processing; i++) {
+        PreProcessing* pp = pipeline_->getPreProcessingModule(i);
+        ofxGrtTimeseriesPlot plot;
+        plot.setup(kBufferSize_, pp->getNumOutputDimensions(),
                                   "PreProcessing");
-        plot_pre_processed_.setDrawGrid(true);
-        plot_pre_processed_.setDrawInfoText(true);
+        plot.setDrawGrid(true);
+        plot.setDrawInfoText(true);
+        plot_pre_processed_.push_back(plot);
     }
 
     size_t num_feature_modules = pipeline_->getNumFeatureExtractionModules();
@@ -76,7 +78,7 @@ void ofApp::savePipeline() {
     if (!pipeline_->save("pipeline.grt")) {
         ofLog(OF_LOG_ERROR) << "Failed to save the pipeline";
     }
-    
+
     if (!pipeline_->getClassifier()->save("classifier.grt")) {
         ofLog(OF_LOG_ERROR) << "Failed to save the classifier";
     }
@@ -98,7 +100,7 @@ void ofApp::update() {
     std::lock_guard<std::mutex> guard(input_data_mutex_);
     for (int i = 0; i < input_data_.getNumRows(); i++){
         vector<double> data_point = input_data_.getRowVector(i);
-        
+
         plot_inputs_.update(data_point);
 
         if (istream_->hasStarted()) {
@@ -106,8 +108,10 @@ void ofApp::update() {
                 ofLog(OF_LOG_ERROR) << "ERROR: Failed to compute features!";
             }
 
-            vector<double> pre_processed_data = pipeline_->getPreProcessedData();
-            plot_pre_processed_.update(pre_processed_data);
+            for (int i = 0; i < pipeline_->getNumPreProcessingModules(); i++) {
+                vector<double> data = pipeline_->getPreProcessedData(i);
+                plot_pre_processed_[i].update(data);
+            }
 
             // The feature vector might be of arbitrary size depending
             // on the feature selected. But each one could simply be a
@@ -146,15 +150,18 @@ void ofApp::draw() {
     ofPopStyle();
     ofPopMatrix();
 
-    ofPushStyle();
-    ofPushMatrix();
-    {
-        ofDrawBitmapString("PreProcessed:", plotX, plotY - margin);
-        plot_pre_processed_.draw(plotX, plotY, plotW, plotH);
-        plotY += plotH + 3 * margin;
+    for (int i = 0; i < pipeline_->getNumPreProcessingModules(); i++) {
+        ofPushStyle();
+        ofPushMatrix();
+        {
+            ofDrawBitmapString("PreProcessed stage: " + std::to_string(i),
+                               plotX, plotY - margin);
+            plot_pre_processed_[i].draw(plotX, plotY, plotW, plotH);
+            plotY += plotH + 3 * margin;
+        }
+        ofPopStyle();
+        ofPopMatrix();
     }
-    ofPopStyle();
-    ofPopMatrix();
 
     ofPushStyle();
     ofPushMatrix();

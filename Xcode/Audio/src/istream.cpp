@@ -15,10 +15,12 @@ void usePipeline(GRT::GestureRecognitionPipeline &pipeline) {
 IStream::IStream() : has_started_(false), data_ready_callback_(nullptr) {}
 
 vector<double> IStream::normalize(vector<double> input) {
-    if (vectorNormalizer_ != nullptr) return vectorNormalizer_(input);
-    else if (normalizer_ != nullptr) {
+    if (vectorNormalizer_ != nullptr) {
+        return vectorNormalizer_(input);
+    } else if (normalizer_ != nullptr) {
         vector<double> output;
         std::transform(input.begin(), input.end(), back_inserter(output), normalizer_);
+        return output;
     } else {
         return input;
     }
@@ -26,7 +28,10 @@ vector<double> IStream::normalize(vector<double> input) {
 
 AudioStream::AudioStream() :
         sound_stream_(new ofSoundStream()) {
-    sound_stream_->setup(this, 0, 2, 44100, 256, 4);
+    sound_stream_->setup(this, 0, 2,
+                         kOfSoundStream_SamplingRate,
+                         kOfSoundStream_BufferSize,
+                         kOfSoundStream_nBuffers);
     sound_stream_->stop();
 }
 
@@ -183,28 +188,28 @@ void ASCIISerialStream::readSerial() {
     ofLog() << "Serial port will be read every " << sleep_time << " ms";
     while (has_started_) {
         string s;
-        
+
         do {
             while (serial_->available() < 1) {
                 std::this_thread::sleep_for(std::chrono::milliseconds(sleep_time));
             }
             s += serial_->readByte();
         } while(s[s.length() - 1] != '\n');
-        
+
         //ofLog() << "read: '" << s << "'" << endl;
-        
+
         if (data_ready_callback_ != nullptr) {
             istringstream iss(s);
             vector<double> data;
             double d;
-            
+
             while (iss >> d) data.push_back(d);
-            
+
             data = normalize(data);
-            
+
             GRT::MatrixDouble matrix;
             matrix.push_back(data);
-        
+
             data_ready_callback_(matrix);
         }
     }
@@ -233,8 +238,8 @@ void FirmataStream::start() {
         ofLog(OF_LOG_ERROR) << "Pin has not been properly set";
         return;
     }
-    
-    
+
+
     if (!has_started_) {
         ofSerial serial;
         configured_arduino_ = false;
@@ -261,7 +266,7 @@ void FirmataStream::update() {
     while (has_started_) {
         std::this_thread::sleep_for(std::chrono::milliseconds(sleep_time));
         arduino_.update();
-        
+
         if (configured_arduino_) {
             vector<double> data(pins_.size());
             for (int i = 0; pins_.size(); i++)

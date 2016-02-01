@@ -7,6 +7,14 @@
 #include "GRT/GRT.h"
 #include "ofMain.h"
 
+#include <cstdint>
+
+// See more documentation:
+// http://openframeworks.cc/documentation/sound/ofSoundStream/#show_setup
+const uint32_t kOfSoundStream_SamplingRate = 44100;
+const uint32_t kOfSoundStream_BufferSize = 256;
+const uint32_t kOfSoundStream_nBuffers = 4;
+
 class IStream {
   public:
     IStream();
