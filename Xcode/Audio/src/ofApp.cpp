@@ -4,16 +4,22 @@
 
 #include "user.h"
 
+void ofApp::useStream(IStream &stream) {
+    istream_ = &stream;
+}
+
+void ofApp::usePipeline(GRT::GestureRecognitionPipeline &pipeline) {
+    pipeline_ = &pipeline;
+}
+
 //--------------------------------------------------------------
 void ofApp::setup() {
     is_recording_ = false;
 
-    istream_.reset(new AudioStream());
-    istream_->onDataReadyEvent(this, &ofApp::onDataIn);
+    // setup() is a user-defined function.
+    ::setup();
 
-    // setupInputStream and setupPipeline are user-defined functions.
-    setupInputStream(*(istream_.get()));
-    setupPipeline(pipeline_);
+    istream_->onDataReadyEvent(this, &ofApp::onDataIn);
 
     plot_inputs_.setup(kBufferSize_, 2, "Input");
     plot_inputs_.setDrawGrid(true);
@@ -21,18 +27,18 @@ void ofApp::setup() {
 
     // Below is just proof-of-concept. The setup is quite hard-coded and we
     // should enrich this once the UI design is ready.
-    size_t num_pre_processing = pipeline_.getNumPreProcessingModules();
+    size_t num_pre_processing = pipeline_->getNumPreProcessingModules();
     if (num_pre_processing > 0) {
-        PreProcessing* pp = pipeline_.getPreProcessingModule(0);
+        PreProcessing* pp = pipeline_->getPreProcessingModule(0);
         plot_pre_processed_.setup(kBufferSize_, pp->getNumOutputDimensions(),
                                   "PreProcessing");
         plot_pre_processed_.setDrawGrid(true);
         plot_pre_processed_.setDrawInfoText(true);
     }
 
-    size_t num_feature_modules = pipeline_.getNumFeatureExtractionModules();
+    size_t num_feature_modules = pipeline_->getNumFeatureExtractionModules();
     if (num_feature_modules > 0) {
-        FeatureExtraction* fe = pipeline_.getFeatureExtractionModule(
+        FeatureExtraction* fe = pipeline_->getFeatureExtractionModule(
             num_feature_modules - 1);
         for (int i = 0; i < fe->getNumOutputDimensions(); i++) {
             ofxGrtTimeseriesPlot plot;
@@ -67,11 +73,11 @@ void ofApp::setup() {
 }
 
 void ofApp::savePipeline() {
-    if (!pipeline_.save("pipeline.grt")) {
+    if (!pipeline_->save("pipeline.grt")) {
         ofLog(OF_LOG_ERROR) << "Failed to save the pipeline";
     }
     
-    if (!pipeline_.getClassifier()->save("classifier.grt")) {
+    if (!pipeline_->getClassifier()->save("classifier.grt")) {
         ofLog(OF_LOG_ERROR) << "Failed to save the classifier";
     }
 }
@@ -84,7 +90,7 @@ void ofApp::loadPipeline() {
 
     // TODO(benzh) Compare the two pipelines and warn the user if the
     // loaded one is different from his.
-    pipeline_ = pipeline;
+    (*pipeline_) = pipeline;
 }
 
 //--------------------------------------------------------------
@@ -96,17 +102,17 @@ void ofApp::update() {
         plot_inputs_.update(data_point);
 
         if (istream_->hasStarted()) {
-            if (!pipeline_.preProcessData(data_point)) {
+            if (!pipeline_->preProcessData(data_point)) {
                 ofLog(OF_LOG_ERROR) << "ERROR: Failed to compute features!";
             }
 
-            vector<double> pre_processed_data = pipeline_.getPreProcessedData();
+            vector<double> pre_processed_data = pipeline_->getPreProcessedData();
             plot_pre_processed_.update(pre_processed_data);
 
             // The feature vector might be of arbitrary size depending
             // on the feature selected. But each one could simply be a
             // time-series.
-            vector<double> feature = pipeline_.getFeatureExtractionData();
+            vector<double> feature = pipeline_->getFeatureExtractionData();
 
             for (int i = 0; i < feature.size(); i++) {
                 vector<double> v = { feature[i] };
@@ -243,7 +249,7 @@ void ofApp::keyPressed(int key){
             GRT::ClassificationData data_copy = training_data_;
             auto training_func = [this, data_copy]() mutable {
                 ofLog() << "Training started";
-                if (pipeline_.train(data_copy)) {
+                if (pipeline_->train(data_copy)) {
                     ofLog() << "Training is successful";
                 } else {
                     ofLog() << "Failed to train the model";
@@ -283,9 +289,9 @@ void ofApp::keyReleased(int key) {
 
     } else if (key == 'p') {
         for (int i = 0; i < sample_data_.getNumRows(); i++) {
-            pipeline_.predict(sample_data_.getRowVector(i));
+            pipeline_->predict(sample_data_.getRowVector(i));
         }
-        predicted_label_ = pipeline_.getPredictedClassLabel();
+        predicted_label_ = pipeline_->getPredictedClassLabel();
     }
 }
 

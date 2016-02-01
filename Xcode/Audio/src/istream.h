@@ -124,3 +124,6 @@ class FirmataStream : public IStream {
     unique_ptr<std::thread> update_thread_;
     void update();
 };
+
+void useStream(IStream &stream);
+void usePipeline(GRT::GestureRecognitionPipeline &pipeline);

@@ -1,5 +1,5 @@
+#include "GRT/GRT.h"
 #include "istream.h"
-#include "ofxGrt.h"
 
 using namespace GRT;
 
@@ -27,14 +27,16 @@ vector<double> normalizeColor(vector<double> input) {
     }
 }
 
-void setupInputStream(IStream& is) {
-    //is.useUSBPort(0);
-    //is.useAnalogPin(0);
-    //is.useNormalizer(normalizeColor);
-}
+ASCIISerialStream stream(9600);
+GestureRecognitionPipeline pipeline;
 
-void setupPipeline(GestureRecognitionPipeline& pipeline) {
-    pipeline.addPreProcessingModule(MovingAverageFilter(5, 2));
-    pipeline.addFeatureExtractionModule(TimeDomainFeatures(10, 1, 2, false, true, true, false, false));
+void setup() {
+    stream.useUSBPort(0);
+    stream.useNormalizer(normalizeColor);
+    useStream(stream);
+    
+    pipeline.addPreProcessingModule(MovingAverageFilter(5, 3));
+    pipeline.addFeatureExtractionModule(TimeDomainFeatures(10, 1, 3, false, true, true, false, false));
     pipeline.setClassifier(ANBC());
+    usePipeline(pipeline);
 }

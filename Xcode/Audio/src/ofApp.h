@@ -34,6 +34,12 @@ class ofApp : public ofBaseApp {
     void gotMessage(ofMessage msg);
 
   private:
+    void useStream(IStream &stream);
+    void usePipeline(GRT::GestureRecognitionPipeline &pipeline);
+    
+    friend void useStream(IStream &stream);
+    friend void usePipeline(GRT::GestureRecognitionPipeline &pipeline);
+  
     // Currently, we support labels (stored in label_) from 1 to 9.
     const uint32_t kNumMaxLabels_ = 9;
     uint8_t label_;
@@ -43,7 +49,7 @@ class ofApp : public ofBaseApp {
     const uint32_t kBufferSize_ = 256;
 
     // Input stream, a callback should be registered upon data arrival
-    std::unique_ptr<IStream> istream_;
+    IStream *istream_;
     // Callback used for input data stream (istream_)
     void onDataIn(GRT::MatrixDouble in);
 
@@ -57,7 +63,7 @@ class ofApp : public ofBaseApp {
     GRT::MatrixDouble input_data_;
 
     // Pipeline
-    GRT::GestureRecognitionPipeline pipeline_;
+    GRT::GestureRecognitionPipeline *pipeline_;
     GRT::ClassificationData training_data_;
     int predicted_label_;
 

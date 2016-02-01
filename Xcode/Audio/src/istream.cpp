@@ -1,7 +1,16 @@
 #include "istream.h"
+#include "ofApp.h"
 
 #include <chrono>         // std::chrono::milliseconds
 #include <thread>         // std::this_thread::sleep_for
+
+void useStream(IStream &stream) {
+    ((ofApp *) ofGetAppPtr())->useStream(stream);
+}
+
+void usePipeline(GRT::GestureRecognitionPipeline &pipeline) {
+    ((ofApp *) ofGetAppPtr())->usePipeline(pipeline);
+}
 
 IStream::IStream() : has_started_(false), data_ready_callback_(nullptr) {}
 
@@ -127,7 +136,7 @@ void SerialStream::readSerial() {
 
 ASCIISerialStream::ASCIISerialStream(int kBaud) : serial_(new ofSerial()), kBaud_(kBaud) {
     // Print all devices for convenience.
-    serial_->listDevices();
+    //serial_->listDevices();
 }
 
 void ASCIISerialStream::start() {
