@@ -27,16 +27,16 @@ vector<double> normalizeColor(vector<double> input) {
     }
 }
 
-ASCIISerialStream stream(9600);
+ASCIISerialStream stream(9600, 3);
 GestureRecognitionPipeline pipeline;
 
 void setup() {
     stream.useUSBPort(0);
-    stream.useNormalizer(normalizeColor);
+    //stream.useNormalizer(normalizeColor);
     useStream(stream);
     
     pipeline.addPreProcessingModule(MovingAverageFilter(5, 3));
-    pipeline.addFeatureExtractionModule(TimeDomainFeatures(10, 1, 3, false, true, true, false, false));
+    //pipeline.addFeatureExtractionModule(TimeDomainFeatures(10, 1, 3, false, true, true, false, false));
     pipeline.setClassifier(ANBC());
     usePipeline(pipeline);
 }

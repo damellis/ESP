@@ -44,6 +44,10 @@ void AudioStream::stop() {
     }
 }
 
+int AudioStream::getNumDimensions() {
+    return 2; // set by the call to sound_stream->setup() above
+}
+
 void AudioStream::audioIn(float* input, int buffer_size, int nChannel) {
     GRT::MatrixDouble data(buffer_size / nChannel, nChannel);
 
@@ -78,6 +82,10 @@ void SerialStream::stop() {
     if (reading_thread_ != nullptr && reading_thread_->joinable()) {
         reading_thread_->join();
     }
+}
+
+int SerialStream::getNumDimensions() {
+    return 1;
 }
 
 void SerialStream::useUSBPort(int i) {
@@ -134,7 +142,8 @@ void SerialStream::readSerial() {
     }
 }
 
-ASCIISerialStream::ASCIISerialStream(int kBaud) : serial_(new ofSerial()), kBaud_(kBaud) {
+ASCIISerialStream::ASCIISerialStream(int kBaud, int numDimensions) :
+        serial_(new ofSerial()), kBaud_(kBaud), numDimensions_(numDimensions) {
     // Print all devices for convenience.
     //serial_->listDevices();
 }
@@ -156,6 +165,10 @@ void ASCIISerialStream::stop() {
     if (reading_thread_ != nullptr && reading_thread_->joinable()) {
         reading_thread_->join();
     }
+}
+
+int ASCIISerialStream::getNumDimensions() {
+    return numDimensions_;
 }
 
 void ASCIISerialStream::useUSBPort(int i) {
@@ -207,7 +220,7 @@ void FirmataStream::useUSBPort(int i) {
 };
 
 void FirmataStream::useAnalogPin(int i) {
-    pin_ = i;
+    pins_.push_back(i);
 };
 
 void FirmataStream::start() {
@@ -216,7 +229,7 @@ void FirmataStream::start() {
         return;
     }
     
-    if (pin_ == -1) {
+    if (pins_.size() == 0) {
         ofLog(OF_LOG_ERROR) << "Pin has not been properly set";
         return;
     }
@@ -238,6 +251,10 @@ void FirmataStream::stop() {
     }
 }
 
+int FirmataStream::getNumDimensions() {
+    return pins_.size();
+}
+
 void FirmataStream::update() {
     int sleep_time = 10;
     ofLog() << "Serial port will be read every " << sleep_time << " ms";
@@ -246,15 +263,17 @@ void FirmataStream::update() {
         arduino_.update();
         
         if (configured_arduino_) {
-            vector<double> data(1);
-            data[0] = arduino_.getAnalog(pin_); // TODO(dmellis): support reading more than one analog pin
+            vector<double> data(pins_.size());
+            for (int i = 0; pins_.size(); i++)
+                data[i] = arduino_.getAnalog(pins_[i]);
             data = normalize(data);
             GRT::MatrixDouble matrix;
             matrix.push_back(data);
             if (data_ready_callback_ != nullptr) data_ready_callback_(matrix);
         } else if (arduino_.isInitialized()) {
             ofLog() << "Configuring Arduino.";
-            arduino_.sendAnalogPinReporting(pin_, ARD_ON);
+            for (int i = 0; i < pins_.size(); i++)
+                arduino_.sendAnalogPinReporting(pins_[i], ARD_ON);
             configured_arduino_ = true;
         }
     }

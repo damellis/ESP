@@ -18,6 +18,8 @@ class IStream {
     // These two functions are no-op by default.
     virtual void useUSBPort(int i) {};
     virtual void useAnalogPin(int i) {};
+    
+    virtual int getNumDimensions() = 0;
 
     typedef std::function<double(double)> normalizeFunc;
     typedef std::function<vector<double>(vector<double>)> vectorNormalizeFunc;
@@ -65,6 +67,7 @@ class AudioStream : public ofBaseApp, public IStream {
     void audioIn(float *input, int buffer_size, int nChannel);
     virtual void start() final;
     virtual void stop() final;
+    virtual int getNumDimensions() final;
   private:
     unique_ptr<ofSoundStream> sound_stream_;
 };
@@ -74,6 +77,7 @@ class SerialStream : public IStream {
     SerialStream();
     virtual void start() final;
     virtual void stop() final;
+    virtual int getNumDimensions() final;
     virtual void useUSBPort(int i);
     virtual void useAnalogPin(int i);
   private:
@@ -92,15 +96,18 @@ class SerialStream : public IStream {
 
 class ASCIISerialStream : public IStream {
   public:
-    ASCIISerialStream(int kBaud);
+    ASCIISerialStream(int kBaud, int numDimensions);
     virtual void start() final;
     virtual void stop() final;
+    virtual int getNumDimensions() final;
     virtual void useUSBPort(int i);
   private:
     int kBaud_;
   
     unique_ptr<ofSerial> serial_;
     int port_ = -1;
+    
+    int numDimensions_;
 
     // A separate reading thread to read data from Serial.
     unique_ptr<std::thread> reading_thread_;
@@ -112,11 +119,13 @@ class FirmataStream : public IStream {
     FirmataStream();
     virtual void start() final;
     virtual void stop() final;
+    virtual int getNumDimensions() final;
     virtual void useUSBPort(int i);
     virtual void useAnalogPin(int i);
   private:
     int port_ = -1;
-    int pin_ = -1;
+    
+    vector<int> pins_;
     
     bool configured_arduino_;
     

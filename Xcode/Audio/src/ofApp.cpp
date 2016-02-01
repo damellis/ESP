@@ -21,7 +21,7 @@ void ofApp::setup() {
 
     istream_->onDataReadyEvent(this, &ofApp::onDataIn);
 
-    plot_inputs_.setup(kBufferSize_, 2, "Input");
+    plot_inputs_.setup(kBufferSize_, istream_->getNumDimensions(), "Input");
     plot_inputs_.setDrawGrid(true);
     plot_inputs_.setDrawInfoText(true);
 
@@ -57,9 +57,9 @@ void ofApp::setup() {
         plot_samples_info_.push_back("");
     }
 
-    training_data_.setNumDimensions(1);
-    training_data_.setDatasetName("Audio");
-    training_data_.setInfoText("This data contains audio data");
+    training_data_.setNumDimensions(istream_->getNumDimensions());
+//    training_data_.setDatasetName("Audio");
+//    training_data_.setInfoText("This data contains audio data");
     predicted_label_ = 0;
 
     gui_.setup("", "", ofGetWidth() - 200, 0);
