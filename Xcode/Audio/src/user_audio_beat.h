@@ -3,7 +3,7 @@
 
 using namespace GRT;
 uint32_t DIM = 2;
-uint32_t kFFT_WindowSize = 2;
+uint32_t kFFT_WindowSize = 512;
 uint32_t kFFT_HopSize = kFFT_WindowSize;
 
 AudioStream stream;
