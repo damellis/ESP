@@ -6,7 +6,7 @@
 
 // If the feature output dimension is larger than 32, making the visualization a
 // single output will be more visual.
-const uint32_t kTooManyFeaturesThreshold = 832;
+const uint32_t kTooManyFeaturesThreshold = 32;
 
 void ofApp::useStream(IStream &stream) {
     istream_ = &stream;
