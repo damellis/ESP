@@ -3,18 +3,6 @@
 
 using namespace GRT;
 
-float analogInputToVoltage(float val) {
-    return val / 1024.0 * 5.0;
-}
-
-float voltageToAcceleration(float val) {
-    return (val - 1.65) / 1.65 * 3.0;
-}
-
-float analogInputToAcceleration(float val) {
-    return voltageToAcceleration(analogInputToVoltage(val));
-}
-
 // Normalize by dividing each dimension by the total magnitude.
 // Also add the magnitude as an additional feature.
 vector<double> normalize(vector<double> input) {

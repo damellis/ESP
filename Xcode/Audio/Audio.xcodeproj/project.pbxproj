@@ -68,6 +68,7 @@
 		6F8100B5C8574131C4571B8A /* istream.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = istream.h; path = src/istream.h; sourceTree = SOURCE_ROOT; };
 		7A451F0A26AD1F6604C914AF /* ofxGrt.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxGrt.h; path = "../../third-party/openFrameworks/addons/ofxGrt/src/ofxGrt.h"; sourceTree = SOURCE_ROOT; };
 		7ACE6957882556257F46BB94 /* ofxGrtMatrixPlot.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxGrtMatrixPlot.cpp; path = "../../third-party/openFrameworks/addons/ofxGrt/src/ofxGrtMatrixPlot.cpp"; sourceTree = SOURCE_ROOT; };
+		81ADDF8D1C601C32001F382A /* user_color_sensor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = user_color_sensor.h; sourceTree = "<group>"; };
 		8C2208E103C17F4A39DECE6F /* ofxGrtTimeseriesPlot.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxGrtTimeseriesPlot.h; path = "../../third-party/openFrameworks/addons/ofxGrt/src/ofxGrtTimeseriesPlot.h"; sourceTree = SOURCE_ROOT; };
 		8FBE3DD02DBD21EB4812C6B1 /* ofxSlider.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxSlider.cpp; path = "../../third-party/openFrameworks/addons/ofxGui/src/ofxSlider.cpp"; sourceTree = SOURCE_ROOT; };
 		A97695183B2993F23875A518 /* ofxSliderGroup.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxSliderGroup.h; path = "../../third-party/openFrameworks/addons/ofxGui/src/ofxSliderGroup.h"; sourceTree = SOURCE_ROOT; };
@@ -200,6 +201,7 @@
 				18C4BE08EEF363F2E25EBFC4 /* istream.cpp */,
 				6F8100B5C8574131C4571B8A /* istream.h */,
 				5939D84F8D015C2971814643 /* user.h */,
+				81ADDF8D1C601C32001F382A /* user_color_sensor.h */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
