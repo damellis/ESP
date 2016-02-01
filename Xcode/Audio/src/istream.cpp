@@ -15,10 +15,12 @@ void usePipeline(GRT::GestureRecognitionPipeline &pipeline) {
 IStream::IStream() : has_started_(false), data_ready_callback_(nullptr) {}
 
 vector<double> IStream::normalize(vector<double> input) {
-    if (vectorNormalizer_ != nullptr) return vectorNormalizer_(input);
-    else if (normalizer_ != nullptr) {
+    if (vectorNormalizer_ != nullptr) {
+        return vectorNormalizer_(input);
+    } else if (normalizer_ != nullptr) {
         vector<double> output;
         std::transform(input.begin(), input.end(), back_inserter(output), normalizer_);
+        return output;
     } else {
         return input;
     }
@@ -137,7 +139,7 @@ void SerialStream::readSerial() {
     }
 }
 
-ASCIISerialStream::ASCIISerialStream(int kBaud) : serial_(new ofSerial()), kBaud_(kBaud) {
+ASCIISerialStream::ASCIISerialStream(int kBaud) : kBaud_(kBaud), serial_(new ofSerial()) {
     // Print all devices for convenience.
     //serial_->listDevices();
 }
@@ -173,28 +175,28 @@ void ASCIISerialStream::readSerial() {
     ofLog() << "Serial port will be read every " << sleep_time << " ms";
     while (has_started_) {
         string s;
-        
+
         do {
             while (serial_->available() < 1) {
                 std::this_thread::sleep_for(std::chrono::milliseconds(sleep_time));
             }
             s += serial_->readByte();
         } while(s[s.length() - 1] != '\n');
-        
+
         //ofLog() << "read: '" << s << "'" << endl;
-        
+
         if (data_ready_callback_ != nullptr) {
             istringstream iss(s);
             vector<double> data;
             double d;
-            
+
             while (iss >> d) data.push_back(d);
-            
+
             data = normalize(data);
-            
+
             GRT::MatrixDouble matrix;
             matrix.push_back(data);
-        
+
             data_ready_callback_(matrix);
         }
     }
@@ -218,13 +220,13 @@ void FirmataStream::start() {
         ofLog(OF_LOG_ERROR) << "USB Port has not been properly set";
         return;
     }
-    
+
     if (pin_ == -1) {
         ofLog(OF_LOG_ERROR) << "Pin has not been properly set";
         return;
     }
-    
-    
+
+
     if (!has_started_) {
         ofSerial serial;
         configured_arduino_ = false;
@@ -247,7 +249,7 @@ void FirmataStream::update() {
     while (has_started_) {
         std::this_thread::sleep_for(std::chrono::milliseconds(sleep_time));
         arduino_.update();
-        
+
         if (configured_arduino_) {
             vector<double> data(1);
             data[0] = arduino_.getAnalog(pin_); // TODO(dmellis): support reading more than one analog pin
