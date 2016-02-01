@@ -7,20 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		281E397702AFF84B373377A5 /* ofxButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 17C83082A0E9F6D2BB7FE07D /* ofxButton.cpp */; };
 		48F7FEF8914B64EA7053CD0A /* istream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18C4BE08EEF363F2E25EBFC4 /* istream.cpp */; };
-		5505ED9891890C1B510B85BA /* ofxSlider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 736E8A02A7E138072C32BA22 /* ofxSlider.cpp */; };
-		5DF33A2C6EC19CC2E227FD8B /* ofxGrtMatrixPlot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F697431AF9BAEC37174C6918 /* ofxGrtMatrixPlot.cpp */; };
-		6D0527B5701F95239E23F411 /* ofxToggle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA9A560C03461E9C82524DC4 /* ofxToggle.cpp */; };
-		A6BC808DC2B0340E4C10178A /* ofxGrtTimeseriesPlot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F79B5FD915FF647929BABA22 /* ofxGrtTimeseriesPlot.cpp */; };
-		B358E52665ED949800202AE5 /* ofxSliderGroup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80EE2370F6D0FABECFB367FA /* ofxSliderGroup.cpp */; };
-		C37DC2E9DFDEFCECB0755E9F /* ofxButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52F87D6DBD25D265701068D3 /* ofxButton.cpp */; };
-		CE718E9984ABA35224826815 /* ofxGuiGroup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BA10FAE6073C7919A0C4BDFF /* ofxGuiGroup.cpp */; };
-		D000EAD4D8AC05233DC384BB /* ofxLabel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 79E1A59929DA313EF94C4A3B /* ofxLabel.cpp */; };
+		4C01A7D4BC8BE15DE60CCB82 /* ofxPanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F27487FA03169CDBC92552C4 /* ofxPanel.cpp */; };
+		53560FBFF75362D7BE463255 /* ofxToggle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FC54DBBAA5B23FFE6E7FE620 /* ofxToggle.cpp */; };
+		798434EF9EE5EE2E41E2F0DE /* ofxGrtTimeseriesPlot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3016C29D8E0735FBAEF55DFA /* ofxGrtTimeseriesPlot.cpp */; };
+		A9F16933D69101A8B2D7DC24 /* ofxBaseGui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B29062C5077E0EBE48BC1E5E /* ofxBaseGui.cpp */; };
+		B5B6A3DBA86CA86AD71CDE31 /* ofxLabel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 64F25F34C1FF51D1DEB91164 /* ofxLabel.cpp */; };
+		DD956AF23DA8C97565D245E4 /* ofxSlider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FBE3DD02DBD21EB4812C6B1 /* ofxSlider.cpp */; };
+		E2565612498DE15079C283A3 /* ofxGrtMatrixPlot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7ACE6957882556257F46BB94 /* ofxGrtMatrixPlot.cpp */; };
 		E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4328148138ABC890047C5CB /* openFrameworksDebug.a */; };
 		E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4B69E1D0A3A1BDC003C02F2 /* main.cpp */; };
 		E4B69E210A3A1BDC003C02F2 /* ofApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4B69E1E0A3A1BDC003C02F2 /* ofApp.cpp */; };
-		E6842849AE22F9B3A46445A9 /* ofxPanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C44F31827CA1F0A961B5BDC9 /* ofxPanel.cpp */; };
-		F2CDDADE2D40BADA4A3325DF /* ofxBaseGui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AD66BBECFB77E5330F685B98 /* ofxBaseGui.cpp */; };
+		ED0398432D326C847E821F12 /* ofxGuiGroup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F8E989A07FC7623F211CE84 /* ofxGuiGroup.cpp */; };
+		F21B1E9A4D08953A47D1411A /* ofxSliderGroup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E28FFAE01315AB1CC3DFFE2E /* ofxSliderGroup.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,39 +53,191 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0072F7A129B0E41F1D446529 /* ofxGui.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxGui.h; path = ../../../of_v0.9.0_osx_release/addons/ofxGui/src/ofxGui.h; sourceTree = SOURCE_ROOT; };
-		038B77CDBDCF971DAC98B456 /* ofxSliderGroup.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxSliderGroup.h; path = ../../../of_v0.9.0_osx_release/addons/ofxGui/src/ofxSliderGroup.h; sourceTree = SOURCE_ROOT; };
-		0A69FDF9E77E6B2EA23FEA85 /* ofxGuiGroup.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxGuiGroup.h; path = ../../../of_v0.9.0_osx_release/addons/ofxGui/src/ofxGuiGroup.h; sourceTree = SOURCE_ROOT; };
+		004F6D3458AA17342751DC79 /* Derivative.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = Derivative.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/PreProcessingModules/Derivative.h"; sourceTree = SOURCE_ROOT; };
+		00CE9583E881F7E346D71B77 /* ofxPanel.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxPanel.h; path = "../../third-party/openFrameworks/addons/ofxGui/src/ofxPanel.h"; sourceTree = SOURCE_ROOT; };
+		02E0D524900AD6396CFA26A2 /* Classifier.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = Classifier.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/CoreModules/Classifier.h"; sourceTree = SOURCE_ROOT; };
+		040B716C62637A79140C2E39 /* MovementDetector.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = MovementDetector.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/CoreAlgorithms/MovementDetector/MovementDetector.h"; sourceTree = SOURCE_ROOT; };
+		055F487E68015F2623E4EF8D /* Matrix.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = Matrix.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/DataStructures/Matrix.h"; sourceTree = SOURCE_ROOT; };
+		079DF4BB921D06EB04C4B252 /* TimeSeriesClassificationData.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = TimeSeriesClassificationData.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/DataStructures/TimeSeriesClassificationData.h"; sourceTree = SOURCE_ROOT; };
+		0DDF5879A936BFC6760B5DE7 /* HierarchicalClustering.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = HierarchicalClustering.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/ClusteringModules/HierarchicalClustering/HierarchicalClustering.h"; sourceTree = SOURCE_ROOT; };
+		0E5CFB9D21F2CC7ADECAFA6D /* ANBC.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ANBC.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/ClassificationModules/ANBC/ANBC.h"; sourceTree = SOURCE_ROOT; };
+		0E914FC3D3318ABBA2B67551 /* FileParser.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = FileParser.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/Util/FileParser.h"; sourceTree = SOURCE_ROOT; };
+		0F5818C97BB79D2580D1E796 /* TestInstanceResult.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = TestInstanceResult.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/Util/TestInstanceResult.h"; sourceTree = SOURCE_ROOT; };
+		0FC2A3F900C70F0D260C05FC /* Tree.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = Tree.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/CoreAlgorithms/Tree/Tree.h"; sourceTree = SOURCE_ROOT; };
+		0FDBC84371BC117AD1E8FD6A /* GRTCommon.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = GRTCommon.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/Util/GRTCommon.h"; sourceTree = SOURCE_ROOT; };
+		1005E636CDBA110C747D914F /* Softmax.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = Softmax.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/ClassificationModules/Softmax/Softmax.h"; sourceTree = SOURCE_ROOT; };
+		107DEAD880B84F864C427F6A /* DecisionTreeTripleFeatureNode.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = DecisionTreeTripleFeatureNode.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/ClassificationModules/DecisionTree/DecisionTreeTripleFeatureNode.h"; sourceTree = SOURCE_ROOT; };
+		11BC91762B69DFF14FA29329 /* GRTException.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = GRTException.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/Util/GRTException.h"; sourceTree = SOURCE_ROOT; };
+		143C0635CF4B6A9ADD98B8E9 /* TimeSeriesClassificationSampleTrimmer.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = TimeSeriesClassificationSampleTrimmer.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/Util/TimeSeriesClassificationSampleTrimmer.h"; sourceTree = SOURCE_ROOT; };
+		153E766B211886C217FB707B /* SoftmaxModel.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = SoftmaxModel.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/ClassificationModules/Softmax/SoftmaxModel.h"; sourceTree = SOURCE_ROOT; };
+		16386D8DC7C6A8E7F5F0308D /* ClassificationDataStream.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ClassificationDataStream.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/DataStructures/ClassificationDataStream.h"; sourceTree = SOURCE_ROOT; };
+		1709E659C002C5C11F545DC5 /* SwipeDetector.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = SwipeDetector.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/ClassificationModules/SwipeDetector/SwipeDetector.h"; sourceTree = SOURCE_ROOT; };
+		17C83082A0E9F6D2BB7FE07D /* ofxButton.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxButton.cpp; path = "../../third-party/openFrameworks/addons/ofxGui/src/ofxButton.cpp"; sourceTree = SOURCE_ROOT; };
+		17FD11DCA18D08065B9E9EE2 /* ClassTracker.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ClassTracker.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/Util/ClassTracker.h"; sourceTree = SOURCE_ROOT; };
 		18C4BE08EEF363F2E25EBFC4 /* istream.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = istream.cpp; path = src/istream.cpp; sourceTree = SOURCE_ROOT; };
-		41F47ED737556CE82BDC9C3D /* ofxToggle.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxToggle.h; path = ../../../of_v0.9.0_osx_release/addons/ofxGui/src/ofxToggle.h; sourceTree = SOURCE_ROOT; };
-		52F87D6DBD25D265701068D3 /* ofxButton.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxButton.cpp; path = ../../../of_v0.9.0_osx_release/addons/ofxGui/src/ofxButton.cpp; sourceTree = SOURCE_ROOT; };
+		1954E89FB243258F58A1A304 /* TimeSeriesClassificationSample.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = TimeSeriesClassificationSample.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/DataStructures/TimeSeriesClassificationSample.h"; sourceTree = SOURCE_ROOT; };
+		1A4F81440A759B3A158E8D3F /* ThreadPool.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ThreadPool.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/Util/ThreadPool.h"; sourceTree = SOURCE_ROOT; };
+		1C95397765766D11345CDA69 /* DecisionTreeClusterNode.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = DecisionTreeClusterNode.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/ClassificationModules/DecisionTree/DecisionTreeClusterNode.h"; sourceTree = SOURCE_ROOT; };
+		1D604C6DEFBADE35CA1140DE /* AdaBoostClassModel.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = AdaBoostClassModel.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/ClassificationModules/AdaBoost/AdaBoostClassModel.h"; sourceTree = SOURCE_ROOT; };
+		1DEC3FF5FA6FD671391D7D1B /* KMeans.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = KMeans.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/ClusteringModules/KMeans/KMeans.h"; sourceTree = SOURCE_ROOT; };
+		1DFE797BEB7C0278E8116AA0 /* FFTFeatures.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = FFTFeatures.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/FeatureExtractionModules/FFT/FFTFeatures.h"; sourceTree = SOURCE_ROOT; };
+		1EB250B0B50A40D033C9A8B2 /* TimeSeriesPositionTracker.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = TimeSeriesPositionTracker.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/DataStructures/TimeSeriesPositionTracker.h"; sourceTree = SOURCE_ROOT; };
+		1F8E989A07FC7623F211CE84 /* ofxGuiGroup.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxGuiGroup.cpp; path = "../../third-party/openFrameworks/addons/ofxGui/src/ofxGuiGroup.cpp"; sourceTree = SOURCE_ROOT; };
+		20CE9594F0B1B777BCB3CF35 /* ClassLabelFilter.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ClassLabelFilter.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/PostProcessingModules/ClassLabelFilter.h"; sourceTree = SOURCE_ROOT; };
+		293E3A406C0BE297F4382858 /* LeakyIntegrator.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = LeakyIntegrator.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/PreProcessingModules/LeakyIntegrator.h"; sourceTree = SOURCE_ROOT; };
+		2CF1F4D200CC44D6AACB85B5 /* Individual.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = Individual.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/CoreAlgorithms/EvolutionaryAlgorithm/Individual.h"; sourceTree = SOURCE_ROOT; };
+		2F0B20FB708598C62C93A11F /* MLP.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = MLP.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/RegressionModules/ArtificialNeuralNetworks/MLP/MLP.h"; sourceTree = SOURCE_ROOT; };
+		3016C29D8E0735FBAEF55DFA /* ofxGrtTimeseriesPlot.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxGrtTimeseriesPlot.cpp; path = "../../third-party/openFrameworks/addons/ofxGrt/src/ofxGrtTimeseriesPlot.cpp"; sourceTree = SOURCE_ROOT; };
+		3150A854D712348E820696C3 /* Gate.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = Gate.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/ContextModules/Gate.h"; sourceTree = SOURCE_ROOT; };
+		31990795E9CC2EE1AA29B5FF /* GRTBase.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = GRTBase.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/CoreModules/GRTBase.h"; sourceTree = SOURCE_ROOT; };
+		319CB4F6C11D247FE56A807E /* RadialBasisFunction.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = RadialBasisFunction.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/ClassificationModules/AdaBoost/WeakClassifiers/RadialBasisFunction.h"; sourceTree = SOURCE_ROOT; };
+		33590F0CD7DAD6FE90515E35 /* ofxGuiGroup.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxGuiGroup.h; path = "../../third-party/openFrameworks/addons/ofxGui/src/ofxGuiGroup.h"; sourceTree = SOURCE_ROOT; };
+		3362B9C90BA43DC326A5321A /* DoubleMovingAverageFilter.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = DoubleMovingAverageFilter.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/PreProcessingModules/DoubleMovingAverageFilter.h"; sourceTree = SOURCE_ROOT; };
+		33AE35DBE2EBE926124EFA8A /* ofxGui.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxGui.h; path = "../../third-party/openFrameworks/addons/ofxGui/src/ofxGui.h"; sourceTree = SOURCE_ROOT; };
+		395B885DE5765CE57DAFCDBF /* ClassificationResult.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ClassificationResult.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/Util/ClassificationResult.h"; sourceTree = SOURCE_ROOT; };
+		3994B3DC0E652BA499A6BF6A /* GRTTypedefs.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = GRTTypedefs.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/Util/GRTTypedefs.h"; sourceTree = SOURCE_ROOT; };
+		3CDF494B85D75EDAFEE59650 /* AdaBoost.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = AdaBoost.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/ClassificationModules/AdaBoost/AdaBoost.h"; sourceTree = SOURCE_ROOT; };
+		3D26C064A3D8CFF534982FA7 /* DecisionTreeThresholdNode.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = DecisionTreeThresholdNode.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/ClassificationModules/DecisionTree/DecisionTreeThresholdNode.h"; sourceTree = SOURCE_ROOT; };
+		3EED1568D36DA88D722A1BF9 /* Timer.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = Timer.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/Util/Timer.h"; sourceTree = SOURCE_ROOT; };
+		403DF6027DA472FD723AE7EE /* FFT.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = FFT.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/FeatureExtractionModules/FFT/FFT.h"; sourceTree = SOURCE_ROOT; };
+		4181651F129E1563B13CB944 /* LinearLeastSquares.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = LinearLeastSquares.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/CoreAlgorithms/LeastSquares/LinearLeastSquares.h"; sourceTree = SOURCE_ROOT; };
+		43B7F907F692DABD8420DAB3 /* SVD.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = SVD.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/Util/SVD.h"; sourceTree = SOURCE_ROOT; };
+		44157921EF040E78640058BB /* DeadZone.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = DeadZone.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/PreProcessingModules/DeadZone.h"; sourceTree = SOURCE_ROOT; };
+		44D31E205DEE99D75DB4FBBD /* DTW.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = DTW.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/ClassificationModules/DTW/DTW.h"; sourceTree = SOURCE_ROOT; };
+		486E523BA734FC214BFDF64C /* TestResult.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = TestResult.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/Util/TestResult.h"; sourceTree = SOURCE_ROOT; };
+		4A704F8CB51E641515FCC9DD /* HighPassFilter.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = HighPassFilter.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/PreProcessingModules/HighPassFilter.h"; sourceTree = SOURCE_ROOT; };
+		4B8915EE653979776F1DCF8B /* FastFourierTransform.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = FastFourierTransform.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/FeatureExtractionModules/FFT/FastFourierTransform.h"; sourceTree = SOURCE_ROOT; };
+		4C42376EF0C93B60AB080532 /* ofxBaseGui.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxBaseGui.h; path = "../../third-party/openFrameworks/addons/ofxGui/src/ofxBaseGui.h"; sourceTree = SOURCE_ROOT; };
+		4DEAE367F51E39C5CC5410BC /* BernoulliRBM.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = BernoulliRBM.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/CoreAlgorithms/BernoulliRBM/BernoulliRBM.h"; sourceTree = SOURCE_ROOT; };
+		4FA02686E1FCB3B346BF0226 /* TrainingLog.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = TrainingLog.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/Util/TrainingLog.h"; sourceTree = SOURCE_ROOT; };
+		4FFEC29B627089277303B723 /* Clusterer.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = Clusterer.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/CoreModules/Clusterer.h"; sourceTree = SOURCE_ROOT; };
+		50D7B71FE1190B10E56B1ADB /* Observer.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = Observer.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/Util/Observer.h"; sourceTree = SOURCE_ROOT; };
+		544B3121CD34709E7D063D00 /* ANBC_Model.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ANBC_Model.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/ClassificationModules/ANBC/ANBC_Model.h"; sourceTree = SOURCE_ROOT; };
+		58926AF7E6446FAEFD720309 /* MedianFilter.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = MedianFilter.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/PreProcessingModules/MedianFilter.h"; sourceTree = SOURCE_ROOT; };
 		5939D84F8D015C2971814643 /* user.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = user.h; path = src/user.h; sourceTree = SOURCE_ROOT; };
-		6B1404007126313C391ED8CD /* ofxGrtTimeseriesPlot.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxGrtTimeseriesPlot.h; path = ../../../of_v0.9.0_osx_release/addons/ofxGrt/src/ofxGrtTimeseriesPlot.h; sourceTree = SOURCE_ROOT; };
-		6DE32F7E2C47C661309EA711 /* ofxSlider.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxSlider.h; path = ../../../of_v0.9.0_osx_release/addons/ofxGui/src/ofxSlider.h; sourceTree = SOURCE_ROOT; };
+		5A2E8ACD4D90608A70665DFD /* KMeansQuantizer.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = KMeansQuantizer.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/FeatureExtractionModules/KMeansQuantizer/KMeansQuantizer.h"; sourceTree = SOURCE_ROOT; };
+		5F3969AA0A9D60D91CAEB7B8 /* GaussianMixtureModels.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = GaussianMixtureModels.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/ClusteringModules/GaussianMixtureModels/GaussianMixtureModels.h"; sourceTree = SOURCE_ROOT; };
+		5F47DA3C906FBE26CF2C5303 /* MovingAverageFilter.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = MovingAverageFilter.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/PreProcessingModules/MovingAverageFilter.h"; sourceTree = SOURCE_ROOT; };
+		60591FF98756855DDFD90B22 /* DecisionStump.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = DecisionStump.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/ClassificationModules/AdaBoost/WeakClassifiers/DecisionStump.h"; sourceTree = SOURCE_ROOT; };
+		64CF5E2DD44B788D83DBCAC7 /* Particle.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = Particle.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/CoreAlgorithms/ParticleFilter/Particle.h"; sourceTree = SOURCE_ROOT; };
+		64F25F34C1FF51D1DEB91164 /* ofxLabel.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxLabel.cpp; path = "../../third-party/openFrameworks/addons/ofxGui/src/ofxLabel.cpp"; sourceTree = SOURCE_ROOT; };
+		65422A12710AD0D402B17EB3 /* PostProcessing.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = PostProcessing.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/CoreModules/PostProcessing.h"; sourceTree = SOURCE_ROOT; };
+		67B69449D51544DAE2B59C92 /* HMM.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = HMM.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/ClassificationModules/HMM/HMM.h"; sourceTree = SOURCE_ROOT; };
+		69CF6EAB813F8D23702DD952 /* Cholesky.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = Cholesky.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/Util/Cholesky.h"; sourceTree = SOURCE_ROOT; };
+		6A6F0BB027A4102BE5DFE2CD /* Context.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = Context.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/CoreModules/Context.h"; sourceTree = SOURCE_ROOT; };
+		6E5576944AB498B229BAE2B4 /* TimeDomainFeatures.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = TimeDomainFeatures.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/FeatureExtractionModules/TimeDomainFeatures/TimeDomainFeatures.h"; sourceTree = SOURCE_ROOT; };
+		6EE009CFB8CC84994389883E /* ObserverManager.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ObserverManager.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/Util/ObserverManager.h"; sourceTree = SOURCE_ROOT; };
+		6EFCEE1D53FA8941E6503D8E /* ofxLabel.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxLabel.h; path = "../../third-party/openFrameworks/addons/ofxGui/src/ofxLabel.h"; sourceTree = SOURCE_ROOT; };
+		6F63AC2F095A2CF7CCE072CE /* ParticleSwarmOptimization.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ParticleSwarmOptimization.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/CoreAlgorithms/ParticleSwarmOptimization/ParticleSwarmOptimization.h"; sourceTree = SOURCE_ROOT; };
 		6F8100B5C8574131C4571B8A /* istream.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = istream.h; path = src/istream.h; sourceTree = SOURCE_ROOT; };
-		736E8A02A7E138072C32BA22 /* ofxSlider.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxSlider.cpp; path = ../../../of_v0.9.0_osx_release/addons/ofxGui/src/ofxSlider.cpp; sourceTree = SOURCE_ROOT; };
-		79E1A59929DA313EF94C4A3B /* ofxLabel.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxLabel.cpp; path = ../../../of_v0.9.0_osx_release/addons/ofxGui/src/ofxLabel.cpp; sourceTree = SOURCE_ROOT; };
-		80EE2370F6D0FABECFB367FA /* ofxSliderGroup.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxSliderGroup.cpp; path = ../../../of_v0.9.0_osx_release/addons/ofxGui/src/ofxSliderGroup.cpp; sourceTree = SOURCE_ROOT; };
-		AD66BBECFB77E5330F685B98 /* ofxBaseGui.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxBaseGui.cpp; path = ../../../of_v0.9.0_osx_release/addons/ofxGui/src/ofxBaseGui.cpp; sourceTree = SOURCE_ROOT; };
-		B66550FB49947ABEC1A2E888 /* ofxLabel.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxLabel.h; path = ../../../of_v0.9.0_osx_release/addons/ofxGui/src/ofxLabel.h; sourceTree = SOURCE_ROOT; };
-		BA10FAE6073C7919A0C4BDFF /* ofxGuiGroup.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxGuiGroup.cpp; path = ../../../of_v0.9.0_osx_release/addons/ofxGui/src/ofxGuiGroup.cpp; sourceTree = SOURCE_ROOT; };
-		BA39BB16CF8B3A5C9CC62CA1 /* ofxGrt.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxGrt.h; path = ../../../of_v0.9.0_osx_release/addons/ofxGrt/src/ofxGrt.h; sourceTree = SOURCE_ROOT; };
-		BB4A8BCA6363373E6049618D /* ofxPanel.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxPanel.h; path = ../../../of_v0.9.0_osx_release/addons/ofxGui/src/ofxPanel.h; sourceTree = SOURCE_ROOT; };
-		C44F31827CA1F0A961B5BDC9 /* ofxPanel.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxPanel.cpp; path = ../../../of_v0.9.0_osx_release/addons/ofxGui/src/ofxPanel.cpp; sourceTree = SOURCE_ROOT; };
-		D43B2F0B2AF85E635B41C76F /* ofxButton.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxButton.h; path = ../../../of_v0.9.0_osx_release/addons/ofxGui/src/ofxButton.h; sourceTree = SOURCE_ROOT; };
-		D57D09820A832AC42BB9F59D /* ofxGrtMatrixPlot.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxGrtMatrixPlot.h; path = ../../../of_v0.9.0_osx_release/addons/ofxGrt/src/ofxGrtMatrixPlot.h; sourceTree = SOURCE_ROOT; };
-		DAB51EDAED3BC9EB19E86376 /* ofxBaseGui.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxBaseGui.h; path = ../../../of_v0.9.0_osx_release/addons/ofxGui/src/ofxBaseGui.h; sourceTree = SOURCE_ROOT; };
-		E4328143138ABC890047C5CB /* openFrameworksLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = openFrameworksLib.xcodeproj; path = ../../../of_v0.9.0_osx_release/libs/openFrameworksCompiled/project/osx/openFrameworksLib.xcodeproj; sourceTree = SOURCE_ROOT; };
+		710A20BF78F4DAE53BF290FA /* DecisionTree.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = DecisionTree.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/ClassificationModules/DecisionTree/DecisionTree.h"; sourceTree = SOURCE_ROOT; };
+		72B1C82EB089C9FC614A1AED /* LogisticRegression.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = LogisticRegression.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/RegressionModules/LogisticRegression/LogisticRegression.h"; sourceTree = SOURCE_ROOT; };
+		767F8F134391F741C4223C12 /* ClassificationData.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ClassificationData.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/DataStructures/ClassificationData.h"; sourceTree = SOURCE_ROOT; };
+		7684899E64DA43A156FD80F2 /* HMMEnums.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = HMMEnums.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/ClassificationModules/HMM/HMMEnums.h"; sourceTree = SOURCE_ROOT; };
+		76C2BCD3FCC5755E8B2A800E /* BAG.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = BAG.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/ClassificationModules/BAG/BAG.h"; sourceTree = SOURCE_ROOT; };
+		7A451F0A26AD1F6604C914AF /* ofxGrt.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxGrt.h; path = "../../third-party/openFrameworks/addons/ofxGrt/src/ofxGrt.h"; sourceTree = SOURCE_ROOT; };
+		7A909DE4E202BD0ED406D8D6 /* Regressifier.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = Regressifier.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/CoreModules/Regressifier.h"; sourceTree = SOURCE_ROOT; };
+		7ACE6957882556257F46BB94 /* ofxGrtMatrixPlot.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxGrtMatrixPlot.cpp; path = "../../third-party/openFrameworks/addons/ofxGrt/src/ofxGrtMatrixPlot.cpp"; sourceTree = SOURCE_ROOT; };
+		7CB191171155D0B4DDC25CB7 /* RandomForests.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = RandomForests.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/ClassificationModules/RandomForests/RandomForests.h"; sourceTree = SOURCE_ROOT; };
+		7D9CCA3931400A1F897C7CBE /* ClassLabelChangeFilter.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ClassLabelChangeFilter.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/PostProcessingModules/ClassLabelChangeFilter.h"; sourceTree = SOURCE_ROOT; };
+		7DC0CDBB49E9D3CBA00A562D /* Log.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = Log.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/Util/Log.h"; sourceTree = SOURCE_ROOT; };
+		80E7C5DD0D989AD577752EA9 /* InfoLog.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = InfoLog.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/Util/InfoLog.h"; sourceTree = SOURCE_ROOT; };
+		81B16BF7D4737E6CCF0A4FF1 /* SavitzkyGolayFilter.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = SavitzkyGolayFilter.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/PreProcessingModules/SavitzkyGolayFilter.h"; sourceTree = SOURCE_ROOT; };
+		8262B0D0A20AC9A145555555 /* MovementIndex.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = MovementIndex.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/FeatureExtractionModules/MovementIndex/MovementIndex.h"; sourceTree = SOURCE_ROOT; };
+		826B5E2343CF1F3BA28913E2 /* FSMParticle.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = FSMParticle.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/ClassificationModules/FiniteStateMachine/FSMParticle.h"; sourceTree = SOURCE_ROOT; };
+		827ADB48D17FF5DA48BCB764 /* MinMax.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = MinMax.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/Util/MinMax.h"; sourceTree = SOURCE_ROOT; };
+		835DBC3D0D914E3D4AF98BE7 /* WeightedAverageFilter.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = WeightedAverageFilter.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/PreProcessingModules/WeightedAverageFilter.h"; sourceTree = SOURCE_ROOT; };
+		851C94D2DEDDDC4AECBCCA4C /* ParticleClassifier.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ParticleClassifier.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/ClassificationModules/ParticleClassifier/ParticleClassifier.h"; sourceTree = SOURCE_ROOT; };
+		857DB45790D5AD10F96CF987 /* FIRFilter.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = FIRFilter.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/PreProcessingModules/FIRFilter.h"; sourceTree = SOURCE_ROOT; };
+		85DD4E083ADDBBA48B985269 /* LUDecomposition.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = LUDecomposition.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/Util/LUDecomposition.h"; sourceTree = SOURCE_ROOT; };
+		85F01769DF81BAC53B44400B /* MatrixFloat.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = MatrixFloat.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/DataStructures/MatrixFloat.h"; sourceTree = SOURCE_ROOT; };
+		86D326FC2B851797BFA10A05 /* Util.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = Util.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/Util/Util.h"; sourceTree = SOURCE_ROOT; };
+		874024AB31FE6AA89665D3AA /* FiniteStateMachine.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = FiniteStateMachine.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/ClassificationModules/FiniteStateMachine/FiniteStateMachine.h"; sourceTree = SOURCE_ROOT; };
+		878DF4C9002284257079F44E /* TimeseriesBuffer.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = TimeseriesBuffer.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/FeatureExtractionModules/TimeseriesBuffer/TimeseriesBuffer.h"; sourceTree = SOURCE_ROOT; };
+		8C216BE9F03A0A5417311468 /* MLBase.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = MLBase.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/CoreModules/MLBase.h"; sourceTree = SOURCE_ROOT; };
+		8C2208E103C17F4A39DECE6F /* ofxGrtTimeseriesPlot.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxGrtTimeseriesPlot.h; path = "../../third-party/openFrameworks/addons/ofxGrt/src/ofxGrtTimeseriesPlot.h"; sourceTree = SOURCE_ROOT; };
+		8FBE3DD02DBD21EB4812C6B1 /* ofxSlider.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxSlider.cpp; path = "../../third-party/openFrameworks/addons/ofxGui/src/ofxSlider.cpp"; sourceTree = SOURCE_ROOT; };
+		916A1815FA4C4B6A22B122B0 /* MultidimensionalRegression.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = MultidimensionalRegression.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/RegressionModules/MultidimensionalRegression/MultidimensionalRegression.h"; sourceTree = SOURCE_ROOT; };
+		925DCC0AFAEE31AEF7467855 /* ClusterTree.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ClusterTree.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/ClusteringModules/ClusterTree/ClusterTree.h"; sourceTree = SOURCE_ROOT; };
+		9350E6EC4E28C86044DB2789 /* LDA.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = LDA.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/ClassificationModules/LDA/LDA.h"; sourceTree = SOURCE_ROOT; };
+		95237758E5EFD58E0D89047C /* ZeroCrossingCounter.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ZeroCrossingCounter.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/FeatureExtractionModules/ZeroCrossingCounter/ZeroCrossingCounter.h"; sourceTree = SOURCE_ROOT; };
+		95420E0D2410B9CE3F042C3C /* MinDistModel.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = MinDistModel.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/ClassificationModules/MinDist/MinDistModel.h"; sourceTree = SOURCE_ROOT; };
+		99E60ABF356C28606888A173 /* RangeTracker.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = RangeTracker.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/Util/RangeTracker.h"; sourceTree = SOURCE_ROOT; };
+		9AC8CA37932894B51F9BA1EF /* SOMQuantizer.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = SOMQuantizer.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/FeatureExtractionModules/SOMQuantizer/SOMQuantizer.h"; sourceTree = SOURCE_ROOT; };
+		9B42A06E48F85145317DC372 /* RegressionTreeNode.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = RegressionTreeNode.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/RegressionModules/RegressionTree/RegressionTreeNode.h"; sourceTree = SOURCE_ROOT; };
+		9B7088ED0FC73E3242226F74 /* CircularBuffer.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = CircularBuffer.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/Util/CircularBuffer.h"; sourceTree = SOURCE_ROOT; };
+		9BDFAD05EA19F24CF9BB7F33 /* Neuron.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = Neuron.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/RegressionModules/ArtificialNeuralNetworks/MLP/Neuron.h"; sourceTree = SOURCE_ROOT; };
+		9E0CB8D9AF0D22F88DE700A9 /* ErrorLog.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ErrorLog.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/Util/ErrorLog.h"; sourceTree = SOURCE_ROOT; };
+		9F14C1862F7098D82125EE9F /* ClusterTreeNode.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ClusterTreeNode.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/ClusteringModules/ClusterTree/ClusterTreeNode.h"; sourceTree = SOURCE_ROOT; };
+		A25076249AE8D3FAAF94F5DB /* ClassificationSample.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ClassificationSample.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/DataStructures/ClassificationSample.h"; sourceTree = SOURCE_ROOT; };
+		A431A0D1A75C3F442490A202 /* libsvm.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = libsvm.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/ClassificationModules/SVM/LIBSVM/libsvm.h"; sourceTree = SOURCE_ROOT; };
+		A5D8C548D7BCA0BB26D8DA97 /* FSMParticleFilter.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = FSMParticleFilter.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/ClassificationModules/FiniteStateMachine/FSMParticleFilter.h"; sourceTree = SOURCE_ROOT; };
+		A6FF38873DCA2683113C2EF3 /* ThresholdCrossingDetector.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ThresholdCrossingDetector.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/Util/ThresholdCrossingDetector.h"; sourceTree = SOURCE_ROOT; };
+		A738AD8A7FA2501A7FB139C5 /* DataType.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = DataType.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/Util/DataType.h"; sourceTree = SOURCE_ROOT; };
+		A97695183B2993F23875A518 /* ofxSliderGroup.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxSliderGroup.h; path = "../../third-party/openFrameworks/addons/ofxGui/src/ofxSliderGroup.h"; sourceTree = SOURCE_ROOT; };
+		AB06033D947A46BC059C762B /* TimeSeriesClassificationDataStream.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = TimeSeriesClassificationDataStream.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/DataStructures/TimeSeriesClassificationDataStream.h"; sourceTree = SOURCE_ROOT; };
+		ABE77604CAF693999819D7F9 /* MinDist.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = MinDist.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/ClassificationModules/MinDist/MinDist.h"; sourceTree = SOURCE_ROOT; };
+		ADA45A8639B46DB470F1DB3C /* TestingLog.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = TestingLog.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/Util/TestingLog.h"; sourceTree = SOURCE_ROOT; };
+		ADD2C98D1AB2060DAC1FAD21 /* FeatureExtraction.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = FeatureExtraction.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/CoreModules/FeatureExtraction.h"; sourceTree = SOURCE_ROOT; };
+		AE79D686E6C441D77C27A88F /* PSOParticle.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = PSOParticle.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/CoreAlgorithms/ParticleSwarmOptimization/PSOParticle.h"; sourceTree = SOURCE_ROOT; };
+		AF9D194D2813F9EA6F069759 /* ParticleClassifierParticleFilter.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ParticleClassifierParticleFilter.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/ClassificationModules/ParticleClassifier/ParticleClassifierParticleFilter.h"; sourceTree = SOURCE_ROOT; };
+		B29062C5077E0EBE48BC1E5E /* ofxBaseGui.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxBaseGui.cpp; path = "../../third-party/openFrameworks/addons/ofxGui/src/ofxBaseGui.cpp"; sourceTree = SOURCE_ROOT; };
+		B4CC482E13A93E9034C6B014 /* PreProcessing.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = PreProcessing.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/CoreModules/PreProcessing.h"; sourceTree = SOURCE_ROOT; };
+		B6F0259595036C59F2D29EB4 /* WeakClassifier.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = WeakClassifier.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/ClassificationModules/AdaBoost/WeakClassifiers/WeakClassifier.h"; sourceTree = SOURCE_ROOT; };
+		B77B7A2448640639DC66F26F /* SVM.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = SVM.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/ClassificationModules/SVM/SVM.h"; sourceTree = SOURCE_ROOT; };
+		B829DFB5D8E964FF3DE97713 /* KNN.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = KNN.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/ClassificationModules/KNN/KNN.h"; sourceTree = SOURCE_ROOT; };
+		B83C40296751C341E784A386 /* TimeStamp.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = TimeStamp.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/Util/TimeStamp.h"; sourceTree = SOURCE_ROOT; };
+		B84F4A7DF2FAA238499809EC /* Vector.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = Vector.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/DataStructures/Vector.h"; sourceTree = SOURCE_ROOT; };
+		C1D604CD10BE6BD87CEE2129 /* ofxButton.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxButton.h; path = "../../third-party/openFrameworks/addons/ofxGui/src/ofxButton.h"; sourceTree = SOURCE_ROOT; };
+		C437B95073D7FF61FFDE47F2 /* VectorFloat.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = VectorFloat.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/DataStructures/VectorFloat.h"; sourceTree = SOURCE_ROOT; };
+		C57C0B7F9B32387FBB141018 /* GestureRecognitionPipeline.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = GestureRecognitionPipeline.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/CoreModules/GestureRecognitionPipeline.h"; sourceTree = SOURCE_ROOT; };
+		C5CD16E16A06C5813B570E61 /* DiscreteHiddenMarkovModel.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = DiscreteHiddenMarkovModel.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/ClassificationModules/HMM/DiscreteHiddenMarkovModel.h"; sourceTree = SOURCE_ROOT; };
+		C6BB7735611A4E1064304E5A /* ofxToggle.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxToggle.h; path = "../../third-party/openFrameworks/addons/ofxGui/src/ofxToggle.h"; sourceTree = SOURCE_ROOT; };
+		C9668CBD4361EAB0825CA1CC /* PeakDetection.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = PeakDetection.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/Util/PeakDetection.h"; sourceTree = SOURCE_ROOT; };
+		CA10EC2705D69E1B8D2FA49F /* LinearRegression.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = LinearRegression.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/RegressionModules/LinearRegression/LinearRegression.h"; sourceTree = SOURCE_ROOT; };
+		CE56F97CE17AB3DEFDDD0075 /* Random.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = Random.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/Util/Random.h"; sourceTree = SOURCE_ROOT; };
+		D2BE1B433D1F57DC6E53DEAE /* ContinuousHiddenMarkovModel.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ContinuousHiddenMarkovModel.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/ClassificationModules/HMM/ContinuousHiddenMarkovModel.h"; sourceTree = SOURCE_ROOT; };
+		D412BB81602B4ABF54B7A4B2 /* MovementTrajectoryFeatures.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = MovementTrajectoryFeatures.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/FeatureExtractionModules/MovementTrajectoryFeatures/MovementTrajectoryFeatures.h"; sourceTree = SOURCE_ROOT; };
+		D6009B4BE92CB705381ED8F4 /* SelfOrganizingMap.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = SelfOrganizingMap.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/ClusteringModules/SelfOrganizingMap/SelfOrganizingMap.h"; sourceTree = SOURCE_ROOT; };
+		D721FB0134893E22EF68362C /* Node.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = Node.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/CoreAlgorithms/Tree/Node.h"; sourceTree = SOURCE_ROOT; };
+		D8ABF0370F84473E00EC80D6 /* ClassLabelTimeoutFilter.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ClassLabelTimeoutFilter.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/PostProcessingModules/ClassLabelTimeoutFilter.h"; sourceTree = SOURCE_ROOT; };
+		DD8BDBD5161787611B27E84F /* DecisionTreeNode.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = DecisionTreeNode.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/ClassificationModules/DecisionTree/DecisionTreeNode.h"; sourceTree = SOURCE_ROOT; };
+		E218C74BB87797E55DCDBFDF /* GRTVersionInfo.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = GRTVersionInfo.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/Util/GRTVersionInfo.h"; sourceTree = SOURCE_ROOT; };
+		E28FFAE01315AB1CC3DFFE2E /* ofxSliderGroup.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxSliderGroup.cpp; path = "../../third-party/openFrameworks/addons/ofxGui/src/ofxSliderGroup.cpp"; sourceTree = SOURCE_ROOT; };
+		E3F8FD848281046FF1DBEFC8 /* ofxSlider.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxSlider.h; path = "../../third-party/openFrameworks/addons/ofxGui/src/ofxSlider.h"; sourceTree = SOURCE_ROOT; };
+		E4328143138ABC890047C5CB /* openFrameworksLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = openFrameworksLib.xcodeproj; path = "../../third-party/openFrameworks/libs/openFrameworksCompiled/project/osx/openFrameworksLib.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		E4B69B5B0A3A1756003C02F2 /* AudioDebug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AudioDebug.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4B69E1D0A3A1BDC003C02F2 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = src/main.cpp; sourceTree = SOURCE_ROOT; };
 		E4B69E1E0A3A1BDC003C02F2 /* ofApp.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofApp.cpp; path = src/ofApp.cpp; sourceTree = SOURCE_ROOT; };
 		E4B69E1F0A3A1BDC003C02F2 /* ofApp.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = ofApp.h; path = src/ofApp.h; sourceTree = SOURCE_ROOT; };
 		E4B6FCAD0C3E899E008CF71C /* openFrameworks-Info.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist.xml; path = "openFrameworks-Info.plist"; sourceTree = "<group>"; };
-		E4EB691F138AFCF100A09F29 /* CoreOF.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = CoreOF.xcconfig; path = ../../../of_v0.9.0_osx_release/libs/openFrameworksCompiled/project/osx/CoreOF.xcconfig; sourceTree = SOURCE_ROOT; };
+		E4EB691F138AFCF100A09F29 /* CoreOF.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = CoreOF.xcconfig; path = "../../third-party/openFrameworks/libs/openFrameworksCompiled/project/osx/CoreOF.xcconfig"; sourceTree = SOURCE_ROOT; };
 		E4EB6923138AFD0F00A09F29 /* Project.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Project.xcconfig; sourceTree = "<group>"; };
-		EA9A560C03461E9C82524DC4 /* ofxToggle.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxToggle.cpp; path = ../../../of_v0.9.0_osx_release/addons/ofxGui/src/ofxToggle.cpp; sourceTree = SOURCE_ROOT; };
-		F697431AF9BAEC37174C6918 /* ofxGrtMatrixPlot.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxGrtMatrixPlot.cpp; path = ../../../of_v0.9.0_osx_release/addons/ofxGrt/src/ofxGrtMatrixPlot.cpp; sourceTree = SOURCE_ROOT; };
-		F79B5FD915FF647929BABA22 /* ofxGrtTimeseriesPlot.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxGrtTimeseriesPlot.cpp; path = ../../../of_v0.9.0_osx_release/addons/ofxGrt/src/ofxGrtTimeseriesPlot.cpp; sourceTree = SOURCE_ROOT; };
+		E63D770D56555B3D66FA1EBB /* TrainingDataRecordingTimer.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = TrainingDataRecordingTimer.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/Util/TrainingDataRecordingTimer.h"; sourceTree = SOURCE_ROOT; };
+		E6DEED1C1B34641C76BB479D /* RegressionData.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = RegressionData.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/DataStructures/RegressionData.h"; sourceTree = SOURCE_ROOT; };
+		E73FF9335E80C82B9A171373 /* EvolutionaryAlgorithm.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = EvolutionaryAlgorithm.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/CoreAlgorithms/EvolutionaryAlgorithm/EvolutionaryAlgorithm.h"; sourceTree = SOURCE_ROOT; };
+		E7F4C6AEF8F5B85D6D6A9EF8 /* GMM.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = GMM.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/ClassificationModules/GMM/GMM.h"; sourceTree = SOURCE_ROOT; };
+		E896B1C35A3F00BC3C8F21AD /* EigenvalueDecomposition.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = EigenvalueDecomposition.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/Util/EigenvalueDecomposition.h"; sourceTree = SOURCE_ROOT; };
+		E8E4F579AC50F26DFCEA5753 /* ofxGrtMatrixPlot.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxGrtMatrixPlot.h; path = "../../third-party/openFrameworks/addons/ofxGrt/src/ofxGrtMatrixPlot.h"; sourceTree = SOURCE_ROOT; };
+		E9326E666D3692EB46AA1A4D /* RegressionTree.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = RegressionTree.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/RegressionModules/RegressionTree/RegressionTree.h"; sourceTree = SOURCE_ROOT; };
+		E938845707FA6B9773FE8854 /* UnlabelledData.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = UnlabelledData.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/DataStructures/UnlabelledData.h"; sourceTree = SOURCE_ROOT; };
+		EC6D530E0525517B4F0665A7 /* MixtureModel.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = MixtureModel.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/ClassificationModules/GMM/MixtureModel.h"; sourceTree = SOURCE_ROOT; };
+		EE5CC24DAC89E1168F9E0923 /* WarningLog.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = WarningLog.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/Util/WarningLog.h"; sourceTree = SOURCE_ROOT; };
+		EEBB1FA35D8B988351C6FBD0 /* TrainingResult.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = TrainingResult.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/Util/TrainingResult.h"; sourceTree = SOURCE_ROOT; };
+		EEF322DABE6605A63E1D79C0 /* CommandLineParser.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = CommandLineParser.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/Util/CommandLineParser.h"; sourceTree = SOURCE_ROOT; };
+		F094AC3DEEAD148D8F0C2D35 /* DebugLog.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = DebugLog.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/Util/DebugLog.h"; sourceTree = SOURCE_ROOT; };
+		F21D8ED3B215D7A81C682279 /* IndexedDouble.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = IndexedDouble.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/Util/IndexedDouble.h"; sourceTree = SOURCE_ROOT; };
+		F27487FA03169CDBC92552C4 /* ofxPanel.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxPanel.cpp; path = "../../third-party/openFrameworks/addons/ofxGui/src/ofxPanel.cpp"; sourceTree = SOURCE_ROOT; };
+		F49B9246C4649FACB91C5E11 /* RegressionSample.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = RegressionSample.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/DataStructures/RegressionSample.h"; sourceTree = SOURCE_ROOT; };
+		F4C65C227BF43DD8D32F7A88 /* GridSearch.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = GridSearch.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/CoreAlgorithms/GridSearch/GridSearch.h"; sourceTree = SOURCE_ROOT; };
+		F8E909CD20A2D50E70031780 /* ParticleFilter.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ParticleFilter.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/CoreAlgorithms/ParticleFilter/ParticleFilter.h"; sourceTree = SOURCE_ROOT; };
+		F9C7D06F118018EE7853F8BC /* PrincipalComponentAnalysis.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = PrincipalComponentAnalysis.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/CoreAlgorithms/PrincipalComponentAnalysis/PrincipalComponentAnalysis.h"; sourceTree = SOURCE_ROOT; };
+		FA8EFD855201968DE87859CA /* MeanShift.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = MeanShift.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/CoreAlgorithms/MeanShift/MeanShift.h"; sourceTree = SOURCE_ROOT; };
+		FC54DBBAA5B23FFE6E7FE620 /* ofxToggle.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxToggle.cpp; path = "../../third-party/openFrameworks/addons/ofxGui/src/ofxToggle.cpp"; sourceTree = SOURCE_ROOT; };
+		FC7C7EFD57701F506DBF3249 /* LowPassFilter.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = LowPassFilter.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/PreProcessingModules/LowPassFilter.h"; sourceTree = SOURCE_ROOT; };
+		FD2737EF40DDF6E36B948A3A /* KMeansFeatures.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = KMeansFeatures.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/FeatureExtractionModules/KMeansFeatures/KMeansFeatures.h"; sourceTree = SOURCE_ROOT; };
+		FD46B5AB1EBDD3C620780D3B /* GRT.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = GRT.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/GRT.h"; sourceTree = SOURCE_ROOT; };
+		FEF75B0E1D15BCF650C407A3 /* RBMQuantizer.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = RBMQuantizer.h; path = "../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include/GRT/FeatureExtractionModules/RBMQuantizer/RBMQuantizer.h"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,12 +252,252 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		020B9331949BD253BF91AF04 /* SelfOrganizingMap */ = {
+			isa = PBXGroup;
+			children = (
+				D6009B4BE92CB705381ED8F4 /* SelfOrganizingMap.h */,
+			);
+			name = SelfOrganizingMap;
+			sourceTree = "<group>";
+		};
+		034A3B52C4C906C90D13B9A8 /* SVM */ = {
+			isa = PBXGroup;
+			children = (
+				6F1DAD5E1402947486872A92 /* LIBSVM */,
+				B77B7A2448640639DC66F26F /* SVM.h */,
+			);
+			name = SVM;
+			sourceTree = "<group>";
+		};
+		044185BF648752B25E8B7FA3 /* DataStructures */ = {
+			isa = PBXGroup;
+			children = (
+				767F8F134391F741C4223C12 /* ClassificationData.h */,
+				16386D8DC7C6A8E7F5F0308D /* ClassificationDataStream.h */,
+				A25076249AE8D3FAAF94F5DB /* ClassificationSample.h */,
+				055F487E68015F2623E4EF8D /* Matrix.h */,
+				85F01769DF81BAC53B44400B /* MatrixFloat.h */,
+				E6DEED1C1B34641C76BB479D /* RegressionData.h */,
+				F49B9246C4649FACB91C5E11 /* RegressionSample.h */,
+				079DF4BB921D06EB04C4B252 /* TimeSeriesClassificationData.h */,
+				AB06033D947A46BC059C762B /* TimeSeriesClassificationDataStream.h */,
+				1954E89FB243258F58A1A304 /* TimeSeriesClassificationSample.h */,
+				1EB250B0B50A40D033C9A8B2 /* TimeSeriesPositionTracker.h */,
+				E938845707FA6B9773FE8854 /* UnlabelledData.h */,
+				B84F4A7DF2FAA238499809EC /* Vector.h */,
+				C437B95073D7FF61FFDE47F2 /* VectorFloat.h */,
+			);
+			name = DataStructures;
+			sourceTree = "<group>";
+		};
+		04CCF2373CE096B734D233B6 /* TimeseriesBuffer */ = {
+			isa = PBXGroup;
+			children = (
+				878DF4C9002284257079F44E /* TimeseriesBuffer.h */,
+			);
+			name = TimeseriesBuffer;
+			sourceTree = "<group>";
+		};
+		198B92AC5BAFEBC060D2E2E9 /* SwipeDetector */ = {
+			isa = PBXGroup;
+			children = (
+				1709E659C002C5C11F545DC5 /* SwipeDetector.h */,
+			);
+			name = SwipeDetector;
+			sourceTree = "<group>";
+		};
+		19F5D3C53CDA293D1DBFE759 /* KMeansFeatures */ = {
+			isa = PBXGroup;
+			children = (
+				FD2737EF40DDF6E36B948A3A /* KMeansFeatures.h */,
+			);
+			name = KMeansFeatures;
+			sourceTree = "<group>";
+		};
+		1F77C0070A2BF41C44B52164 /* MinDist */ = {
+			isa = PBXGroup;
+			children = (
+				ABE77604CAF693999819D7F9 /* MinDist.h */,
+				95420E0D2410B9CE3F042C3C /* MinDistModel.h */,
+			);
+			name = MinDist;
+			sourceTree = "<group>";
+		};
+		207BC48370BA0E1345A33B6E /* ClassificationModules */ = {
+			isa = PBXGroup;
+			children = (
+				AEC8C9D98F8C1F57E04716CB /* AdaBoost */,
+				A9387898B093150FBBEBA691 /* ANBC */,
+				94BD753A1B3151DED449222C /* BAG */,
+				7FC47A16F769DBB0F19F2C2F /* DecisionTree */,
+				D40BE0BBF125A8EE21C9DA65 /* DTW */,
+				AA4D63772FFD03F6589D40C4 /* FiniteStateMachine */,
+				ADB2B13ED3D0E6EB40CFB64F /* GMM */,
+				6B8A6CE02F5425ACC65BF151 /* HMM */,
+				7643FF807E07DEE69B59326B /* KNN */,
+				7136519E8E3409937385954F /* LDA */,
+				1F77C0070A2BF41C44B52164 /* MinDist */,
+				50BB377439C41122C0E84F55 /* ParticleClassifier */,
+				DC100D16176C7AABEFDA90A3 /* RandomForests */,
+				AE073AC1E431F7ED0FBE187F /* Softmax */,
+				034A3B52C4C906C90D13B9A8 /* SVM */,
+				198B92AC5BAFEBC060D2E2E9 /* SwipeDetector */,
+			);
+			name = ClassificationModules;
+			sourceTree = "<group>";
+		};
+		20C2F4D44794D3E54B4121FF /* MovementDetector */ = {
+			isa = PBXGroup;
+			children = (
+				040B716C62637A79140C2E39 /* MovementDetector.h */,
+			);
+			name = MovementDetector;
+			sourceTree = "<group>";
+		};
+		32C59DADB088E127AE54D930 /* MeanShift */ = {
+			isa = PBXGroup;
+			children = (
+				FA8EFD855201968DE87859CA /* MeanShift.h */,
+			);
+			name = MeanShift;
+			sourceTree = "<group>";
+		};
+		3A7E40491BD46D8407BBD659 /* PostProcessingModules */ = {
+			isa = PBXGroup;
+			children = (
+				7D9CCA3931400A1F897C7CBE /* ClassLabelChangeFilter.h */,
+				20CE9594F0B1B777BCB3CF35 /* ClassLabelFilter.h */,
+				D8ABF0370F84473E00EC80D6 /* ClassLabelTimeoutFilter.h */,
+			);
+			name = PostProcessingModules;
+			sourceTree = "<group>";
+		};
+		475BC74FD032E3AA659D1513 /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				69CF6EAB813F8D23702DD952 /* Cholesky.h */,
+				9B7088ED0FC73E3242226F74 /* CircularBuffer.h */,
+				395B885DE5765CE57DAFCDBF /* ClassificationResult.h */,
+				17FD11DCA18D08065B9E9EE2 /* ClassTracker.h */,
+				EEF322DABE6605A63E1D79C0 /* CommandLineParser.h */,
+				A738AD8A7FA2501A7FB139C5 /* DataType.h */,
+				F094AC3DEEAD148D8F0C2D35 /* DebugLog.h */,
+				E896B1C35A3F00BC3C8F21AD /* EigenvalueDecomposition.h */,
+				9E0CB8D9AF0D22F88DE700A9 /* ErrorLog.h */,
+				0E914FC3D3318ABBA2B67551 /* FileParser.h */,
+				0FDBC84371BC117AD1E8FD6A /* GRTCommon.h */,
+				11BC91762B69DFF14FA29329 /* GRTException.h */,
+				3994B3DC0E652BA499A6BF6A /* GRTTypedefs.h */,
+				E218C74BB87797E55DCDBFDF /* GRTVersionInfo.h */,
+				F21D8ED3B215D7A81C682279 /* IndexedDouble.h */,
+				80E7C5DD0D989AD577752EA9 /* InfoLog.h */,
+				7DC0CDBB49E9D3CBA00A562D /* Log.h */,
+				85DD4E083ADDBBA48B985269 /* LUDecomposition.h */,
+				827ADB48D17FF5DA48BCB764 /* MinMax.h */,
+				50D7B71FE1190B10E56B1ADB /* Observer.h */,
+				6EE009CFB8CC84994389883E /* ObserverManager.h */,
+				C9668CBD4361EAB0825CA1CC /* PeakDetection.h */,
+				CE56F97CE17AB3DEFDDD0075 /* Random.h */,
+				99E60ABF356C28606888A173 /* RangeTracker.h */,
+				43B7F907F692DABD8420DAB3 /* SVD.h */,
+				ADA45A8639B46DB470F1DB3C /* TestingLog.h */,
+				0F5818C97BB79D2580D1E796 /* TestInstanceResult.h */,
+				486E523BA734FC214BFDF64C /* TestResult.h */,
+				1A4F81440A759B3A158E8D3F /* ThreadPool.h */,
+				A6FF38873DCA2683113C2EF3 /* ThresholdCrossingDetector.h */,
+				3EED1568D36DA88D722A1BF9 /* Timer.h */,
+				143C0635CF4B6A9ADD98B8E9 /* TimeSeriesClassificationSampleTrimmer.h */,
+				B83C40296751C341E784A386 /* TimeStamp.h */,
+				E63D770D56555B3D66FA1EBB /* TrainingDataRecordingTimer.h */,
+				4FA02686E1FCB3B346BF0226 /* TrainingLog.h */,
+				EEBB1FA35D8B988351C6FBD0 /* TrainingResult.h */,
+				86D326FC2B851797BFA10A05 /* Util.h */,
+				EE5CC24DAC89E1168F9E0923 /* WarningLog.h */,
+			);
+			name = Util;
+			sourceTree = "<group>";
+		};
 		480A780D8D0308AE4A368801 /* ofxGui */ = {
 			isa = PBXGroup;
 			children = (
 				A763ED608B35AE3310251DEE /* src */,
 			);
 			name = ofxGui;
+			sourceTree = "<group>";
+		};
+		491C99D3C1F2F2EDDB7E7789 /* MovementTrajectoryFeatures */ = {
+			isa = PBXGroup;
+			children = (
+				D412BB81602B4ABF54B7A4B2 /* MovementTrajectoryFeatures.h */,
+			);
+			name = MovementTrajectoryFeatures;
+			sourceTree = "<group>";
+		};
+		4D29AC47B8B00595082B9F01 /* GaussianMixtureModels */ = {
+			isa = PBXGroup;
+			children = (
+				5F3969AA0A9D60D91CAEB7B8 /* GaussianMixtureModels.h */,
+			);
+			name = GaussianMixtureModels;
+			sourceTree = "<group>";
+		};
+		50404D45F8F7F7805FE48A7C /* TimeDomainFeatures */ = {
+			isa = PBXGroup;
+			children = (
+				6E5576944AB498B229BAE2B4 /* TimeDomainFeatures.h */,
+			);
+			name = TimeDomainFeatures;
+			sourceTree = "<group>";
+		};
+		50BB377439C41122C0E84F55 /* ParticleClassifier */ = {
+			isa = PBXGroup;
+			children = (
+				851C94D2DEDDDC4AECBCCA4C /* ParticleClassifier.h */,
+				AF9D194D2813F9EA6F069759 /* ParticleClassifierParticleFilter.h */,
+			);
+			name = ParticleClassifier;
+			sourceTree = "<group>";
+		};
+		518ABE5543005075509454B3 /* RegressionTree */ = {
+			isa = PBXGroup;
+			children = (
+				E9326E666D3692EB46AA1A4D /* RegressionTree.h */,
+				9B42A06E48F85145317DC372 /* RegressionTreeNode.h */,
+			);
+			name = RegressionTree;
+			sourceTree = "<group>";
+		};
+		58617E81CC7BFFEA186339FF /* Tree */ = {
+			isa = PBXGroup;
+			children = (
+				D721FB0134893E22EF68362C /* Node.h */,
+				0FC2A3F900C70F0D260C05FC /* Tree.h */,
+			);
+			name = Tree;
+			sourceTree = "<group>";
+		};
+		58F0667A550A7D4EF00D65B3 /* ZeroCrossingCounter */ = {
+			isa = PBXGroup;
+			children = (
+				95237758E5EFD58E0D89047C /* ZeroCrossingCounter.h */,
+			);
+			name = ZeroCrossingCounter;
+			sourceTree = "<group>";
+		};
+		6020A51EDEEBDC52E0A97FC8 /* LinearRegression */ = {
+			isa = PBXGroup;
+			children = (
+				CA10EC2705D69E1B8D2FA49F /* LinearRegression.h */,
+			);
+			name = LinearRegression;
+			sourceTree = "<group>";
+		};
+		64DC393DADDFA885D3B33216 /* LogisticRegression */ = {
+			isa = PBXGroup;
+			children = (
+				72B1C82EB089C9FC614A1AED /* LogisticRegression.h */,
+			);
+			name = LogisticRegression;
 			sourceTree = "<group>";
 		};
 		6948EE371B920CB800B5AC1A /* local_addons */ = {
@@ -115,40 +507,356 @@
 			name = local_addons;
 			sourceTree = "<group>";
 		};
+		6B8A6CE02F5425ACC65BF151 /* HMM */ = {
+			isa = PBXGroup;
+			children = (
+				D2BE1B433D1F57DC6E53DEAE /* ContinuousHiddenMarkovModel.h */,
+				C5CD16E16A06C5813B570E61 /* DiscreteHiddenMarkovModel.h */,
+				67B69449D51544DAE2B59C92 /* HMM.h */,
+				7684899E64DA43A156FD80F2 /* HMMEnums.h */,
+			);
+			name = HMM;
+			sourceTree = "<group>";
+		};
+		6E56497324467139F975A1D6 /* WeakClassifiers */ = {
+			isa = PBXGroup;
+			children = (
+				60591FF98756855DDFD90B22 /* DecisionStump.h */,
+				319CB4F6C11D247FE56A807E /* RadialBasisFunction.h */,
+				B6F0259595036C59F2D29EB4 /* WeakClassifier.h */,
+			);
+			name = WeakClassifiers;
+			sourceTree = "<group>";
+		};
+		6F1DAD5E1402947486872A92 /* LIBSVM */ = {
+			isa = PBXGroup;
+			children = (
+				A431A0D1A75C3F442490A202 /* libsvm.h */,
+			);
+			name = LIBSVM;
+			sourceTree = "<group>";
+		};
+		6F51FF99BB325BC6DFBDADE5 /* ParticleFilter */ = {
+			isa = PBXGroup;
+			children = (
+				64CF5E2DD44B788D83DBCAC7 /* Particle.h */,
+				F8E909CD20A2D50E70031780 /* ParticleFilter.h */,
+			);
+			name = ParticleFilter;
+			sourceTree = "<group>";
+		};
+		7136519E8E3409937385954F /* LDA */ = {
+			isa = PBXGroup;
+			children = (
+				9350E6EC4E28C86044DB2789 /* LDA.h */,
+			);
+			name = LDA;
+			sourceTree = "<group>";
+		};
+		763BC97595CB0CCC06D9F3D1 /* CoreAlgorithms */ = {
+			isa = PBXGroup;
+			children = (
+				C15BB3CB0660CC6C7DCAEA07 /* BernoulliRBM */,
+				7A6F861B407A4652A0678F50 /* EvolutionaryAlgorithm */,
+				84C6CA1CA2CE90142F15E2C1 /* GridSearch */,
+				8438E68F3EF0E990B5FC2AEC /* LeastSquares */,
+				32C59DADB088E127AE54D930 /* MeanShift */,
+				20C2F4D44794D3E54B4121FF /* MovementDetector */,
+				6F51FF99BB325BC6DFBDADE5 /* ParticleFilter */,
+				A3A92FA97F24F8C63A7634CC /* ParticleSwarmOptimization */,
+				A8B0C8CF50B9D57F7289EC2C /* PrincipalComponentAnalysis */,
+				58617E81CC7BFFEA186339FF /* Tree */,
+			);
+			name = CoreAlgorithms;
+			sourceTree = "<group>";
+		};
+		7643FF807E07DEE69B59326B /* KNN */ = {
+			isa = PBXGroup;
+			children = (
+				B829DFB5D8E964FF3DE97713 /* KNN.h */,
+			);
+			name = KNN;
+			sourceTree = "<group>";
+		};
+		77D1A57F3E4D4D2F48414A6B /* ContextModules */ = {
+			isa = PBXGroup;
+			children = (
+				3150A854D712348E820696C3 /* Gate.h */,
+			);
+			name = ContextModules;
+			sourceTree = "<group>";
+		};
+		7A6F861B407A4652A0678F50 /* EvolutionaryAlgorithm */ = {
+			isa = PBXGroup;
+			children = (
+				E73FF9335E80C82B9A171373 /* EvolutionaryAlgorithm.h */,
+				2CF1F4D200CC44D6AACB85B5 /* Individual.h */,
+			);
+			name = EvolutionaryAlgorithm;
+			sourceTree = "<group>";
+		};
+		7FC47A16F769DBB0F19F2C2F /* DecisionTree */ = {
+			isa = PBXGroup;
+			children = (
+				710A20BF78F4DAE53BF290FA /* DecisionTree.h */,
+				1C95397765766D11345CDA69 /* DecisionTreeClusterNode.h */,
+				DD8BDBD5161787611B27E84F /* DecisionTreeNode.h */,
+				3D26C064A3D8CFF534982FA7 /* DecisionTreeThresholdNode.h */,
+				107DEAD880B84F864C427F6A /* DecisionTreeTripleFeatureNode.h */,
+			);
+			name = DecisionTree;
+			sourceTree = "<group>";
+		};
+		8279E7F19382C67C1D784E1D /* grt */ = {
+			isa = PBXGroup;
+			children = (
+				C23FA6D206950FD446774458 /* include */,
+			);
+			name = grt;
+			sourceTree = "<group>";
+		};
 		82E22615FB1180BAE563C3BF /* src */ = {
 			isa = PBXGroup;
 			children = (
-				BA39BB16CF8B3A5C9CC62CA1 /* ofxGrt.h */,
-				F697431AF9BAEC37174C6918 /* ofxGrtMatrixPlot.cpp */,
-				D57D09820A832AC42BB9F59D /* ofxGrtMatrixPlot.h */,
-				F79B5FD915FF647929BABA22 /* ofxGrtTimeseriesPlot.cpp */,
-				6B1404007126313C391ED8CD /* ofxGrtTimeseriesPlot.h */,
+				7A451F0A26AD1F6604C914AF /* ofxGrt.h */,
+				7ACE6957882556257F46BB94 /* ofxGrtMatrixPlot.cpp */,
+				E8E4F579AC50F26DFCEA5753 /* ofxGrtMatrixPlot.h */,
+				3016C29D8E0735FBAEF55DFA /* ofxGrtTimeseriesPlot.cpp */,
+				8C2208E103C17F4A39DECE6F /* ofxGrtTimeseriesPlot.h */,
 			);
 			name = src;
+			sourceTree = "<group>";
+		};
+		8438E68F3EF0E990B5FC2AEC /* LeastSquares */ = {
+			isa = PBXGroup;
+			children = (
+				4181651F129E1563B13CB944 /* LinearLeastSquares.h */,
+			);
+			name = LeastSquares;
+			sourceTree = "<group>";
+		};
+		84C6CA1CA2CE90142F15E2C1 /* GridSearch */ = {
+			isa = PBXGroup;
+			children = (
+				F4C65C227BF43DD8D32F7A88 /* GridSearch.h */,
+			);
+			name = GridSearch;
+			sourceTree = "<group>";
+		};
+		884F05F3886360EC1220DB10 /* PreProcessingModules */ = {
+			isa = PBXGroup;
+			children = (
+				44157921EF040E78640058BB /* DeadZone.h */,
+				004F6D3458AA17342751DC79 /* Derivative.h */,
+				3362B9C90BA43DC326A5321A /* DoubleMovingAverageFilter.h */,
+				857DB45790D5AD10F96CF987 /* FIRFilter.h */,
+				4A704F8CB51E641515FCC9DD /* HighPassFilter.h */,
+				293E3A406C0BE297F4382858 /* LeakyIntegrator.h */,
+				FC7C7EFD57701F506DBF3249 /* LowPassFilter.h */,
+				58926AF7E6446FAEFD720309 /* MedianFilter.h */,
+				5F47DA3C906FBE26CF2C5303 /* MovingAverageFilter.h */,
+				81B16BF7D4737E6CCF0A4FF1 /* SavitzkyGolayFilter.h */,
+				835DBC3D0D914E3D4AF98BE7 /* WeightedAverageFilter.h */,
+			);
+			name = PreProcessingModules;
+			sourceTree = "<group>";
+		};
+		88A4B1505761415BC5996A32 /* KMeansQuantizer */ = {
+			isa = PBXGroup;
+			children = (
+				5A2E8ACD4D90608A70665DFD /* KMeansQuantizer.h */,
+			);
+			name = KMeansQuantizer;
+			sourceTree = "<group>";
+		};
+		8D5C4965C7DBA0469FACEC1C /* SOMQuantizer */ = {
+			isa = PBXGroup;
+			children = (
+				9AC8CA37932894B51F9BA1EF /* SOMQuantizer.h */,
+			);
+			name = SOMQuantizer;
+			sourceTree = "<group>";
+		};
+		8F9251007CE64FE1C99ADFA5 /* ClusterTree */ = {
+			isa = PBXGroup;
+			children = (
+				925DCC0AFAEE31AEF7467855 /* ClusterTree.h */,
+				9F14C1862F7098D82125EE9F /* ClusterTreeNode.h */,
+			);
+			name = ClusterTree;
+			sourceTree = "<group>";
+		};
+		917FDE72BE97897F4F8C2465 /* MovementIndex */ = {
+			isa = PBXGroup;
+			children = (
+				8262B0D0A20AC9A145555555 /* MovementIndex.h */,
+			);
+			name = MovementIndex;
+			sourceTree = "<group>";
+		};
+		94BD753A1B3151DED449222C /* BAG */ = {
+			isa = PBXGroup;
+			children = (
+				76C2BCD3FCC5755E8B2A800E /* BAG.h */,
+			);
+			name = BAG;
+			sourceTree = "<group>";
+		};
+		9BCC468228DA5FD1FA4E815B /* CoreModules */ = {
+			isa = PBXGroup;
+			children = (
+				02E0D524900AD6396CFA26A2 /* Classifier.h */,
+				4FFEC29B627089277303B723 /* Clusterer.h */,
+				6A6F0BB027A4102BE5DFE2CD /* Context.h */,
+				ADD2C98D1AB2060DAC1FAD21 /* FeatureExtraction.h */,
+				C57C0B7F9B32387FBB141018 /* GestureRecognitionPipeline.h */,
+				31990795E9CC2EE1AA29B5FF /* GRTBase.h */,
+				8C216BE9F03A0A5417311468 /* MLBase.h */,
+				65422A12710AD0D402B17EB3 /* PostProcessing.h */,
+				B4CC482E13A93E9034C6B014 /* PreProcessing.h */,
+				7A909DE4E202BD0ED406D8D6 /* Regressifier.h */,
+			);
+			name = CoreModules;
+			sourceTree = "<group>";
+		};
+		A1E7BA3FCB8B834C9B8CA045 /* RBMQuantizer */ = {
+			isa = PBXGroup;
+			children = (
+				FEF75B0E1D15BCF650C407A3 /* RBMQuantizer.h */,
+			);
+			name = RBMQuantizer;
+			sourceTree = "<group>";
+		};
+		A3A92FA97F24F8C63A7634CC /* ParticleSwarmOptimization */ = {
+			isa = PBXGroup;
+			children = (
+				6F63AC2F095A2CF7CCE072CE /* ParticleSwarmOptimization.h */,
+				AE79D686E6C441D77C27A88F /* PSOParticle.h */,
+			);
+			name = ParticleSwarmOptimization;
 			sourceTree = "<group>";
 		};
 		A763ED608B35AE3310251DEE /* src */ = {
 			isa = PBXGroup;
 			children = (
-				AD66BBECFB77E5330F685B98 /* ofxBaseGui.cpp */,
-				DAB51EDAED3BC9EB19E86376 /* ofxBaseGui.h */,
-				52F87D6DBD25D265701068D3 /* ofxButton.cpp */,
-				D43B2F0B2AF85E635B41C76F /* ofxButton.h */,
-				0072F7A129B0E41F1D446529 /* ofxGui.h */,
-				BA10FAE6073C7919A0C4BDFF /* ofxGuiGroup.cpp */,
-				0A69FDF9E77E6B2EA23FEA85 /* ofxGuiGroup.h */,
-				79E1A59929DA313EF94C4A3B /* ofxLabel.cpp */,
-				B66550FB49947ABEC1A2E888 /* ofxLabel.h */,
-				C44F31827CA1F0A961B5BDC9 /* ofxPanel.cpp */,
-				BB4A8BCA6363373E6049618D /* ofxPanel.h */,
-				736E8A02A7E138072C32BA22 /* ofxSlider.cpp */,
-				6DE32F7E2C47C661309EA711 /* ofxSlider.h */,
-				80EE2370F6D0FABECFB367FA /* ofxSliderGroup.cpp */,
-				038B77CDBDCF971DAC98B456 /* ofxSliderGroup.h */,
-				EA9A560C03461E9C82524DC4 /* ofxToggle.cpp */,
-				41F47ED737556CE82BDC9C3D /* ofxToggle.h */,
+				B29062C5077E0EBE48BC1E5E /* ofxBaseGui.cpp */,
+				4C42376EF0C93B60AB080532 /* ofxBaseGui.h */,
+				17C83082A0E9F6D2BB7FE07D /* ofxButton.cpp */,
+				C1D604CD10BE6BD87CEE2129 /* ofxButton.h */,
+				33AE35DBE2EBE926124EFA8A /* ofxGui.h */,
+				1F8E989A07FC7623F211CE84 /* ofxGuiGroup.cpp */,
+				33590F0CD7DAD6FE90515E35 /* ofxGuiGroup.h */,
+				64F25F34C1FF51D1DEB91164 /* ofxLabel.cpp */,
+				6EFCEE1D53FA8941E6503D8E /* ofxLabel.h */,
+				F27487FA03169CDBC92552C4 /* ofxPanel.cpp */,
+				00CE9583E881F7E346D71B77 /* ofxPanel.h */,
+				8FBE3DD02DBD21EB4812C6B1 /* ofxSlider.cpp */,
+				E3F8FD848281046FF1DBEFC8 /* ofxSlider.h */,
+				E28FFAE01315AB1CC3DFFE2E /* ofxSliderGroup.cpp */,
+				A97695183B2993F23875A518 /* ofxSliderGroup.h */,
+				FC54DBBAA5B23FFE6E7FE620 /* ofxToggle.cpp */,
+				C6BB7735611A4E1064304E5A /* ofxToggle.h */,
 			);
 			name = src;
+			sourceTree = "<group>";
+		};
+		A77936EDE525F0C1D7FCB6D1 /* MLP */ = {
+			isa = PBXGroup;
+			children = (
+				2F0B20FB708598C62C93A11F /* MLP.h */,
+				9BDFAD05EA19F24CF9BB7F33 /* Neuron.h */,
+			);
+			name = MLP;
+			sourceTree = "<group>";
+		};
+		A8B0C8CF50B9D57F7289EC2C /* PrincipalComponentAnalysis */ = {
+			isa = PBXGroup;
+			children = (
+				F9C7D06F118018EE7853F8BC /* PrincipalComponentAnalysis.h */,
+			);
+			name = PrincipalComponentAnalysis;
+			sourceTree = "<group>";
+		};
+		A9387898B093150FBBEBA691 /* ANBC */ = {
+			isa = PBXGroup;
+			children = (
+				0E5CFB9D21F2CC7ADECAFA6D /* ANBC.h */,
+				544B3121CD34709E7D063D00 /* ANBC_Model.h */,
+			);
+			name = ANBC;
+			sourceTree = "<group>";
+		};
+		AA4D63772FFD03F6589D40C4 /* FiniteStateMachine */ = {
+			isa = PBXGroup;
+			children = (
+				874024AB31FE6AA89665D3AA /* FiniteStateMachine.h */,
+				826B5E2343CF1F3BA28913E2 /* FSMParticle.h */,
+				A5D8C548D7BCA0BB26D8DA97 /* FSMParticleFilter.h */,
+			);
+			name = FiniteStateMachine;
+			sourceTree = "<group>";
+		};
+		ADB2B13ED3D0E6EB40CFB64F /* GMM */ = {
+			isa = PBXGroup;
+			children = (
+				E7F4C6AEF8F5B85D6D6A9EF8 /* GMM.h */,
+				EC6D530E0525517B4F0665A7 /* MixtureModel.h */,
+			);
+			name = GMM;
+			sourceTree = "<group>";
+		};
+		AE073AC1E431F7ED0FBE187F /* Softmax */ = {
+			isa = PBXGroup;
+			children = (
+				1005E636CDBA110C747D914F /* Softmax.h */,
+				153E766B211886C217FB707B /* SoftmaxModel.h */,
+			);
+			name = Softmax;
+			sourceTree = "<group>";
+		};
+		AEC8C9D98F8C1F57E04716CB /* AdaBoost */ = {
+			isa = PBXGroup;
+			children = (
+				3CDF494B85D75EDAFEE59650 /* AdaBoost.h */,
+				1D604C6DEFBADE35CA1140DE /* AdaBoostClassModel.h */,
+				6E56497324467139F975A1D6 /* WeakClassifiers */,
+			);
+			name = AdaBoost;
+			sourceTree = "<group>";
+		};
+		B16BF9B93D505943DC21AD96 /* GRT */ = {
+			isa = PBXGroup;
+			children = (
+				207BC48370BA0E1345A33B6E /* ClassificationModules */,
+				F9843D57B7B29D5E10EA5353 /* ClusteringModules */,
+				77D1A57F3E4D4D2F48414A6B /* ContextModules */,
+				763BC97595CB0CCC06D9F3D1 /* CoreAlgorithms */,
+				9BCC468228DA5FD1FA4E815B /* CoreModules */,
+				044185BF648752B25E8B7FA3 /* DataStructures */,
+				DC08954FEDC4F74ED8F47BFC /* FeatureExtractionModules */,
+				FD46B5AB1EBDD3C620780D3B /* GRT.h */,
+				3A7E40491BD46D8407BBD659 /* PostProcessingModules */,
+				884F05F3886360EC1220DB10 /* PreProcessingModules */,
+				BD41CB50E9B42290D7576522 /* RegressionModules */,
+				475BC74FD032E3AA659D1513 /* Util */,
+			);
+			name = GRT;
+			sourceTree = "<group>";
+		};
+		B736FF8C12CA7EBEF689FE6B /* HierarchicalClustering */ = {
+			isa = PBXGroup;
+			children = (
+				0DDF5879A936BFC6760B5DE7 /* HierarchicalClustering.h */,
+			);
+			name = HierarchicalClustering;
+			sourceTree = "<group>";
+		};
+		B948358DD53BB22EF97D7760 /* ArtificialNeuralNetworks */ = {
+			isa = PBXGroup;
+			children = (
+				A77936EDE525F0C1D7FCB6D1 /* MLP */,
+			);
+			name = ArtificialNeuralNetworks;
 			sourceTree = "<group>";
 		};
 		BB4B014C10F69532006C3DED /* addons */ = {
@@ -160,12 +868,100 @@
 			name = addons;
 			sourceTree = "<group>";
 		};
+		BD41CB50E9B42290D7576522 /* RegressionModules */ = {
+			isa = PBXGroup;
+			children = (
+				B948358DD53BB22EF97D7760 /* ArtificialNeuralNetworks */,
+				6020A51EDEEBDC52E0A97FC8 /* LinearRegression */,
+				64DC393DADDFA885D3B33216 /* LogisticRegression */,
+				D6C477B7C087EAF9A0EE9BFD /* MultidimensionalRegression */,
+				518ABE5543005075509454B3 /* RegressionTree */,
+			);
+			name = RegressionModules;
+			sourceTree = "<group>";
+		};
+		C15BB3CB0660CC6C7DCAEA07 /* BernoulliRBM */ = {
+			isa = PBXGroup;
+			children = (
+				4DEAE367F51E39C5CC5410BC /* BernoulliRBM.h */,
+			);
+			name = BernoulliRBM;
+			sourceTree = "<group>";
+		};
+		C23FA6D206950FD446774458 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				B16BF9B93D505943DC21AD96 /* GRT */,
+			);
+			name = include;
+			sourceTree = "<group>";
+		};
 		C567550D3311A5493C1231D0 /* ofxGrt */ = {
 			isa = PBXGroup;
 			children = (
 				82E22615FB1180BAE563C3BF /* src */,
+				C7E3474E2FA50051E55AB558 /* libs */,
 			);
 			name = ofxGrt;
+			sourceTree = "<group>";
+		};
+		C7E3474E2FA50051E55AB558 /* libs */ = {
+			isa = PBXGroup;
+			children = (
+				8279E7F19382C67C1D784E1D /* grt */,
+			);
+			name = libs;
+			sourceTree = "<group>";
+		};
+		C9B992345905C04605CBCF9B /* FFT */ = {
+			isa = PBXGroup;
+			children = (
+				4B8915EE653979776F1DCF8B /* FastFourierTransform.h */,
+				403DF6027DA472FD723AE7EE /* FFT.h */,
+				1DFE797BEB7C0278E8116AA0 /* FFTFeatures.h */,
+			);
+			name = FFT;
+			sourceTree = "<group>";
+		};
+		D40BE0BBF125A8EE21C9DA65 /* DTW */ = {
+			isa = PBXGroup;
+			children = (
+				44D31E205DEE99D75DB4FBBD /* DTW.h */,
+			);
+			name = DTW;
+			sourceTree = "<group>";
+		};
+		D6C477B7C087EAF9A0EE9BFD /* MultidimensionalRegression */ = {
+			isa = PBXGroup;
+			children = (
+				916A1815FA4C4B6A22B122B0 /* MultidimensionalRegression.h */,
+			);
+			name = MultidimensionalRegression;
+			sourceTree = "<group>";
+		};
+		DC08954FEDC4F74ED8F47BFC /* FeatureExtractionModules */ = {
+			isa = PBXGroup;
+			children = (
+				C9B992345905C04605CBCF9B /* FFT */,
+				19F5D3C53CDA293D1DBFE759 /* KMeansFeatures */,
+				88A4B1505761415BC5996A32 /* KMeansQuantizer */,
+				917FDE72BE97897F4F8C2465 /* MovementIndex */,
+				491C99D3C1F2F2EDDB7E7789 /* MovementTrajectoryFeatures */,
+				A1E7BA3FCB8B834C9B8CA045 /* RBMQuantizer */,
+				8D5C4965C7DBA0469FACEC1C /* SOMQuantizer */,
+				50404D45F8F7F7805FE48A7C /* TimeDomainFeatures */,
+				04CCF2373CE096B734D233B6 /* TimeseriesBuffer */,
+				58F0667A550A7D4EF00D65B3 /* ZeroCrossingCounter */,
+			);
+			name = FeatureExtractionModules;
+			sourceTree = "<group>";
+		};
+		DC100D16176C7AABEFDA90A3 /* RandomForests */ = {
+			isa = PBXGroup;
+			children = (
+				7CB191171155D0B4DDC25CB7 /* RandomForests.h */,
+			);
+			name = RandomForests;
 			sourceTree = "<group>";
 		};
 		E4328144138ABC890047C5CB /* Products */ = {
@@ -211,6 +1007,26 @@
 			name = openFrameworks;
 			sourceTree = "<group>";
 		};
+		E5BC0B8BC0916211871EED21 /* KMeans */ = {
+			isa = PBXGroup;
+			children = (
+				1DEC3FF5FA6FD671391D7D1B /* KMeans.h */,
+			);
+			name = KMeans;
+			sourceTree = "<group>";
+		};
+		F9843D57B7B29D5E10EA5353 /* ClusteringModules */ = {
+			isa = PBXGroup;
+			children = (
+				8F9251007CE64FE1C99ADFA5 /* ClusterTree */,
+				4D29AC47B8B00595082B9F01 /* GaussianMixtureModels */,
+				B736FF8C12CA7EBEF689FE6B /* HierarchicalClustering */,
+				E5BC0B8BC0916211871EED21 /* KMeans */,
+				020B9331949BD253BF91AF04 /* SelfOrganizingMap */,
+			);
+			name = ClusteringModules;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -222,6 +1038,7 @@
 				E4B69B590A3A1756003C02F2 /* Frameworks */,
 				E4B6FFFD0C3F9AB9008CF71C /* ShellScript */,
 				E4C2427710CC5ABF004149E2 /* CopyFiles */,
+				8466F1851C04CA0E00918B1C /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -278,6 +1095,19 @@
 /* End PBXReferenceProxy section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		8466F1851C04CA0E00918B1C /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 12;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# ---- Code Sign App Package ----\n \n# WARNING: You may have to run Clean in Xcode after changing CODE_SIGN_IDENTITY!\n\n# Verify that $CODE_SIGN_IDENTITY is set\nif [ -z \"${CODE_SIGN_IDENTITY}\" ] ; then\necho \"CODE_SIGN_IDENTITY needs to be set for framework code-signing\"\nexit 0\nfi\n\nif [ -z \"${CODE_SIGN_ENTITLEMENTS}\" ] ; then\necho \"CODE_SIGN_ENTITLEMENTS needs to be set for framework code-signing!\"\n\nif [ \"${CONFIGURATION}\" = \"Release\" ] ; then\nexit 1\nelse\n# Code-signing is optional for non-release builds.\nexit 0\nfi\nfi\n\nITEMS=\"\"\n\nFRAMEWORKS_DIR=\"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}\"\necho \"$FRAMEWORKS_DIR\"\nif [ -d \"$FRAMEWORKS_DIR\" ] ; then\nFRAMEWORKS=$(find \"${FRAMEWORKS_DIR}\" -depth -type d -name \"*.framework\" -or -name \"*.dylib\" -or -name \"*.bundle\" | sed -e \"s/\\(.*framework\\)/\\1\\/Versions\\/A\\//\")\nRESULT=$?\nif [[ $RESULT != 0 ]] ; then\nexit 1\nfi\n\nITEMS=\"${FRAMEWORKS}\"\nfi\n\nLOGINITEMS_DIR=\"${TARGET_BUILD_DIR}/${CONTENTS_FOLDER_PATH}/Library/LoginItems/\"\nif [ -d \"$LOGINITEMS_DIR\" ] ; then\nLOGINITEMS=$(find \"${LOGINITEMS_DIR}\" -depth -type d -name \"*.app\")\nRESULT=$?\nif [[ $RESULT != 0 ]] ; then\nexit 1\nfi\n\nITEMS=\"${ITEMS}\"$'\\n'\"${LOGINITEMS}\"\nfi\n\n# Prefer the expanded name, if available.\nCODE_SIGN_IDENTITY_FOR_ITEMS=\"${EXPANDED_CODE_SIGN_IDENTITY_NAME}\"\nif [ \"${CODE_SIGN_IDENTITY_FOR_ITEMS}\" = \"\" ] ; then\n# Fall back to old behavior.\nCODE_SIGN_IDENTITY_FOR_ITEMS=\"${CODE_SIGN_IDENTITY}\"\nfi\n\necho \"Identity:\"\necho \"${CODE_SIGN_IDENTITY_FOR_ITEMS}\"\n\necho \"Entitlements:\"\necho \"${CODE_SIGN_ENTITLEMENTS}\"\n\necho \"Found:\"\necho \"${ITEMS}\"\n\n# Change the Internal Field Separator (IFS) so that spaces in paths will not cause problems below.\nSAVED_IFS=$IFS\nIFS=$(echo -en \"\\n\\b\")\n\n# Loop through all items.\nfor ITEM in $ITEMS;\ndo\necho \"Signing '${ITEM}'\"\ncodesign --force --verbose --sign \"${CODE_SIGN_IDENTITY_FOR_ITEMS}\" --entitlements \"${CODE_SIGN_ENTITLEMENTS}\" \"${ITEM}\"\nRESULT=$?\nif [[ $RESULT != 0 ]] ; then\necho \"Failed to sign '${ITEM}'.\"\nIFS=$SAVED_IFS\nexit 1\nfi\ndone\n\n# Restore $IFS.\nIFS=$SAVED_IFS\n";
+		};
 		E4B6FFFD0C3F9AB9008CF71C /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -289,7 +1119,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "rsync -aved ../../../of_v0.9.0_osx_release/libs/fmodex/lib/osx/libfmodex.dylib \"$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Contents/MacOS/\"; install_name_tool -change ./libfmodex.dylib @executable_path/libfmodex.dylib \"$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Contents/MacOS/$PRODUCT_NAME\";\nmkdir -p \"$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Contents/Resources/\"\nrsync -aved \"$ICON_FILE\" \"$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Contents/Resources/\"\nrsync -aved ../../../of_v0.9.0_osx_release/libs/glut/lib/osx/GLUT.framework \"$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Contents/Frameworks/\"\n";
+			shellScript = "mkdir -p \"$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Contents/Resources/\"\n# Copy default icon file into App/Resources\nrsync -aved \"$ICON_FILE\" \"$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Contents/Resources/\"\n# Copy bin/data into App/Resources\nrsync -avz --exclude='.DS_Store' \"${SRCROOT}/bin/data/\" \"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/data/\"\n# Copy libfmod and change install directory for fmod to run\nrsync -aved ../../third-party/openFrameworks/libs/fmodex/lib/osx/libfmodex.dylib \"$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Contents/Frameworks/\";\ninstall_name_tool -change @executable_path/libfmodex.dylib @executable_path/../Frameworks/libfmodex.dylib \"$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Contents/MacOS/$PRODUCT_NAME\";\n# Copy GLUT framework (must remove for AppStore submissions)\nrsync -aved ../../third-party/openFrameworks/libs/glut/lib/osx/GLUT.framework \"$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Contents/Frameworks/\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -301,16 +1131,16 @@
 				E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */,
 				E4B69E210A3A1BDC003C02F2 /* ofApp.cpp in Sources */,
 				48F7FEF8914B64EA7053CD0A /* istream.cpp in Sources */,
-				5DF33A2C6EC19CC2E227FD8B /* ofxGrtMatrixPlot.cpp in Sources */,
-				A6BC808DC2B0340E4C10178A /* ofxGrtTimeseriesPlot.cpp in Sources */,
-				F2CDDADE2D40BADA4A3325DF /* ofxBaseGui.cpp in Sources */,
-				C37DC2E9DFDEFCECB0755E9F /* ofxButton.cpp in Sources */,
-				CE718E9984ABA35224826815 /* ofxGuiGroup.cpp in Sources */,
-				D000EAD4D8AC05233DC384BB /* ofxLabel.cpp in Sources */,
-				E6842849AE22F9B3A46445A9 /* ofxPanel.cpp in Sources */,
-				5505ED9891890C1B510B85BA /* ofxSlider.cpp in Sources */,
-				B358E52665ED949800202AE5 /* ofxSliderGroup.cpp in Sources */,
-				6D0527B5701F95239E23F411 /* ofxToggle.cpp in Sources */,
+				E2565612498DE15079C283A3 /* ofxGrtMatrixPlot.cpp in Sources */,
+				798434EF9EE5EE2E41E2F0DE /* ofxGrtTimeseriesPlot.cpp in Sources */,
+				A9F16933D69101A8B2D7DC24 /* ofxBaseGui.cpp in Sources */,
+				281E397702AFF84B373377A5 /* ofxButton.cpp in Sources */,
+				ED0398432D326C847E821F12 /* ofxGuiGroup.cpp in Sources */,
+				B5B6A3DBA86CA86AD71CDE31 /* ofxLabel.cpp in Sources */,
+				4C01A7D4BC8BE15DE60CCB82 /* ofxPanel.cpp in Sources */,
+				DD956AF23DA8C97565D245E4 /* ofxSlider.cpp in Sources */,
+				F21B1E9A4D08953A47D1411A /* ofxSliderGroup.cpp in Sources */,
+				53560FBFF75362D7BE463255 /* ofxToggle.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -348,11 +1178,11 @@
 				HEADER_SEARCH_PATHS = (
 					"$(OF_CORE_HEADERS)",
 					src,
-					../../../of_v0.9.0_osx_release/addons/ofxGrt/src,
-					/usr/local/include,
-					../../../of_v0.9.0_osx_release/addons/ofxGui/src,
+					"../../third-party/openFrameworks/addons/ofxGrt/src",
+					"../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include",
+					"../../third-party/openFrameworks/addons/ofxGui/src",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CPLUSPLUSFLAGS = (
 					"-D__MACOSX_CORE__",
@@ -361,8 +1191,7 @@
 				OTHER_LDFLAGS = (
 					"$(OF_CORE_FRAMEWORKS)",
 					"$(OF_CORE_LIBS)",
-					"-L/usr/local/lib",
-					"-lgrt",
+					"../../third-party/openFrameworks/addons/ofxGrt/libs/grt/lib/osx/libgrt.a",
 				);
 				SDKROOT = macosx;
 			};
@@ -391,11 +1220,11 @@
 				HEADER_SEARCH_PATHS = (
 					"$(OF_CORE_HEADERS)",
 					src,
-					../../../of_v0.9.0_osx_release/addons/ofxGrt/src,
-					/usr/local/include,
-					../../../of_v0.9.0_osx_release/addons/ofxGui/src,
+					"../../third-party/openFrameworks/addons/ofxGrt/src",
+					"../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include",
+					"../../third-party/openFrameworks/addons/ofxGui/src",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				OTHER_CPLUSPLUSFLAGS = (
 					"-D__MACOSX_CORE__",
 					"-mtune=native",
@@ -403,8 +1232,7 @@
 				OTHER_LDFLAGS = (
 					"$(OF_CORE_FRAMEWORKS)",
 					"$(OF_CORE_LIBS)",
-					"-L/usr/local/lib",
-					"-lgrt",
+					"../../third-party/openFrameworks/addons/ofxGrt/libs/grt/lib/osx/libgrt.a",
 				);
 				SDKROOT = macosx;
 			};
@@ -420,27 +1248,26 @@
 					"$(inherited)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
 				);
-				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../../of_v0.9.0_osx_release/libs/glut/lib/osx\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../third-party/openFrameworks/libs/glut/lib/osx\"";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_MODEL_TUNING = NONE;
 				HEADER_SEARCH_PATHS = (
 					"$(OF_CORE_HEADERS)",
 					src,
-					../../../of_v0.9.0_osx_release/addons/ofxGrt/src,
-					/usr/local/include,
-					../../../of_v0.9.0_osx_release/addons/ofxGui/src,
+					"../../third-party/openFrameworks/addons/ofxGrt/src",
+					"../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include",
+					"../../third-party/openFrameworks/addons/ofxGui/src",
 				);
 				ICON = "$(ICON_NAME_DEBUG)";
 				ICON_FILE = "$(ICON_FILE_PATH)$(ICON)";
 				INFOPLIST_FILE = "openFrameworks-Info.plist";
-				INSTALL_PATH = "$(HOME)/Applications";
+				INSTALL_PATH = /Applications;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"$(OF_CORE_FRAMEWORKS)",
 					"$(OF_CORE_LIBS)",
-					"-L/usr/local/lib",
-					"-lgrt",
+					"../../third-party/openFrameworks/addons/ofxGrt/libs/grt/lib/osx/libgrt.a",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = cc.openFrameworks.ofapp;
 				PRODUCT_NAME = "$(TARGET_NAME)Debug";
@@ -458,26 +1285,25 @@
 					"$(inherited)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
 				);
-				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../../of_v0.9.0_osx_release/libs/glut/lib/osx\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../third-party/openFrameworks/libs/glut/lib/osx\"";
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_MODEL_TUNING = NONE;
 				HEADER_SEARCH_PATHS = (
 					"$(OF_CORE_HEADERS)",
 					src,
-					../../../of_v0.9.0_osx_release/addons/ofxGrt/src,
-					/usr/local/include,
-					../../../of_v0.9.0_osx_release/addons/ofxGui/src,
+					"../../third-party/openFrameworks/addons/ofxGrt/src",
+					"../../third-party/openFrameworks/addons/ofxGrt/libs/grt/include",
+					"../../third-party/openFrameworks/addons/ofxGui/src",
 				);
 				ICON = "$(ICON_NAME_RELEASE)";
 				ICON_FILE = "$(ICON_FILE_PATH)$(ICON)";
 				INFOPLIST_FILE = "openFrameworks-Info.plist";
-				INSTALL_PATH = "$(HOME)/Applications";
+				INSTALL_PATH = /Applications;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"$(OF_CORE_FRAMEWORKS)",
 					"$(OF_CORE_LIBS)",
-					"-L/usr/local/lib",
-					"-lgrt",
+					"../../third-party/openFrameworks/addons/ofxGrt/libs/grt/lib/osx/libgrt.a",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = cc.openFrameworks.ofapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";

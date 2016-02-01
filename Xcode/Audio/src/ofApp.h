@@ -62,10 +62,10 @@ class ofApp : public ofBaseApp {
     int predicted_label_;
 
     // Visuals
-    GRT::ofxGrtTimeseriesPlot plot_inputs_;
-    GRT::ofxGrtTimeseriesPlot plot_pre_processed_;
-    vector<GRT::ofxGrtTimeseriesPlot> plot_features_;
-    vector<GRT::ofxGrtTimeseriesPlot> plot_samples_;
+    ofxGrtTimeseriesPlot plot_inputs_;
+    ofxGrtTimeseriesPlot plot_pre_processed_;
+    vector<ofxGrtTimeseriesPlot> plot_features_;
+    vector<ofxGrtTimeseriesPlot> plot_samples_;
     vector<std::string> plot_samples_info_;
 
     // Panel for storing and loading pipeline.

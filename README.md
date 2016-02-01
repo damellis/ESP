@@ -30,7 +30,7 @@ make it impossible to version control `ofxGrt` (as
 Instead, we create a symlink to make openFrameworks happy.
 
 ```
-$ ln -s third-party/ofxGrt third-party/openFrameworks/addons/ofxGrt
+$ ln -s $(pwd)/third-party/ofxGrt/ third-party/openFrameworks/addons/ofxGrt
 ```
 
 We are currently using stable versions (master branch) of all of them.
