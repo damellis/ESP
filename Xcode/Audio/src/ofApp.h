@@ -36,10 +36,10 @@ class ofApp : public ofBaseApp {
   private:
     void useStream(IStream &stream);
     void usePipeline(GRT::GestureRecognitionPipeline &pipeline);
-    
+
     friend void useStream(IStream &stream);
     friend void usePipeline(GRT::GestureRecognitionPipeline &pipeline);
-  
+
     // Currently, we support labels (stored in label_) from 1 to 9.
     const uint32_t kNumMaxLabels_ = 9;
     uint8_t label_;
@@ -70,7 +70,7 @@ class ofApp : public ofBaseApp {
     // Visuals
     ofxGrtTimeseriesPlot plot_inputs_;
     vector<ofxGrtTimeseriesPlot> plot_pre_processed_;
-    vector<ofxGrtTimeseriesPlot> plot_features_;
+    vector<vector<ofxGrtTimeseriesPlot>> plot_features_;
     vector<ofxGrtTimeseriesPlot> plot_samples_;
     vector<std::string> plot_samples_info_;
 
