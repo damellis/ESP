@@ -1,0 +1,9 @@
+[submodule "third-party/ofxGrt"]
+	path = third-party/ofxGrt
+	url = git@github.com:nebgnahz/ofxGrt.git
+[submodule "third-party/grt"]
+	path = third-party/grt
+	url = git@github.com:damellis/grt.git
+[submodule "openFrameworks"]
+	path = third-party/openFrameworks
+	url = git@github.com:openFrameworks/openFrameworks.git

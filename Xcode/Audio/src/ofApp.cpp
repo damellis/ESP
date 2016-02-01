@@ -35,7 +35,7 @@ void ofApp::setup() {
         FeatureExtraction* fe = pipeline_.getFeatureExtractionModule(
             num_feature_modules - 1);
         for (int i = 0; i < fe->getNumOutputDimensions(); i++) {
-            GRT::ofxGrtTimeseriesPlot plot;
+            ofxGrtTimeseriesPlot plot;
             plot.setup(kBufferSize_, 1, "Feature");
             plot.setDrawInfoText(true);
             plot_features_.push_back(plot);
@@ -43,7 +43,7 @@ void ofApp::setup() {
     }
 
     for (int i = 0; i < kNumMaxLabels_; i++) {
-        GRT::ofxGrtTimeseriesPlot plot;
+        ofxGrtTimeseriesPlot plot;
         plot.setup(kBufferSize_, 1, "Label");
         plot.setDrawInfoText(true);
         plot.setRanges(-1, 1, true);
