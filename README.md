@@ -34,3 +34,14 @@ $ ln -s third-party/ofxGrt third-party/openFrameworks/addons/ofxGrt
 ```
 
 We are currently using stable versions (master branch) of all of them.
+
+# Tips
+
+Since openFrameworks's repo size is too
+[large](https://github.com/openframeworks/openFrameworks/wiki/Moving-binaries-out-of-the-repo),
+a nice hack is to control the depth by: `--depth 1` after `init`:
+
+```
+$ git submodule init
+$ git submodule update --depth 1 -- third-party/openFrameworks
+```
