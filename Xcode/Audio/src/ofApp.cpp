@@ -21,7 +21,7 @@ void ofApp::setup() {
 
     istream_->onDataReadyEvent(this, &ofApp::onDataIn);
 
-    plot_inputs_.setup(kBufferSize_, istream_->getNumDimensions(), "Input");
+    plot_inputs_.setup(kBufferSize_, istream_->getNumOutputDimensions(), "Input");
     plot_inputs_.setDrawGrid(true);
     plot_inputs_.setDrawInfoText(true);
 
@@ -52,14 +52,14 @@ void ofApp::setup() {
 
     for (int i = 0; i < kNumMaxLabels_; i++) {
         ofxGrtTimeseriesPlot plot;
-        plot.setup(kBufferSize_, 1, "Label");
+        plot.setup(kBufferSize_, istream_->getNumOutputDimensions(), "Label");
         plot.setDrawInfoText(true);
         plot.setRanges(-1, 1, true);
         plot_samples_.push_back(plot);
         plot_samples_info_.push_back("");
     }
 
-    training_data_.setNumDimensions(istream_->getNumDimensions());
+    training_data_.setNumDimensions(istream_->getNumOutputDimensions());
 //    training_data_.setDatasetName("Audio");
 //    training_data_.setInfoText("This data contains audio data");
     predicted_label_ = 0;

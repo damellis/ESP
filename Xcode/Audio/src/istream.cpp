@@ -49,7 +49,7 @@ void AudioStream::stop() {
     }
 }
 
-int AudioStream::getNumDimensions() {
+int AudioStream::getNumInputDimensions() {
     return 2; // set by the call to sound_stream->setup() above
 }
 
@@ -89,7 +89,7 @@ void SerialStream::stop() {
     }
 }
 
-int SerialStream::getNumDimensions() {
+int SerialStream::getNumInputDimensions() {
     return 1;
 }
 
@@ -172,7 +172,7 @@ void ASCIISerialStream::stop() {
     }
 }
 
-int ASCIISerialStream::getNumDimensions() {
+int ASCIISerialStream::getNumInputDimensions() {
     return numDimensions_;
 }
 
@@ -256,7 +256,7 @@ void FirmataStream::stop() {
     }
 }
 
-int FirmataStream::getNumDimensions() {
+int FirmataStream::getNumInputDimensions() {
     return pins_.size();
 }
 

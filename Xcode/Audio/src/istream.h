@@ -27,7 +27,12 @@ class IStream {
     virtual void useUSBPort(int i) {};
     virtual void useAnalogPin(int i) {};
     
-    virtual int getNumDimensions() = 0;
+    virtual int getNumInputDimensions() = 0;
+    virtual int getNumOutputDimensions() {
+        vector<double> input(getNumInputDimensions(), 1.0);
+        vector<double> output = normalize(input);
+        return output.size();
+    }
 
     typedef std::function<double(double)> normalizeFunc;
     typedef std::function<vector<double>(vector<double>)> vectorNormalizeFunc;
@@ -75,7 +80,7 @@ class AudioStream : public ofBaseApp, public IStream {
     void audioIn(float *input, int buffer_size, int nChannel);
     virtual void start() final;
     virtual void stop() final;
-    virtual int getNumDimensions() final;
+    virtual int getNumInputDimensions() final;
   private:
     unique_ptr<ofSoundStream> sound_stream_;
 };
@@ -85,7 +90,7 @@ class SerialStream : public IStream {
     SerialStream();
     virtual void start() final;
     virtual void stop() final;
-    virtual int getNumDimensions() final;
+    virtual int getNumInputDimensions() final;
     virtual void useUSBPort(int i);
     virtual void useAnalogPin(int i);
   private:
@@ -107,7 +112,7 @@ class ASCIISerialStream : public IStream {
     ASCIISerialStream(int kBaud, int numDimensions);
     virtual void start() final;
     virtual void stop() final;
-    virtual int getNumDimensions() final;
+    virtual int getNumInputDimensions() final;
     virtual void useUSBPort(int i);
   private:
     int kBaud_;
@@ -127,7 +132,7 @@ class FirmataStream : public IStream {
     FirmataStream();
     virtual void start() final;
     virtual void stop() final;
-    virtual int getNumDimensions() final;
+    virtual int getNumInputDimensions() final;
     virtual void useUSBPort(int i);
     virtual void useAnalogPin(int i);
   private:
