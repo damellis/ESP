@@ -26,7 +26,10 @@ vector<double> IStream::normalize(vector<double> input) {
 
 AudioStream::AudioStream() :
         sound_stream_(new ofSoundStream()) {
-    sound_stream_->setup(this, 0, 2, 44100, 256, 4);
+    sound_stream_->setup(this, 0, 2,
+                         kOfSoundStream_SamplingRate,
+                         kOfSoundStream_BufferSize,
+                         kOfSoundStream_nBuffers);
     sound_stream_->stop();
 }
 
