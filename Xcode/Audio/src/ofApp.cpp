@@ -8,6 +8,44 @@
 // single output will be more visual.
 const uint32_t kTooManyFeaturesThreshold = 32;
 
+class Palette {
+  public:
+    vector<ofColor> generate(uint32_t n) {
+        // TODO(benzh) fill instead of re-generate.
+        if (n > size) {
+            size = n;
+            do_generate(size);
+        }
+
+        std::vector<ofColor> sliced(colors.begin(), colors.begin() + n);
+        return sliced;
+    }
+
+    Palette() : size(256) {
+        do_generate(size);
+    }
+  private:
+    void do_generate(uint32_t n) {
+        uint32_t numDimensions = n;
+        // Code snippet from ofxGrtTimeseriesPlot.cpp
+
+        colors.resize(n);
+        // Setup the default colors
+        if( numDimensions >= 1 ) colors[0] = ofColor(255,0,0); //red
+        if( numDimensions >= 2 ) colors[1] = ofColor(0,255,0); //green
+        if( numDimensions >= 3 ) colors[2] = ofColor(0,0,255); //blue
+        //Randomize the remaining colors
+        for(unsigned int n=3; n<numDimensions; n++){
+            colors[n][0] = ofRandom(50,255);
+            colors[n][1] = ofRandom(50,255);
+            colors[n][2] = ofRandom(50,255);
+        }
+    }
+
+    uint32_t size;
+    std::vector<ofColor> colors;
+};
+
 void ofApp::useStream(IStream &stream) {
     istream_ = &stream;
 }
@@ -29,16 +67,18 @@ void ofApp::setup() {
     plot_inputs_.setDrawGrid(true);
     plot_inputs_.setDrawInfoText(true);
 
+    Palette color_palette;
     // Below is just proof-of-concept. The setup is quite hard-coded and we
     // should enrich this once the UI design is ready.
     size_t num_pre_processing = pipeline_->getNumPreProcessingModules();
     for (int i = 0; i < num_pre_processing; i++) {
         PreProcessing* pp = pipeline_->getPreProcessingModule(i);
+        uint32_t dim = pp->getNumOutputDimensions();
         ofxGrtTimeseriesPlot plot;
-        plot.setup(kBufferSize_, pp->getNumOutputDimensions(),
-                                  "PreProcessing");
+        plot.setup(kBufferSize_, dim, "PreProcessing");
         plot.setDrawGrid(true);
         plot.setDrawInfoText(true);
+        plot.setColorPalette(color_palette.generate(dim));
         plot_pre_processed_.push_back(plot);
     }
 
@@ -49,10 +89,11 @@ void ofApp::setup() {
         FeatureExtraction* fe = pipeline_->getFeatureExtractionModule(i);
         uint32_t feature_dim = fe->getNumOutputDimensions();
         if (feature_dim < kTooManyFeaturesThreshold) {
-            for (int i = 0; i < fe->getNumOutputDimensions(); i++) {
+            for (int i = 0; i < feature_dim; i++) {
                 ofxGrtTimeseriesPlot plot;
                 plot.setup(kBufferSize_, 1, "Feature");
                 plot.setDrawInfoText(true);
+                plot.setColorPalette(color_palette.generate(feature_dim));
                 feature_at_stage_i.push_back(plot);
             }
         } else {
@@ -60,6 +101,7 @@ void ofApp::setup() {
             ofxGrtTimeseriesPlot plot;
             plot.setup(feature_dim, 1, "Feature");
             plot.setDrawInfoText(true);
+            plot.setColorPalette(color_palette.generate(feature_dim));
             feature_at_stage_i.push_back(plot);
         }
 
@@ -67,9 +109,11 @@ void ofApp::setup() {
     }
 
     for (int i = 0; i < kNumMaxLabels_; i++) {
+        uint32_t label_dim = istream_->getNumOutputDimensions();
         ofxGrtTimeseriesPlot plot;
-        plot.setup(kBufferSize_, istream_->getNumOutputDimensions(), "Label");
+        plot.setup(kBufferSize_, label_dim, "Label");
         plot.setDrawInfoText(true);
+        plot.setColorPalette(color_palette.generate(label_dim));
         plot.setRanges(-1, 1, true);
         plot_samples_.push_back(plot);
         plot_samples_info_.push_back("");
@@ -147,7 +191,7 @@ void ofApp::update() {
         if (is_recording_) {
             sample_data_.push_back(data_point);
         }
-        
+
         if (pipeline_->getTrained()) {
             pipeline_->predict(data_point);
             predicted_label_ = pipeline_->getPredictedClassLabel();
