@@ -147,6 +147,11 @@ void ofApp::update() {
         if (is_recording_) {
             sample_data_.push_back(data_point);
         }
+        
+        if (pipeline_->getTrained()) {
+            pipeline_->predict(data_point);
+            predicted_label_ = pipeline_->getPredictedClassLabel();
+        }
     }
 }
 
@@ -231,7 +236,7 @@ void ofApp::draw() {
 
     ofDrawBitmapString("Instructions: "
                        "`s` - start; `e` - pause; 1-9 training samples;"
-                       "`t` - train; `p` - predict; `h` - panel",
+                       "`t` - train; `h` - panel",
                        plotX, plotY - margin);
 
     ofPopStyle();
@@ -297,10 +302,6 @@ void ofApp::keyPressed(int key){
             istream_->stop();
             input_data_.clear();
             break;
-        case 'p':
-            sample_data_.clear();
-            is_recording_ = true;
-            break;
     }
 }
 
@@ -316,11 +317,6 @@ void ofApp::keyReleased(int key) {
         plot_samples_info_[label_ - 1] =
                 std::to_string(sample_data_.getNumRows()) + " points";
 
-    } else if (key == 'p') {
-        for (int i = 0; i < sample_data_.getNumRows(); i++) {
-            pipeline_->predict(sample_data_.getRowVector(i));
-        }
-        predicted_label_ = pipeline_->getPredictedClassLabel();
     }
 }
 
