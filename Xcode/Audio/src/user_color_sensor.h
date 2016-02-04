@@ -6,14 +6,14 @@ using namespace GRT;
 // Normalize by dividing each dimension by the total magnitude.
 // Also add the magnitude as an additional feature.
 vector<double> normalize(vector<double> input) {
-    double magnitude;
-    
+    double magnitude = 0.0;
+
     for (int i = 0; i < input.size(); i++) magnitude += (input[i] * input[i]);
     magnitude = sqrt(magnitude);
     for (int i = 0; i < input.size(); i++) input[i] /= magnitude;
-    
+
     input.push_back(magnitude);
-    
+
     return input;
 }
 
@@ -24,7 +24,7 @@ void setup() {
     stream.useUSBPort(0);
     stream.useNormalizer(normalize);
     useStream(stream);
-    
+
     pipeline.addPreProcessingModule(MovingAverageFilter(5, 4));
     //pipeline.addFeatureExtractionModule(TimeDomainFeatures(10, 1, 3, false, true, true, false, false));
     pipeline.setClassifier(ANBC());
