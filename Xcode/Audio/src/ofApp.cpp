@@ -114,7 +114,7 @@ void ofApp::setup() {
         plot.setup(kBufferSize_, label_dim, "Label" + std::to_string(i + 1));
         plot.setDrawInfoText(false);
         plot.setColorPalette(color_palette.generate(label_dim));
-        plot.setRanges(-1, 1, true);
+        //plot.setRanges(-1, 1, true);
         plot_samples_.push_back(plot);
         plot_samples_info_.push_back("");
     }
@@ -251,8 +251,15 @@ void ofApp::draw() {
 
     // Currently we support kNumMaxLabels_ labels
     int width = plotW / kNumMaxLabels_;
+    int minY = plot_samples_[0].getRanges().first;
+    int maxY = plot_samples_[0].getRanges().second;
+    for (int i = 1; i < kNumMaxLabels_; i++) {
+        if (plot_samples_[i].getRanges().first < minY) minY = plot_samples_[i].getRanges().first;
+        if (plot_samples_[i].getRanges().second > maxY) maxY = plot_samples_[i].getRanges().second;
+    }
     for (int i = 0; i < kNumMaxLabels_; i++) {
         int x = plotX + i * width;
+        plot_samples_[i].setRanges(minY, maxY, true);
         plot_samples_[i].draw(x, plotY, width, plotH - 3 * margin);
         ofDrawBitmapString(plot_samples_info_[i], x, plotY + plotH - margin);
     }
