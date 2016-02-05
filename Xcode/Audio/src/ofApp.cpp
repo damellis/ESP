@@ -75,7 +75,7 @@ void ofApp::setup() {
         PreProcessing* pp = pipeline_->getPreProcessingModule(i);
         uint32_t dim = pp->getNumOutputDimensions();
         ofxGrtTimeseriesPlot plot;
-        plot.setup(kBufferSize_, dim, "PreProcessing");
+        plot.setup(kBufferSize_, dim, "PreProcessing Stage " + std::to_string(i));
         plot.setDrawGrid(true);
         plot.setDrawInfoText(true);
         plot.setColorPalette(color_palette.generate(dim));
@@ -91,7 +91,7 @@ void ofApp::setup() {
         if (feature_dim < kTooManyFeaturesThreshold) {
             for (int i = 0; i < feature_dim; i++) {
                 ofxGrtTimeseriesPlot plot;
-                plot.setup(kBufferSize_, 1, "Feature");
+                plot.setup(kBufferSize_, 1, "Feature " + std::to_string(i));
                 plot.setDrawInfoText(true);
                 plot.setColorPalette(color_palette.generate(feature_dim));
                 feature_at_stage_i.push_back(plot);
@@ -111,8 +111,8 @@ void ofApp::setup() {
     for (int i = 0; i < kNumMaxLabels_; i++) {
         uint32_t label_dim = istream_->getNumOutputDimensions();
         ofxGrtTimeseriesPlot plot;
-        plot.setup(kBufferSize_, label_dim, "Label");
-        plot.setDrawInfoText(true);
+        plot.setup(kBufferSize_, label_dim, "Label" + std::to_string(i + 1));
+        plot.setDrawInfoText(false);
         plot.setColorPalette(color_palette.generate(label_dim));
         plot.setRanges(-1, 1, true);
         plot_samples_.push_back(plot);
@@ -212,9 +212,8 @@ void ofApp::draw() {
     ofPushStyle();
     ofPushMatrix();
     {
-        ofDrawBitmapString("Input:", plotX, plotY - margin);
         plot_inputs_.draw(plotX, plotY, plotW, plotH);
-        plotY += plotH + 3 * margin;
+        plotY += plotH + margin;
     }
     ofPopStyle();
     ofPopMatrix();
@@ -224,10 +223,8 @@ void ofApp::draw() {
         ofPushStyle();
         ofPushMatrix();
         {
-            ofDrawBitmapString("PreProcessed stage: " + std::to_string(i),
-                               plotX, plotY - margin);
             plot_pre_processed_[i].draw(plotX, plotY, plotW, plotH);
-            plotY += plotH + 3 * margin;
+            plotY += plotH + margin;
         }
         ofPopStyle();
         ofPopMatrix();
@@ -238,13 +235,11 @@ void ofApp::draw() {
         ofPushStyle();
         ofPushMatrix();
         {
-            ofDrawBitmapString("Feature stage: " + std::to_string(i),
-                               plotX, plotY - margin);
             int width = plotW / plot_features_[i].size();
             for (int j = 0; j < plot_features_[i].size(); j++) {
                 plot_features_[i][j].draw(plotX + j * width, plotY, width, plotH);
             }
-            plotY += plotH + 3 * margin;
+            plotY += plotH + margin;
         }
         ofPopStyle();
         ofPopMatrix();
@@ -253,7 +248,6 @@ void ofApp::draw() {
     // Training samples management
     ofPushStyle();
     ofPushMatrix();
-    ofDrawBitmapString("Training Samples:", plotX, plotY - margin);
 
     // Currently we support kNumMaxLabels_ labels
     int width = plotW / kNumMaxLabels_;
@@ -261,7 +255,6 @@ void ofApp::draw() {
         int x = plotX + i * width;
         plot_samples_[i].draw(x, plotY, width, plotH - 3 * margin);
         ofDrawBitmapString(plot_samples_info_[i], x, plotY + plotH - margin);
-
     }
 
     plotY += plotH + 3 * margin;
