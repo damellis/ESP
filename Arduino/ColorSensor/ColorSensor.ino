@@ -25,8 +25,9 @@ void loop() {
   
   Serial.print(red); Serial.print("\t");
   Serial.print(green); Serial.print("\t");
-  Serial.print(blue); Serial.print("\t");
-  Serial.print(clear); Serial.println();
+  Serial.print(blue); // Serial.print("\t");
+  // Serial.print(clear);
+  Serial.println();
 
 //  uint32_t sum = clear;
 //  float r, g, b;

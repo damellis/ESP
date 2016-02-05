@@ -7,3 +7,7 @@
 [submodule "openFrameworks"]
 	path = third-party/openFrameworks
 	url = git@github.com:openFrameworks/openFrameworks.git
+[submodule "Arduino/libraries/grt"]
+	path = Arduino/libraries/grt
+	url = https://github.com/damellis/grt.git
+	branch = avr
