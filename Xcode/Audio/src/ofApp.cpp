@@ -357,7 +357,9 @@ void ofApp::keyReleased(int key) {
 
         plot_samples_[label_ - 1].setData(sample_data_);
         plot_samples_info_[label_ - 1] =
-                std::to_string(sample_data_.getNumRows()) + " points";
+                std::to_string(training_data_.getClassTracker()[
+                  training_data_.getClassLabelIndexValue(label_)].
+                    counter) + " samples";
 
     }
 }
