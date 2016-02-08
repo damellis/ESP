@@ -249,6 +249,10 @@ void ofApp::draw() {
             ofLog(OF_LOG_ERROR) << "Unknown tag!";
             break;
     }
+
+    if (!gui_hide_) {
+        gui_.draw();
+    }
 }
 
 void ofApp::drawLivePipeline() {
