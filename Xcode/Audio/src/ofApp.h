@@ -40,6 +40,8 @@ class ofApp : public ofBaseApp {
     void drawLivePipeline();
     void drawTrainingInfo();
 
+    void loadTrainingData();
+
     void useStream(IStream &stream);
     void usePipeline(GRT::GestureRecognitionPipeline &pipeline);
 

@@ -243,7 +243,8 @@ void ofApp::draw() {
         case DATA:
             ofDrawColoredBitmapString(ofColor(0xFF, 0, 0), "\t\t\t\t[D]ata",
                                       left_margin, top_margin);
-            ofLog() << "Not Implemented";
+            ofDrawBitmapString("Not Implemented",
+                               left_margin, top_margin + margin);
             break;
         default:
             ofLog(OF_LOG_ERROR) << "Unknown tag!";
@@ -352,6 +353,18 @@ void ofApp::exit() {
     }
     istream_->stop();
 
+    // Save training data here!
+    ofFileDialogResult result = ofSystemSaveDialog("TrainingData.grt", "Save your training data?");
+    if (result.bSuccess) {
+        training_data_.save(result.getPath());
+    }
+
+    // Save test data here!
+    result = ofSystemSaveDialog("TestData.grt", "Save your test data?");
+    if (result.bSuccess) {
+        test_data_.save(result.getPath());
+    }
+
     // Clear all listeners.
     save_pipeline_button_.removeListener(this, &ofApp::savePipeline);
     load_pipeline_button_.removeListener(this, &ofApp::loadPipeline);
@@ -410,8 +423,12 @@ void ofApp::keyPressed(int key){
             break;
         }
 
+        case 'l':
+            loadTrainingData();
+            break;
         case 'h':
             gui_hide_ = !gui_hide_;
+            break;
         case 's':
             istream_->start();
             break;
@@ -419,7 +436,6 @@ void ofApp::keyPressed(int key){
             istream_->stop();
             input_data_.clear();
             break;
-
         case 'P':
             fragment_ = PIPELINE;
             break;
@@ -429,6 +445,25 @@ void ofApp::keyPressed(int key){
         case 'D':
             fragment_ = DATA;
             break;
+    }
+}
+
+void ofApp::loadTrainingData() {
+    GRT::ClassificationData training_data;
+    ofFileDialogResult result = ofSystemLoadDialog("Load existing data", true);
+    if (!training_data.load(result.getPath()) ){
+        ofLog(OF_LOG_ERROR) << "Failed to load the training data!"
+                            << " path: " << result.getPath();
+    }
+
+    training_data_ = training_data;
+    const vector<uint32_t> labels = training_data_.getClassLabels();
+    for (uint32_t label : labels) {
+        ClassificationData data = training_data_.getClassData(label);
+        MatrixDouble raw_data = data.getDataAsMatrixDouble();
+        plot_samples_info_[label - 1] =
+                std::to_string(raw_data.getNumRows()) + " samples";
+        plot_samples_[label - 1].setData(raw_data);
     }
 }
 
@@ -442,8 +477,7 @@ void ofApp::keyReleased(int key) {
 
         plot_samples_[label_ - 1].setData(sample_data_);
         plot_samples_info_[label_ - 1] =
-                std::to_string(sample_data_.getNumRows()) + " points";
-
+                std::to_string(sample_data_.getNumRows()) + " samples";
     }
 }
 
