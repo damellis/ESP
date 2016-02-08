@@ -128,8 +128,12 @@ void ofApp::setup() {
     gui_hide_ = true;
     gui_.add(save_pipeline_button_.setup("Save Pipeline", 200, 30));
     gui_.add(load_pipeline_button_.setup("Load Pipeline", 200, 30));
+    gui_.add(save_training_data_button_.setup("Save Training Data", 200, 30));
+    gui_.add(load_training_data_button_.setup("Load Training Data", 200, 30));
     save_pipeline_button_.addListener(this, &ofApp::savePipeline);
     load_pipeline_button_.addListener(this, &ofApp::loadPipeline);
+    save_training_data_button_.addListener(this, &ofApp::saveTrainingData);
+    load_training_data_button_.addListener(this, &ofApp::loadTrainingData);
 
     ofBackground(54, 54, 54);
 }
@@ -153,6 +157,31 @@ void ofApp::loadPipeline() {
     // TODO(benzh) Compare the two pipelines and warn the user if the
     // loaded one is different from his.
     (*pipeline_) = pipeline;
+}
+
+void ofApp::saveTrainingData() {
+    if (!training_data_.save("training_data.grt")) {
+        ofLog(OF_LOG_ERROR) << "Failed to save the training data";
+    }
+}
+
+void ofApp::loadTrainingData() {
+    GRT::TimeSeriesClassificationData training_data;
+    if (!training_data.load("training_data.grt")) {
+        ofLog(OF_LOG_ERROR) << "Failed to load the training data";
+    }
+
+    training_data_ = training_data;
+    auto trackers = training_data_.getClassTracker();
+    for (auto tracker : trackers) {
+        plot_samples_info_[tracker.classLabel - 1] =
+                std::to_string(tracker.counter) + " samples";
+    }
+    
+    for (int i = 0; i < training_data_.getNumSamples(); i++) {
+        plot_samples_[training_data_[i].getClassLabel() - 1].setData(
+                training_data_[i].getData());
+    }
 }
 
 //--------------------------------------------------------------

@@ -81,6 +81,10 @@ class ofApp : public ofBaseApp {
     void savePipeline();
     ofxButton load_pipeline_button_;
     void loadPipeline();
+    ofxButton save_training_data_button_;
+    void saveTrainingData();
+    ofxButton load_training_data_button_;
+    void loadTrainingData();
 
     // Multithreading to avoid GUI blocked.
     std::thread training_thread_;
