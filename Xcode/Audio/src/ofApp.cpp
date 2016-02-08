@@ -324,7 +324,7 @@ void ofApp::keyPressed(int key){
                 training_thread_.join();
             }
 
-            GRT::ClassificationData data_copy = training_data_;
+            GRT::TimeSeriesClassificationData data_copy = training_data_;
             auto training_func = [this, data_copy]() mutable {
                 ofLog() << "Training started";
                 if (pipeline_->train(data_copy)) {
@@ -353,9 +353,7 @@ void ofApp::keyPressed(int key){
 void ofApp::keyReleased(int key) {
     is_recording_ = false;
     if (key >= '1' && key <= '9') {
-        for (int i = 0; i < sample_data_.getNumRows(); i++) {
-            training_data_.addSample(label_, sample_data_.getRowVector(i));
-        }
+        training_data_.addSample(label_, sample_data_);
 
         plot_samples_[label_ - 1].setData(sample_data_);
         plot_samples_info_[label_ - 1] =

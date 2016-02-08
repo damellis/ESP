@@ -64,7 +64,7 @@ class ofApp : public ofBaseApp {
 
     // Pipeline
     GRT::GestureRecognitionPipeline *pipeline_;
-    GRT::ClassificationData training_data_;
+    GRT::TimeSeriesClassificationData training_data_;
     int predicted_label_;
 
     // Visuals
