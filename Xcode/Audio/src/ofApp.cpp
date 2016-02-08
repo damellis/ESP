@@ -332,7 +332,7 @@ void ofApp::drawTrainingInfo() {
     uint32_t margin_top = 40;
     uint32_t margin = 30;
     uint32_t stage_left = margin_left;
-    uint32_t stage_top = 200;
+    uint32_t stage_top = 300;
     uint32_t stage_width = ofGetWidth() - margin;
     uint32_t stage_height = (ofGetHeight() - stage_top - 4 * margin) / 2;
 
@@ -376,7 +376,8 @@ void ofApp::exit() {
     istream_->stop();
 
     // Save training data here!
-    ofFileDialogResult result = ofSystemSaveDialog("TrainingData.grt", "Save your training data?");
+    ofFileDialogResult result = ofSystemSaveDialog("TrainingData.grt",
+                                                   "Save your training data?");
     if (result.bSuccess) {
         training_data_.save(result.getPath());
     }
