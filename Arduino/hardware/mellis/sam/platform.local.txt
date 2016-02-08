@@ -1,0 +1,2 @@
+#compiler.c.elf.extra_flags=-lstdc++
+compiler.c.elf.cmd=arm-none-eabi-g++

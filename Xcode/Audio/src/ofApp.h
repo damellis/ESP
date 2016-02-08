@@ -41,8 +41,6 @@ class ofApp : public ofBaseApp {
     void drawTrainingInfo();
     void drawAnalysis();
 
-    void loadTrainingData();
-
     void useStream(IStream &stream);
     void usePipeline(GRT::GestureRecognitionPipeline &pipeline);
 
@@ -75,8 +73,8 @@ class ofApp : public ofBaseApp {
 
     // Pipeline
     GRT::GestureRecognitionPipeline *pipeline_;
-    GRT::ClassificationData training_data_;
-    GRT::ClassificationData test_data_;
+    GRT::TimeSeriesClassificationData training_data_;
+    GRT::TimeSeriesClassificationData test_data_;
     float training_accuracy_;
     int predicted_label_;
 
@@ -95,6 +93,10 @@ class ofApp : public ofBaseApp {
     void savePipeline();
     ofxButton load_pipeline_button_;
     void loadPipeline();
+    ofxButton save_training_data_button_;
+    void saveTrainingData();
+    ofxButton load_training_data_button_;
+    void loadTrainingData();
 
     // Multithreading to avoid GUI blocked.
     std::thread training_thread_;

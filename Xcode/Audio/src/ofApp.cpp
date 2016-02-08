@@ -82,7 +82,7 @@ void ofApp::setup() {
         PreProcessing* pp = pipeline_->getPreProcessingModule(i);
         uint32_t dim = pp->getNumOutputDimensions();
         ofxGrtTimeseriesPlot plot;
-        plot.setup(kBufferSize_, dim, "PreProcessing");
+        plot.setup(kBufferSize_, dim, "PreProcessing Stage " + std::to_string(i));
         plot.setDrawGrid(true);
         plot.setDrawInfoText(true);
         plot.setColorPalette(color_palette.generate(dim));
@@ -100,7 +100,7 @@ void ofApp::setup() {
         if (feature_dim < kTooManyFeaturesThreshold) {
             for (int i = 0; i < feature_dim; i++) {
                 ofxGrtTimeseriesPlot plot;
-                plot.setup(kBufferSize_, 1, "Feature");
+                plot.setup(kBufferSize_, 1, "Feature " + std::to_string(i));
                 plot.setDrawInfoText(true);
                 plot.setColorPalette(color_palette.generate(feature_dim));
                 feature_at_stage_i.push_back(plot);
@@ -121,8 +121,8 @@ void ofApp::setup() {
     for (int i = 0; i < kNumMaxLabels_; i++) {
         uint32_t label_dim = istream_->getNumOutputDimensions();
         ofxGrtTimeseriesPlot plot;
-        plot.setup(kBufferSize_, label_dim, "Label");
-        plot.setDrawInfoText(true);
+        plot.setup(kBufferSize_, label_dim, "Label" + std::to_string(i + 1));
+        plot.setDrawInfoText(false);
         plot.setColorPalette(color_palette.generate(label_dim));
         plot_samples_.push_back(plot);
         plot_samples_info_.push_back("");
@@ -137,8 +137,12 @@ void ofApp::setup() {
     gui_hide_ = true;
     gui_.add(save_pipeline_button_.setup("Save Pipeline", 200, 30));
     gui_.add(load_pipeline_button_.setup("Load Pipeline", 200, 30));
+    gui_.add(save_training_data_button_.setup("Save Training Data", 200, 30));
+    gui_.add(load_training_data_button_.setup("Load Training Data", 200, 30));
     save_pipeline_button_.addListener(this, &ofApp::savePipeline);
     load_pipeline_button_.addListener(this, &ofApp::loadPipeline);
+    save_training_data_button_.addListener(this, &ofApp::saveTrainingData);
+    load_training_data_button_.addListener(this, &ofApp::loadTrainingData);
 
     ofBackground(54, 54, 54);
 }
@@ -162,6 +166,12 @@ void ofApp::loadPipeline() {
     // TODO(benzh) Compare the two pipelines and warn the user if the
     // loaded one is different from his.
     (*pipeline_) = pipeline;
+}
+
+void ofApp::saveTrainingData() {
+    if (!training_data_.save("training_data.grt")) {
+        ofLog(OF_LOG_ERROR) << "Failed to save the training data";
+    }
 }
 
 //--------------------------------------------------------------
@@ -324,7 +334,7 @@ void ofApp::drawTrainingInfo() {
     uint32_t stage_left = margin_left;
     uint32_t stage_top = 200;
     uint32_t stage_width = ofGetWidth() - margin;
-    uint32_t stage_height = (ofGetHeight() - stage_top - 3 * margin) / 2;
+    uint32_t stage_height = (ofGetHeight() - stage_top - 4 * margin) / 2;
 
     // 1. Draw training data summary
     std::string data_stats = training_data_.getStatsAsString();
@@ -355,7 +365,8 @@ void ofApp::drawAnalysis() {
     uint32_t margin_top = 40;
     uint32_t margin = 30;
 
-    ofDrawBitmapString("Will show confusion matrix, etc here", margin_left, margin_top);
+    ofDrawBitmapString("Will show confusion matrix, etc here", margin_left,
+                       margin_top);
 }
 
 void ofApp::exit() {
@@ -418,7 +429,7 @@ void ofApp::keyPressed(int key){
                     training_accuracy_ = pipeline_->getTestAccuracy();
                     plot_prediction_.setup(kBufferSize_ * 10,
                                            pipeline_->getNumClasses());
-                    plot_prediction_.setRanges(0,1);
+                    plot_prediction_.setRanges(-0.1, 1.1);
                     return true;
                 } else {
                     ofLog(OF_LOG_ERROR) << "Failed to train the model";
@@ -460,7 +471,7 @@ void ofApp::keyPressed(int key){
 }
 
 void ofApp::loadTrainingData() {
-    GRT::ClassificationData training_data;
+    GRT::TimeSeriesClassificationData training_data;
     ofFileDialogResult result = ofSystemLoadDialog("Load existing data", true);
     if (!training_data.load(result.getPath()) ){
         ofLog(OF_LOG_ERROR) << "Failed to load the training data!"
@@ -468,13 +479,15 @@ void ofApp::loadTrainingData() {
     }
 
     training_data_ = training_data;
-    const vector<uint32_t> labels = training_data_.getClassLabels();
-    for (uint32_t label : labels) {
-        ClassificationData data = training_data_.getClassData(label);
-        MatrixDouble raw_data = data.getDataAsMatrixDouble();
-        plot_samples_info_[label - 1] =
-                std::to_string(raw_data.getNumRows()) + " samples";
-        plot_samples_[label - 1].setData(raw_data);
+    auto trackers = training_data_.getClassTracker();
+    for (auto tracker : trackers) {
+        plot_samples_info_[tracker.classLabel - 1] =
+                std::to_string(tracker.counter) + " samples";
+    }
+
+    for (int i = 0; i < training_data_.getNumSamples(); i++) {
+        plot_samples_[training_data_[i].getClassLabel() - 1].setData(
+                training_data_[i].getData());
     }
 }
 
@@ -482,13 +495,13 @@ void ofApp::loadTrainingData() {
 void ofApp::keyReleased(int key) {
     is_recording_ = false;
     if (key >= '1' && key <= '9') {
-        for (int i = 0; i < sample_data_.getNumRows(); i++) {
-            training_data_.addSample(label_, sample_data_.getRowVector(i));
-        }
+        training_data_.addSample(label_, sample_data_);
 
         plot_samples_[label_ - 1].setData(sample_data_);
         plot_samples_info_[label_ - 1] =
-                std::to_string(sample_data_.getNumRows()) + " samples";
+                std::to_string(training_data_.getClassTracker()[
+                  training_data_.getClassLabelIndexValue(label_)].
+                    counter) + " samples";
     }
 }
 
