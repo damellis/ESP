@@ -4,7 +4,7 @@
 using namespace GRT;
 uint32_t DIM = 2;
 uint32_t kFFT_WindowSize = 512;
-uint32_t kFFT_HopSize = kFFT_WindowSize;
+uint32_t kFFT_HopSize = 1;
 
 AudioStream stream;
 GestureRecognitionPipeline pipeline;

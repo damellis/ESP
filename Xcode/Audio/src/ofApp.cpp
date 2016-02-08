@@ -204,6 +204,7 @@ void ofApp::update() {
         if (pipeline_->getTrained()) {
             pipeline_->predict(data_point);
             predicted_label_ = pipeline_->getPredictedClassLabel();
+            plot_prediction_.update(pipeline_->getClassLikelihoods());
         }
     }
 }
@@ -222,9 +223,12 @@ void ofApp::draw() {
     // Hacky panel on the top.
     const uint32_t left_margin = 10;
     const uint32_t top_margin = 20;
+    const uint32_t margin = 30;
 
     ofDrawBitmapString("[P]ipeline\t[T]raining\t[D]ata",
                        left_margin, top_margin);
+    ofDrawLine(0, top_margin + 5, ofGetWidth(), top_margin + 5);
+
     switch (fragment_) {
         case PIPELINE:
             ofDrawColoredBitmapString(ofColor(0xFF, 0, 0), "[P]ipeline\t",
@@ -310,9 +314,36 @@ void ofApp::drawLivePipeline() {
 }
 
 void ofApp::drawTrainingInfo() {
-    // Write training summary
-    // Draw input
-    // Draw live prediction
+    uint32_t margin_left = 10;
+    uint32_t margin_top = 40;
+    uint32_t margin = 30;
+    uint32_t stage_left = margin_left;
+    uint32_t stage_top = 200;
+    uint32_t stage_width = ofGetWidth() - margin;
+    uint32_t stage_height = (ofGetHeight() - stage_top - 3 * margin) / 2;
+
+    // 1. Draw training data summary
+    std::string data_stats = training_data_.getStatsAsString();
+    ofDrawBitmapString(data_stats, margin_left, margin_top);
+
+    // 2. Draw Input
+    ofPushStyle();
+    plot_inputs_.draw(stage_left, stage_top, stage_width, stage_height);
+    ofPopStyle();
+    stage_top += stage_height + margin;
+
+    // 3. Draw prediction with likelihood
+    ofPushStyle();
+    plot_prediction_.draw(stage_left, stage_top, stage_width, stage_height);
+    ofPopStyle();
+    stage_top += stage_height + margin;
+
+    std::stringstream stream;
+    stream << "Training Accuracy: "
+           << fixed << setprecision(2) << training_accuracy_
+           << "% ";
+    stream << "Predicted Label: " << predicted_label_;
+    ofDrawBitmapString(stream.str(), stage_left, stage_top);
 }
 
 void ofApp::exit() {
@@ -348,11 +379,22 @@ void ofApp::keyPressed(int key){
                 training_thread_.join();
             }
 
-            GRT::ClassificationData data_copy = training_data_;
-            auto training_func = [this, data_copy]() -> bool {
+            // This parition doesn't make sense for audio data?
+            test_data_ = training_data_.partition(60, true);
+
+            auto training_func = [this]() -> bool {
                 ofLog() << "Training started";
-                if (pipeline_->train(data_copy)) {
+                if (pipeline_->train(training_data_)) {
                     ofLog() << "Training is successful";
+
+                    if (!pipeline_->test(test_data_)) {
+                        ofLog(OF_LOG_ERROR) << "Failed to test the pipeline!\n";
+                    }
+
+                    training_accuracy_ = pipeline_->getTestAccuracy();
+                    plot_prediction_.setup(kBufferSize_ * 10,
+                                           pipeline_->getNumClasses());
+                    plot_prediction_.setRanges(0,1);
                     return true;
                 } else {
                     ofLog(OF_LOG_ERROR) << "Failed to train the model";

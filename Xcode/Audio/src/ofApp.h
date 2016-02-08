@@ -73,6 +73,8 @@ class ofApp : public ofBaseApp {
     // Pipeline
     GRT::GestureRecognitionPipeline *pipeline_;
     GRT::ClassificationData training_data_;
+    GRT::ClassificationData test_data_;
+    float training_accuracy_;
     int predicted_label_;
 
     // Visuals
@@ -81,6 +83,7 @@ class ofApp : public ofBaseApp {
     vector<vector<ofxGrtTimeseriesPlot>> plot_features_;
     vector<ofxGrtTimeseriesPlot> plot_samples_;
     vector<std::string> plot_samples_info_;
+    ofxGrtTimeseriesPlot plot_prediction_;
 
     // Panel for storing and loading pipeline.
     ofxPanel gui_;
