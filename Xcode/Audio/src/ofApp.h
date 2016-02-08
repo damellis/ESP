@@ -16,6 +16,7 @@
 
 class ofApp : public ofBaseApp {
   public:
+    ofApp();
     void setup();
     void update();
     void draw();
@@ -34,11 +35,18 @@ class ofApp : public ofBaseApp {
     void gotMessage(ofMessage msg);
 
   private:
+    enum Fragment { PIPELINE, TRAINING, DATA };
+    Fragment fragment_;
+    void drawLivePipeline();
+    void drawTrainingInfo();
+
     void useStream(IStream &stream);
     void usePipeline(GRT::GestureRecognitionPipeline &pipeline);
 
     friend void useStream(IStream &stream);
     friend void usePipeline(GRT::GestureRecognitionPipeline &pipeline);
+
+    uint32_t num_pipeline_stages_;
 
     // Currently, we support labels (stored in label_) from 1 to 9.
     const uint32_t kNumMaxLabels_ = 9;

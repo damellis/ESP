@@ -12,9 +12,8 @@ GestureRecognitionPipeline pipeline;
 void setup() {
     useStream(stream);
 
-    pipeline.addPreProcessingModule(MovingAverageFilter(5, DIM));
     pipeline.addPreProcessingModule(
-        LowPassFilter(0.1, 1, DIM, 30, 1.0 / kOfSoundStream_SamplingRate));
+        LowPassFilter(0.1, 1, DIM, 800, 1.0 / kOfSoundStream_SamplingRate));
     pipeline.addFeatureExtractionModule(
         FFT(kFFT_WindowSize, kFFT_HopSize,
             DIM, FFT::RECTANGULAR_WINDOW, true, false));

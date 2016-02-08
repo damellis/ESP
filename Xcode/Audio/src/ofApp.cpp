@@ -54,6 +54,9 @@ void ofApp::usePipeline(GRT::GestureRecognitionPipeline &pipeline) {
     pipeline_ = &pipeline;
 }
 
+ofApp::ofApp() : fragment_(PIPELINE), num_pipeline_stages_(0) {
+}
+
 //--------------------------------------------------------------
 void ofApp::setup() {
     is_recording_ = false;
@@ -68,9 +71,13 @@ void ofApp::setup() {
     plot_inputs_.setDrawInfoText(true);
 
     Palette color_palette;
-    // Below is just proof-of-concept. The setup is quite hard-coded and we
-    // should enrich this once the UI design is ready.
-    size_t num_pre_processing = pipeline_->getNumPreProcessingModules();
+
+    // Parse the user supplied pipeline and extract information:
+    //  o num_pipeline_stages_
+
+    // 1. Parse pre-processing.
+    uint32_t num_pre_processing = pipeline_->getNumPreProcessingModules();
+    num_pipeline_stages_ += num_pre_processing;
     for (int i = 0; i < num_pre_processing; i++) {
         PreProcessing* pp = pipeline_->getPreProcessingModule(i);
         uint32_t dim = pp->getNumOutputDimensions();
@@ -82,7 +89,9 @@ void ofApp::setup() {
         plot_pre_processed_.push_back(plot);
     }
 
-    size_t num_feature_modules = pipeline_->getNumFeatureExtractionModules();
+    // 2. Parse pre-processing.
+    uint32_t num_feature_modules = pipeline_->getNumFeatureExtractionModules();
+    num_pipeline_stages_ += num_feature_modules;
     for (int i = 0; i < num_feature_modules; i++) {
         vector<ofxGrtTimeseriesPlot> feature_at_stage_i;
 
@@ -100,6 +109,7 @@ void ofApp::setup() {
             // We will have only one here.
             ofxGrtTimeseriesPlot plot;
             plot.setup(feature_dim, 1, "Feature");
+            plot.setDrawGrid(true);
             plot.setDrawInfoText(true);
             plot.setColorPalette(color_palette.generate(feature_dim));
             feature_at_stage_i.push_back(plot);
@@ -114,7 +124,6 @@ void ofApp::setup() {
         plot.setup(kBufferSize_, label_dim, "Label");
         plot.setDrawInfoText(true);
         plot.setColorPalette(color_palette.generate(label_dim));
-        plot.setRanges(-1, 1, true);
         plot_samples_.push_back(plot);
         plot_samples_info_.push_back("");
     }
@@ -199,96 +208,111 @@ void ofApp::update() {
     }
 }
 
+void ofDrawColoredBitmapString(ofColor color,
+                               const string& text,
+                               float x, float y) {
+    ofPushStyle();
+    ofSetColor(color);
+    ofDrawBitmapString(text, x, y);
+    ofPopStyle();
+}
+
 //--------------------------------------------------------------
 void ofApp::draw() {
-    ofSetColor(255);
+    // Hacky panel on the top.
+    const uint32_t left_margin = 10;
+    const uint32_t top_margin = 20;
 
-    int plotX = 10;
-    int plotY = 30;
-    int plotW = ofGetWidth() - plotX * 2;
-    int plotH = 150;
-    int margin = 10;
-
-    ofPushStyle();
-    ofPushMatrix();
-    {
-        ofDrawBitmapString("Input:", plotX, plotY - margin);
-        plot_inputs_.draw(plotX, plotY, plotW, plotH);
-        plotY += plotH + 3 * margin;
+    ofDrawBitmapString("[P]ipeline\t[T]raining\t[D]ata",
+                       left_margin, top_margin);
+    switch (fragment_) {
+        case PIPELINE:
+            ofDrawColoredBitmapString(ofColor(0xFF, 0, 0), "[P]ipeline\t",
+                                      left_margin, top_margin);
+            drawLivePipeline();
+            break;
+        case TRAINING:
+            ofDrawColoredBitmapString(ofColor(0xFF, 0, 0), "\t\t[T]raining",
+                                      left_margin, top_margin);
+            drawTrainingInfo();
+            break;
+        case DATA:
+            ofDrawColoredBitmapString(ofColor(0xFF, 0, 0), "\t\t\t\t[D]ata",
+                                      left_margin, top_margin);
+            ofLog() << "Not Implemented";
+            break;
+        default:
+            ofLog(OF_LOG_ERROR) << "Unknown tag!";
+            break;
     }
-    ofPopStyle();
-    ofPopMatrix();
+}
 
+void ofApp::drawLivePipeline() {
+    // A Pipeline was parsed in the ofApp::setup function and here we simple
+    // draw the pipeline information.
+    uint32_t margin = 30;
+    uint32_t stage_left = 10;
+    uint32_t stage_top = 40;
+    uint32_t stage_height =
+            (ofGetHeight() - 70) / (num_pipeline_stages_ + 2) - margin;
+    uint32_t stage_width = ofGetWidth() - margin;
+
+    // 0. Setup and instructions.
+    ofDrawBitmapString("Visualization generated based on your pipeline.\n"
+                       "Press 1-9 to record samples and `t` to train a model.",
+                       stage_left, stage_top);
+    stage_top += margin;
+
+    // 1. Draw Input.
+    ofPushStyle();
+    plot_inputs_.draw(stage_left, stage_top, stage_width, stage_height);
+    ofPopStyle();
+    stage_top += stage_height + margin;
+
+    // 2. Draw pre-processing: iterate all stages.
     for (int i = 0; i < pipeline_->getNumPreProcessingModules(); i++) {
         // working on pre-processing stage i.
         ofPushStyle();
-        ofPushMatrix();
-        {
-            ofDrawBitmapString("PreProcessed stage: " + std::to_string(i),
-                               plotX, plotY - margin);
-            plot_pre_processed_[i].draw(plotX, plotY, plotW, plotH);
-            plotY += plotH + 3 * margin;
-        }
+        plot_pre_processed_[i].
+                draw(stage_left, stage_top, stage_width, stage_height);
         ofPopStyle();
-        ofPopMatrix();
+        stage_top += stage_height + margin;
     }
 
+    // 3. Draw features.
     for (int i = 0; i < pipeline_->getNumFeatureExtractionModules(); i++) {
         // working on feature extraction stage i.
         ofPushStyle();
-        ofPushMatrix();
-        {
-            ofDrawBitmapString("Feature stage: " + std::to_string(i),
-                               plotX, plotY - margin);
-            int width = plotW / plot_features_[i].size();
-            for (int j = 0; j < plot_features_[i].size(); j++) {
-                plot_features_[i][j].draw(plotX + j * width, plotY, width, plotH);
-            }
-            plotY += plotH + 3 * margin;
+        uint32_t width = stage_width / plot_features_[i].size();
+        for (int j = 0; j < plot_features_[i].size(); j++) {
+            plot_features_[i][j].
+                    draw(stage_left + j * width, stage_top,
+                         width, stage_height);
         }
         ofPopStyle();
-        ofPopMatrix();
+        stage_top += stage_height + margin;
     }
 
-    // Training samples management
-    ofPushStyle();
-    ofPushMatrix();
-    ofDrawBitmapString("Training Samples:", plotX, plotY - margin);
-
+    // 4. Draw samples
     // Currently we support kNumMaxLabels_ labels
-    int width = plotW / kNumMaxLabels_;
+    uint32_t width = stage_width / kNumMaxLabels_;
     for (int i = 0; i < kNumMaxLabels_; i++) {
-        int x = plotX + i * width;
-        plot_samples_[i].draw(x, plotY, width, plotH - 3 * margin);
-        ofDrawBitmapString(plot_samples_info_[i], x, plotY + plotH - margin);
-
+        int label_x = stage_left + i * width;
+        ofPushStyle();
+        // Use input's range as a heuristic for the drawing.
+        std::pair<float, float> ranges = plot_inputs_.getRanges();
+        plot_samples_[i].setRanges(ranges.first, ranges.second);
+        plot_samples_[i].draw(label_x, stage_top, width, stage_height);
+        ofPopStyle();
+        ofDrawBitmapString(plot_samples_info_[i], label_x,
+                           stage_top + stage_height + 20);
     }
+}
 
-    plotY += plotH + 3 * margin;
-
-    ofPopStyle();
-    ofPopMatrix();
-
-    // Instructions
-    ofPushStyle();
-    ofPushMatrix();
-
-    ofDrawBitmapString(std::to_string(sample_data_.getNumRows()) +
-                       " data points\t" +
-                       "label: " + std::to_string(predicted_label_),
-                       plotX, plotY - 2.5 * margin);
-
-    ofDrawBitmapString("Instructions: "
-                       "`s` - start; `e` - pause; 1-9 training samples;"
-                       "`t` - train; `h` - panel",
-                       plotX, plotY - margin);
-
-    ofPopStyle();
-    ofPopMatrix();
-
-    if (!gui_hide_) {
-        gui_.draw();
-    }
+void ofApp::drawTrainingInfo() {
+    // Write training summary
+    // Draw input
+    // Draw live prediction
 }
 
 void ofApp::exit() {
@@ -325,15 +349,22 @@ void ofApp::keyPressed(int key){
             }
 
             GRT::ClassificationData data_copy = training_data_;
-            auto training_func = [this, data_copy]() mutable {
+            auto training_func = [this, data_copy]() -> bool {
                 ofLog() << "Training started";
                 if (pipeline_->train(data_copy)) {
                     ofLog() << "Training is successful";
+                    return true;
                 } else {
-                    ofLog() << "Failed to train the model";
+                    ofLog(OF_LOG_ERROR) << "Failed to train the model";
+                    return false;
                 }
             };
-            training_thread_ = std::thread(training_func);
+
+            // TODO(benzh) Fix data race issue later.
+            if (training_func()) {
+                fragment_ = TRAINING;
+            }
+
             break;
         }
 
@@ -345,6 +376,16 @@ void ofApp::keyPressed(int key){
         case 'e':
             istream_->stop();
             input_data_.clear();
+            break;
+
+        case 'P':
+            fragment_ = PIPELINE;
+            break;
+        case 'T':
+            fragment_ = TRAINING;
+            break;
+        case 'D':
+            fragment_ = DATA;
             break;
     }
 }
