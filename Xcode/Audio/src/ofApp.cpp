@@ -225,26 +225,25 @@ void ofApp::draw() {
     const uint32_t top_margin = 20;
     const uint32_t margin = 30;
 
-    ofDrawBitmapString("[P]ipeline\t[T]raining\t[D]ata",
+    ofDrawBitmapString("[P]ipeline\t[T]raining\t[A]nalysis",
                        left_margin, top_margin);
     ofDrawLine(0, top_margin + 5, ofGetWidth(), top_margin + 5);
-
+    ofColor red = ofColor(0xFF, 0, 0);
     switch (fragment_) {
         case PIPELINE:
-            ofDrawColoredBitmapString(ofColor(0xFF, 0, 0), "[P]ipeline\t",
+            ofDrawColoredBitmapString(red, "[P]ipeline\t",
                                       left_margin, top_margin);
             drawLivePipeline();
             break;
         case TRAINING:
-            ofDrawColoredBitmapString(ofColor(0xFF, 0, 0), "\t\t[T]raining",
+            ofDrawColoredBitmapString(red, "\t\t[T]raining",
                                       left_margin, top_margin);
             drawTrainingInfo();
             break;
-        case DATA:
-            ofDrawColoredBitmapString(ofColor(0xFF, 0, 0), "\t\t\t\t[D]ata",
+        case ANALYSIS:
+            ofDrawColoredBitmapString(red, "\t\t\t\t[A]nalysis",
                                       left_margin, top_margin);
-            ofDrawBitmapString("Not Implemented",
-                               left_margin, top_margin + margin);
+            drawAnalysis();
             break;
         default:
             ofLog(OF_LOG_ERROR) << "Unknown tag!";
@@ -347,6 +346,14 @@ void ofApp::drawTrainingInfo() {
     ofDrawBitmapString(stream.str(), stage_left, stage_top);
 }
 
+void ofApp::drawAnalysis() {
+    uint32_t margin_left = 10;
+    uint32_t margin_top = 40;
+    uint32_t margin = 30;
+
+    ofDrawBitmapString("Will show confusion matrix, etc here", margin_left, margin_top);
+}
+
 void ofApp::exit() {
     if (training_thread_.joinable()) {
         training_thread_.join();
@@ -442,8 +449,8 @@ void ofApp::keyPressed(int key){
         case 'T':
             fragment_ = TRAINING;
             break;
-        case 'D':
-            fragment_ = DATA;
+        case 'A':
+            fragment_ = ANALYSIS;
             break;
     }
 }
