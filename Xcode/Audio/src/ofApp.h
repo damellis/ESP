@@ -68,6 +68,7 @@ class ofApp : public ofBaseApp {
     int predicted_label_;
     vector<double> predicted_class_distances_;
     vector<double> predicted_class_likelihoods_;
+    vector<UINT> predicted_class_labels_;
 
     // Visuals
     ofxGrtTimeseriesPlot plot_inputs_;

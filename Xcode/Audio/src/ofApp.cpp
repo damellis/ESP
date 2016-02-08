@@ -226,6 +226,7 @@ void ofApp::update() {
             predicted_label_ = pipeline_->getPredictedClassLabel();
             predicted_class_distances_ = pipeline_->getClassDistances();
             predicted_class_likelihoods_ = pipeline_->getClassLikelihoods();
+            predicted_class_labels_ = pipeline_->getClassifier()->getClassLabels();
         }
     }
 }
@@ -294,18 +295,20 @@ void ofApp::draw() {
         plot_samples_[i].draw(x, plotY, width, plotH - 3 * margin);
         
         ofDrawBitmapString(plot_samples_info_[i], x, plotY + plotH - margin);
+    }
+
+    for (int i = 0; i < predicted_class_distances_.size() && i < predicted_class_likelihoods_.size(); i++) {
         ofColor backgroundColor, textColor;
-        if (predicted_label_ == i + 1) {
+        UINT label = predicted_class_labels_[i];
+        if (predicted_label_ == label) {
             backgroundColor = ofColor(255);
             textColor = ofColor(0);
         } else {
             backgroundColor = ofGetBackgroundColor();
             textColor = ofColor(255);
         }
-        if (predicted_class_distances_.size() >= i + 1)
-            ofDrawBitmapStringHighlight(std::to_string(predicted_class_distances_[i]).substr(0, 6), x, plotY + plotH + margin, backgroundColor, textColor);
-        if (predicted_class_likelihoods_.size() >= i + 1)
-            ofDrawBitmapStringHighlight(std::to_string(predicted_class_likelihoods_[i]).substr(0, 6), x, plotY + plotH + margin * 3, backgroundColor, textColor);
+        ofDrawBitmapStringHighlight(std::to_string(predicted_class_distances_[i]).substr(0, 6), plotX + (label - 1) * width, plotY + plotH + margin, backgroundColor, textColor);
+        ofDrawBitmapStringHighlight(std::to_string(predicted_class_likelihoods_[i]).substr(0, 6), plotX + (label - 1) * width, plotY + plotH + margin * 3, backgroundColor, textColor);
     }
 
     plotY += plotH + 8 * margin;
