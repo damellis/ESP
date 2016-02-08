@@ -224,6 +224,8 @@ void ofApp::update() {
         if (pipeline_->getTrained()) {
             pipeline_->predict(data_point);
             predicted_label_ = pipeline_->getPredictedClassLabel();
+            predicted_class_distances_ = pipeline_->getClassDistances();
+            predicted_class_likelihoods_ = pipeline_->getClassLikelihoods();
         }
     }
 }
@@ -290,10 +292,23 @@ void ofApp::draw() {
         int x = plotX + i * width;
         plot_samples_[i].setRanges(minY, maxY, true);
         plot_samples_[i].draw(x, plotY, width, plotH - 3 * margin);
+        
         ofDrawBitmapString(plot_samples_info_[i], x, plotY + plotH - margin);
+        ofColor backgroundColor, textColor;
+        if (predicted_label_ == i + 1) {
+            backgroundColor = ofColor(255);
+            textColor = ofColor(0);
+        } else {
+            backgroundColor = ofGetBackgroundColor();
+            textColor = ofColor(255);
+        }
+        if (predicted_class_distances_.size() >= i + 1)
+            ofDrawBitmapStringHighlight(std::to_string(predicted_class_distances_[i]).substr(0, 6), x, plotY + plotH + margin, backgroundColor, textColor);
+        if (predicted_class_likelihoods_.size() >= i + 1)
+            ofDrawBitmapStringHighlight(std::to_string(predicted_class_likelihoods_[i]).substr(0, 6), x, plotY + plotH + margin * 3, backgroundColor, textColor);
     }
 
-    plotY += plotH + 3 * margin;
+    plotY += plotH + 8 * margin;
 
     ofPopStyle();
     ofPopMatrix();

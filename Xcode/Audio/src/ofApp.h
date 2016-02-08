@@ -66,6 +66,8 @@ class ofApp : public ofBaseApp {
     GRT::GestureRecognitionPipeline *pipeline_;
     GRT::TimeSeriesClassificationData training_data_;
     int predicted_label_;
+    vector<double> predicted_class_distances_;
+    vector<double> predicted_class_likelihoods_;
 
     // Visuals
     ofxGrtTimeseriesPlot plot_inputs_;
