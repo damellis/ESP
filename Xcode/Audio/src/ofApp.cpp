@@ -279,7 +279,8 @@ void ofApp::drawLivePipeline() {
 
     // 0. Setup and instructions.
     ofDrawBitmapString("Visualization generated based on your pipeline.\n"
-                       "Press 1-9 to record samples and `t` to train a model.",
+                       "Press `s` to start, `e` to pause, 1-9 to record samples, "
+                       "`l` to load training data, and `t` to train a model.",
                        stage_left, stage_top);
     stage_top += margin;
 
