@@ -274,7 +274,7 @@ void ofApp::drawLivePipeline() {
     uint32_t stage_left = 10;
     uint32_t stage_top = 40;
     uint32_t stage_height = // Hacky math for dimensions.
-            (ofGetHeight() - margin) / (num_pipeline_stages_ + 2) - 2 * margin;
+            (ofGetHeight() - margin) / (num_pipeline_stages_ + 1) - 2 * margin;
     uint32_t stage_width = ofGetWidth() - margin;
 
     // 0. Setup and instructions.
@@ -312,8 +312,24 @@ void ofApp::drawLivePipeline() {
         ofPopStyle();
         stage_top += stage_height + margin;
     }
+}
 
-    // 4. Draw samples
+void ofApp::drawTrainingInfo() {
+    uint32_t margin_left = 10;
+    uint32_t margin_top = 40;
+    uint32_t margin = 30;
+    uint32_t stage_left = margin_left;
+    uint32_t stage_top = margin_top;
+    uint32_t stage_width = ofGetWidth() - margin;
+    uint32_t stage_height = (ofGetHeight() - 200 - 4 * margin) / 2;
+
+    // 1. Draw Input
+    ofPushStyle();
+    plot_inputs_.draw(stage_left, stage_top, stage_width, stage_height);
+    ofPopStyle();
+    stage_top += stage_height + margin;
+
+    // 2. Draw samples
     // Currently we support kNumMaxLabels_ labels
     uint32_t width = stage_width / kNumMaxLabels_;
     uint32_t minY = plot_samples_[0].getRanges().first;
@@ -357,39 +373,11 @@ void ofApp::drawLivePipeline() {
             stage_top + stage_height + margin + margin,
             backgroundColor, textColor);
     }
-}
 
-void ofApp::drawTrainingInfo() {
-    uint32_t margin_left = 10;
-    uint32_t margin_top = 40;
-    uint32_t margin = 30;
-    uint32_t stage_left = margin_left;
-    uint32_t stage_top = 300;
-    uint32_t stage_width = ofGetWidth() - margin;
-    uint32_t stage_height = (ofGetHeight() - stage_top - 4 * margin) / 2;
-
-    // 1. Draw training data summary
+    stage_top += stage_height + 2 * margin;
+    // 3. Draw training data summary
     std::string data_stats = training_data_.getStatsAsString();
-    ofDrawBitmapString(data_stats, margin_left, margin_top);
-
-    // 2. Draw Input
-    ofPushStyle();
-    plot_inputs_.draw(stage_left, stage_top, stage_width, stage_height);
-    ofPopStyle();
-    stage_top += stage_height + margin;
-
-    // 3. Draw prediction with likelihood
-    ofPushStyle();
-    plot_prediction_.draw(stage_left, stage_top, stage_width, stage_height);
-    ofPopStyle();
-    stage_top += stage_height + margin;
-
-    std::stringstream stream;
-    stream << "Training Accuracy: "
-           << fixed << setprecision(2) << training_accuracy_
-           << "% ";
-    stream << "Predicted Label: " << predicted_label_;
-    ofDrawBitmapString(stream.str(), stage_left, stage_top);
+    ofDrawBitmapString(data_stats, margin_left, stage_top);
 }
 
 void ofApp::drawAnalysis() {
@@ -408,16 +396,10 @@ void ofApp::exit() {
     istream_->stop();
 
     // Save training data here!
-    ofFileDialogResult result = ofSystemSaveDialog("TrainingData.grt",
-                                                   "Save your training data?");
+    ofFileDialogResult result =
+            ofSystemSaveDialog("TrainingData.grt", "Save your training data?");
     if (result.bSuccess) {
         training_data_.save(result.getPath());
-    }
-
-    // Save test data here!
-    result = ofSystemSaveDialog("TestData.grt", "Save your test data?");
-    if (result.bSuccess) {
-        test_data_.save(result.getPath());
     }
 
     // Clear all listeners.
@@ -447,22 +429,10 @@ void ofApp::keyPressed(int key){
                 training_thread_.join();
             }
 
-            // This parition doesn't make sense for audio data?
-            test_data_ = training_data_.partition(60, true);
-
             auto training_func = [this]() -> bool {
                 ofLog() << "Training started";
                 if (pipeline_->train(training_data_)) {
                     ofLog() << "Training is successful";
-
-                    if (!pipeline_->test(test_data_)) {
-                        ofLog(OF_LOG_ERROR) << "Failed to test the pipeline!\n";
-                    }
-
-                    training_accuracy_ = pipeline_->getTestAccuracy();
-                    plot_prediction_.setup(kBufferSize_ * 10,
-                                           pipeline_->getNumClasses());
-                    plot_prediction_.setRanges(-0.1, 1.1);
                     return true;
                 } else {
                     ofLog(OF_LOG_ERROR) << "Failed to train the model";
