@@ -13,6 +13,6 @@ void setup()
     
     pipeline.addFeatureExtractionModule(TimeDomainFeatures(10, 1, 3, false, true, true, false, false));
     pipeline.setClassifier(ANBC(false, true));
-    pipeline.addPostProcessingModule(ClassLabelFilter(15, 20));
+    pipeline.addPostProcessingModule(ClassLabelFilter(3, 5));
     usePipeline(pipeline);
 }
