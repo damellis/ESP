@@ -18,10 +18,12 @@ $ git submodule update
 
 - [GRT](http://www.nickgillian.com/software/grt), Gesture Recognition Toolkit, a
   cross-platform, open-source, C++ machine learning library that has been
-  specifically designed for real-time gesture recognition.
+  specifically designed for real-time gesture recognition. See:
+  [our fork of the GRT repository](https://github.com/damellis/grt).
 
 - [ofxGrt](https://github.com/nickgillian/ofxGrt), an openFrameworks extension
-  for the Gesture Recognition Toolkit (GRT).
+  for the Gesture Recognition Toolkit (GRT). See:
+  [our fork of the ofxGrt repository](https://github.com/nebgnahz/ofxGrt/tree/snapshot-for-sensors).
 
 Because `ofxGrt` is needed as an extension to openFrameworks, it has to reside
 inside `addons` folder inside `openFrameworks` project. But doing that would
@@ -33,7 +35,20 @@ Instead, we create a symlink to make openFrameworks happy.
 $ ln -s $(pwd)/third-party/ofxGrt/ third-party/openFrameworks/addons/ofxGrt
 ```
 
-We are currently using stable versions (master branch) of all of them.
+# GRT Installation
+
+Once you've checked out the submodules, you'll need to compile and install the
+GRT to /usr/local:
+
+1. install cmake
+2. cd third-party/grt/build
+3. mkdir tmp
+4. cd tmp
+5. cmake ..
+6. make
+7. sudo make install
+
+For details, see [README.md in GRT/build](https://github.com/damellis/grt/tree/master/build). 
 
 # Tips
 
