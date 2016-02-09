@@ -103,4 +103,7 @@ class ofApp : public ofBaseApp {
 
     // Multithreading to avoid GUI blocked.
     std::thread training_thread_;
+
+    // Prompts to ask the user to save the training data if changed.
+    bool should_save_training_data_;
 };
