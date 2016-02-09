@@ -54,7 +54,9 @@ void ofApp::usePipeline(GRT::GestureRecognitionPipeline &pipeline) {
     pipeline_ = &pipeline;
 }
 
-ofApp::ofApp() : fragment_(PIPELINE), num_pipeline_stages_(0) {
+ofApp::ofApp() : fragment_(PIPELINE),
+                 num_pipeline_stages_(0),
+                 should_save_training_data_(false) {
 }
 
 //--------------------------------------------------------------
@@ -397,10 +399,12 @@ void ofApp::exit() {
     istream_->stop();
 
     // Save training data here!
-    ofFileDialogResult result =
-            ofSystemSaveDialog("TrainingData.grt", "Save your training data?");
-    if (result.bSuccess) {
-        training_data_.save(result.getPath());
+    if (should_save_training_data_) {
+        ofFileDialogResult result = ofSystemSaveDialog("TrainingData.grt",
+                                                       "Save your training data?");
+        if (result.bSuccess) {
+            training_data_.save(result.getPath());
+        }
     }
 
     // Clear all listeners.
@@ -493,6 +497,9 @@ void ofApp::loadTrainingData() {
         plot_samples_[training_data_[i].getClassLabel() - 1].setData(
                 training_data_[i].getData());
     }
+
+    // After we load the training data,
+    should_save_training_data_ = false;
 }
 
 //--------------------------------------------------------------
@@ -506,6 +513,8 @@ void ofApp::keyReleased(int key) {
                 std::to_string(training_data_.getClassTracker()[
                   training_data_.getClassLabelIndexValue(label_)].
                     counter) + " samples";
+
+        should_save_training_data_ = true;
     }
 }
 
