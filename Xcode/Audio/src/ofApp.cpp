@@ -54,6 +54,9 @@ void ofApp::usePipeline(GRT::GestureRecognitionPipeline &pipeline) {
     pipeline_ = &pipeline;
 }
 
+ofApp::ofApp() : fragment_(PIPELINE), num_pipeline_stages_(0) {
+}
+
 //--------------------------------------------------------------
 void ofApp::setup() {
     is_recording_ = false;
@@ -68,9 +71,13 @@ void ofApp::setup() {
     plot_inputs_.setDrawInfoText(true);
 
     Palette color_palette;
-    // Below is just proof-of-concept. The setup is quite hard-coded and we
-    // should enrich this once the UI design is ready.
-    size_t num_pre_processing = pipeline_->getNumPreProcessingModules();
+
+    // Parse the user supplied pipeline and extract information:
+    //  o num_pipeline_stages_
+
+    // 1. Parse pre-processing.
+    uint32_t num_pre_processing = pipeline_->getNumPreProcessingModules();
+    num_pipeline_stages_ += num_pre_processing;
     for (int i = 0; i < num_pre_processing; i++) {
         PreProcessing* pp = pipeline_->getPreProcessingModule(i);
         uint32_t dim = pp->getNumOutputDimensions();
@@ -82,7 +89,9 @@ void ofApp::setup() {
         plot_pre_processed_.push_back(plot);
     }
 
-    size_t num_feature_modules = pipeline_->getNumFeatureExtractionModules();
+    // 2. Parse pre-processing.
+    uint32_t num_feature_modules = pipeline_->getNumFeatureExtractionModules();
+    num_pipeline_stages_ += num_feature_modules;
     for (int i = 0; i < num_feature_modules; i++) {
         vector<ofxGrtTimeseriesPlot> feature_at_stage_i;
 
@@ -100,6 +109,7 @@ void ofApp::setup() {
             // We will have only one here.
             ofxGrtTimeseriesPlot plot;
             plot.setup(feature_dim, 1, "Feature");
+            plot.setDrawGrid(true);
             plot.setDrawInfoText(true);
             plot.setColorPalette(color_palette.generate(feature_dim));
             feature_at_stage_i.push_back(plot);
@@ -114,7 +124,6 @@ void ofApp::setup() {
         plot.setup(kBufferSize_, label_dim, "Label" + std::to_string(i + 1));
         plot.setDrawInfoText(false);
         plot.setColorPalette(color_palette.generate(label_dim));
-        //plot.setRanges(-1, 1, true);
         plot_samples_.push_back(plot);
         plot_samples_info_.push_back("");
     }
@@ -165,25 +174,6 @@ void ofApp::saveTrainingData() {
     }
 }
 
-void ofApp::loadTrainingData() {
-    GRT::TimeSeriesClassificationData training_data;
-    if (!training_data.load("training_data.grt")) {
-        ofLog(OF_LOG_ERROR) << "Failed to load the training data";
-    }
-
-    training_data_ = training_data;
-    auto trackers = training_data_.getClassTracker();
-    for (auto tracker : trackers) {
-        plot_samples_info_[tracker.classLabel - 1] =
-                std::to_string(tracker.counter) + " samples";
-    }
-    
-    for (int i = 0; i < training_data_.getNumSamples(); i++) {
-        plot_samples_[training_data_[i].getClassLabel() - 1].setData(
-                training_data_[i].getData());
-    }
-}
-
 //--------------------------------------------------------------
 void ofApp::update() {
     std::lock_guard<std::mutex> guard(input_data_mutex_);
@@ -231,73 +221,122 @@ void ofApp::update() {
     }
 }
 
+void ofDrawColoredBitmapString(ofColor color,
+                               const string& text,
+                               float x, float y) {
+    ofPushStyle();
+    ofSetColor(color);
+    ofDrawBitmapString(text, x, y);
+    ofPopStyle();
+}
+
 //--------------------------------------------------------------
 void ofApp::draw() {
-    ofSetColor(255);
+    // Hacky panel on the top.
+    const uint32_t left_margin = 10;
+    const uint32_t top_margin = 20;
+    const uint32_t margin = 30;
 
-    int plotX = 10;
-    int plotY = 30;
-    int plotW = ofGetWidth() - plotX * 2;
-    int plotH = 150;
-    int margin = 10;
-
-    ofPushStyle();
-    ofPushMatrix();
-    {
-        plot_inputs_.draw(plotX, plotY, plotW, plotH);
-        plotY += plotH + margin;
+    ofDrawBitmapString("[P]ipeline\t[T]raining\t[A]nalysis",
+                       left_margin, top_margin);
+    ofDrawLine(0, top_margin + 5, ofGetWidth(), top_margin + 5);
+    ofColor red = ofColor(0xFF, 0, 0);
+    switch (fragment_) {
+        case PIPELINE:
+            ofDrawColoredBitmapString(red, "[P]ipeline\t",
+                                      left_margin, top_margin);
+            drawLivePipeline();
+            break;
+        case TRAINING:
+            ofDrawColoredBitmapString(red, "\t\t[T]raining",
+                                      left_margin, top_margin);
+            drawTrainingInfo();
+            break;
+        case ANALYSIS:
+            ofDrawColoredBitmapString(red, "\t\t\t\t[A]nalysis",
+                                      left_margin, top_margin);
+            drawAnalysis();
+            break;
+        default:
+            ofLog(OF_LOG_ERROR) << "Unknown tag!";
+            break;
     }
-    ofPopStyle();
-    ofPopMatrix();
 
+    if (!gui_hide_) {
+        gui_.draw();
+    }
+}
+
+void ofApp::drawLivePipeline() {
+    // A Pipeline was parsed in the ofApp::setup function and here we simple
+    // draw the pipeline information.
+    uint32_t margin = 30;
+    uint32_t stage_left = 10;
+    uint32_t stage_top = 40;
+    uint32_t stage_height = // Hacky math for dimensions.
+            (ofGetHeight() - margin) / (num_pipeline_stages_ + 2) - 2 * margin;
+    uint32_t stage_width = ofGetWidth() - margin;
+
+    // 0. Setup and instructions.
+    ofDrawBitmapString("Visualization generated based on your pipeline.\n"
+                       "Press 1-9 to record samples and `t` to train a model.",
+                       stage_left, stage_top);
+    stage_top += margin;
+
+    // 1. Draw Input.
+    ofPushStyle();
+    plot_inputs_.draw(stage_left, stage_top, stage_width, stage_height);
+    ofPopStyle();
+    stage_top += stage_height + margin;
+
+    // 2. Draw pre-processing: iterate all stages.
     for (int i = 0; i < pipeline_->getNumPreProcessingModules(); i++) {
         // working on pre-processing stage i.
         ofPushStyle();
-        ofPushMatrix();
-        {
-            plot_pre_processed_[i].draw(plotX, plotY, plotW, plotH);
-            plotY += plotH + margin;
-        }
+        plot_pre_processed_[i].
+                draw(stage_left, stage_top, stage_width, stage_height);
         ofPopStyle();
-        ofPopMatrix();
+        stage_top += stage_height + margin;
     }
 
+    // 3. Draw features.
     for (int i = 0; i < pipeline_->getNumFeatureExtractionModules(); i++) {
         // working on feature extraction stage i.
         ofPushStyle();
-        ofPushMatrix();
-        {
-            int width = plotW / plot_features_[i].size();
-            for (int j = 0; j < plot_features_[i].size(); j++) {
-                plot_features_[i][j].draw(plotX + j * width, plotY, width, plotH);
-            }
-            plotY += plotH + margin;
+        uint32_t width = stage_width / plot_features_[i].size();
+        for (int j = 0; j < plot_features_[i].size(); j++) {
+            plot_features_[i][j].
+                    draw(stage_left + j * width, stage_top,
+                         width, stage_height);
         }
         ofPopStyle();
-        ofPopMatrix();
+        stage_top += stage_height + margin;
     }
 
-    // Training samples management
-    ofPushStyle();
-    ofPushMatrix();
-
+    // 4. Draw samples
     // Currently we support kNumMaxLabels_ labels
-    int width = plotW / kNumMaxLabels_;
-    int minY = plot_samples_[0].getRanges().first;
-    int maxY = plot_samples_[0].getRanges().second;
+    uint32_t width = stage_width / kNumMaxLabels_;
+    uint32_t minY = plot_samples_[0].getRanges().first;
+    uint32_t maxY = plot_samples_[0].getRanges().second;
     for (int i = 1; i < kNumMaxLabels_; i++) {
-        if (plot_samples_[i].getRanges().first < minY) minY = plot_samples_[i].getRanges().first;
-        if (plot_samples_[i].getRanges().second > maxY) maxY = plot_samples_[i].getRanges().second;
+        if (plot_samples_[i].getRanges().first < minY) {
+            minY = plot_samples_[i].getRanges().first;
+        }
+        if (plot_samples_[i].getRanges().second > maxY) {
+            maxY = plot_samples_[i].getRanges().second;
+        }
     }
     for (int i = 0; i < kNumMaxLabels_; i++) {
-        int x = plotX + i * width;
+        int x = stage_left + i * width;
         plot_samples_[i].setRanges(minY, maxY, true);
-        plot_samples_[i].draw(x, plotY, width, plotH - 3 * margin);
-        
-        ofDrawBitmapString(plot_samples_info_[i], x, plotY + plotH - margin);
+        plot_samples_[i].draw(x, stage_top, width, stage_height);
+        ofDrawBitmapString(plot_samples_info_[i], x,
+                           stage_top + stage_height + 20);
     }
 
-    for (int i = 0; i < predicted_class_distances_.size() && i < predicted_class_likelihoods_.size(); i++) {
+    stage_top += margin / 2;  // slightly adjust to make room for prediction
+    for (int i = 0; i < predicted_class_distances_.size() &&
+                 i < predicted_class_likelihoods_.size(); i++) {
         ofColor backgroundColor, textColor;
         UINT label = predicted_class_labels_[i];
         if (predicted_label_ == label) {
@@ -307,35 +346,59 @@ void ofApp::draw() {
             backgroundColor = ofGetBackgroundColor();
             textColor = ofColor(255);
         }
-        ofDrawBitmapStringHighlight(std::to_string(predicted_class_distances_[i]).substr(0, 6), plotX + (label - 1) * width, plotY + plotH + margin, backgroundColor, textColor);
-        ofDrawBitmapStringHighlight(std::to_string(predicted_class_likelihoods_[i]).substr(0, 6), plotX + (label - 1) * width, plotY + plotH + margin * 3, backgroundColor, textColor);
+        ofDrawBitmapStringHighlight(
+            std::to_string(predicted_class_distances_[i]).substr(0, 6),
+            stage_left + (label - 1) * width,
+            stage_top + stage_height + margin,
+            backgroundColor, textColor);
+        ofDrawBitmapStringHighlight(
+            std::to_string(predicted_class_likelihoods_[i]).substr(0, 6),
+            stage_left + (label - 1) * width,
+            stage_top + stage_height + margin + margin,
+            backgroundColor, textColor);
     }
+}
 
-    plotY += plotH + 8 * margin;
+void ofApp::drawTrainingInfo() {
+    uint32_t margin_left = 10;
+    uint32_t margin_top = 40;
+    uint32_t margin = 30;
+    uint32_t stage_left = margin_left;
+    uint32_t stage_top = 300;
+    uint32_t stage_width = ofGetWidth() - margin;
+    uint32_t stage_height = (ofGetHeight() - stage_top - 4 * margin) / 2;
 
-    ofPopStyle();
-    ofPopMatrix();
+    // 1. Draw training data summary
+    std::string data_stats = training_data_.getStatsAsString();
+    ofDrawBitmapString(data_stats, margin_left, margin_top);
 
-    // Instructions
+    // 2. Draw Input
     ofPushStyle();
-    ofPushMatrix();
-
-    ofDrawBitmapString(std::to_string(sample_data_.getNumRows()) +
-                       " data points\t" +
-                       "label: " + std::to_string(predicted_label_),
-                       plotX, plotY - 2.5 * margin);
-
-    ofDrawBitmapString("Instructions: "
-                       "`s` - start; `e` - pause; 1-9 training samples;"
-                       "`t` - train; `h` - panel",
-                       plotX, plotY - margin);
-
+    plot_inputs_.draw(stage_left, stage_top, stage_width, stage_height);
     ofPopStyle();
-    ofPopMatrix();
+    stage_top += stage_height + margin;
 
-    if (!gui_hide_) {
-        gui_.draw();
-    }
+    // 3. Draw prediction with likelihood
+    ofPushStyle();
+    plot_prediction_.draw(stage_left, stage_top, stage_width, stage_height);
+    ofPopStyle();
+    stage_top += stage_height + margin;
+
+    std::stringstream stream;
+    stream << "Training Accuracy: "
+           << fixed << setprecision(2) << training_accuracy_
+           << "% ";
+    stream << "Predicted Label: " << predicted_label_;
+    ofDrawBitmapString(stream.str(), stage_left, stage_top);
+}
+
+void ofApp::drawAnalysis() {
+    uint32_t margin_left = 10;
+    uint32_t margin_top = 40;
+    uint32_t margin = 30;
+
+    ofDrawBitmapString("Will show confusion matrix, etc here", margin_left,
+                       margin_top);
 }
 
 void ofApp::exit() {
@@ -343,6 +406,19 @@ void ofApp::exit() {
         training_thread_.join();
     }
     istream_->stop();
+
+    // Save training data here!
+    ofFileDialogResult result = ofSystemSaveDialog("TrainingData.grt",
+                                                   "Save your training data?");
+    if (result.bSuccess) {
+        training_data_.save(result.getPath());
+    }
+
+    // Save test data here!
+    result = ofSystemSaveDialog("TestData.grt", "Save your test data?");
+    if (result.bSuccess) {
+        test_data_.save(result.getPath());
+    }
 
     // Clear all listeners.
     save_pipeline_button_.removeListener(this, &ofApp::savePipeline);
@@ -371,21 +447,43 @@ void ofApp::keyPressed(int key){
                 training_thread_.join();
             }
 
-            GRT::TimeSeriesClassificationData data_copy = training_data_;
-            auto training_func = [this, data_copy]() mutable {
+            // This parition doesn't make sense for audio data?
+            test_data_ = training_data_.partition(60, true);
+
+            auto training_func = [this]() -> bool {
                 ofLog() << "Training started";
-                if (pipeline_->train(data_copy)) {
+                if (pipeline_->train(training_data_)) {
                     ofLog() << "Training is successful";
+
+                    if (!pipeline_->test(test_data_)) {
+                        ofLog(OF_LOG_ERROR) << "Failed to test the pipeline!\n";
+                    }
+
+                    training_accuracy_ = pipeline_->getTestAccuracy();
+                    plot_prediction_.setup(kBufferSize_ * 10,
+                                           pipeline_->getNumClasses());
+                    plot_prediction_.setRanges(-0.1, 1.1);
+                    return true;
                 } else {
-                    ofLog() << "Failed to train the model";
+                    ofLog(OF_LOG_ERROR) << "Failed to train the model";
+                    return false;
                 }
             };
-            training_thread_ = std::thread(training_func);
+
+            // TODO(benzh) Fix data race issue later.
+            if (training_func()) {
+                fragment_ = TRAINING;
+            }
+
             break;
         }
 
+        case 'l':
+            loadTrainingData();
+            break;
         case 'h':
             gui_hide_ = !gui_hide_;
+            break;
         case 's':
             istream_->start();
             break;
@@ -393,6 +491,36 @@ void ofApp::keyPressed(int key){
             istream_->stop();
             input_data_.clear();
             break;
+        case 'P':
+            fragment_ = PIPELINE;
+            break;
+        case 'T':
+            fragment_ = TRAINING;
+            break;
+        case 'A':
+            fragment_ = ANALYSIS;
+            break;
+    }
+}
+
+void ofApp::loadTrainingData() {
+    GRT::TimeSeriesClassificationData training_data;
+    ofFileDialogResult result = ofSystemLoadDialog("Load existing data", true);
+    if (!training_data.load(result.getPath()) ){
+        ofLog(OF_LOG_ERROR) << "Failed to load the training data!"
+                            << " path: " << result.getPath();
+    }
+
+    training_data_ = training_data;
+    auto trackers = training_data_.getClassTracker();
+    for (auto tracker : trackers) {
+        plot_samples_info_[tracker.classLabel - 1] =
+                std::to_string(tracker.counter) + " samples";
+    }
+
+    for (int i = 0; i < training_data_.getNumSamples(); i++) {
+        plot_samples_[training_data_[i].getClassLabel() - 1].setData(
+                training_data_[i].getData());
     }
 }
 
@@ -407,7 +535,6 @@ void ofApp::keyReleased(int key) {
                 std::to_string(training_data_.getClassTracker()[
                   training_data_.getClassLabelIndexValue(label_)].
                     counter) + " samples";
-
     }
 }
 
