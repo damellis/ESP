@@ -214,7 +214,9 @@ void ofApp::update() {
         if (pipeline_->getTrained()) {
             pipeline_->predict(data_point);
             predicted_label_ = pipeline_->getPredictedClassLabel();
-            plot_prediction_.update(pipeline_->getClassLikelihoods());
+            predicted_class_distances_ = pipeline_->getClassDistances();
+            predicted_class_likelihoods_ = pipeline_->getClassLikelihoods();
+            predicted_class_labels_ = pipeline_->getClassifier()->getClassLabels();
         }
     }
 }
@@ -271,8 +273,8 @@ void ofApp::drawLivePipeline() {
     uint32_t margin = 30;
     uint32_t stage_left = 10;
     uint32_t stage_top = 40;
-    uint32_t stage_height =
-            (ofGetHeight() - 70) / (num_pipeline_stages_ + 2) - margin;
+    uint32_t stage_height = // Hacky math for dimensions.
+            (ofGetHeight() - margin) / (num_pipeline_stages_ + 2) - 2 * margin;
     uint32_t stage_width = ofGetWidth() - margin;
 
     // 0. Setup and instructions.
@@ -314,16 +316,46 @@ void ofApp::drawLivePipeline() {
     // 4. Draw samples
     // Currently we support kNumMaxLabels_ labels
     uint32_t width = stage_width / kNumMaxLabels_;
+    uint32_t minY = plot_samples_[0].getRanges().first;
+    uint32_t maxY = plot_samples_[0].getRanges().second;
+    for (int i = 1; i < kNumMaxLabels_; i++) {
+        if (plot_samples_[i].getRanges().first < minY) {
+            minY = plot_samples_[i].getRanges().first;
+        }
+        if (plot_samples_[i].getRanges().second > maxY) {
+            maxY = plot_samples_[i].getRanges().second;
+        }
+    }
     for (int i = 0; i < kNumMaxLabels_; i++) {
-        int label_x = stage_left + i * width;
-        ofPushStyle();
-        // Use input's range as a heuristic for the drawing.
-        std::pair<float, float> ranges = plot_inputs_.getRanges();
-        plot_samples_[i].setRanges(ranges.first, ranges.second);
-        plot_samples_[i].draw(label_x, stage_top, width, stage_height);
-        ofPopStyle();
-        ofDrawBitmapString(plot_samples_info_[i], label_x,
+        int x = stage_left + i * width;
+        plot_samples_[i].setRanges(minY, maxY, true);
+        plot_samples_[i].draw(x, stage_top, width, stage_height);
+        ofDrawBitmapString(plot_samples_info_[i], x,
                            stage_top + stage_height + 20);
+    }
+
+    stage_top += margin / 2;  // slightly adjust to make room for prediction
+    for (int i = 0; i < predicted_class_distances_.size() &&
+                 i < predicted_class_likelihoods_.size(); i++) {
+        ofColor backgroundColor, textColor;
+        UINT label = predicted_class_labels_[i];
+        if (predicted_label_ == label) {
+            backgroundColor = ofColor(255);
+            textColor = ofColor(0);
+        } else {
+            backgroundColor = ofGetBackgroundColor();
+            textColor = ofColor(255);
+        }
+        ofDrawBitmapStringHighlight(
+            std::to_string(predicted_class_distances_[i]).substr(0, 6),
+            stage_left + (label - 1) * width,
+            stage_top + stage_height + margin,
+            backgroundColor, textColor);
+        ofDrawBitmapStringHighlight(
+            std::to_string(predicted_class_likelihoods_[i]).substr(0, 6),
+            stage_left + (label - 1) * width,
+            stage_top + stage_height + margin + margin,
+            backgroundColor, textColor);
     }
 }
 

@@ -12,7 +12,7 @@ vector<double> normalize(vector<double> input) {
     magnitude = sqrt(magnitude);
     for (int i = 0; i < input.size(); i++) input[i] /= magnitude;
 
-    input.push_back(magnitude);
+    //input.push_back(magnitude);
 
     return input;
 }
@@ -22,11 +22,11 @@ GestureRecognitionPipeline pipeline;
 
 void setup() {
     stream.useUSBPort(0);
-    stream.useNormalizer(normalize);
+    //stream.useNormalizer(normalize);
     useStream(stream);
 
-    pipeline.addPreProcessingModule(MovingAverageFilter(5, 4));
+    pipeline.addPreProcessingModule(MovingAverageFilter(5, 3));
     //pipeline.addFeatureExtractionModule(TimeDomainFeatures(10, 1, 3, false, true, true, false, false));
-    pipeline.setClassifier(ANBC());
+    pipeline.setClassifier(ANBC(false, true)); // don't use scaling; use null rejection
     usePipeline(pipeline);
 }

@@ -77,6 +77,9 @@ class ofApp : public ofBaseApp {
     GRT::TimeSeriesClassificationData test_data_;
     float training_accuracy_;
     int predicted_label_;
+    vector<double> predicted_class_distances_;
+    vector<double> predicted_class_likelihoods_;
+    vector<UINT> predicted_class_labels_;
 
     // Visuals
     ofxGrtTimeseriesPlot plot_inputs_;
