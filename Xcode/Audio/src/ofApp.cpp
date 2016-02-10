@@ -335,8 +335,8 @@ void ofApp::drawTrainingInfo() {
     // 2. Draw samples
     // Currently we support kNumMaxLabels_ labels
     uint32_t width = stage_width / kNumMaxLabels_;
-    uint32_t minY = plot_samples_[0].getRanges().first;
-    uint32_t maxY = plot_samples_[0].getRanges().second;
+    float minY = plot_samples_[0].getRanges().first;
+    float maxY = plot_samples_[0].getRanges().second;
     for (int i = 1; i < kNumMaxLabels_; i++) {
         if (plot_samples_[i].getRanges().first < minY) {
             minY = plot_samples_[i].getRanges().first;
