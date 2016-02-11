@@ -27,6 +27,6 @@ void setup() {
 
     pipeline.addPreProcessingModule(MovingAverageFilter(5, 3));
     //pipeline.addFeatureExtractionModule(TimeDomainFeatures(10, 1, 3, false, true, true, false, false));
-    pipeline.setClassifier(ANBC(false, true)); // don't use scaling; use null rejection
+    pipeline.setClassifier(ANBC(false, true, 10.0)); // don't use scaling; use null rejection
     usePipeline(pipeline);
 }
