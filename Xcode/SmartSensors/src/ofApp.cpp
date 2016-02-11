@@ -8,7 +8,7 @@
 // single output will be more visual.
 const uint32_t kTooManyFeaturesThreshold = 32;
 static const char* kInstruction =
-        "Visualization generated based on your pipeline.\n"
+        "Press capital P/T/A to change tabs.\n"
         "Press `s` to start, `e` to pause, 1-9 to record samples, "
         "`l` to load training data, and `t` to train a model.";
 
