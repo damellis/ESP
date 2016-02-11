@@ -7,6 +7,10 @@
 // If the feature output dimension is larger than 32, making the visualization a
 // single output will be more visual.
 const uint32_t kTooManyFeaturesThreshold = 32;
+static const char* kInstruction =
+        "Visualization generated based on your pipeline.\n"
+        "Press `s` to start, `e` to pause, 1-9 to record samples, "
+        "`l` to load training data, and `t` to train a model.";
 
 class Palette {
   public:
@@ -237,7 +241,7 @@ void ofApp::draw() {
     // Hacky panel on the top.
     const uint32_t left_margin = 10;
     const uint32_t top_margin = 20;
-    const uint32_t margin = 30;
+    const uint32_t margin = 20;
 
     ofDrawBitmapString("[P]ipeline\t[T]raining\t[A]nalysis",
                        left_margin, top_margin);
@@ -264,6 +268,9 @@ void ofApp::draw() {
             break;
     }
 
+    // Show instructions across all tabs.
+    ofDrawBitmapString(kInstruction, left_margin, top_margin + margin);
+
     if (!gui_hide_) {
         gui_.draw();
     }
@@ -274,17 +281,10 @@ void ofApp::drawLivePipeline() {
     // draw the pipeline information.
     uint32_t margin = 30;
     uint32_t stage_left = 10;
-    uint32_t stage_top = 40;
+    uint32_t stage_top = 70;
     uint32_t stage_height = // Hacky math for dimensions.
             (ofGetHeight() - margin) / (num_pipeline_stages_ + 1) - 2 * margin;
     uint32_t stage_width = ofGetWidth() - margin;
-
-    // 0. Setup and instructions.
-    ofDrawBitmapString("Visualization generated based on your pipeline.\n"
-                       "Press `s` to start, `e` to pause, 1-9 to record samples, "
-                       "`l` to load training data, and `t` to train a model.",
-                       stage_left, stage_top);
-    stage_top += margin;
 
     // 1. Draw Input.
     ofPushStyle();
@@ -319,7 +319,7 @@ void ofApp::drawLivePipeline() {
 
 void ofApp::drawTrainingInfo() {
     uint32_t margin_left = 10;
-    uint32_t margin_top = 40;
+    uint32_t margin_top = 70;
     uint32_t margin = 30;
     uint32_t stage_left = margin_left;
     uint32_t stage_top = margin_top;
@@ -385,11 +385,9 @@ void ofApp::drawTrainingInfo() {
 
 void ofApp::drawAnalysis() {
     uint32_t margin_left = 10;
-    uint32_t margin_top = 40;
-    uint32_t margin = 30;
+    uint32_t margin_top = 70;
 
-    ofDrawBitmapString("Will show confusion matrix, etc here", margin_left,
-                       margin_top);
+    ofDrawBitmapString("Not implemented", margin_left, margin_top);
 }
 
 void ofApp::exit() {
