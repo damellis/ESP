@@ -1,7 +1,4 @@
-#include "GRT/GRT.h"
-#include "istream.h"
-
-using namespace GRT;
+#include <SmartSensors.h>
 
 ASCIISerialStream stream(115200, 3);
 GestureRecognitionPipeline pipeline;

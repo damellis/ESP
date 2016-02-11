@@ -1,7 +1,4 @@
-#include "GRT/GRT.h"
-#include "istream.h"
-
-using namespace GRT;
+#include <SmartSensors.h>
 
 // Normalize by dividing each dimension by the total magnitude.
 // Also add the magnitude as an additional feature.

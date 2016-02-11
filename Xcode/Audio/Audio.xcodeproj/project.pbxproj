@@ -69,6 +69,7 @@
 		7A451F0A26AD1F6604C914AF /* ofxGrt.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxGrt.h; path = "../../third-party/openFrameworks/addons/ofxGrt/src/ofxGrt.h"; sourceTree = SOURCE_ROOT; };
 		7ACE6957882556257F46BB94 /* ofxGrtMatrixPlot.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxGrtMatrixPlot.cpp; path = "../../third-party/openFrameworks/addons/ofxGrt/src/ofxGrtMatrixPlot.cpp"; sourceTree = SOURCE_ROOT; };
 		8108C0911C69537700DC19EC /* user_adxl335_accelerometer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = user_adxl335_accelerometer.h; sourceTree = "<group>"; };
+		811F86D91C6C06E10049F7D5 /* SmartSensors.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SmartSensors.h; sourceTree = "<group>"; };
 		81ADDF8D1C601C32001F382A /* user_color_sensor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = user_color_sensor.h; sourceTree = "<group>"; };
 		8C2208E103C17F4A39DECE6F /* ofxGrtTimeseriesPlot.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxGrtTimeseriesPlot.h; path = "../../third-party/openFrameworks/addons/ofxGrt/src/ofxGrtTimeseriesPlot.h"; sourceTree = SOURCE_ROOT; };
 		8FBE3DD02DBD21EB4812C6B1 /* ofxSlider.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxSlider.cpp; path = "../../third-party/openFrameworks/addons/ofxGui/src/ofxSlider.cpp"; sourceTree = SOURCE_ROOT; };
@@ -204,6 +205,7 @@
 				5939D84F8D015C2971814643 /* user.h */,
 				81ADDF8D1C601C32001F382A /* user_color_sensor.h */,
 				8108C0911C69537700DC19EC /* user_adxl335_accelerometer.h */,
+				811F86D91C6C06E10049F7D5 /* SmartSensors.h */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
