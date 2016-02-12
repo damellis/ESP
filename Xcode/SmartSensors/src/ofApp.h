@@ -88,6 +88,8 @@ class ofApp : public ofBaseApp {
     vector<ofxGrtTimeseriesPlot> plot_samples_;
     vector<std::string> plot_samples_info_;
     ofxGrtTimeseriesPlot plot_prediction_;
+    vector<int> plot_sample_indices_; // the index of the currently plotted sample for each class label
+    vector<pair<ofRectangle, ofRectangle>> plot_sample_button_locations_;
 
     // Panel for storing and loading pipeline.
     ofxPanel gui_;

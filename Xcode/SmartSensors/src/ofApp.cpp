@@ -131,7 +131,8 @@ void ofApp::setup() {
         plot.setDrawInfoText(false);
         plot.setColorPalette(color_palette.generate(label_dim));
         plot_samples_.push_back(plot);
-        plot_samples_info_.push_back("");
+        plot_sample_indices_.push_back(-1);
+        plot_sample_button_locations_.push_back(pair<ofRectangle, ofRectangle>(ofRectangle(), ofRectangle()));
         
         TrainingSampleGuiListener *listener = new TrainingSampleGuiListener(this, i);
         ofxPanel *gui = new ofxPanel();
@@ -207,18 +208,21 @@ void ofApp::deleteTrainingSample(int num) {
     // and add back all the ones except the one we want to delete.
     TimeSeriesClassificationData data = training_data_.getClassData(label);
     training_data_.eraseAllSamplesWithClassLabel(label);
-    for (int i = 0; i + 1 < data.getNumSamples(); i++)
-        training_data_.addSample(label, data[i].getData());
+    for (int i = 0; i < data.getNumSamples(); i++)
+        if (i != plot_sample_indices_[num])
+            training_data_.addSample(label, data[i].getData());
     
     if (data.getNumSamples() > 1) {
-        plot_samples_[num].setData(data[data.getNumSamples() - 2].getData());
-        plot_samples_info_[num] =
-                std::to_string(training_data_.getClassTracker()[
-                  training_data_.getClassLabelIndexValue(label_)].
-                    counter) + " samples";
+        // if we were showing the last sample, need to show previous one
+        if (plot_sample_indices_[num] + 1 == data.getNumSamples()) {
+            plot_sample_indices_[num]--;
+            plot_samples_[num].setData(data[plot_sample_indices_[num]].getData());
+        } else {
+            plot_samples_[num].setData(data[plot_sample_indices_[num] + 1].getData());
+        }
     } else {
         plot_samples_[num].reset();
-        plot_samples_info_[num] = "";
+        plot_sample_indices_[num] = -1;
     }
     
     should_save_training_data_ = true;
@@ -397,12 +401,29 @@ void ofApp::drawTrainingInfo() {
             maxY = plot_samples_[i].getRanges().second;
         }
     }
+    auto class_tracker = training_data_.getClassTracker();
     for (int i = 0; i < kNumMaxLabels_; i++) {
+        int label = i + 1;
         int x = stage_left + i * width;
         plot_samples_[i].setRanges(minY, maxY, true);
         plot_samples_[i].draw(x, stage_top, width, stage_height);
-        ofDrawBitmapString(plot_samples_info_[i], x,
-                           stage_top + stage_height + 20);
+        
+        for (int j = 0; j < class_tracker.size(); j++) {
+            if (class_tracker[j].classLabel == label) {
+                ofDrawBitmapString(
+                    std::to_string(plot_sample_indices_[i] + 1) + " / " +
+                    std::to_string(class_tracker[j].counter), x + width / 2 - 20,
+                    stage_top + stage_height + 20);
+                if (plot_sample_indices_[i] > 0)
+                    ofDrawBitmapString("<-", x, stage_top + stage_height + 20);
+                if (plot_sample_indices_[i] + 1 < class_tracker[j].counter)
+                    ofDrawBitmapString("->", x + width - 20, stage_top + stage_height + 20);
+                plot_sample_button_locations_[i].first.set(x, stage_top + stage_height, 20, 20);
+                plot_sample_button_locations_[i].second.set(x + width - 20, stage_top + stage_height, 20, 20);
+            }
+        }
+        
+        // TODO(dmellis): only update these values when the screen size changes.
         training_sample_guis_[i]->setPosition(x + margin / 8, stage_top + stage_height + 30);
         training_sample_guis_[i]->setSize(width - margin / 4, training_sample_guis_[i]->getHeight());
         training_sample_guis_[i]->setWidthElements(width - margin / 4);
@@ -543,8 +564,7 @@ void ofApp::loadTrainingData() {
     training_data_ = training_data;
     auto trackers = training_data_.getClassTracker();
     for (auto tracker : trackers) {
-        plot_samples_info_[tracker.classLabel - 1] =
-                std::to_string(tracker.counter) + " samples";
+        plot_sample_indices_[tracker.classLabel - 1] = tracker.counter - 1;
     }
 
     for (int i = 0; i < training_data_.getNumSamples(); i++) {
@@ -563,10 +583,9 @@ void ofApp::keyReleased(int key) {
         training_data_.addSample(label_, sample_data_);
 
         plot_samples_[label_ - 1].setData(sample_data_);
-        plot_samples_info_[label_ - 1] =
-                std::to_string(training_data_.getClassTracker()[
+        plot_sample_indices_[label_ - 1] = training_data_.getClassTracker()[
                   training_data_.getClassLabelIndexValue(label_)].
-                    counter) + " samples";
+                    counter - 1;
 
         should_save_training_data_ = true;
     }
@@ -589,7 +608,22 @@ void ofApp::mousePressed(int x, int y, int button) {
 
 //--------------------------------------------------------------
 void ofApp::mouseReleased(int x, int y, int button) {
-
+    for (int i = 0; i < kNumMaxLabels_; i++) {
+        int label = i + 1;
+        TimeSeriesClassificationData data = training_data_.getClassData(label);
+        if (plot_sample_button_locations_[i].first.inside(x, y)) {
+            if (plot_sample_indices_[i] > 0) {
+                plot_sample_indices_[i]--;
+                plot_samples_[i].setData(data[plot_sample_indices_[i]].getData());
+            }
+        }
+        if (plot_sample_button_locations_[i].second.inside(x, y)) {
+            if (plot_sample_indices_[i] + 1 < data.getNumSamples()) {
+                plot_sample_indices_[i]++;
+                plot_samples_[i].setData(data[plot_sample_indices_[i]].getData());
+            }
+        }
+    }
 }
 
 //--------------------------------------------------------------
