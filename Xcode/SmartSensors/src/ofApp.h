@@ -100,10 +100,28 @@ class ofApp : public ofBaseApp {
     void saveTrainingData();
     ofxButton load_training_data_button_;
     void loadTrainingData();
+    
+    vector<ofxPanel *> training_sample_guis_;
+    void deleteTrainingSample(int num);
+    void trimTrainingSample(int num);
+    void relabelTrainingSample(int num);
 
     // Multithreading to avoid GUI blocked.
     std::thread training_thread_;
 
     // Prompts to ask the user to save the training data if changed.
     bool should_save_training_data_;
+    
+    friend class TrainingSampleGuiListener;
+};
+
+class TrainingSampleGuiListener {
+  public:
+    TrainingSampleGuiListener(ofApp *app, int num) : app(app), num(num) {}
+    void deleteButtonPressed() { app->deleteTrainingSample(num); }
+    void trimButtonPressed() { app->trimTrainingSample(num); }
+    void relabelButtonPressed() { app->relabelTrainingSample(num); }
+  private:
+    ofApp *app;
+    int num;
 };

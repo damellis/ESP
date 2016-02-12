@@ -132,6 +132,25 @@ void ofApp::setup() {
         plot.setColorPalette(color_palette.generate(label_dim));
         plot_samples_.push_back(plot);
         plot_samples_info_.push_back("");
+        
+        TrainingSampleGuiListener *listener = new TrainingSampleGuiListener(this, i);
+        ofxPanel *gui = new ofxPanel();
+        gui->setup("Edit");
+        gui->setSize(80, 0);
+        
+        ofxButton *delete_button = new ofxButton();
+        gui->add(delete_button->setup("delete", 80, 16));
+        delete_button->addListener(listener, &TrainingSampleGuiListener::deleteButtonPressed);
+        
+        ofxButton *trim_button = new ofxButton();
+        gui->add(trim_button->setup("trim", 80, 16));
+        trim_button->addListener(listener, &TrainingSampleGuiListener::trimButtonPressed);
+        
+        ofxButton *relable_button = new ofxButton();
+        gui->add(relable_button->setup("re-label", 80, 16));
+        relable_button->addListener(listener, &TrainingSampleGuiListener::relabelButtonPressed);
+        
+        training_sample_guis_.push_back(gui);
     }
 
     training_data_.setNumDimensions(istream_->getNumOutputDimensions());
@@ -178,6 +197,39 @@ void ofApp::saveTrainingData() {
     if (!training_data_.save("training_data.grt")) {
         ofLog(OF_LOG_ERROR) << "Failed to save the training data";
     }
+}
+
+void ofApp::deleteTrainingSample(int num) {
+    int label = num + 1;
+    
+    // AFAICT, there's no way to delete an individual sample (except the
+    // last one. Instead, remove all samples with the corresponding label
+    // and add back all the ones except the one we want to delete.
+    TimeSeriesClassificationData data = training_data_.getClassData(label);
+    training_data_.eraseAllSamplesWithClassLabel(label);
+    for (int i = 0; i + 1 < data.getNumSamples(); i++)
+        training_data_.addSample(label, data[i].getData());
+    
+    if (data.getNumSamples() > 1) {
+        plot_samples_[num].setData(data[data.getNumSamples() - 2].getData());
+        plot_samples_info_[num] =
+                std::to_string(training_data_.getClassTracker()[
+                  training_data_.getClassLabelIndexValue(label_)].
+                    counter) + " samples";
+    } else {
+        plot_samples_[num].reset();
+        plot_samples_info_[num] = "";
+    }
+    
+    should_save_training_data_ = true;
+}
+
+void ofApp::trimTrainingSample(int num) {
+    ofLog(OF_LOG_NOTICE) << "Trimming sample " << num;
+}
+
+void ofApp::relabelTrainingSample(int num) {
+    ofLog(OF_LOG_NOTICE) << "Relabeling sample " << num;
 }
 
 //--------------------------------------------------------------
@@ -351,6 +403,10 @@ void ofApp::drawTrainingInfo() {
         plot_samples_[i].draw(x, stage_top, width, stage_height);
         ofDrawBitmapString(plot_samples_info_[i], x,
                            stage_top + stage_height + 20);
+        training_sample_guis_[i]->setPosition(x + margin / 8, stage_top + stage_height + 30);
+        training_sample_guis_[i]->setSize(width - margin / 4, training_sample_guis_[i]->getHeight());
+        training_sample_guis_[i]->setWidthElements(width - margin / 4);
+        training_sample_guis_[i]->draw();
     }
 
     stage_top += margin / 2;  // slightly adjust to make room for prediction
@@ -373,11 +429,11 @@ void ofApp::drawTrainingInfo() {
         ofDrawBitmapStringHighlight(
             std::to_string(predicted_class_likelihoods_[i]).substr(0, 6),
             stage_left + (label - 1) * width,
-            stage_top + stage_height + margin + margin,
+            stage_top + stage_height + margin * 3 / 2,
             backgroundColor, textColor);
     }
 
-    stage_top += stage_height + 2 * margin;
+    stage_top += stage_height + 4 * margin;
     // 3. Draw training data summary
     std::string data_stats = training_data_.getStatsAsString();
     ofDrawBitmapString(data_stats, margin_left, stage_top);
