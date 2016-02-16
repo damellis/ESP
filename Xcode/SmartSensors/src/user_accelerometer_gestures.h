@@ -8,7 +8,7 @@ void setup()
     stream.useUSBPort(0);
     useStream(stream);
     
-    pipeline.setClassifier(DTW(false, true, 3.0)); // disable scaling, enable null rejection w/ threshold of 3.0
-    pipeline.addPostProcessingModule(ClassLabelTimeoutFilter());
+    pipeline.setClassifier(DTW(false, true, 0.5)); // disable scaling, enable null rejection w/ threshold of 0.5
+    pipeline.addPostProcessingModule(ClassLabelTimeoutFilter(500));
     usePipeline(pipeline);
 }
