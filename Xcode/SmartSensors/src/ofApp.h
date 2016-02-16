@@ -107,6 +107,8 @@ class ofApp : public ofBaseApp {
     void saveTrainingData();
     ofxButton load_training_data_button_;
     void loadTrainingData();
+    
+    void trainModel();
 
     vector<ofxPanel *> training_sample_guis_;
     void deleteTrainingSample(int num);

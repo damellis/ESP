@@ -523,31 +523,9 @@ void ofApp::keyPressed(int key){
     }
 
     switch (key) {
-        case 't': {
-            // If prior training has not finished, we wait.
-            if (training_thread_.joinable()) {
-                training_thread_.join();
-            }
-
-            auto training_func = [this]() -> bool {
-                ofLog() << "Training started";
-                if (pipeline_->train(training_data_)) {
-                    ofLog() << "Training is successful";
-                    return true;
-                } else {
-                    ofLog(OF_LOG_ERROR) << "Failed to train the model";
-                    return false;
-                }
-            };
-
-            // TODO(benzh) Fix data race issue later.
-            if (training_func()) {
-                fragment_ = TRAINING;
-            }
-
+        case 't':
+            trainModel();
             break;
-        }
-
         case 'l':
             loadTrainingData();
             break;
@@ -573,9 +551,35 @@ void ofApp::keyPressed(int key){
     }
 }
 
+void ofApp::trainModel() {
+    // If prior training has not finished, we wait.
+    if (training_thread_.joinable()) {
+        training_thread_.join();
+    }
+
+    auto training_func = [this]() -> bool {
+        ofLog() << "Training started";
+        if (pipeline_->train(training_data_)) {
+            ofLog() << "Training is successful";
+            return true;
+        } else {
+            ofLog(OF_LOG_ERROR) << "Failed to train the model";
+            return false;
+        }
+    };
+
+    // TODO(benzh) Fix data race issue later.
+    if (training_func()) {
+        fragment_ = TRAINING;
+    }
+}
+
 void ofApp::loadTrainingData() {
     GRT::TimeSeriesClassificationData training_data;
     ofFileDialogResult result = ofSystemLoadDialog("Load existing data", true);
+    
+    if (!result.bSuccess) return;
+    
     if (!training_data.load(result.getPath()) ){
         ofLog(OF_LOG_ERROR) << "Failed to load the training data!"
                             << " path: " << result.getPath();
@@ -594,6 +598,8 @@ void ofApp::loadTrainingData() {
 
     // After we load the training data,
     should_save_training_data_ = false;
+    
+    trainModel();
 }
 
 //--------------------------------------------------------------
