@@ -58,7 +58,7 @@ void ofApp::usePipeline(GRT::GestureRecognitionPipeline &pipeline) {
     pipeline_ = &pipeline;
 }
 
-ofApp::ofApp() : fragment_(PIPELINE),
+ofApp::ofApp() : fragment_(TRAINING),
                  num_pipeline_stages_(0),
                  should_save_training_data_(false) {
 }
@@ -126,32 +126,37 @@ void ofApp::setup() {
 
     for (int i = 0; i < kNumMaxLabels_; i++) {
         uint32_t label_dim = istream_->getNumOutputDimensions();
-        ofxGrtTimeseriesPlot plot;
+        Plotter plot;
         plot.setup(kBufferSize_, label_dim, "Label" + std::to_string(i + 1));
         plot.setDrawInfoText(false);
         plot.setColorPalette(color_palette.generate(label_dim));
         plot_samples_.push_back(plot);
         plot_sample_indices_.push_back(-1);
         plot_sample_button_locations_.push_back(pair<ofRectangle, ofRectangle>(ofRectangle(), ofRectangle()));
-        
+
         TrainingSampleGuiListener *listener = new TrainingSampleGuiListener(this, i);
         ofxPanel *gui = new ofxPanel();
         gui->setup("Edit");
         gui->setSize(80, 0);
-        
+
         ofxButton *delete_button = new ofxButton();
         gui->add(delete_button->setup("delete", 80, 16));
         delete_button->addListener(listener, &TrainingSampleGuiListener::deleteButtonPressed);
-        
+
         ofxButton *trim_button = new ofxButton();
         gui->add(trim_button->setup("trim", 80, 16));
         trim_button->addListener(listener, &TrainingSampleGuiListener::trimButtonPressed);
-        
+
         ofxButton *relable_button = new ofxButton();
         gui->add(relable_button->setup("re-label", 80, 16));
         relable_button->addListener(listener, &TrainingSampleGuiListener::relabelButtonPressed);
-        
+
         training_sample_guis_.push_back(gui);
+    }
+
+    for (uint32_t i = 0; i < plot_samples_.size(); i++) {
+        plot_samples_[i].onRangeSelected(this, &ofApp::onPlotRangeSelected,
+                                         reinterpret_cast<void*>(i + 1));
     }
 
     training_data_.setNumDimensions(istream_->getNumOutputDimensions());
@@ -202,7 +207,7 @@ void ofApp::saveTrainingData() {
 
 void ofApp::deleteTrainingSample(int num) {
     int label = num + 1;
-    
+
     // AFAICT, there's no way to delete an individual sample (except the
     // last one. Instead, remove all samples with the corresponding label
     // and add back all the ones except the one we want to delete.
@@ -211,7 +216,7 @@ void ofApp::deleteTrainingSample(int num) {
     for (int i = 0; i < data.getNumSamples(); i++)
         if (i != plot_sample_indices_[num])
             training_data_.addSample(label, data[i].getData());
-    
+
     if (data.getNumSamples() > 1) {
         // if we were showing the last sample, need to show previous one
         if (plot_sample_indices_[num] + 1 == data.getNumSamples()) {
@@ -224,7 +229,7 @@ void ofApp::deleteTrainingSample(int num) {
         plot_samples_[num].reset();
         plot_sample_indices_[num] = -1;
     }
-    
+
     should_save_training_data_ = true;
 }
 
@@ -407,7 +412,7 @@ void ofApp::drawTrainingInfo() {
         int x = stage_left + i * width;
         plot_samples_[i].setRanges(minY, maxY, true);
         plot_samples_[i].draw(x, stage_top, width, stage_height);
-        
+
         for (int j = 0; j < class_tracker.size(); j++) {
             if (class_tracker[j].classLabel == label) {
                 ofDrawBitmapString(
@@ -422,7 +427,7 @@ void ofApp::drawTrainingInfo() {
                 plot_sample_button_locations_[i].second.set(x + width - 20, stage_top + stage_height, 20, 20);
             }
         }
-        
+
         // TODO(dmellis): only update these values when the screen size changes.
         training_sample_guis_[i]->setPosition(x + margin / 8, stage_top + stage_height + 30);
         training_sample_guis_[i]->setSize(width - margin / 4, training_sample_guis_[i]->getHeight());

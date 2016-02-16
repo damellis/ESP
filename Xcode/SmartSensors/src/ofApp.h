@@ -13,6 +13,7 @@
 
 // custom
 #include "istream.h"
+#include "plotter.h"
 
 class ofApp : public ofBaseApp {
   public:
@@ -85,11 +86,15 @@ class ofApp : public ofBaseApp {
     ofxGrtTimeseriesPlot plot_inputs_;
     vector<ofxGrtTimeseriesPlot> plot_pre_processed_;
     vector<vector<ofxGrtTimeseriesPlot>> plot_features_;
-    vector<ofxGrtTimeseriesPlot> plot_samples_;
+    vector<Plotter> plot_samples_;
     vector<std::string> plot_samples_info_;
     ofxGrtTimeseriesPlot plot_prediction_;
     vector<int> plot_sample_indices_; // the index of the currently plotted sample for each class label
     vector<pair<ofRectangle, ofRectangle>> plot_sample_button_locations_;
+
+    void onPlotRangeSelected(Plotter::CallbackArgs arg) {
+        ofLog() << arg.data;
+    }
 
     // Panel for storing and loading pipeline.
     ofxPanel gui_;
@@ -102,7 +107,7 @@ class ofApp : public ofBaseApp {
     void saveTrainingData();
     ofxButton load_training_data_button_;
     void loadTrainingData();
-    
+
     vector<ofxPanel *> training_sample_guis_;
     void deleteTrainingSample(int num);
     void trimTrainingSample(int num);
@@ -113,7 +118,7 @@ class ofApp : public ofBaseApp {
 
     // Prompts to ask the user to save the training data if changed.
     bool should_save_training_data_;
-    
+
     friend class TrainingSampleGuiListener;
 };
 
