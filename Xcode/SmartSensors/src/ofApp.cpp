@@ -127,8 +127,7 @@ void ofApp::setup() {
     for (int i = 0; i < kNumMaxLabels_; i++) {
         uint32_t label_dim = istream_->getNumOutputDimensions();
         Plotter plot;
-        plot.setup(kBufferSize_, label_dim, "Label" + std::to_string(i + 1));
-        plot.setDrawInfoText(false);
+        plot.setup(label_dim, "Label" + std::to_string(i + 1));
         plot.setColorPalette(color_palette.generate(label_dim));
         plot_samples_.push_back(plot);
         plot_sample_indices_.push_back(-1);
@@ -141,15 +140,18 @@ void ofApp::setup() {
 
         ofxButton *delete_button = new ofxButton();
         gui->add(delete_button->setup("delete", 80, 16));
-        delete_button->addListener(listener, &TrainingSampleGuiListener::deleteButtonPressed);
+        delete_button->addListener(listener,
+                                   &TrainingSampleGuiListener::deleteButtonPressed);
 
         ofxButton *trim_button = new ofxButton();
         gui->add(trim_button->setup("trim", 80, 16));
-        trim_button->addListener(listener, &TrainingSampleGuiListener::trimButtonPressed);
+        trim_button->addListener(listener,
+                                 &TrainingSampleGuiListener::trimButtonPressed);
 
         ofxButton *relable_button = new ofxButton();
         gui->add(relable_button->setup("re-label", 80, 16));
-        relable_button->addListener(listener, &TrainingSampleGuiListener::relabelButtonPressed);
+        relable_button->addListener(listener,
+                                    &TrainingSampleGuiListener::relabelButtonPressed);
 
         training_sample_guis_.push_back(gui);
     }
@@ -234,7 +236,28 @@ void ofApp::deleteTrainingSample(int num) {
 }
 
 void ofApp::trimTrainingSample(int num) {
-    ofLog(OF_LOG_NOTICE) << "Trimming sample " << num;
+    int label = num + 1;
+    TimeSeriesClassificationData data = training_data_.getClassData(label);
+    training_data_.eraseAllSamplesWithClassLabel(label);
+
+    pair<uint32_t, uint32_t> selection = plot_samples_[num].getSelection();
+    for (int i = 0; i < data.getNumSamples(); i++) {
+        if (i == plot_sample_indices_[num]) {
+            GRT::MatrixDouble sample = data[i].getData();
+            GRT::MatrixDouble new_sample;
+
+            assert(selection.second - selection.first < sample.getNumRows());
+            for (int row = selection.first; row < selection.second; row++) {
+                new_sample.push_back(sample.getRowVector(row));
+            }
+            training_data_.addSample(label, new_sample);
+            plot_samples_[num].setData(new_sample);
+        } else {
+            training_data_.addSample(label, data[i].getData());
+        }
+    }
+
+    should_save_training_data_ = true;
 }
 
 void ofApp::relabelTrainingSample(int num) {
@@ -396,16 +419,8 @@ void ofApp::drawTrainingInfo() {
     // 2. Draw samples
     // Currently we support kNumMaxLabels_ labels
     uint32_t width = stage_width / kNumMaxLabels_;
-    float minY = plot_samples_[0].getRanges().first;
-    float maxY = plot_samples_[0].getRanges().second;
-    for (int i = 1; i < kNumMaxLabels_; i++) {
-        if (plot_samples_[i].getRanges().first < minY) {
-            minY = plot_samples_[i].getRanges().first;
-        }
-        if (plot_samples_[i].getRanges().second > maxY) {
-            maxY = plot_samples_[i].getRanges().second;
-        }
-    }
+    float minY = plot_inputs_.getRanges().first;
+    float maxY = plot_inputs_.getRanges().second;
     auto class_tracker = training_data_.getClassTracker();
     for (int i = 0; i < kNumMaxLabels_; i++) {
         int label = i + 1;

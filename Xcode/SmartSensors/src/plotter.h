@@ -1,20 +1,11 @@
 #pragma once
 
-#include "ofxGrt.h"
-
 // The plotter class extends ofxGrtTimeseriesPlot and manages user-input to
 // support interactive operations over time-series data.
-class Plotter : public ofxGrtTimeseriesPlot {
+class Plotter {
   public:
-    Plotter() : x_start_(0), x_end_(0), range_selected_callback_(nullptr) {
-    }
-
-    bool draw(uint32_t x, uint32_t y, uint32_t w, uint32_t h) {
-        x_ = x;
-        y_ = y;
-        w_ = w;
-        h_ = h;
-        ofxGrtTimeseriesPlot::draw(x, y, w, h);
+    Plotter() : initialized_(false), lock_ranges_(false), minY_(0), maxY_(0),
+            x_start_(0), x_end_(0), range_selected_callback_(nullptr) {
     }
 
     struct CallbackArgs {
@@ -23,12 +14,129 @@ class Plotter : public ofxGrtTimeseriesPlot {
         void* data;
     };
 
+    bool setup(uint32_t num_dimensions, std::string title) {
+        num_dimensions_ = num_dimensions;
+        title_ = title;
+
+        colors_.resize(num_dimensions_);
+        // Setup the default colors_
+        if (num_dimensions >= 1) colors_[0] = ofColor(255, 0, 0); // red
+        if (num_dimensions >= 2) colors_[1] = ofColor(0, 255, 0); // green
+        if (num_dimensions >= 3) colors_[2] = ofColor(0, 0, 255); // blue
+
+        // Randomize the remaining colors_
+        for(uint32_t n = 3; n < num_dimensions_; n++){
+            colors_[n][0] = ofRandom(50, 255);
+            colors_[n][1] = ofRandom(50, 255);
+            colors_[n][2] = ofRandom(50, 255);
+        }
+
+        initialized_ = true;
+    }
+
+    bool setData(const GRT::MatrixDouble& data) {
+        x_start_ = 0;
+        x_end_ = 0;
+        data_ = data;
+    }
+
+    bool setRanges(float minY,float maxY, bool lockRanges = false) {
+        default_minY_ = minY;
+        default_maxY_ = maxY;
+        lock_ranges_ = lockRanges;
+    }
+
+    std::pair<float, float> getRanges() { return std::make_pair(minY_, maxY_); }
+
+    bool setColorPalette(const vector<ofColor> &colors) {
+        if (colors.size() == num_dimensions_) {
+            colors_ = colors;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    bool draw(uint32_t x, uint32_t y, uint32_t w, uint32_t h) {
+        x_ = x;
+        y_ = y;
+        w_ = w;
+        h_ = h;
+
+        if (!initialized_) return false;
+
+        ofPushMatrix();
+        ofPushStyle();
+
+        ofEnableAlphaBlending();
+        ofTranslate(x, y);
+
+        // Draw the background
+        ofFill();
+        ofSetColor(0, 0, 0);
+        ofDrawRectangle(0, 0, w, h);
+
+        // Draw the selection.
+        ofSetColor(0x1F, 0x1F, 0x1F);
+        if (x_start_ > 0 && x_end_ > x_start_) {
+            ofDrawRectangle(x_start_, 0, x_end_ - x_start_, h);
+        }
+
+        // Draw the axis lines
+        ofSetColor(255, 255, 255);
+        ofDrawLine(-5, h, w+5, h); // X Axis
+        ofDrawLine(0, -5, 0, h+5); // Y Axis
+
+        // Draw the timeseries
+        float xPos = 0;
+        x_step_ = 1.0 * w_ / data_.getNumRows();
+
+        uint32_t index = 0;
+        ofNoFill();
+        for(uint32_t n = 0; n < num_dimensions_; n++){
+            xPos = 0;
+            index = 0;
+            ofSetColor(colors_[n][0], colors_[n][1], colors_[n][2]);
+            ofBeginShape();
+            for(uint32_t i = 0; i < data_.getNumRows(); i++){
+                float min = lock_ranges_ ? default_minY_ : minY_;
+                float max = lock_ranges_ ? default_maxY_ : maxY_;
+                ofVertex(xPos, ofMap(data_[i][n], min, max, h, 0, true));
+                xPos += x_step_;
+            }
+            ofEndShape(false);
+        }
+
+        // Draw the title
+        int ofBitmapFontHeight = 14;
+        int textX = 10;
+        int textY = ofBitmapFontHeight + 5;
+        if (title_ != ""){
+            ofSetColor(0xFF, 0xFF, 0xFF);
+            ofDrawBitmapString(title_, textX, textY);
+        }
+
+        ofPopStyle();
+        ofPopMatrix();
+        return true;
+    }
+
+    bool reset() {
+        if (!initialized_) return false;
+        x_start_ = 0;
+        x_end_ = 0;
+        minY_ = 0;
+        maxY_ = 0;
+        data_.clear();
+    }
+
     typedef std::function<void(CallbackArgs)> onRangeSelectedCallback;
 
     void onRangeSelected(const onRangeSelectedCallback& cb, void* data) {
         range_selected_callback_ = cb;
         callback_data_ = data;
         ofAddListener(ofEvents().mousePressed, this, &Plotter::startSelection);
+        ofAddListener(ofEvents().mouseDragged, this, &Plotter::duringSelection);
         ofAddListener(ofEvents().mouseReleased, this, &Plotter::endSelection);
     }
 
@@ -38,19 +146,54 @@ class Plotter : public ofxGrtTimeseriesPlot {
         onRangeSelected(std::bind(listenerMethod, owner, _1), data);
     }
 
+    std::pair<uint32_t, uint32_t> getSelection() {
+        return std::make_pair(x_start_ / x_step_, x_end_ / x_step_);
+    }
+
   private:
+    bool initialized_;
+    uint32_t num_dimensions_;
+    vector<ofColor> colors_;
+    std::string title_;
+    float minY_, default_minY_;
+    float maxY_, default_maxY_;
+    bool lock_ranges_;
+    GRT::MatrixDouble data_;
+    float x_step_;
+
+    bool contains(uint32_t x, uint32_t y) {
+        if (x_ <= x && x <= x_ + w_ && y_ <= y && y <= y_ + h_) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    void normalize() {
+        pair<int, int> sel = std::minmax(x_click_, x_release_);
+        x_start_ = sel.first;
+        x_end_ = sel.second;
+    }
+
     void startSelection(ofMouseEventArgs& arg) {
-        if (x_ <= arg.x && arg.x <= x_ + w_ &&
-            y_ <= arg.y && arg.y <= y_ + h_) {
-            x_start_ = arg.x;
+        if (contains(arg.x, arg.y)) {
+            x_click_ = arg.x - x_;
+        }
+    }
+
+    void duringSelection(ofMouseEventArgs& arg) {
+        if (contains(arg.x, arg.y)) {
+            x_release_ = arg.x - x_;
+            normalize();
         }
     }
 
     void endSelection(ofMouseEventArgs& arg) {
-        if (x_ <= arg.x && arg.x <= x_ + w_
-            && y_ <= arg.y && arg.y <= y_ + h_) {
-            x_end_ = arg.x;
-            ofLog() << "Area selected: [" << x_start_ << ", " << x_end_ << "]";
+        if (contains(arg.x, arg.y)) {
+            x_release_ = arg.x - x_;
+            normalize();
+
+            ofLog() << "Range selected: [" << x_start_ << ", " << x_end_ << "]";
             if (range_selected_callback_ != nullptr) {
                 CallbackArgs args {
                     .start = x_start_,
@@ -66,6 +209,8 @@ class Plotter : public ofxGrtTimeseriesPlot {
     uint32_t y_;
     uint32_t w_;
     uint32_t h_;
+    uint32_t x_click_;
+    uint32_t x_release_;
     uint32_t x_start_;
     uint32_t x_end_;
 
