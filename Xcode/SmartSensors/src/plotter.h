@@ -205,9 +205,9 @@ class Plotter {
             if (range_selected_callback_ != nullptr) {
                 CallbackArgs args {
                     .start = x_start_,
-                            .end = x_end_,
-                            .data = callback_data_,
-                            };
+                    .end = x_end_,
+                    .data = callback_data_,
+                };
                 range_selected_callback_(args);
             }
         }
