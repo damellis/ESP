@@ -1,11 +1,14 @@
 #pragma once
 
+#include "ofMain.h"
+
 // The plotter class extends ofxGrtTimeseriesPlot and manages user-input to
 // support interactive operations over time-series data.
 class Plotter {
   public:
     Plotter() : initialized_(false), lock_ranges_(false), minY_(0), maxY_(0),
-            x_start_(0), x_end_(0), range_selected_callback_(nullptr) {
+            x_start_(0), x_end_(0), range_selected_callback_(nullptr),
+            is_tracking_mouse_(false) {
     }
 
     struct CallbackArgs {
@@ -170,49 +173,65 @@ class Plotter {
     }
 
     void normalize() {
-        pair<int, int> sel = std::minmax(x_click_, x_release_);
+        pair<uint32_t, uint32_t> sel = std::minmax(x_click_, x_release_);
         x_start_ = sel.first;
         x_end_ = sel.second;
     }
 
     void startSelection(ofMouseEventArgs& arg) {
-        if (contains(arg.x, arg.y)) {
+        // Only tracks if point is inside and data_ has rows.
+        if (contains(arg.x, arg.y) && data_.getNumRows() > 0) {
             x_click_ = arg.x - x_;
+            is_tracking_mouse_ = true;
         }
     }
 
     void duringSelection(ofMouseEventArgs& arg) {
-        if (contains(arg.x, arg.y)) {
-            x_release_ = arg.x - x_;
-            normalize();
+        if (is_tracking_mouse_) {
+            if (contains(arg.x, arg.y)) {
+                x_release_ = arg.x - x_;
+                normalize();
+            }
         }
     }
 
     void endSelection(ofMouseEventArgs& arg) {
-        if (contains(arg.x, arg.y)) {
-            x_release_ = arg.x - x_;
-            normalize();
+        if (is_tracking_mouse_) {
+            if (contains(arg.x, arg.y)) {
+                x_release_ = arg.x - x_;
+                normalize();
+            }
 
-            ofLog() << "Range selected: [" << x_start_ << ", " << x_end_ << "]";
             if (range_selected_callback_ != nullptr) {
                 CallbackArgs args {
                     .start = x_start_,
-                    .end = x_end_,
-                    .data = callback_data_,
-                };
+                            .end = x_end_,
+                            .data = callback_data_,
+                            };
                 range_selected_callback_(args);
             }
         }
+        is_tracking_mouse_ = false;
     }
 
     uint32_t x_;
     uint32_t y_;
     uint32_t w_;
     uint32_t h_;
+
+    // x_click_ and x_release_ keeps track of where the mouse is clicked and
+    // releasesd. Their values are normalized by subtracting x_.
     uint32_t x_click_;
     uint32_t x_release_;
+
+    // x_start_ and x_end_ are values that are reported to users of this class
+    // for selections. When selection happens, x_start_ is always smaller than
+    // x_end_.
     uint32_t x_start_;
     uint32_t x_end_;
+
+    // To avoid accidental tracking (such as out of range or when no data).
+    bool is_tracking_mouse_;
 
     onRangeSelectedCallback range_selected_callback_;
     void* callback_data_;

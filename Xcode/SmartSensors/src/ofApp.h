@@ -93,7 +93,7 @@ class ofApp : public ofBaseApp {
     vector<pair<ofRectangle, ofRectangle>> plot_sample_button_locations_;
 
     void onPlotRangeSelected(Plotter::CallbackArgs arg) {
-        ofLog() << arg.data;
+        // Do nothing here for now.
     }
 
     // Panel for storing and loading pipeline.
