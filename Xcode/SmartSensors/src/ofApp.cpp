@@ -651,8 +651,10 @@ void ofApp::loadTrainingData() {
     }
 
     for (int i = 0; i < training_data_.getNumSamples(); i++) {
-        plot_samples_[training_data_[i].getClassLabel() - 1].setData(
-                training_data_[i].getData());
+        int label = training_data_[i].getClassLabel();
+        plot_samples_[label - 1].setData(training_data_[i].getData());
+        plot_samples_[label - 1].setTitle(
+            training_data_.getClassNameForCorrespondingClassLabel(label));
     }
 
     // After we load the training data,
