@@ -51,13 +51,18 @@ class Plotter {
 
     std::pair<float, float> getRanges() { return std::make_pair(minY_, maxY_); }
 
-    bool setColorPalette(const vector<ofColor> &colors) {
+    bool setColorPalette(const vector<ofColor>& colors) {
         if (colors.size() == num_dimensions_) {
             colors_ = colors;
             return true;
         } else {
             return false;
         }
+    }
+
+    bool setTitle(const string& title) {
+        title_ = title;
+        return true;
     }
 
     bool draw(uint32_t x, uint32_t y, uint32_t w, uint32_t h) {

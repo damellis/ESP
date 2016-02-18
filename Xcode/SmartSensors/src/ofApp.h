@@ -107,13 +107,19 @@ class ofApp : public ofBaseApp {
     void saveTrainingData();
     ofxButton load_training_data_button_;
     void loadTrainingData();
-    
+
     void trainModel();
 
     vector<ofxPanel *> training_sample_guis_;
+    void renameTrainingSample(int num);
     void deleteTrainingSample(int num);
     void trimTrainingSample(int num);
     void relabelTrainingSample(int num);
+
+    // Rename
+    bool is_in_renaming_ = false;
+    int rename_target_ = -1;
+    string rename_title_;
 
     // Multithreading to avoid GUI blocked.
     std::thread training_thread_;
@@ -127,6 +133,7 @@ class ofApp : public ofBaseApp {
 class TrainingSampleGuiListener {
   public:
     TrainingSampleGuiListener(ofApp *app, int num) : app(app), num(num) {}
+    void renameButtonPressed() { app->renameTrainingSample(num); }
     void deleteButtonPressed() { app->deleteTrainingSample(num); }
     void trimButtonPressed() { app->trimTrainingSample(num); }
     void relabelButtonPressed() { app->relabelTrainingSample(num); }

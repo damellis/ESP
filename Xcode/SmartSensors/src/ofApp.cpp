@@ -138,6 +138,11 @@ void ofApp::setup() {
         gui->setup("Edit");
         gui->setSize(80, 0);
 
+        ofxButton *rename_button = new ofxButton();
+        gui->add(rename_button->setup("rename", 80, 16));
+        rename_button->addListener(listener,
+                                   &TrainingSampleGuiListener::renameButtonPressed);
+
         ofxButton *delete_button = new ofxButton();
         gui->add(delete_button->setup("delete", 80, 16));
         delete_button->addListener(listener,
@@ -204,6 +209,17 @@ void ofApp::loadPipeline() {
 void ofApp::saveTrainingData() {
     if (!training_data_.save("training_data.grt")) {
         ofLog(OF_LOG_ERROR) << "Failed to save the training data";
+    }
+}
+
+void ofApp::renameTrainingSample(int num) {
+    int label = num + 1;
+    is_in_renaming_ = true;
+    rename_target_ = label;
+
+    rename_title_ = training_data_.getClassNameForCorrespondingClassLabel(label);
+    if (rename_title_ == "CLASS_LABEL_NOT_FOUND") {
+        rename_title_ = "";
     }
 }
 
@@ -475,9 +491,6 @@ void ofApp::drawTrainingInfo() {
     }
 
     stage_top += stage_height + 4 * margin;
-    // 3. Draw training data summary
-    std::string data_stats = training_data_.getStatsAsString();
-    ofDrawBitmapString(data_stats, margin_left, stage_top);
 }
 
 void ofApp::drawAnalysis() {
@@ -514,6 +527,26 @@ void ofApp::onDataIn(GRT::MatrixDouble input) {
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
+    if (is_in_renaming_) {
+        // We intercept the key strokes until it's Enter
+        switch (key) {
+          case OF_KEY_BACKSPACE:
+            rename_title_ = rename_title_.substr(0, rename_title_.size() - 1);
+            break;
+          case OF_KEY_RETURN:
+            training_data_.setClassNameForCorrespondingClassLabel(rename_title_,
+                                                                  rename_target_);
+            is_in_renaming_ = false;
+            break;
+          default:
+            rename_title_ += key;
+            break;
+        }
+
+        plot_samples_[rename_target_ - 1].setTitle(rename_title_);
+        return;
+    }
+
     if (key >= '1' && key <= '9') {
         if (!is_recording_) {
             is_recording_ = true;
@@ -577,9 +610,9 @@ void ofApp::trainModel() {
 void ofApp::loadTrainingData() {
     GRT::TimeSeriesClassificationData training_data;
     ofFileDialogResult result = ofSystemLoadDialog("Load existing data", true);
-    
+
     if (!result.bSuccess) return;
-    
+
     if (!training_data.load(result.getPath()) ){
         ofLog(OF_LOG_ERROR) << "Failed to load the training data!"
                             << " path: " << result.getPath();
@@ -598,7 +631,7 @@ void ofApp::loadTrainingData() {
 
     // After we load the training data,
     should_save_training_data_ = false;
-    
+
     trainModel();
 }
 
