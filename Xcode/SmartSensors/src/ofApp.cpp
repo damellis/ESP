@@ -214,12 +214,36 @@ void ofApp::saveTrainingData() {
 
 void ofApp::renameTrainingSample(int num) {
     int label = num + 1;
-    is_in_renaming_ = true;
-    rename_target_ = label;
 
     rename_title_ = training_data_.getClassNameForCorrespondingClassLabel(label);
     if (rename_title_ == "CLASS_LABEL_NOT_FOUND") {
+        // This means there is no data collected for this label.
+        return;
+    } else if (rename_title_ == "NOT_SET") {
         rename_title_ = "";
+    }
+
+    is_in_renaming_ = true;
+    rename_target_ = label;
+    display_title_ = rename_title_;
+    plot_samples_[rename_target_ - 1].setTitle(display_title_);
+
+    ofAddListener(ofEvents().update, this, &ofApp::updateEventReceived);
+}
+
+void ofApp::updateEventReceived(ofEventArgs& arg) {
+    update_counter_++;
+
+    // Assuming 60fps, to update the cursor every 0.1 seconds
+    int period = 60 * 0.1;
+    if (is_in_renaming_) {
+        if (update_counter_ == period) {
+            display_title_ = rename_title_ + "_";
+        } else if (update_counter_ == period * 2) {
+            display_title_ = rename_title_;
+            update_counter_ = 0;
+        }
+        plot_samples_[rename_target_ - 1].setTitle(display_title_);
     }
 }
 
@@ -537,13 +561,15 @@ void ofApp::keyPressed(int key){
             training_data_.setClassNameForCorrespondingClassLabel(rename_title_,
                                                                   rename_target_);
             is_in_renaming_ = false;
-            break;
+            plot_samples_[rename_target_ - 1].setTitle(rename_title_);
+            ofRemoveListener(ofEvents().update, this, &ofApp::updateEventReceived);
+            return;
           default:
             rename_title_ += key;
             break;
         }
 
-        plot_samples_[rename_target_ - 1].setTitle(rename_title_);
+        plot_samples_[rename_target_ - 1].setTitle(display_title_);
         return;
     }
 

@@ -120,6 +120,8 @@ class ofApp : public ofBaseApp {
     bool is_in_renaming_ = false;
     int rename_target_ = -1;
     string rename_title_;
+    // Display title is rename_title_ plus a blinking underscore.
+    string display_title_;
 
     // Multithreading to avoid GUI blocked.
     std::thread training_thread_;
@@ -128,6 +130,9 @@ class ofApp : public ofBaseApp {
     bool should_save_training_data_;
 
     friend class TrainingSampleGuiListener;
+
+    void updateEventReceived(ofEventArgs& arg);
+    uint32_t update_counter_ = 0;
 };
 
 class TrainingSampleGuiListener {
