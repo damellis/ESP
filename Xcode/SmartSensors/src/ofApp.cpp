@@ -490,7 +490,7 @@ void ofApp::drawTrainingInfo() {
         training_sample_guis_[i]->draw();
     }
 
-    stage_top += margin / 2;  // slightly adjust to make room for prediction
+    stage_top += stage_height + 30 + training_sample_guis_[0]->getHeight();
     for (int i = 0; i < predicted_class_distances_.size() &&
                  i < predicted_class_likelihoods_.size(); i++) {
         ofColor backgroundColor, textColor;
@@ -505,16 +505,14 @@ void ofApp::drawTrainingInfo() {
         ofDrawBitmapStringHighlight(
             std::to_string(predicted_class_distances_[i]).substr(0, 6),
             stage_left + (label - 1) * width,
-            stage_top + stage_height + margin,
+            stage_top + margin,
             backgroundColor, textColor);
         ofDrawBitmapStringHighlight(
             std::to_string(predicted_class_likelihoods_[i]).substr(0, 6),
             stage_left + (label - 1) * width,
-            stage_top + stage_height + margin * 3 / 2,
+            stage_top + margin * 3 / 2,
             backgroundColor, textColor);
     }
-
-    stage_top += stage_height + 4 * margin;
 }
 
 void ofApp::drawAnalysis() {
