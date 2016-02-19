@@ -115,6 +115,7 @@ class ofApp : public ofBaseApp {
     void deleteTrainingSample(int num);
     void trimTrainingSample(int num);
     void relabelTrainingSample(int num);
+    void doRelabelTrainingSample(uint32_t from, uint32_t to);
 
     // Rename
     bool is_in_renaming_ = false;
@@ -133,6 +134,10 @@ class ofApp : public ofBaseApp {
 
     void updateEventReceived(ofEventArgs& arg);
     uint32_t update_counter_ = 0;
+
+    // Relabel
+    bool is_in_relabeling_ = false;
+    uint32_t relabel_source_;
 };
 
 class TrainingSampleGuiListener {
