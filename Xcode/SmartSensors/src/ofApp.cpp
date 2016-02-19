@@ -310,7 +310,18 @@ void ofApp::update() {
     for (int i = 0; i < input_data_.getNumRows(); i++){
         vector<double> data_point = input_data_.getRowVector(i);
 
-        plot_inputs_.update(data_point);
+        if (pipeline_->getTrained()) {
+            pipeline_->predict(data_point);
+            predicted_label_ = pipeline_->getPredictedClassLabel();
+            predicted_class_distances_ = pipeline_->getClassDistances();
+            predicted_class_likelihoods_ = pipeline_->getClassLikelihoods();
+            predicted_class_labels_ = pipeline_->getClassifier()->getClassLabels();
+        }
+        
+        std::string title = training_data_.getClassNameForCorrespondingClassLabel(predicted_label_);
+        if (title == "NOT_SET") title = std::string("Label") + std::to_string(predicted_label_);
+
+        plot_inputs_.update(data_point, predicted_label_ != 0, title);
 
         if (istream_->hasStarted()) {
             if (!pipeline_->preProcessData(data_point)) {
@@ -339,14 +350,6 @@ void ofApp::update() {
 
         if (is_recording_) {
             sample_data_.push_back(data_point);
-        }
-
-        if (pipeline_->getTrained()) {
-            pipeline_->predict(data_point);
-            predicted_label_ = pipeline_->getPredictedClassLabel();
-            predicted_class_distances_ = pipeline_->getClassDistances();
-            predicted_class_likelihoods_ = pipeline_->getClassLikelihoods();
-            predicted_class_labels_ = pipeline_->getClassifier()->getClassLabels();
         }
     }
 }
