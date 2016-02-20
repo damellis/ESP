@@ -600,7 +600,12 @@ void ofApp::onDataIn(GRT::MatrixDouble input) {
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
     if (is_in_renaming_) {
-        // We intercept the key strokes until it's Enter
+        // Add normal characters.
+        if (key >= 32 && key <= 126) {
+            rename_title_ += key;
+            return;
+        }
+
         switch (key) {
           case OF_KEY_BACKSPACE:
             rename_title_ = rename_title_.substr(0, rename_title_.size() - 1);
@@ -613,7 +618,6 @@ void ofApp::keyPressed(int key){
             ofRemoveListener(ofEvents().update, this, &ofApp::updateEventReceived);
             return;
           default:
-            rename_title_ += key;
             break;
         }
 
