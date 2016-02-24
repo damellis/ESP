@@ -65,6 +65,8 @@ ofApp::ofApp() : fragment_(TRAINING),
 
 //--------------------------------------------------------------
 void ofApp::setup() {
+    ostream_ = new MacOSKeyboardOStream(3, 'a', 'b', 'c');
+
     is_recording_ = false;
 
     // setup() is a user-defined function.
@@ -363,6 +365,10 @@ void ofApp::update() {
             predicted_class_distances_ = pipeline_->getClassDistances();
             predicted_class_likelihoods_ = pipeline_->getClassLikelihoods();
             predicted_class_labels_ = pipeline_->getClassifier()->getClassLabels();
+
+            if (ostream_ != NULL && predicted_label_ != 0) {
+                ostream_->onReceive(predicted_label_);
+            }
         }
         
         std::string title = training_data_.getClassNameForCorrespondingClassLabel(predicted_label_);

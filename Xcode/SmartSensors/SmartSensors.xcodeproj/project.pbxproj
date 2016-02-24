@@ -61,6 +61,7 @@
 		33590F0CD7DAD6FE90515E35 /* ofxGuiGroup.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxGuiGroup.h; path = "../../third-party/openFrameworks/addons/ofxGui/src/ofxGuiGroup.h"; sourceTree = SOURCE_ROOT; };
 		33AE35DBE2EBE926124EFA8A /* ofxGui.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxGui.h; path = "../../third-party/openFrameworks/addons/ofxGui/src/ofxGui.h"; sourceTree = SOURCE_ROOT; };
 		497776A51C72F4BD00EEE078 /* plotter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = plotter.h; sourceTree = "<group>"; };
+		49858F711C7DA03F00A3855C /* ostream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ostream.h; sourceTree = "<group>"; };
 		498E8A1B1C600A9F0007F149 /* user_audio_beat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = user_audio_beat.h; sourceTree = "<group>"; };
 		4C42376EF0C93B60AB080532 /* ofxBaseGui.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxBaseGui.h; path = "../../third-party/openFrameworks/addons/ofxGui/src/ofxBaseGui.h"; sourceTree = SOURCE_ROOT; };
 		5939D84F8D015C2971814643 /* user.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = user.h; path = src/user.h; sourceTree = SOURCE_ROOT; };
@@ -84,7 +85,7 @@
 		E4328143138ABC890047C5CB /* openFrameworksLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = openFrameworksLib.xcodeproj; path = "../../third-party/openFrameworks/libs/openFrameworksCompiled/project/osx/openFrameworksLib.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		E4B69B5B0A3A1756003C02F2 /* SmartSensorsDebug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SmartSensorsDebug.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4B69E1D0A3A1BDC003C02F2 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = src/main.cpp; sourceTree = SOURCE_ROOT; };
-		E4B69E1E0A3A1BDC003C02F2 /* ofApp.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofApp.cpp; path = src/ofApp.cpp; sourceTree = SOURCE_ROOT; };
+		E4B69E1E0A3A1BDC003C02F2 /* ofApp.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = ofApp.cpp; path = src/ofApp.cpp; sourceTree = SOURCE_ROOT; };
 		E4B69E1F0A3A1BDC003C02F2 /* ofApp.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = ofApp.h; path = src/ofApp.h; sourceTree = SOURCE_ROOT; };
 		E4B6FCAD0C3E899E008CF71C /* openFrameworks-Info.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist.xml; path = "openFrameworks-Info.plist"; sourceTree = "<group>"; };
 		E4EB691F138AFCF100A09F29 /* CoreOF.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = CoreOF.xcconfig; path = "../../third-party/openFrameworks/libs/openFrameworksCompiled/project/osx/CoreOF.xcconfig"; sourceTree = SOURCE_ROOT; };
@@ -198,6 +199,7 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				49858F711C7DA03F00A3855C /* ostream.h */,
 				497776A51C72F4BD00EEE078 /* plotter.h */,
 				498E8A1B1C600A9F0007F149 /* user_audio_beat.h */,
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
