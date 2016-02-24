@@ -66,7 +66,7 @@ ofApp::ofApp() : fragment_(TRAINING),
 //--------------------------------------------------------------
 void ofApp::setup() {
     ostream_ = new MacOSKeyboardOStream(3, 'a', 'b', 'c');
-
+    ostream_->setStreamSize(10);
     is_recording_ = false;
 
     // setup() is a user-defined function.
