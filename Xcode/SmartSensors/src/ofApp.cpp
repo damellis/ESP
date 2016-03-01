@@ -375,7 +375,7 @@ void ofApp::update() {
                 ostream_->onReceive(predicted_label_);
             }
         }
-        
+
         std::string title = training_data_.getClassNameForCorrespondingClassLabel(predicted_label_);
         if (title == "NOT_SET") title = std::string("Label") + std::to_string(predicted_label_);
 
@@ -613,6 +613,8 @@ void ofApp::keyPressed(int key){
     if (is_in_renaming_) {
         // Add normal characters.
         if (key >= 32 && key <= 126) {
+            // key code 32 is for space, we remap it to '_'.
+            key = (key == 32) ? '_' : key;
             rename_title_ += key;
             return;
         }
