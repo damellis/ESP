@@ -11,3 +11,6 @@
 	path = Arduino/libraries/grt
 	url = https://github.com/damellis/grt.git
 	branch = avr
+[submodule "third-party/SpaceInvaders"]
+	path = third-party/SpaceInvaders
+	url = https://github.com/damellis/Processing_SpaceInv.git
