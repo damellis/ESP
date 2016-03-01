@@ -65,8 +65,13 @@ ofApp::ofApp() : fragment_(TRAINING),
 
 //--------------------------------------------------------------
 void ofApp::setup() {
-    ostream_ = new MacOSKeyboardOStream(3, 'a', 'b', 'c');
-    ostream_->setStreamSize(10);
+    // TODO(benzh): OStream should probably be moved to user.h
+    // All commented for now.
+    // ostream_ = new MacOSKeyboardOStream(3, '\0', 'f', 'd');
+    // ostream_ = new MacOSMouseOStream(3, 0, 0, 240, 240, 400, 400);
+    // ostream_ = new TCPOStream(3, "", "mouse 300, 300.", "mouse 400, 400.");
+    // ostream_->setStreamSize(10000000);
+    // ostream_->start();
     is_recording_ = false;
 
     // setup() is a user-defined function.
