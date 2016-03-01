@@ -190,6 +190,9 @@ void ofApp::setup() {
     load_training_data_button_.addListener(this, &ofApp::loadTrainingData);
 
     ofBackground(54, 54, 54);
+
+    // After everything is setup, start streaming.
+    istream_->start();
 }
 
 void ofApp::savePipeline() {
