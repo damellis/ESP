@@ -172,14 +172,17 @@ private:
     std::map<uint32_t, pair<uint32_t, uint32_t>> mouse_mapping_;
 };
 
-// MacOSMouseOStream
-class TCPOStream : public OStream {
+// TcpOStream
+class TcpOStream : public OStream {
   public:
-    TCPOStream(std::map<uint32_t, string> tcp_stream_mapping)
-            : tcp_stream_mapping_(tcp_stream_mapping) {
+    TcpOStream(string server, int port,
+               std::map<uint32_t, string> tcp_stream_mapping)
+            : server_(server), port_(port),
+            tcp_stream_mapping_(tcp_stream_mapping) {
     }
 
-    TCPOStream(uint32_t count, ...) {
+    TcpOStream(string server, int port, uint32_t count, ...)
+            : server_(server), port_(port) {
         va_list args;
         va_start(args, count);
         for (uint32_t i = 1; i <= count; i++) {
@@ -206,10 +209,7 @@ class TCPOStream : public OStream {
             exit(errno);
         }
 
-        char hostname[] = "localhost";
-        int portno = 9999;
-
-        struct hostent *server = gethostbyname(hostname);
+        struct hostent *server = gethostbyname(server_.c_str());
         if (server == NULL) {
             perror("ERROR resolving host");
             exit(errno);
@@ -220,7 +220,7 @@ class TCPOStream : public OStream {
         serveraddr.sin_family = AF_INET;
         bcopy((char *) server->h_addr,
               (char *) &serveraddr.sin_addr.s_addr, server->h_length);
-        serveraddr.sin_port = htons(portno);
+        serveraddr.sin_port = htons(port_);
         if (connect(sockfd_,
                     (struct sockaddr *) &serveraddr,
                     sizeof(serveraddr)) < 0) {
@@ -245,6 +245,8 @@ private:
         return tcp_stream_mapping_[label];
     }
 
+    string server_;
+    int port_;
     uint64_t elapsed_time_ = 0;
     std::map<uint32_t, string> tcp_stream_mapping_;
     int sockfd_;
