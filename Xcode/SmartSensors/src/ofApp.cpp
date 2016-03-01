@@ -70,6 +70,7 @@ void ofApp::setup() {
     // ostream_ = new MacOSKeyboardOStream(3, '\0', 'f', 'd');
     // ostream_ = new MacOSMouseOStream(3, 0, 0, 240, 240, 400, 400);
     // ostream_ = new TcpOStream("localhost", 9999, 3, "", "mouse 300, 300.", "mouse 400, 400.");
+    // ostream_ = new TcpOStream("localhost", 5204, 3, "l", "r", " ");
     // ostream_->setStreamSize(10000000);
     // ostream_->start();
     is_recording_ = false;
