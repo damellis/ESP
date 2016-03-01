@@ -65,6 +65,13 @@ ofApp::ofApp() : fragment_(TRAINING),
 
 //--------------------------------------------------------------
 void ofApp::setup() {
+    // TODO(benzh): OStream should probably be moved to user.h
+    // All commented for now.
+    // ostream_ = new MacOSKeyboardOStream(3, '\0', 'f', 'd');
+    // ostream_ = new MacOSMouseOStream(3, 0, 0, 240, 240, 400, 400);
+    // ostream_ = new TcpOStream("localhost", 9999, 3, "", "mouse 300, 300.", "mouse 400, 400.");
+    // ostream_->setStreamSize(10000000);
+    // ostream_->start();
     is_recording_ = false;
 
     // setup() is a user-defined function.
@@ -183,6 +190,9 @@ void ofApp::setup() {
     load_training_data_button_.addListener(this, &ofApp::loadTrainingData);
 
     ofBackground(54, 54, 54);
+
+    // After everything is setup, start streaming.
+    istream_->start();
 }
 
 void ofApp::savePipeline() {
@@ -363,8 +373,12 @@ void ofApp::update() {
             predicted_class_distances_ = pipeline_->getClassDistances();
             predicted_class_likelihoods_ = pipeline_->getClassLikelihoods();
             predicted_class_labels_ = pipeline_->getClassifier()->getClassLabels();
+
+            if (ostream_ != NULL && predicted_label_ != 0) {
+                ostream_->onReceive(predicted_label_);
+            }
         }
-        
+
         std::string title = training_data_.getClassNameForCorrespondingClassLabel(predicted_label_);
         if (title == "NOT_SET") title = std::string("Label") + std::to_string(predicted_label_);
 
@@ -600,7 +614,14 @@ void ofApp::onDataIn(GRT::MatrixDouble input) {
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
     if (is_in_renaming_) {
-        // We intercept the key strokes until it's Enter
+        // Add normal characters.
+        if (key >= 32 && key <= 126) {
+            // key code 32 is for space, we remap it to '_'.
+            key = (key == 32) ? '_' : key;
+            rename_title_ += key;
+            return;
+        }
+
         switch (key) {
           case OF_KEY_BACKSPACE:
             rename_title_ = rename_title_.substr(0, rename_title_.size() - 1);
@@ -613,7 +634,6 @@ void ofApp::keyPressed(int key){
             ofRemoveListener(ofEvents().update, this, &ofApp::updateEventReceived);
             return;
           default:
-            rename_title_ += key;
             break;
         }
 
