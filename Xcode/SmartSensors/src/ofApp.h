@@ -14,6 +14,7 @@
 // custom
 #include "istream.h"
 #include "plotter.h"
+#include "ostream.h"
 
 class ofApp : public ofBaseApp {
   public:
@@ -44,9 +45,11 @@ class ofApp : public ofBaseApp {
 
     void useStream(IStream &stream);
     void usePipeline(GRT::GestureRecognitionPipeline &pipeline);
+    void useOStream(OStream &stream);
 
     friend void useStream(IStream &stream);
     friend void usePipeline(GRT::GestureRecognitionPipeline &pipeline);
+    friend void useOStream(OStream &stream);
 
     uint32_t num_pipeline_stages_;
 
@@ -62,6 +65,9 @@ class ofApp : public ofBaseApp {
     IStream *istream_;
     // Callback used for input data stream (istream_)
     void onDataIn(GRT::MatrixDouble in);
+
+    // Input stream, a callback should be registered upon data arrival
+    OStream *ostream_;
 
     // When button 1-9 is pressed, is_recording_ will be set and data will be
     // added to sample_data_.

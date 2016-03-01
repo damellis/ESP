@@ -65,6 +65,13 @@ ofApp::ofApp() : fragment_(TRAINING),
 
 //--------------------------------------------------------------
 void ofApp::setup() {
+    // TODO(benzh): OStream should probably be moved to user.h
+    // All commented for now.
+    // ostream_ = new MacOSKeyboardOStream(3, '\0', 'f', 'd');
+    // ostream_ = new MacOSMouseOStream(3, 0, 0, 240, 240, 400, 400);
+    // ostream_ = new TcpOStream("localhost", 9999, 3, "", "mouse 300, 300.", "mouse 400, 400.");
+    // ostream_->setStreamSize(10000000);
+    // ostream_->start();
     is_recording_ = false;
 
     // setup() is a user-defined function.
@@ -363,6 +370,10 @@ void ofApp::update() {
             predicted_class_distances_ = pipeline_->getClassDistances();
             predicted_class_likelihoods_ = pipeline_->getClassLikelihoods();
             predicted_class_labels_ = pipeline_->getClassifier()->getClassLabels();
+
+            if (ostream_ != NULL && predicted_label_ != 0) {
+                ostream_->onReceive(predicted_label_);
+            }
         }
         
         std::string title = training_data_.getClassNameForCorrespondingClassLabel(predicted_label_);
