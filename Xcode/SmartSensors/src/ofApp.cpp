@@ -60,7 +60,8 @@ void ofApp::usePipeline(GRT::GestureRecognitionPipeline &pipeline) {
 
 ofApp::ofApp() : fragment_(TRAINING),
                  num_pipeline_stages_(0),
-                 should_save_training_data_(false) {
+                 should_save_training_data_(false),
+                 ostream_(NULL) {
 }
 
 //--------------------------------------------------------------
