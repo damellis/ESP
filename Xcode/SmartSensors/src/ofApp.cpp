@@ -71,15 +71,15 @@ ofApp::ofApp() : fragment_(TRAINING),
 //--------------------------------------------------------------
 void ofApp::setup() {
 
-    if (ostream_ != NULL) {
-        ostream_->setStreamSize(10000000);
-        ostream_->start();
-    }
-
     is_recording_ = false;
 
     // setup() is a user-defined function.
     ::setup();
+
+    if (ostream_ != NULL) {
+        ostream_->setStreamSize(10000000);
+        ostream_->start();
+    }
 
     istream_->onDataReadyEvent(this, &ofApp::onDataIn);
 
