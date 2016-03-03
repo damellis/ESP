@@ -22,8 +22,8 @@ float normalizeArduino101(float input)
 void setup()
 {
     stream.useUSBPort(0);
-    //stream.useNormalizer(normalizeADXL335);
-    stream.useNormalizer(normalizeArduino101);
+    stream.useNormalizer(normalizeADXL335);
+    //stream.useNormalizer(normalizeArduino101);
     useStream(stream);
     
     pipeline.setClassifier(DTW(true, true, 0.5)); // enable scaling, enable null rejection w/ specified threshold
