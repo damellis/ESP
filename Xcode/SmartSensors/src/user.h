@@ -2,4 +2,5 @@
 //#include "user_color_sensor.h"
 //#include "user_adxl335_accelerometer.h"
 //#include "user_accelerometer_gestures.h"
+//#include "user_accelerometer_poses.h"
 //#include "user_capacitive_sensing.h"
