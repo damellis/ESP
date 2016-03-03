@@ -11,6 +11,8 @@ void setup() {
   if (!CurieImu.testConnection()) {
     Serial.println("CurieImu connection failed");
   }
+
+  CurieImu.setFullScaleAccelRange(BMI160_ACCEL_RANGE_8G);
 }
 
 void loop() {
