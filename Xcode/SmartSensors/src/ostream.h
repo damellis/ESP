@@ -1,7 +1,12 @@
 /*
- * OStream supports emitting prediction results to some downstream consumers.
+ * OStream supports emitting prediction results to some downstream consumers,
+ * e.g. Mac OS Keyboard Emulator, OSC Stream, TCP Stream, etc.
  *
- * For example: Mac OS Keyboard Emulator, OSC Stream, etc.
+ * OStream* ostream = new MacOSKeyboardOStream(3, '\0', 'f', 'd');
+ * OStream* ostream = new MacOSMouseOStream(3, 0, 0, 240, 240, 400, 400);
+ * OStream* ostream = new TcpOStream("localhost", 9999, 3, "", "mouse 300, 300.", "mouse 400, 400.");
+ * OStream* ostream = new TcpOStream("localhost", 5204, 3, "l", "r", " ");
+ *
  */
 #pragma once
 
@@ -21,8 +26,12 @@
 #include <unistd.h>
 
 #include "ofMain.h"
+#include "ofApp.h"
 
 const uint64_t kGracePeriod = 500; // 0.5 second
+
+// Forward declaration.
+class ofApp;
 
 class OStream {
   public:
@@ -251,3 +260,5 @@ private:
     std::map<uint32_t, string> tcp_stream_mapping_;
     int sockfd_;
 };
+
+void useOStream(OStream &stream);

@@ -3,6 +3,7 @@
 
 #include "GRT/GRT.h"
 #include "istream.h"
+#include "ostream.h"
 
 using namespace GRT;
 

@@ -58,6 +58,10 @@ void ofApp::usePipeline(GRT::GestureRecognitionPipeline &pipeline) {
     pipeline_ = &pipeline;
 }
 
+void ofApp::useOStream(OStream &stream) {
+    ostream_ = &stream;
+}
+
 ofApp::ofApp() : fragment_(TRAINING),
                  num_pipeline_stages_(0),
                  should_save_training_data_(false),
@@ -66,14 +70,12 @@ ofApp::ofApp() : fragment_(TRAINING),
 
 //--------------------------------------------------------------
 void ofApp::setup() {
-    // TODO(benzh): OStream should probably be moved to user.h
-    // All commented for now.
-    // ostream_ = new MacOSKeyboardOStream(3, '\0', 'f', 'd');
-    // ostream_ = new MacOSMouseOStream(3, 0, 0, 240, 240, 400, 400);
-    // ostream_ = new TcpOStream("localhost", 9999, 3, "", "mouse 300, 300.", "mouse 400, 400.");
-    // ostream_ = new TcpOStream("localhost", 5204, 3, "l", "r", " ");
-    // ostream_->setStreamSize(10000000);
-    // ostream_->start();
+
+    if (ostream_ != NULL) {
+        ostream_->setStreamSize(10000000);
+        ostream_->start();
+    }
+
     is_recording_ = false;
 
     // setup() is a user-defined function.
@@ -405,7 +407,7 @@ void ofApp::update() {
                         plot_features_[j][k].update(v);
                     }
                 } else {
-                    assert(plot_features_.size() == 1);
+                    assert(plot_features_[j].size() == 1);
                     plot_features_[j][0].setData(feature);
                 }
             }

@@ -50,10 +50,12 @@ void AudioStream::stop() {
 }
 
 int AudioStream::getNumInputDimensions() {
-    return 2; // set by the call to sound_stream->setup() above
+    return 1; // set by the call to sound_stream->setup() above
 }
 
 void AudioStream::audioIn(float* input, int buffer_size, int nChannel) {
+    // set nChannel as 1 to load only a single channel (left).
+    nChannel = 1;
     GRT::MatrixDouble data(buffer_size / nChannel, nChannel);
 
     for (int i = 0; i < buffer_size / nChannel; i++)
@@ -233,7 +235,7 @@ void FirmataStream::start() {
         ofLog(OF_LOG_ERROR) << "USB Port has not been properly set";
         return;
     }
-    
+
     if (pins_.size() == 0) {
         ofLog(OF_LOG_ERROR) << "Pin has not been properly set";
         return;
