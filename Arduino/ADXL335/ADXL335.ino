@@ -6,7 +6,7 @@ int ypin = A4;
 int xpin = A5;
 
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(9600);
   pinMode(vinpin, OUTPUT); digitalWrite(vinpin, HIGH);
   pinMode(gndpin, OUTPUT); digitalWrite(gndpin, LOW);
   pinMode(voutpin, INPUT);
