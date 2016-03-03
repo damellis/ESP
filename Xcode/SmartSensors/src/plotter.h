@@ -7,8 +7,8 @@
 class Plotter {
   public:
     Plotter() : initialized_(false), lock_ranges_(false), minY_(0), maxY_(0),
-            x_start_(0), x_end_(0), range_selected_callback_(nullptr),
-            is_tracking_mouse_(false) {
+            x_start_(0), x_end_(0),
+            is_tracking_mouse_(false), range_selected_callback_(nullptr) {
     }
 
     struct CallbackArgs {
@@ -35,18 +35,21 @@ class Plotter {
         }
 
         initialized_ = true;
+        return true;
     }
 
     bool setData(const GRT::MatrixDouble& data) {
         x_start_ = 0;
         x_end_ = 0;
         data_ = data;
+        return true;
     }
 
     bool setRanges(float minY,float maxY, bool lockRanges = false) {
         default_minY_ = minY;
         default_maxY_ = maxY;
         lock_ranges_ = lockRanges;
+        return true;
     }
 
     std::pair<float, float> getRanges() { return std::make_pair(minY_, maxY_); }
@@ -136,6 +139,7 @@ class Plotter {
         minY_ = 0;
         maxY_ = 0;
         data_.clear();
+        return true;
     }
 
     typedef std::function<void(CallbackArgs)> onRangeSelectedCallback;
@@ -163,9 +167,9 @@ class Plotter {
     uint32_t num_dimensions_;
     vector<ofColor> colors_;
     std::string title_;
+    bool lock_ranges_;
     float minY_, default_minY_;
     float maxY_, default_maxY_;
-    bool lock_ranges_;
     GRT::MatrixDouble data_;
     float x_step_;
 

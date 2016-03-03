@@ -26,7 +26,7 @@ class IStream {
     // These two functions are no-op by default.
     virtual void useUSBPort(int i) {};
     virtual void useAnalogPin(int i) {};
-    
+
     virtual int getNumInputDimensions() = 0;
     virtual int getNumOutputDimensions() {
         vector<double> input(getNumInputDimensions(), 1.0);
@@ -36,14 +36,14 @@ class IStream {
 
     typedef std::function<double(double)> normalizeFunc;
     typedef std::function<vector<double>(vector<double>)> vectorNormalizeFunc;
-    
+
     // Supply a normalization function: double -> double.
     // Applied to each dimension of each vector of incoming data.
     void useNormalizer(normalizeFunc f) {
         normalizer_ = f;
         vectorNormalizer_ = nullptr;
     }
-    
+
     // Supply a normalization function: vector<double> -> vector<double>
     // Applied to each vector of incoming data.
     void useNormalizer(vectorNormalizeFunc f) {
@@ -70,7 +70,7 @@ class IStream {
     onDataReadyCallback data_ready_callback_;
     normalizeFunc normalizer_;
     vectorNormalizeFunc vectorNormalizer_;
-    
+
     vector<double> normalize(vector<double>);
 };
 
@@ -115,11 +115,10 @@ class ASCIISerialStream : public IStream {
     virtual int getNumInputDimensions() final;
     virtual void useUSBPort(int i);
   private:
-    int kBaud_;
-  
     unique_ptr<ofSerial> serial_;
+    int kBaud_;
     int port_ = -1;
-    
+
     int numDimensions_;
 
     // A separate reading thread to read data from Serial.
@@ -137,11 +136,11 @@ class FirmataStream : public IStream {
     virtual void useAnalogPin(int i);
   private:
     int port_ = -1;
-    
+
     vector<int> pins_;
-    
+
     bool configured_arduino_;
-    
+
     ofArduino arduino_;
     unique_ptr<std::thread> update_thread_;
     void update();

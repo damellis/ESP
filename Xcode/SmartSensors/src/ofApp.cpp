@@ -64,8 +64,8 @@ void ofApp::useOStream(OStream &stream) {
 
 ofApp::ofApp() : fragment_(TRAINING),
                  num_pipeline_stages_(0),
-                 should_save_training_data_(false),
-                 ostream_(NULL) {
+                 ostream_(NULL),
+                 should_save_training_data_(false) {
 }
 
 //--------------------------------------------------------------
@@ -151,23 +151,24 @@ void ofApp::setup() {
 
         ofxButton *rename_button = new ofxButton();
         gui->add(rename_button->setup("rename", 80, 16));
-        rename_button->addListener(listener,
-                                   &TrainingSampleGuiListener::renameButtonPressed);
+        rename_button->addListener(
+            listener, &TrainingSampleGuiListener::renameButtonPressed);
 
         ofxButton *delete_button = new ofxButton();
         gui->add(delete_button->setup("delete", 80, 16));
-        delete_button->addListener(listener,
-                                   &TrainingSampleGuiListener::deleteButtonPressed);
+        delete_button->addListener(
+            listener, &TrainingSampleGuiListener::deleteButtonPressed);
+
 
         ofxButton *trim_button = new ofxButton();
         gui->add(trim_button->setup("trim", 80, 16));
-        trim_button->addListener(listener,
-                                 &TrainingSampleGuiListener::trimButtonPressed);
+        trim_button->addListener(
+            listener, &TrainingSampleGuiListener::trimButtonPressed);
 
         ofxButton *relable_button = new ofxButton();
         gui->add(relable_button->setup("re-label", 80, 16));
-        relable_button->addListener(listener,
-                                    &TrainingSampleGuiListener::relabelButtonPressed);
+        relable_button->addListener(
+            listener, &TrainingSampleGuiListener::relabelButtonPressed);
 
         training_sample_guis_.push_back(gui);
     }
