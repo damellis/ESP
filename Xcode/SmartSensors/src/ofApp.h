@@ -81,7 +81,7 @@ class ofApp : public ofBaseApp {
     // Pipeline
     GRT::GestureRecognitionPipeline *pipeline_;
     GRT::TimeSeriesClassificationData training_data_;
-    GRT::TimeSeriesClassificationData test_data_;
+    GRT::MatrixDouble test_data_;
     float training_accuracy_;
     int predicted_label_;
     vector<double> predicted_class_distances_;
@@ -90,6 +90,7 @@ class ofApp : public ofBaseApp {
 
     // Visuals
     ofxGrtTimeseriesPlot plot_inputs_;
+    ofxGrtTimeseriesPlot plot_testdata_;
     vector<ofxGrtTimeseriesPlot> plot_pre_processed_;
     vector<vector<ofxGrtTimeseriesPlot>> plot_features_;
     vector<Plotter> plot_samples_;
@@ -122,6 +123,8 @@ class ofApp : public ofBaseApp {
     void trimTrainingSample(int num);
     void relabelTrainingSample(int num);
     void doRelabelTrainingSample(uint32_t from, uint32_t to);
+    
+    void doSaveTestData();
 
     // Rename
     bool is_in_renaming_ = false;

@@ -87,6 +87,10 @@ void ofApp::setup() {
     plot_inputs_.setDrawGrid(true);
     plot_inputs_.setDrawInfoText(true);
 
+    plot_testdata_.setup(kBufferSize_, istream_->getNumOutputDimensions(), "Test Data");
+    plot_testdata_.setDrawGrid(true);
+    plot_testdata_.setDrawInfoText(true);
+
     Palette color_palette;
 
     // Parse the user supplied pipeline and extract information:
@@ -415,6 +419,9 @@ void ofApp::update() {
         }
 
         if (is_recording_) {
+            if (label_ == 255) {
+                plot_testdata_.update(data_point, predicted_label_ != 0, title);
+            }
             sample_data_.push_back(data_point);
         }
     }
@@ -587,8 +594,23 @@ void ofApp::drawTrainingInfo() {
 void ofApp::drawAnalysis() {
     uint32_t margin_left = 10;
     uint32_t margin_top = 70;
+    uint32_t margin = 30;
+    uint32_t stage_left = margin_left;
+    uint32_t stage_top = margin_top;
+    uint32_t stage_width = ofGetWidth() - margin;
+    uint32_t stage_height = (ofGetHeight() - 200 - 4 * margin) / 2;
 
-    ofDrawBitmapString("Not implemented", margin_left, margin_top);
+    // 1. Draw Input
+    ofPushStyle();
+    plot_inputs_.draw(stage_left, stage_top, stage_width, stage_height);
+    ofPopStyle();
+    stage_top += stage_height + margin;
+
+    ofPushStyle();
+    plot_testdata_.draw(stage_left, stage_top, stage_width, stage_height);
+    ofPopStyle();
+    stage_top += stage_height + margin;
+
 }
 
 void ofApp::exit() {
@@ -658,6 +680,15 @@ void ofApp::keyPressed(int key){
     }
 
     switch (key) {
+        case 'r':
+            if (!is_recording_) {
+                is_recording_ = true;
+                label_ = 255;
+                sample_data_.clear();
+                test_data_.clear();
+                plot_testdata_.reset();
+            }
+            break;
         case 't':
             trainModel();
             break;
@@ -706,6 +737,21 @@ void ofApp::trainModel() {
     // TODO(benzh) Fix data race issue later.
     if (training_func()) {
         fragment_ = TRAINING;
+        
+        // Retest test data.
+        plot_testdata_.reset();
+        for (int i = 0; i < test_data_.getNumRows(); i++) {
+            pipeline_->predict(test_data_.getRowVector(i));
+            
+            int predicted_label = pipeline_->getPredictedClassLabel();
+            std::cout << predicted_label << " ";
+            std::string title = training_data_.getClassNameForCorrespondingClassLabel(predicted_label);
+            if (title == "NOT_SET") title = std::string("Label") + std::to_string(predicted_label);
+
+            plot_testdata_.update(test_data_.getRowVector(i), predicted_label != 0, title);
+        }
+        
+        pipeline_->reset();
     }
 }
 
@@ -757,6 +803,10 @@ void ofApp::keyReleased(int key) {
                     counter - 1;
 
         should_save_training_data_ = true;
+    }
+    
+    if (key == 'r') {
+        test_data_ = sample_data_;
     }
 }
 
