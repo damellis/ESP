@@ -113,6 +113,7 @@ void ofApp::setup() {
     // 2. Parse pre-processing.
     uint32_t num_feature_modules = pipeline_->getNumFeatureExtractionModules();
     num_pipeline_stages_ += num_feature_modules;
+    uint32_t num_final_features = 0;
     for (int i = 0; i < num_feature_modules; i++) {
         vector<ofxGrtTimeseriesPlot> feature_at_stage_i;
 
@@ -135,6 +136,7 @@ void ofApp::setup() {
             plot.setColorPalette(color_palette.generate(feature_dim));
             feature_at_stage_i.push_back(plot);
         }
+        num_final_features = feature_dim;
 
         plot_features_.push_back(feature_at_stage_i);
     }
@@ -145,6 +147,27 @@ void ofApp::setup() {
         plot.setup(label_dim, "Label" + std::to_string(i + 1));
         plot.setColorPalette(color_palette.generate(label_dim));
         plot_samples_.push_back(plot);
+
+
+        vector<Plotter> feature_plots;
+        if (num_final_features < kTooManyFeaturesThreshold) {
+            // For this label, `num_final_features` vertically stacked plots
+            for (int j = 0; j < num_final_features; j++) {
+                Plotter plot;
+                plot.setup(1, "Feature " + std::to_string(j + 1));
+                plot.setColorPalette(color_palette.generate(label_dim));
+                feature_plots.push_back(plot);
+            }
+        } else {
+            // The case of many features (like FFT), draw a single plot.
+            Plotter plot;
+            plot.setup(1, "Feature");
+            plot.setColorPalette(color_palette.generate(label_dim));
+            feature_plots.push_back(plot);
+        }
+        plot_sample_features_.push_back(feature_plots);
+
+
         plot_sample_indices_.push_back(-1);
         plot_sample_button_locations_.push_back(pair<ofRectangle, ofRectangle>(ofRectangle(), ofRectangle()));
 
@@ -203,6 +226,52 @@ void ofApp::setup() {
     // After everything is setup, start streaming.
     istream_->start();
 }
+
+void ofApp::onPlotRangeSelected(Plotter::CallbackArgs arg) {
+    uint32_t sample_index = reinterpret_cast<uint64_t>(arg.data) - 1;
+    uint32_t start = arg.start;
+
+    populateSampleFeatures(sample_index);
+}
+
+void ofApp::populateSampleFeatures(uint32_t sample_index) {
+    vector<Plotter>& feature_plots = plot_sample_features_[sample_index];
+    for (Plotter& plot : feature_plots) { plot.reset(); }
+
+    // 1. get samples
+    MatrixDouble& sample = plot_samples_[sample_index].getData();
+
+    // 2. get features by flowing samples through
+    for (uint32_t i = 0; i < sample.getNumRows(); i++) {
+        vector<double> data_point = sample.getRowVector(i);
+        if (!pipeline_->preProcessData(data_point)) {
+            ofLog(OF_LOG_ERROR) << "ERROR: Failed to compute features!";
+        }
+
+        // Last stage of feature extraction.
+        uint32_t j = pipeline_->getNumFeatureExtractionModules();
+        vector<double> feature = pipeline_->getFeatureExtractionData(j - 1);
+
+        assert(feature.size() == feature_plots.size());
+        for (uint32_t k = 0; k < feature_plots.size(); k++) {
+            vector<double> feature_point = { feature[k] };
+            feature_plots[k].push_back(feature_point);
+        }
+    }
+    ofLog() << "Populating for index: " << sample_index
+            << " with " << feature_plots[0].getData().getNumRows()
+            << " data points.";
+}
+
+//void populateSampleFeatures(uint32_t sample_index, uint32_t start) {
+//    assert(plot_sample_features_.size() == 1);
+//
+//    vector<Plotter> feature_plots = plot_sample_features_[sample_index];
+//    MatrixDouble& sample = plot_samples_[sample_index].getData();
+//
+//    // need ways to get to know FFT feature information!
+//    assert(false);
+//}
 
 void ofApp::savePipeline() {
     if (!pipeline_->save("pipeline.grt")) {
@@ -291,6 +360,7 @@ void ofApp::deleteTrainingSample(int num) {
         plot_sample_indices_[num] = -1;
     }
 
+    populateSampleFeatures(num);
     should_save_training_data_ = true;
 }
 
@@ -316,6 +386,7 @@ void ofApp::trimTrainingSample(int num) {
         }
     }
 
+    populateSampleFeatures(num);
     should_save_training_data_ = true;
 }
 
@@ -363,6 +434,7 @@ void ofApp::doRelabelTrainingSample(uint32_t source, uint32_t target) {
         plot_sample_indices_[num] = -1;
     }
 
+    populateSampleFeatures(num);
     should_save_training_data_ = true;
 
     // For the target label, update the plot.
@@ -527,10 +599,12 @@ void ofApp::drawTrainingInfo() {
     uint32_t stage_height = (ofGetHeight() - 200 - 4 * margin) / 2;
 
     // 1. Draw Input
-    ofPushStyle();
-    plot_inputs_.draw(stage_left, stage_top, stage_width, stage_height);
-    ofPopStyle();
-    stage_top += stage_height + margin;
+    if (!is_in_feature_view_) {
+        ofPushStyle();
+        plot_inputs_.draw(stage_left, stage_top, stage_width, stage_height);
+        ofPopStyle();
+        stage_top += stage_height + margin;
+    }
 
     // 2. Draw samples
     // Currently we support kNumMaxLabels_ labels
@@ -538,6 +612,7 @@ void ofApp::drawTrainingInfo() {
     float minY = plot_inputs_.getRanges().first;
     float maxY = plot_inputs_.getRanges().second;
     auto class_tracker = training_data_.getClassTracker();
+
     for (int i = 0; i < kNumMaxLabels_; i++) {
         int label = i + 1;
         int x = stage_left + i * width;
@@ -588,6 +663,23 @@ void ofApp::drawTrainingInfo() {
             stage_left + (label - 1) * width,
             stage_top + margin * 3 / 2,
             backgroundColor, textColor);
+    }
+
+    if (!is_in_feature_view_) { return; }
+    // 3. Features
+    stage_top += margin * 2;
+    for (uint32_t i = 0; i < kNumMaxLabels_; i++) {
+        uint32_t x = stage_left + i * width;
+        uint32_t y = stage_top;
+        vector<Plotter> feature_plots = plot_sample_features_[i];
+        uint32_t margin = 5;
+        uint32_t height = stage_height / feature_plots.size() - margin;
+
+        for (uint32_t j = 0; j < feature_plots.size(); j++) {
+            feature_plots[j].setRanges(0, 0);
+            feature_plots[j].draw(x, y, width, height);
+            y += height + margin;
+        }
     }
 }
 
@@ -689,31 +781,25 @@ void ofApp::keyPressed(int key){
                 plot_testdata_.reset();
             }
             break;
-        case 't':
-            trainModel();
-            break;
-        case 'l':
-            loadTrainingData();
-            break;
-        case 'h':
-            gui_hide_ = !gui_hide_;
-            break;
-        case 's':
-            istream_->start();
-            break;
-        case 'e':
-            istream_->stop();
-            input_data_.clear();
-            break;
-        case 'P':
-            fragment_ = PIPELINE;
-            break;
-        case 'T':
-            fragment_ = TRAINING;
-            break;
-        case 'A':
-            fragment_ = ANALYSIS;
-            break;
+        case 'f': toggleFeatureView(); break;
+        case 'h': gui_hide_ = !gui_hide_; break;
+        case 'l': loadTrainingData(); break;
+        case 'p': istream_->stop(); break;
+        case 's': istream_->start(); break;
+        case 't': trainModel(); break;
+
+        // Tab related
+        case 'P': fragment_ = PIPELINE; break;
+        case 'T': fragment_ = TRAINING; break;
+        case 'A': fragment_ = ANALYSIS; break;
+    }
+}
+
+void ofApp::toggleFeatureView() {
+    istream_->stop();
+    is_in_feature_view_ = true;
+    for (uint32_t i = 0; i < kNumMaxLabels_; i++) {
+        populateSampleFeatures(i);
     }
 }
 
@@ -737,12 +823,12 @@ void ofApp::trainModel() {
     // TODO(benzh) Fix data race issue later.
     if (training_func()) {
         fragment_ = TRAINING;
-        
+
         // Retest test data.
         plot_testdata_.reset();
         for (int i = 0; i < test_data_.getNumRows(); i++) {
             pipeline_->predict(test_data_.getRowVector(i));
-            
+
             int predicted_label = pipeline_->getPredictedClassLabel();
             std::cout << predicted_label << " ";
             std::string title = training_data_.getClassNameForCorrespondingClassLabel(predicted_label);
@@ -750,7 +836,7 @@ void ofApp::trainModel() {
 
             plot_testdata_.update(test_data_.getRowVector(i), predicted_label != 0, title);
         }
-        
+
         pipeline_->reset();
     }
 }
@@ -804,7 +890,7 @@ void ofApp::keyReleased(int key) {
 
         should_save_training_data_ = true;
     }
-    
+
     if (key == 'r') {
         test_data_ = sample_data_;
     }

@@ -95,13 +95,15 @@ class ofApp : public ofBaseApp {
     vector<vector<ofxGrtTimeseriesPlot>> plot_features_;
     vector<Plotter> plot_samples_;
     vector<std::string> plot_samples_info_;
+    vector<vector<Plotter>> plot_sample_features_;
+    void toggleFeatureView();
+    bool is_in_feature_view_ = false;
+    void populateSampleFeatures(uint32_t sample_index);
+
     ofxGrtTimeseriesPlot plot_prediction_;
     vector<int> plot_sample_indices_; // the index of the currently plotted sample for each class label
     vector<pair<ofRectangle, ofRectangle>> plot_sample_button_locations_;
-
-    void onPlotRangeSelected(Plotter::CallbackArgs arg) {
-        // Do nothing here for now.
-    }
+    void onPlotRangeSelected(Plotter::CallbackArgs arg);
 
     // Panel for storing and loading pipeline.
     ofxPanel gui_;
@@ -123,7 +125,7 @@ class ofApp : public ofBaseApp {
     void trimTrainingSample(int num);
     void relabelTrainingSample(int num);
     void doRelabelTrainingSample(uint32_t from, uint32_t to);
-    
+
     void doSaveTestData();
 
     // Rename

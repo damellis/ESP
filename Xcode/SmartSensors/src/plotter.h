@@ -45,7 +45,20 @@ class Plotter {
         return true;
     }
 
-    bool setRanges(float minY,float maxY, bool lockRanges = false) {
+    bool push_back(const vector<double>& data_point) {
+        data_.push_back(data_point);
+        for (double d : data_point) {
+            if (d > maxY_) { maxY_ = d; }
+            if (d < minY_) { minY_ = d; }
+        }
+        return true;
+    }
+
+    GRT::MatrixDouble& getData() {
+        return data_;
+    }
+
+    bool setRanges(float minY, float maxY, bool lockRanges = false) {
         default_minY_ = minY;
         default_maxY_ = maxY;
         lock_ranges_ = lockRanges;
