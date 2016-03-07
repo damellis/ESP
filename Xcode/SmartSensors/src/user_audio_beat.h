@@ -9,7 +9,7 @@ uint32_t kFFT_HopSize = 128;
 
 AudioStream stream;
 GestureRecognitionPipeline pipeline;
-MacOSKeyboardOStream o_stream(3, '\0', 'f', 'd');
+MacOSKeyboardOStream o_stream(3, '\0', 'a', 'd');
 
 void setup() {
     pipeline.addFeatureExtractionModule(

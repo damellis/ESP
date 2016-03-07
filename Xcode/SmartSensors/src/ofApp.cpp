@@ -379,6 +379,7 @@ void ofApp::deleteTrainingSample(int num) {
     } else {
         plot_samples_[num].reset();
         plot_sample_indices_[num] = -1;
+        plot_samples_[num].setTitle("Label" + std::to_string(num + 1));
     }
 
     populateSampleFeatures(num);
@@ -893,8 +894,13 @@ void ofApp::loadTrainingData() {
     for (int i = 0; i < training_data_.getNumSamples(); i++) {
         int label = training_data_[i].getClassLabel();
         plot_samples_[label - 1].setData(training_data_[i].getData());
-        plot_samples_[label - 1].setTitle(
-            training_data_.getClassNameForCorrespondingClassLabel(label));
+
+        string title = training_data_.getClassNameForCorrespondingClassLabel(label);
+        if (title == "NOT_SET") {
+            title = std::string("Label") + std::to_string(label);
+        }
+
+        plot_samples_[label - 1].setTitle(title);
     }
 
     // After we load the training data,
@@ -905,6 +911,8 @@ void ofApp::loadTrainingData() {
 
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key) {
+    if (is_in_renaming_) { return; }
+
     if (is_in_relabeling_ && key >= '1' && key <= '9') {
         doRelabelTrainingSample(relabel_source_, key - '0');
         is_in_relabeling_ = false;
