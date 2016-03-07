@@ -775,6 +775,7 @@ void ofApp::keyPressed(int key){
             is_in_renaming_ = false;
             plot_samples_[rename_target_ - 1].setTitle(rename_title_);
             ofRemoveListener(ofEvents().update, this, &ofApp::updateEventReceived);
+            should_save_training_data_ = true;
             return;
           default:
             break;
