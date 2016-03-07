@@ -242,6 +242,8 @@ void ofApp::onPlotRangeSelected(Plotter::CallbackArgs arg) {
 }
 
 void ofApp::populateSampleFeatures(uint32_t sample_index) {
+    if (pipeline_->getNumFeatureExtractionModules() == 0) { return; }
+
     vector<Plotter>& feature_plots = plot_sample_features_[sample_index];
     for (Plotter& plot : feature_plots) { plot.clearData(); }
 
@@ -262,6 +264,7 @@ void ofApp::populateSampleFeatures(uint32_t sample_index) {
         vector<double> data_point = sample.getRowVector(i);
         if (!pipeline_->preProcessData(data_point)) {
             ofLog(OF_LOG_ERROR) << "ERROR: Failed to compute features!";
+            continue;
         }
 
         // Last stage of feature extraction.
@@ -290,10 +293,6 @@ void ofApp::populateSampleFeatures(uint32_t sample_index) {
             feature_plots[0].setData(feature_matrix);
         }
     }
-
-    ofLog() << "Populating for index: " << sample_index
-            << " with " << feature_plots[0].getData().getNumRows()
-            << " data points.";
 }
 
 void ofApp::savePipeline() {
@@ -691,6 +690,7 @@ void ofApp::drawTrainingInfo() {
     }
 
     if (!is_in_feature_view_) { return; }
+    if (pipeline_->getNumFeatureExtractionModules() == 0) { return; }
     // 3. Features
     stage_top += margin * 2;
     for (uint32_t i = 0; i < kNumMaxLabels_; i++) {
