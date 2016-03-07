@@ -235,8 +235,10 @@ void ofApp::setup() {
 }
 
 void ofApp::onPlotRangeSelected(Plotter::CallbackArgs arg) {
-    uint32_t sample_index = reinterpret_cast<uint64_t>(arg.data) - 1;
-    populateSampleFeatures(sample_index);
+    if (is_in_feature_view_) {
+        uint32_t sample_index = reinterpret_cast<uint64_t>(arg.data) - 1;
+        populateSampleFeatures(sample_index);
+    }
 }
 
 void ofApp::populateSampleFeatures(uint32_t sample_index) {
@@ -488,7 +490,7 @@ void ofApp::update() {
 
         plot_inputs_.update(data_point, predicted_label_ != 0, title);
 
-        if (istream_->hasStarted()) {
+        if (istream_->hasStarted() && fragment_ == PIPELINE) {
             if (!pipeline_->preProcessData(data_point)) {
                 ofLog(OF_LOG_ERROR) << "ERROR: Failed to compute features!";
             }
