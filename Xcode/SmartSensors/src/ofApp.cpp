@@ -9,7 +9,7 @@
 const uint32_t kTooManyFeaturesThreshold = 32;
 static const char* kInstruction =
         "Press capital P/T/A to change tabs.\n"
-        "Press `s` to start, `e` to pause, 1-9 to record samples, "
+        "Press `s/p` to start/pause, 1-9 to record samples, "
         "`l` to load training data, and `t` to train a model.";
 
 class Palette {
@@ -141,7 +141,11 @@ void ofApp::setup() {
         plot_features_.push_back(feature_at_stage_i);
     }
 
-    for (int i = 0; i < kNumMaxLabels_; i++) {
+    for (uint32_t i = 0; i < num_final_features; i++) {
+        sample_feature_ranges_.push_back(make_pair(0, 0));
+    }
+
+    for (uint32_t i = 0; i < kNumMaxLabels_; i++) {
         uint32_t label_dim = istream_->getNumOutputDimensions();
         Plotter plot;
         plot.setup(label_dim, "Label" + std::to_string(i + 1));
@@ -256,6 +260,15 @@ void ofApp::populateSampleFeatures(uint32_t sample_index) {
         for (uint32_t k = 0; k < feature_plots.size(); k++) {
             vector<double> feature_point = { feature[k] };
             feature_plots[k].push_back(feature_point);
+
+            // sample_feature_ranges_[k].(first, second) tracks the min and max
+            // for feature k so that the plots will be comparable.
+            if (sample_feature_ranges_[k].first > feature[k]) {
+                sample_feature_ranges_[k].first = feature[k];
+            }
+            if (sample_feature_ranges_[k].second < feature[k]) {
+                sample_feature_ranges_[k].second = feature[k];
+            }
         }
     }
     ofLog() << "Populating for index: " << sample_index
@@ -440,6 +453,7 @@ void ofApp::doRelabelTrainingSample(uint32_t source, uint32_t target) {
     // For the target label, update the plot.
     plot_sample_indices_[target - 1]++;
     plot_samples_[target - 1].setData(target_data);
+    populateSampleFeatures(target - 1);
 }
 
 //--------------------------------------------------------------
@@ -676,7 +690,9 @@ void ofApp::drawTrainingInfo() {
         uint32_t height = stage_height / feature_plots.size() - margin;
 
         for (uint32_t j = 0; j < feature_plots.size(); j++) {
-            feature_plots[j].setRanges(0, 0);
+            pair<uint32_t, uint32_t> range = sample_feature_ranges_[j];
+
+            feature_plots[j].setRanges(range.first, range.second);
             feature_plots[j].draw(x, y, width, height);
             y += height + margin;
         }
@@ -920,12 +936,14 @@ void ofApp::mouseReleased(int x, int y, int button) {
             if (plot_sample_indices_[i] > 0) {
                 plot_sample_indices_[i]--;
                 plot_samples_[i].setData(data[plot_sample_indices_[i]].getData());
+                populateSampleFeatures(i);
             }
         }
         if (plot_sample_button_locations_[i].second.inside(x, y)) {
             if (plot_sample_indices_[i] + 1 < data.getNumSamples()) {
                 plot_sample_indices_[i]++;
                 plot_samples_[i].setData(data[plot_sample_indices_[i]].getData());
+                populateSampleFeatures(i);
             }
         }
     }

@@ -95,10 +95,12 @@ class ofApp : public ofBaseApp {
     vector<vector<ofxGrtTimeseriesPlot>> plot_features_;
     vector<Plotter> plot_samples_;
     vector<std::string> plot_samples_info_;
+    // Features associated with each sample.
     vector<vector<Plotter>> plot_sample_features_;
     void toggleFeatureView();
     bool is_in_feature_view_ = false;
     void populateSampleFeatures(uint32_t sample_index);
+    vector<pair<uint32_t, uint32_t>> sample_feature_ranges_;
 
     ofxGrtTimeseriesPlot plot_prediction_;
     vector<int> plot_sample_indices_; // the index of the currently plotted sample for each class label
