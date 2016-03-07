@@ -155,6 +155,12 @@ class Plotter {
         return true;
     }
 
+    bool clearData() {
+        if (!initialized_) return false;
+        data_.clear();
+        return true;
+    }
+
     typedef std::function<void(CallbackArgs)> onRangeSelectedCallback;
 
     void onRangeSelected(const onRangeSelectedCallback& cb, void* data) {

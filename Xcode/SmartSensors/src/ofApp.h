@@ -106,6 +106,7 @@ class ofApp : public ofBaseApp {
     vector<int> plot_sample_indices_; // the index of the currently plotted sample for each class label
     vector<pair<ofRectangle, ofRectangle>> plot_sample_button_locations_;
     void onPlotRangeSelected(Plotter::CallbackArgs arg);
+    bool is_final_features_too_many_ = false;
 
     // Panel for storing and loading pipeline.
     ofxPanel gui_;

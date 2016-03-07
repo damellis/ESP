@@ -8,8 +8,9 @@
 // single output will be more visual.
 const uint32_t kTooManyFeaturesThreshold = 32;
 static const char* kInstruction =
-        "Press capital P/T/A to change tabs.\n"
-        "Press `s/p` to start/pause, 1-9 to record samples, "
+        "Press capital P/T/A to change tabs. "
+        "`s/p` to start/pause, 1-9 to record samples \n"
+        "`r` to record test data, `f` to show features, "
         "`l` to load training data, and `t` to train a model.";
 
 class Palette {
@@ -163,6 +164,8 @@ void ofApp::setup() {
                 feature_plots.push_back(plot);
             }
         } else {
+            is_final_features_too_many_ = true;
+
             // The case of many features (like FFT), draw a single plot.
             Plotter plot;
             plot.setup(1, "Feature");
@@ -233,20 +236,27 @@ void ofApp::setup() {
 
 void ofApp::onPlotRangeSelected(Plotter::CallbackArgs arg) {
     uint32_t sample_index = reinterpret_cast<uint64_t>(arg.data) - 1;
-    uint32_t start = arg.start;
-
     populateSampleFeatures(sample_index);
 }
 
 void ofApp::populateSampleFeatures(uint32_t sample_index) {
     vector<Plotter>& feature_plots = plot_sample_features_[sample_index];
-    for (Plotter& plot : feature_plots) { plot.reset(); }
+    for (Plotter& plot : feature_plots) { plot.clearData(); }
 
     // 1. get samples
     MatrixDouble& sample = plot_samples_[sample_index].getData();
+    uint32_t start = 0;
+    uint32_t end = sample.getNumRows();
+    if (is_final_features_too_many_) {
+        pair<uint32_t, uint32_t> sel = plot_samples_[sample_index].getSelection();
+        if (sel.second - sel.first > 10) {
+            start = sel.first;
+            end = sel.second;
+        }
+    }
 
     // 2. get features by flowing samples through
-    for (uint32_t i = 0; i < sample.getNumRows(); i++) {
+    for (uint32_t i = start; i < end; i++) {
         vector<double> data_point = sample.getRowVector(i);
         if (!pipeline_->preProcessData(data_point)) {
             ofLog(OF_LOG_ERROR) << "ERROR: Failed to compute features!";
@@ -256,7 +266,6 @@ void ofApp::populateSampleFeatures(uint32_t sample_index) {
         uint32_t j = pipeline_->getNumFeatureExtractionModules();
         vector<double> feature = pipeline_->getFeatureExtractionData(j - 1);
 
-        assert(feature.size() == feature_plots.size());
         for (uint32_t k = 0; k < feature_plots.size(); k++) {
             vector<double> feature_point = { feature[k] };
             feature_plots[k].push_back(feature_point);
@@ -270,21 +279,20 @@ void ofApp::populateSampleFeatures(uint32_t sample_index) {
                 sample_feature_ranges_[k].second = feature[k];
             }
         }
+
+        if (is_final_features_too_many_) {
+            assert(feature_plots.size() == 1);
+            MatrixDouble feature_matrix;
+            feature_matrix.resize(feature.size(), 1);
+            feature_matrix.setColVector(feature, 0);
+            feature_plots[0].setData(feature_matrix);
+        }
     }
+
     ofLog() << "Populating for index: " << sample_index
             << " with " << feature_plots[0].getData().getNumRows()
             << " data points.";
 }
-
-//void populateSampleFeatures(uint32_t sample_index, uint32_t start) {
-//    assert(plot_sample_features_.size() == 1);
-//
-//    vector<Plotter> feature_plots = plot_sample_features_[sample_index];
-//    MatrixDouble& sample = plot_samples_[sample_index].getData();
-//
-//    // need ways to get to know FFT feature information!
-//    assert(false);
-//}
 
 void ofApp::savePipeline() {
     if (!pipeline_->save("pipeline.grt")) {
@@ -812,10 +820,17 @@ void ofApp::keyPressed(int key){
 }
 
 void ofApp::toggleFeatureView() {
-    istream_->stop();
-    is_in_feature_view_ = true;
-    for (uint32_t i = 0; i < kNumMaxLabels_; i++) {
-        populateSampleFeatures(i);
+    if (fragment_ != TRAINING) { return; }
+
+    if (is_in_feature_view_) {
+        istream_->start();
+        is_in_feature_view_ = false;
+    } else {
+        istream_->stop();
+        is_in_feature_view_ = true;
+        for (uint32_t i = 0; i < kNumMaxLabels_; i++) {
+            populateSampleFeatures(i);
+        }
     }
 }
 
