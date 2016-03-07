@@ -827,10 +827,8 @@ void ofApp::toggleFeatureView() {
     if (fragment_ != TRAINING) { return; }
 
     if (is_in_feature_view_) {
-        istream_->start();
         is_in_feature_view_ = false;
     } else {
-        istream_->stop();
         is_in_feature_view_ = true;
         for (uint32_t i = 0; i < kNumMaxLabels_; i++) {
             populateSampleFeatures(i);
