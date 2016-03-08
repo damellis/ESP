@@ -244,6 +244,9 @@ void ofApp::onPlotRangeSelected(Plotter::CallbackArgs arg) {
 void ofApp::populateSampleFeatures(uint32_t sample_index) {
     if (pipeline_->getNumFeatureExtractionModules() == 0) { return; }
 
+    // Clean up historical data/caches.
+    pipeline_->reset();
+
     vector<Plotter>& feature_plots = plot_sample_features_[sample_index];
     for (Plotter& plot : feature_plots) { plot.clearData(); }
 
