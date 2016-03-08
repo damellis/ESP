@@ -392,11 +392,15 @@ void ofApp::deleteTrainingSample(int num) {
 }
 
 void ofApp::trimTrainingSample(int num) {
+    pair<uint32_t, uint32_t> selection = plot_samples_[num].getSelection();
+
+    // Return if no selection or the range is too small (if user left clicked).
+    if (selection.second - selection.first < 10) { return; }
+
     int label = num + 1;
     TimeSeriesClassificationData data = training_data_.getClassData(label);
     training_data_.eraseAllSamplesWithClassLabel(label);
 
-    pair<uint32_t, uint32_t> selection = plot_samples_[num].getSelection();
     for (int i = 0; i < data.getNumSamples(); i++) {
         if (i == plot_sample_indices_[num]) {
             GRT::MatrixDouble sample = data[i].getData();
