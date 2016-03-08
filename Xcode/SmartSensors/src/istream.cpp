@@ -26,8 +26,9 @@ vector<double> IStream::normalize(vector<double> input) {
     }
 }
 
-AudioStream::AudioStream() :
-        sound_stream_(new ofSoundStream()) {
+AudioStream::AudioStream(uint32_t downsample_rate)
+        : downsample_rate_(downsample_rate),
+          sound_stream_(new ofSoundStream()) {
     sound_stream_->setup(this, 0, 2,
                          kOfSoundStream_SamplingRate,
                          kOfSoundStream_BufferSize,
@@ -56,11 +57,11 @@ int AudioStream::getNumInputDimensions() {
 void AudioStream::audioIn(float* input, int buffer_size, int nChannel) {
     // set nChannel as 1 to load only a single channel (left).
     nChannel = 1;
-    GRT::MatrixDouble data(buffer_size / nChannel, nChannel);
+    GRT::MatrixDouble data(buffer_size / nChannel / downsample_rate_, nChannel);
 
-    for (int i = 0; i < buffer_size / nChannel; i++)
+    for (int i = 0; i < buffer_size / nChannel / downsample_rate_; i++)
         for (int j = 0; j < nChannel; j++)
-            data[i][j] = input[i * nChannel + j];
+            data[i][j] = input[i * nChannel * downsample_rate_ + j];
 
     if (data_ready_callback_ != nullptr) {
         data_ready_callback_(data);

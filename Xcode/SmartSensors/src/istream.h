@@ -76,12 +76,13 @@ class IStream {
 
 class AudioStream : public ofBaseApp, public IStream {
   public:
-    AudioStream();
+    AudioStream(uint32_t downsample_rate = 1);
     void audioIn(float *input, int buffer_size, int nChannel);
     virtual void start() final;
     virtual void stop() final;
     virtual int getNumInputDimensions() final;
   private:
+    uint32_t downsample_rate_;
     unique_ptr<ofSoundStream> sound_stream_;
 };
 
