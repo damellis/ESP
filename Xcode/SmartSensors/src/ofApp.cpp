@@ -359,6 +359,8 @@ void ofApp::updateEventReceived(ofEventArgs& arg) {
 
 void ofApp::deleteTrainingSample(int num) {
     int label = num + 1;
+    string class_name =
+            training_data_.getClassNameForCorrespondingClassLabel(label);
 
     // AFAICT, there's no way to delete an individual sample (except the
     // last one. Instead, remove all samples with the corresponding label
@@ -377,6 +379,8 @@ void ofApp::deleteTrainingSample(int num) {
         } else {
             plot_samples_[num].setData(data[plot_sample_indices_[num] + 1].getData());
         }
+
+        training_data_.setClassNameForCorrespondingClassLabel(class_name, label);
     } else {
         plot_samples_[num].reset();
         plot_sample_indices_[num] = -1;
