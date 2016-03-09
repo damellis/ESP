@@ -41,7 +41,8 @@ class Plotter {
     bool setData(const GRT::MatrixDouble& data) {
         x_start_ = 0;
         x_end_ = 0;
-        data_ = data;
+        data_.clear();
+        for (int i = 0; i < data.getNumRows(); i++) push_back(data.getRowVector(i));
         return true;
     }
 

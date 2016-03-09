@@ -87,10 +87,13 @@ void ofApp::setup() {
     plot_inputs_.setup(kBufferSize_, istream_->getNumOutputDimensions(), "Input");
     plot_inputs_.setDrawGrid(true);
     plot_inputs_.setDrawInfoText(true);
+    
+    plot_testdata_window_.setup(kBufferSize_, istream_->getNumOutputDimensions(), "Test Data");
+    plot_testdata_window_.setDrawGrid(true);
+    plot_testdata_window_.setDrawInfoText(true);
 
-    plot_testdata_.setup(kBufferSize_, istream_->getNumOutputDimensions(), "Test Data");
-    plot_testdata_.setDrawGrid(true);
-    plot_testdata_.setDrawInfoText(true);
+    plot_testdata_overview_.setup(istream_->getNumOutputDimensions(), "Overview");
+    plot_testdata_overview_.onRangeSelected(this, &ofApp::onTestOverviewPlotSelection, NULL);
 
     Palette color_palette;
 
@@ -296,6 +299,51 @@ void ofApp::populateSampleFeatures(uint32_t sample_index) {
             feature_plots[0].setData(feature_matrix);
         }
     }
+}
+
+void ofApp::onTestOverviewPlotSelection(Plotter::CallbackArgs arg) {
+    updateTestWindowPlot();
+}
+
+void ofApp::updateTestWindowPlot() {
+    std::pair<uint32_t, uint32_t> sel = plot_testdata_overview_.getSelection();
+    uint32_t start = 0;
+    uint32_t end = test_data_.getNumRows();
+    if (sel.second - sel.first > 10) {
+        start = sel.first;
+        end = sel.second;
+    }
+    plot_testdata_window_.reset();
+    for (int i = start; i < end; i++) {
+        plot_testdata_window_.setup(end - start, istream_->getNumInputDimensions(), "Test Data");
+        for (int i = start; i < end; i++) {
+            if (pipeline_->getTrained()) {
+                int predicted_label = test_data_predicted_class_labels_[i];
+                std::string title = training_data_.getClassNameForCorrespondingClassLabel(predicted_label);
+                if (title == "NOT_SET") title = std::string("Label") + std::to_string(predicted_label);
+                
+                plot_testdata_window_.update(test_data_.getRowVector(i), predicted_label != 0, title);
+            } else {
+                plot_testdata_window_.update(test_data_.getRowVector(i));
+            }
+        }
+    }
+}
+
+void ofApp::runPredictionOnTestData() {
+    test_data_predicted_class_labels_.resize(test_data_.getNumRows());
+    for (int i = 0; i < test_data_.getNumRows(); i++) {
+        if (pipeline_->getTrained()) {
+            pipeline_->predict(test_data_.getRowVector(i));
+
+            int predicted_label = pipeline_->getPredictedClassLabel();
+            
+            test_data_predicted_class_labels_[i] = predicted_label;
+        } else {
+            test_data_predicted_class_labels_[i] = 0;
+        }
+    }
+    
 }
 
 void ofApp::savePipeline() {
@@ -529,9 +577,6 @@ void ofApp::update() {
         }
 
         if (is_recording_) {
-            if (label_ == 255) {
-                plot_testdata_.update(data_point, predicted_label_ != 0, title);
-            }
             sample_data_.push_back(data_point);
         }
     }
@@ -731,7 +776,7 @@ void ofApp::drawAnalysis() {
     uint32_t stage_left = margin_left;
     uint32_t stage_top = margin_top;
     uint32_t stage_width = ofGetWidth() - margin;
-    uint32_t stage_height = (ofGetHeight() - 200 - 4 * margin) / 2;
+    uint32_t stage_height = (ofGetHeight() - 3 * margin - margin_top) / 2.25;
 
     // 1. Draw Input
     ofPushStyle();
@@ -740,10 +785,14 @@ void ofApp::drawAnalysis() {
     stage_top += stage_height + margin;
 
     ofPushStyle();
-    plot_testdata_.draw(stage_left, stage_top, stage_width, stage_height);
+    plot_testdata_window_.draw(stage_left, stage_top, stage_width, stage_height);
     ofPopStyle();
     stage_top += stage_height + margin;
 
+    ofPushStyle();
+    plot_testdata_overview_.draw(stage_left, stage_top, stage_width, stage_height / 4);
+    ofPopStyle();
+    stage_top += stage_height / 4 + margin;
 }
 
 void ofApp::exit() {
@@ -820,7 +869,7 @@ void ofApp::keyPressed(int key){
                 label_ = 255;
                 sample_data_.clear();
                 test_data_.clear();
-                plot_testdata_.reset();
+                plot_testdata_window_.reset();
             }
             break;
         case 'f': toggleFeatureView(); break;
@@ -870,20 +919,8 @@ void ofApp::trainModel() {
     // TODO(benzh) Fix data race issue later.
     if (training_func()) {
         fragment_ = TRAINING;
-
-        // Retest test data.
-        plot_testdata_.reset();
-        for (int i = 0; i < test_data_.getNumRows(); i++) {
-            pipeline_->predict(test_data_.getRowVector(i));
-
-            int predicted_label = pipeline_->getPredictedClassLabel();
-            std::cout << predicted_label << " ";
-            std::string title = training_data_.getClassNameForCorrespondingClassLabel(predicted_label);
-            if (title == "NOT_SET") title = std::string("Label") + std::to_string(predicted_label);
-
-            plot_testdata_.update(test_data_.getRowVector(i), predicted_label != 0, title);
-        }
-
+        runPredictionOnTestData();
+        updateTestWindowPlot();
         pipeline_->reset();
     }
 }
@@ -947,6 +984,9 @@ void ofApp::keyReleased(int key) {
 
     if (key == 'r') {
         test_data_ = sample_data_;
+        plot_testdata_overview_.setData(test_data_);
+        runPredictionOnTestData();
+        updateTestWindowPlot();
     }
 }
 

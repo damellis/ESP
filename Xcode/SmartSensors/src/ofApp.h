@@ -87,10 +87,10 @@ class ofApp : public ofBaseApp {
     vector<double> predicted_class_distances_;
     vector<double> predicted_class_likelihoods_;
     vector<UINT> predicted_class_labels_;
+    vector<UINT> test_data_predicted_class_labels_;
 
     // Visuals
     ofxGrtTimeseriesPlot plot_inputs_;
-    ofxGrtTimeseriesPlot plot_testdata_;
     vector<ofxGrtTimeseriesPlot> plot_pre_processed_;
     vector<vector<ofxGrtTimeseriesPlot>> plot_features_;
     vector<Plotter> plot_samples_;
@@ -107,6 +107,12 @@ class ofApp : public ofBaseApp {
     vector<pair<ofRectangle, ofRectangle>> plot_sample_button_locations_;
     void onPlotRangeSelected(Plotter::CallbackArgs arg);
     bool is_final_features_too_many_ = false;
+
+    Plotter plot_testdata_overview_;
+    ofxGrtTimeseriesPlot plot_testdata_window_;
+    void onTestOverviewPlotSelection(Plotter::CallbackArgs arg);
+    void updateTestWindowPlot();
+    void runPredictionOnTestData();
 
     // Panel for storing and loading pipeline.
     ofxPanel gui_;
