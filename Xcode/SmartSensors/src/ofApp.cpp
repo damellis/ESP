@@ -401,6 +401,8 @@ void ofApp::trimTrainingSample(int num) {
     if (selection.second - selection.first < 10) { return; }
 
     int label = num + 1;
+    string class_name =
+            training_data_.getClassNameForCorrespondingClassLabel(label);
     TimeSeriesClassificationData data = training_data_.getClassData(label);
     training_data_.eraseAllSamplesWithClassLabel(label);
 
@@ -420,6 +422,7 @@ void ofApp::trimTrainingSample(int num) {
         }
     }
 
+    training_data_.setClassNameForCorrespondingClassLabel(class_name, label);
     populateSampleFeatures(num);
     should_save_training_data_ = true;
 }
