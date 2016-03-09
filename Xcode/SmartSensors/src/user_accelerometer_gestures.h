@@ -23,12 +23,14 @@ void setup()
 {
     stream.useUSBPort(0);
     stream.useNormalizer(normalizeADXL335);
-    //stream.useNormalizer(normalizeArduino101);
     useStream(stream);
     
-    pipeline.setClassifier(DTW(true, true, 0.5)); // enable scaling, enable null rejection w/ specified threshold
-    pipeline.addPostProcessingModule(ClassLabelTimeoutFilter(500));
+    pipeline.setClassifier(DTW(true, true, 0.5));
+    // We don't use a ClassLabelTimeoutFilter because it doesn't work
+    // properly when replaying saved sensor data (which is stored without
+    // timestamps). Instead, filter by number of samples using a
+    // ClassLabelFilter.
+    //pipeline.addPostProcessingModule(ClassLabelTimeoutFilter(500));
+    pipeline.addPostProcessingModule(ClassLabelFilter(1, 25));
     usePipeline(pipeline);
-    
-    useOStream(oStream);
 }
