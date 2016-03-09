@@ -87,7 +87,7 @@ void ofApp::setup() {
     plot_inputs_.setup(kBufferSize_, istream_->getNumOutputDimensions(), "Input");
     plot_inputs_.setDrawGrid(true);
     plot_inputs_.setDrawInfoText(true);
-    
+
     plot_testdata_window_.setup(kBufferSize_, istream_->getNumOutputDimensions(), "Test Data");
     plot_testdata_window_.setDrawGrid(true);
     plot_testdata_window_.setDrawInfoText(true);
@@ -321,7 +321,7 @@ void ofApp::updateTestWindowPlot() {
                 int predicted_label = test_data_predicted_class_labels_[i];
                 std::string title = training_data_.getClassNameForCorrespondingClassLabel(predicted_label);
                 if (title == "NOT_SET") title = std::string("Label") + std::to_string(predicted_label);
-                
+
                 plot_testdata_window_.update(test_data_.getRowVector(i), predicted_label != 0, title);
             } else {
                 plot_testdata_window_.update(test_data_.getRowVector(i));
@@ -337,13 +337,13 @@ void ofApp::runPredictionOnTestData() {
             pipeline_->predict(test_data_.getRowVector(i));
 
             int predicted_label = pipeline_->getPredictedClassLabel();
-            
+
             test_data_predicted_class_labels_[i] = predicted_label;
         } else {
             test_data_predicted_class_labels_[i] = 0;
         }
     }
-    
+
 }
 
 void ofApp::savePipeline() {
@@ -1023,6 +1023,20 @@ void ofApp::mouseReleased(int x, int y, int button) {
                 plot_samples_[i].setData(data[plot_sample_indices_[i]].getData());
                 populateSampleFeatures(i);
             }
+        }
+    }
+
+    // Tab click detection
+    const uint32_t left_margin = 10;
+    const uint32_t top_margin = 20;
+    const uint32_t tab_width = 125;
+    if (x > left_margin && y < top_margin + 5) {
+        if (x < left_margin + tab_width) {
+            fragment_ = PIPELINE;
+        } else if (x < left_margin + 2 * tab_width) {
+            fragment_ = TRAINING;
+        } else if (x < left_margin + 3 * tab_width) {
+            fragment_ = ANALYSIS;
         }
     }
 }
