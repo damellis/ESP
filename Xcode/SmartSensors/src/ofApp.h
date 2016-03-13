@@ -131,6 +131,7 @@ class ofApp : public ofBaseApp {
 
     vector<ofxPanel *> training_sample_guis_;
     void renameTrainingSample(int num);
+    void renameTrainingSampleDone();
     void deleteTrainingSample(int num);
     void trimTrainingSample(int num);
     void relabelTrainingSample(int num);

@@ -368,6 +368,11 @@ void ofApp::loadPipeline() {
 }
 
 void ofApp::renameTrainingSample(int num) {
+    // If we are already in renaming, finish it by calling rename...Done.
+    if (is_in_renaming_) {
+        renameTrainingSampleDone();
+    }
+
     int label = num + 1;
 
     rename_title_ = training_data_.getClassNameForCorrespondingClassLabel(label);
@@ -384,6 +389,15 @@ void ofApp::renameTrainingSample(int num) {
     plot_samples_[rename_target_ - 1].setTitle(display_title_);
 
     ofAddListener(ofEvents().update, this, &ofApp::updateEventReceived);
+}
+
+void ofApp::renameTrainingSampleDone() {
+    training_data_.setClassNameForCorrespondingClassLabel(rename_title_,
+                                                          rename_target_);
+    is_in_renaming_ = false;
+    plot_samples_[rename_target_ - 1].setTitle(rename_title_);
+    ofRemoveListener(ofEvents().update, this, &ofApp::updateEventReceived);
+    should_save_training_data_ = true;
 }
 
 void ofApp::updateEventReceived(ofEventArgs& arg) {
@@ -832,12 +846,7 @@ void ofApp::keyPressed(int key){
             rename_title_ = rename_title_.substr(0, rename_title_.size() - 1);
             break;
           case OF_KEY_RETURN:
-            training_data_.setClassNameForCorrespondingClassLabel(rename_title_,
-                                                                  rename_target_);
-            is_in_renaming_ = false;
-            plot_samples_[rename_target_ - 1].setTitle(rename_title_);
-            ofRemoveListener(ofEvents().update, this, &ofApp::updateEventReceived);
-            should_save_training_data_ = true;
+            renameTrainingSampleDone();
             return;
           default:
             break;
