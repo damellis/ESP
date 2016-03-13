@@ -122,9 +122,10 @@ class ofApp : public ofBaseApp {
     ofxButton load_pipeline_button_;
     void loadPipeline();
     ofxButton save_training_data_button_;
-    void saveTrainingData();
+
     ofxButton load_training_data_button_;
     void loadTrainingData();
+    void saveTrainingData();
 
     void trainModel();
 

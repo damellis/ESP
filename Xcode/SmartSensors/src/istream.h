@@ -23,6 +23,11 @@ class IStream {
     virtual void start() = 0;
     virtual void stop() = 0;
 
+    void toggle() {
+        if (has_started_) { stop(); }
+        else { start(); }
+    }
+
     // These two functions are no-op by default.
     virtual void useUSBPort(int i) {};
     virtual void useAnalogPin(int i) {};

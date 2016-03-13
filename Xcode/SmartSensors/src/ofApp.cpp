@@ -9,8 +9,8 @@
 const uint32_t kTooManyFeaturesThreshold = 32;
 static const char* kInstruction =
         "Press capital P/T/A to change tabs. "
-        "`s/p` to start/pause, 1-9 to record samples \n"
-        "`r` to record test data, `f` to show features, "
+        "`p` to pause or resume, 1-9 to record samples \n"
+        "`r` to record test data, `f` to show features, `s` to save data"
         "`l` to load training data, and `t` to train a model.";
 
 class Palette {
@@ -365,12 +365,6 @@ void ofApp::loadPipeline() {
     // TODO(benzh) Compare the two pipelines and warn the user if the
     // loaded one is different from his.
     (*pipeline_) = pipeline;
-}
-
-void ofApp::saveTrainingData() {
-    if (!training_data_.save("training_data.grt")) {
-        ofLog(OF_LOG_ERROR) << "Failed to save the training data";
-    }
 }
 
 void ofApp::renameTrainingSample(int num) {
@@ -802,17 +796,19 @@ void ofApp::exit() {
     istream_->stop();
 
     // Save training data here!
-    if (should_save_training_data_) {
-        ofFileDialogResult result = ofSystemSaveDialog("TrainingData.grt",
-                                                       "Save your training data?");
-        if (result.bSuccess) {
-            training_data_.save(result.getPath());
-        }
-    }
+    if (should_save_training_data_) { saveTrainingData(); }
 
     // Clear all listeners.
     save_pipeline_button_.removeListener(this, &ofApp::savePipeline);
     load_pipeline_button_.removeListener(this, &ofApp::loadPipeline);
+}
+
+void ofApp::saveTrainingData() {
+    ofFileDialogResult result = ofSystemSaveDialog("TrainingData.grt",
+                                                   "Save your training data?");
+    if (result.bSuccess) {
+        training_data_.save(result.getPath());
+    }
 }
 
 void ofApp::onDataIn(GRT::MatrixDouble input) {
@@ -875,8 +871,8 @@ void ofApp::keyPressed(int key){
         case 'f': toggleFeatureView(); break;
         case 'h': gui_hide_ = !gui_hide_; break;
         case 'l': loadTrainingData(); break;
-        case 'p': istream_->stop(); break;
-        case 's': istream_->start(); break;
+        case 'p': istream_->toggle(); break;
+        case 's': saveTrainingData(); break;
         case 't': trainModel(); break;
 
         // Tab related
