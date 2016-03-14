@@ -89,19 +89,17 @@ class AudioStream : public ofBaseApp, public IStream {
 
 class SerialStream : public IStream {
   public:
-    SerialStream();
+    SerialStream(uint32_t usb_port_num, uint32_t baud);
     virtual void start() final;
     virtual void stop() final;
     virtual int getNumInputDimensions() final;
-    virtual void useUSBPort(int i);
   private:
-    int kBaud_ = 115200;
+    uint32_t port_ = -1;
+    uint32_t baud_;
     // Serial buffer size
-    int kBufferSize_ = 64;
+    uint32_t kBufferSize_ = 64;
 
     unique_ptr<ofSerial> serial_;
-    int port_ = -1;
-    int pin_;
 
     // A separate reading thread to read data from Serial.
     unique_ptr<std::thread> reading_thread_;
@@ -110,17 +108,15 @@ class SerialStream : public IStream {
 
 class ASCIISerialStream : public IStream {
   public:
-    ASCIISerialStream(int kBaud, int numDimensions);
+    ASCIISerialStream(uint32_t port, uint32_t baud, uint32_t numDimensions);
     virtual void start() final;
     virtual void stop() final;
     virtual int getNumInputDimensions() final;
-    virtual void useUSBPort(int i);
   private:
     unique_ptr<ofSerial> serial_;
-    int kBaud_;
-    int port_ = -1;
-
-    int numDimensions_;
+    uint32_t port_;
+    uint32_t baud_;
+    uint32_t numDimensions_;
 
     // A separate reading thread to read data from Serial.
     unique_ptr<std::thread> reading_thread_;
@@ -129,14 +125,13 @@ class ASCIISerialStream : public IStream {
 
 class FirmataStream : public IStream {
   public:
-    FirmataStream();
+    FirmataStream(uint32_t port);
     virtual void start() final;
     virtual void stop() final;
     virtual int getNumInputDimensions() final;
-    virtual void useUSBPort(int i);
     void useAnalogPin(int i);
   private:
-    int port_ = -1;
+    uint32_t port_;
 
     vector<int> pins_;
 

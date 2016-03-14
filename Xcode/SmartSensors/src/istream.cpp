@@ -68,7 +68,8 @@ void AudioStream::audioIn(float* input, int buffer_size, int nChannel) {
     }
 }
 
-SerialStream::SerialStream() : serial_(new ofSerial()) {
+SerialStream::SerialStream(uint32_t port, uint32_t baud = 115200)
+        : port_(port), baud_(baud), serial_(new ofSerial()) {
     // Print all devices for convenience.
     serial_->listDevices();
 }
@@ -79,7 +80,7 @@ void SerialStream::start() {
     }
 
     if (!has_started_) {
-        serial_->setup(port_, kBaud_);
+        serial_->setup(port_, baud_);
         reading_thread_.reset(new std::thread(&SerialStream::readSerial, this));
         has_started_ = true;
     }
@@ -96,15 +97,11 @@ int SerialStream::getNumInputDimensions() {
     return 1;
 }
 
-void SerialStream::useUSBPort(int i) {
-    port_ = i;
-};
-
 void SerialStream::readSerial() {
     // TODO(benzh) This readSerial is running in a different thread
     // and performing a busy polling (100% CPU usage). Should be
     // optimized.
-    int sleep_time = kBufferSize_ * 1000 / (kBaud_ / 10);
+    int sleep_time = kBufferSize_ * 1000 / (baud_ / 10);
     ofLog() << "Serial port will be read every " << sleep_time << " ms";
     while (has_started_) {
         std::this_thread::sleep_for(std::chrono::milliseconds(sleep_time));
@@ -146,8 +143,8 @@ void SerialStream::readSerial() {
     }
 }
 
-ASCIISerialStream::ASCIISerialStream(int kBaud, int numDimensions) :
-        serial_(new ofSerial()), kBaud_(kBaud), numDimensions_(numDimensions) {
+ASCIISerialStream::ASCIISerialStream(uint32_t port, uint32_t baud, uint32_t dim)
+        : serial_(new ofSerial()), port_(port), baud_(baud), numDimensions_(dim) {
     // Print all devices for convenience.
     //serial_->listDevices();
 }
@@ -158,7 +155,7 @@ void ASCIISerialStream::start() {
     }
 
     if (!has_started_) {
-        serial_->setup(port_, kBaud_);
+        serial_->setup(port_, baud_);
         reading_thread_.reset(new std::thread(&ASCIISerialStream::readSerial, this));
         has_started_ = true;
     }
@@ -174,10 +171,6 @@ void ASCIISerialStream::stop() {
 int ASCIISerialStream::getNumInputDimensions() {
     return numDimensions_;
 }
-
-void ASCIISerialStream::useUSBPort(int i) {
-    port_ = i;
-};
 
 void ASCIISerialStream::readSerial() {
     // TODO(benzh) This readSerial is running in a different thread
@@ -214,14 +207,10 @@ void ASCIISerialStream::readSerial() {
     }
 }
 
-FirmataStream::FirmataStream() {
+FirmataStream::FirmataStream(uint32_t port) : port_(port) {
     ofSerial serial;
     serial.listDevices();
 }
-
-void FirmataStream::useUSBPort(int i) {
-    port_ = i;
-};
 
 void FirmataStream::useAnalogPin(int i) {
     pins_.push_back(i);
