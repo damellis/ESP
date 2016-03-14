@@ -100,10 +100,6 @@ void SerialStream::useUSBPort(int i) {
     port_ = i;
 };
 
-void SerialStream::useAnalogPin(int i) {
-    pin_ = i;
-};
-
 void SerialStream::readSerial() {
     // TODO(benzh) This readSerial is running in a different thread
     // and performing a busy polling (100% CPU usage). Should be

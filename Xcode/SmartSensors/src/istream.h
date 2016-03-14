@@ -28,10 +28,6 @@ class IStream {
         else { start(); }
     }
 
-    // These two functions are no-op by default.
-    virtual void useUSBPort(int i) {};
-    virtual void useAnalogPin(int i) {};
-
     virtual int getNumInputDimensions() = 0;
     virtual int getNumOutputDimensions() {
         vector<double> input(getNumInputDimensions(), 1.0);
@@ -98,7 +94,6 @@ class SerialStream : public IStream {
     virtual void stop() final;
     virtual int getNumInputDimensions() final;
     virtual void useUSBPort(int i);
-    virtual void useAnalogPin(int i);
   private:
     int kBaud_ = 115200;
     // Serial buffer size
@@ -139,7 +134,7 @@ class FirmataStream : public IStream {
     virtual void stop() final;
     virtual int getNumInputDimensions() final;
     virtual void useUSBPort(int i);
-    virtual void useAnalogPin(int i);
+    void useAnalogPin(int i);
   private:
     int port_ = -1;
 
