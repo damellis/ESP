@@ -82,6 +82,10 @@ class Plotter {
         return true;
     }
 
+    const string& getTitle() const {
+        return title_;
+    }
+
     bool draw(uint32_t x, uint32_t y, uint32_t w, uint32_t h) {
         x_ = x;
         y_ = y;

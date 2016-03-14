@@ -374,12 +374,11 @@ void ofApp::renameTrainingSample(int num) {
     }
 
     int label = num + 1;
-
     rename_title_ = training_data_.getClassNameForCorrespondingClassLabel(label);
-    if (rename_title_ == "CLASS_LABEL_NOT_FOUND") {
-        // This means there is no data collected for this label.
-        return;
-    } else if (rename_title_ == "NOT_SET") {
+
+    // Hide internal names
+    if (rename_title_ == "CLASS_LABEL_NOT_FOUND" ||
+        rename_title_ == "NOT_SET") {
         rename_title_ = "";
     }
 
@@ -443,7 +442,6 @@ void ofApp::deleteTrainingSample(int num) {
     } else {
         plot_samples_[num].reset();
         plot_sample_indices_[num] = -1;
-        plot_samples_[num].setTitle("Label" + std::to_string(num + 1));
     }
 
     populateSampleFeatures(num);
@@ -818,11 +816,19 @@ void ofApp::exit() {
 }
 
 void ofApp::saveTrainingData() {
+    // Apply all the class names before save.
+    for (uint32_t i = 0; i < kNumMaxLabels_; i++) {
+        const string& name = plot_samples_[i].getTitle();
+        training_data_.setClassNameForCorrespondingClassLabel(name, i + 1);
+    }
+
     ofFileDialogResult result = ofSystemSaveDialog("TrainingData.grt",
                                                    "Save your training data?");
     if (result.bSuccess) {
         training_data_.save(result.getPath());
     }
+
+    should_save_training_data_ = false;
 }
 
 void ofApp::onDataIn(GRT::MatrixDouble input) {
