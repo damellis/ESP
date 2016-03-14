@@ -606,8 +606,10 @@ void ofApp::draw() {
 
     ofDrawBitmapString("[P]ipeline\t[T]raining\t[A]nalysis",
                        left_margin, top_margin);
-    ofDrawLine(0, top_margin + 5, ofGetWidth(), top_margin + 5);
     ofColor red = ofColor(0xFF, 0, 0);
+    uint32_t tab_start = 0;
+    uint32_t kTabWidth = 120;
+
     switch (fragment_) {
         case PIPELINE:
             ofDrawColoredBitmapString(red, "[P]ipeline\t",
@@ -618,16 +620,29 @@ void ofApp::draw() {
             ofDrawColoredBitmapString(red, "\t\t[T]raining",
                                       left_margin, top_margin);
             drawTrainingInfo();
+            tab_start += kTabWidth;
             break;
         case ANALYSIS:
             ofDrawColoredBitmapString(red, "\t\t\t\t[A]nalysis",
                                       left_margin, top_margin);
             drawAnalysis();
+            tab_start += 2 * kTabWidth;
             break;
         default:
             ofLog(OF_LOG_ERROR) << "Unknown tag!";
             break;
     }
+
+    // Draw a shape like the following to indicate a tab.
+    //          ______
+    // ________|     |____________
+    uint32_t bottom = top_margin + 5;
+    uint32_t ceiling = 5;
+    ofDrawLine(0, bottom, tab_start, bottom);
+    ofDrawLine(tab_start, bottom, tab_start, ceiling);
+    ofDrawLine(tab_start, ceiling, tab_start + kTabWidth, ceiling);
+    ofDrawLine(tab_start + kTabWidth, ceiling, tab_start + kTabWidth, bottom);
+    ofDrawLine(tab_start + kTabWidth, bottom, ofGetWidth(), bottom);
 
     // Show instructions across all tabs.
     ofDrawBitmapString(kInstruction, left_margin, top_margin + margin);
@@ -1040,7 +1055,7 @@ void ofApp::mouseReleased(int x, int y, int button) {
     // Tab click detection
     const uint32_t left_margin = 10;
     const uint32_t top_margin = 20;
-    const uint32_t tab_width = 125;
+    const uint32_t tab_width = 120;
     if (x > left_margin && y < top_margin + 5) {
         if (x < left_margin + tab_width) {
             fragment_ = PIPELINE;
