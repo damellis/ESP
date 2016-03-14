@@ -66,7 +66,15 @@ class IStream {
         data_ready_callback_ = std::bind(listenerMethod, owner, _1);
     }
 
+    // Set labels on all input dimension. This function takes either a vector of
+    // strings, or an initialization list (such as {"left", "right"}).
+    void setLabelsForAllDimensions(const vector<string> labels);
+    void setLabelsForAllDimensions(std::initializer_list<string> list);
+
+    const vector<string>& getLabels() const;
+
   protected:
+    vector<string> istream_labels_;
     bool has_started_;
     onDataReadyCallback data_ready_callback_;
     normalizeFunc normalizer_;

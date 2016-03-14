@@ -84,9 +84,11 @@ void ofApp::setup() {
 
     istream_->onDataReadyEvent(this, &ofApp::onDataIn);
 
+    const vector<string>& istream_labels = istream_->getLabels();
     plot_inputs_.setup(kBufferSize_, istream_->getNumOutputDimensions(), "Input");
     plot_inputs_.setDrawGrid(true);
     plot_inputs_.setDrawInfoText(true);
+    plot_inputs_.setChannelNames(istream_labels);
 
     plot_testdata_window_.setup(kBufferSize_, istream_->getNumOutputDimensions(), "Test Data");
     plot_testdata_window_.setDrawGrid(true);

@@ -26,6 +26,20 @@ vector<double> IStream::normalize(vector<double> input) {
     }
 }
 
+void IStream::setLabelsForAllDimensions(const vector<string> labels) {
+    istream_labels_ = labels;
+}
+
+void IStream::setLabelsForAllDimensions(std::initializer_list<string> list) {
+    if (list.size() != getNumOutputDimensions()) { return; }
+    vector<string> labels(list);
+    istream_labels_ = labels;
+}
+
+const vector<string>& IStream::getLabels() const {
+    return istream_labels_;
+}
+
 AudioStream::AudioStream(uint32_t downsample_rate)
         : downsample_rate_(downsample_rate),
           sound_stream_(new ofSoundStream()) {
