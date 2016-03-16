@@ -9,21 +9,25 @@ vector<double> normalize(vector<double> input) {
     magnitude = sqrt(magnitude);
     for (int i = 0; i < input.size(); i++) input[i] /= magnitude;
 
-    //input.push_back(magnitude);
-
     return input;
 }
 
 ASCIISerialStream stream(9600, 3);
 GestureRecognitionPipeline pipeline;
+TcpOStream oStream("localhost", 5204, 3, "l", "r", " ");
 
 void setup() {
     stream.useUSBPort(0);
-    //stream.useNormalizer(normalize);
+    stream.useNormalizer(normalize);
     useStream(stream);
 
     pipeline.addPreProcessingModule(MovingAverageFilter(5, 3));
-    //pipeline.addFeatureExtractionModule(TimeDomainFeatures(10, 1, 3, false, true, true, false, false));
-    pipeline.setClassifier(ANBC(false, true, 10.0)); // don't use scaling; use null rejection
+    pipeline.setClassifier(ANBC(false, true, 5.0)); // use scaling, use null rejection, null rejection parameter
+    // null rejection parameter is multiplied by the standard deviation to determine
+    // the rejection threshold. the higher the number, the looser the filter; the
+    // lower the number, the tighter the filter.
+
     usePipeline(pipeline);
+    
+    useOStream(oStream);
 }

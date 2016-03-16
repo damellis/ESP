@@ -23,12 +23,14 @@ void setup()
 {
     stream.useUSBPort(0);
     stream.useNormalizer(normalizeADXL335);
-    //stream.useNormalizer(normalizeArduino101);
     useStream(stream);
     
-    
     pipeline.addFeatureExtractionModule(TimeDomainFeatures(10, 1, 3, false, true, true, false, false));
-    pipeline.setClassifier(ANBC(false, true, 10.0));
+    pipeline.setClassifier(ANBC(false, true, 10.0)); // use scaling, use null rejection, null rejection parameter
+    // null rejection parameter is multiplied by the standard deviation to determine
+    // the rejection threshold. the higher the number, the looser the filter; the
+    // lower the number, the tighter the filter.
+
     usePipeline(pipeline);
     
     useOStream(oStream);

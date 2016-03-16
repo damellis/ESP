@@ -25,7 +25,11 @@ void setup()
     stream.useNormalizer(normalizeADXL335);
     useStream(stream);
     
-    pipeline.setClassifier(DTW(true, true, 0.5));
+    pipeline.setClassifier(DTW(false, true, 0.35)); // use scaling, use null rejection, null rejection parameter
+    // null rejection parameter is multiplied by the standard deviation to determine
+    // the rejection threshold. the higher the number, the looser the filter; the
+    // lower the number, the tighter the filter.
+    
     // We don't use a ClassLabelTimeoutFilter because it doesn't work
     // properly when replaying saved sensor data (which is stored without
     // timestamps). Instead, filter by number of samples using a
@@ -33,4 +37,6 @@ void setup()
     //pipeline.addPostProcessingModule(ClassLabelTimeoutFilter(500));
     pipeline.addPostProcessingModule(ClassLabelFilter(1, 25));
     usePipeline(pipeline);
+    
+    useOStream(oStream);
 }
