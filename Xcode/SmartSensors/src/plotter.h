@@ -6,10 +6,10 @@
 // support interactive operations over time-series data.
 class Plotter {
   public:
-    Plotter() : initialized_(false), lock_ranges_(false), minY_(0), maxY_(0),
-            x_start_(0), x_end_(0),
-            is_tracking_mouse_(false), range_selected_callback_(nullptr) {
-    }
+    Plotter() : initialized_(false), is_content_modified_(false),
+                lock_ranges_(false), minY_(0), maxY_(0),
+                x_start_(0), x_end_(0),
+                is_tracking_mouse_(false), range_selected_callback_(nullptr) {}
 
     struct CallbackArgs {
         uint32_t start;
@@ -43,6 +43,12 @@ class Plotter {
         x_end_ = 0;
         data_.clear();
         for (int i = 0; i < data.getNumRows(); i++) push_back(data.getRowVector(i));
+        is_content_modified_ = true;
+        return true;
+    }
+
+    bool clearContentModifiedFlag() {
+        is_content_modified_ = false;
         return true;
     }
 
@@ -52,6 +58,7 @@ class Plotter {
             if (d > maxY_) { maxY_ = d; }
             if (d < minY_) { minY_ = d; }
         }
+        is_content_modified_ = true;
         return true;
     }
 
@@ -141,8 +148,14 @@ class Plotter {
         int textX = 10;
         int textY = ofBitmapFontHeight + 5;
         if (title_ != ""){
+            string display_title = title_;
             ofSetColor(0xFF, 0xFF, 0xFF);
-            ofDrawBitmapString(title_, textX, textY);
+            ofDrawBitmapString(display_title, textX, textY);
+
+            if (is_content_modified_) {
+                ofSetColor(0x99, 0x99, 0x99);
+                ofDrawBitmapString("Edited", textX, textY + 15);
+            }
         }
 
         ofPopStyle();
@@ -188,6 +201,7 @@ class Plotter {
 
   private:
     bool initialized_;
+    bool is_content_modified_;
     uint32_t num_dimensions_;
     vector<ofColor> colors_;
     std::string title_;

@@ -160,7 +160,6 @@ void ofApp::setup() {
         plot.setColorPalette(color_palette.generate(label_dim));
         plot_samples_.push_back(plot);
 
-
         vector<Plotter> feature_plots;
         if (num_final_features < kTooManyFeaturesThreshold) {
             // For this label, `num_final_features` vertically stacked plots
@@ -530,12 +529,13 @@ void ofApp::doRelabelTrainingSample(uint32_t source, uint32_t target) {
     }
 
     populateSampleFeatures(num);
-    should_save_training_data_ = true;
 
     // For the target label, update the plot.
     plot_sample_indices_[target - 1]++;
     plot_samples_[target - 1].setData(target_data);
     populateSampleFeatures(target - 1);
+
+    should_save_training_data_ = true;
 }
 
 //--------------------------------------------------------------
@@ -930,29 +930,34 @@ void ofApp::toggleFeatureView() {
 }
 
 void ofApp::trainModel() {
-    // If prior training has not finished, we wait.
-    if (training_thread_.joinable()) {
-        training_thread_.join();
-    }
+   // If prior training has not finished, we wait.
+   if (training_thread_.joinable()) {
+       training_thread_.join();
+   }
 
-    auto training_func = [this]() -> bool {
-        ofLog() << "Training started";
-        if (pipeline_->train(training_data_)) {
-            ofLog() << "Training is successful";
-            return true;
-        } else {
-            ofLog(OF_LOG_ERROR) << "Failed to train the model";
-            return false;
-        }
-    };
+   auto training_func = [this]() -> bool {
+       ofLog() << "Training started";
+       if (pipeline_->train(training_data_)) {
+           ofLog() << "Training is successful";
 
-    // TODO(benzh) Fix data race issue later.
-    if (training_func()) {
-        fragment_ = TRAINING;
-        runPredictionOnTestData();
-        updateTestWindowPlot();
-        pipeline_->reset();
-    }
+           for (Plotter& plot : plot_samples_) {
+               assert(true == plot.clearContentModifiedFlag());
+           }
+
+           return true;
+       } else {
+           ofLog(OF_LOG_ERROR) << "Failed to train the model";
+           return false;
+       }
+   };
+
+   // TODO(benzh) Fix data race issue later.
+   if (training_func()) {
+       fragment_ = TRAINING;
+       runPredictionOnTestData();
+       updateTestWindowPlot();
+       pipeline_->reset();
+   }
 }
 
 void ofApp::loadTrainingData() {
@@ -1037,6 +1042,7 @@ void ofApp::mousePressed(int x, int y, int button) {
 
 //--------------------------------------------------------------
 void ofApp::mouseReleased(int x, int y, int button) {
+    // Navigating between samples (samples themselves are not changed).
     for (int i = 0; i < kNumMaxLabels_; i++) {
         int label = i + 1;
         TimeSeriesClassificationData data = training_data_.getClassData(label);
@@ -1044,6 +1050,7 @@ void ofApp::mouseReleased(int x, int y, int button) {
             if (plot_sample_indices_[i] > 0) {
                 plot_sample_indices_[i]--;
                 plot_samples_[i].setData(data[plot_sample_indices_[i]].getData());
+                assert(true == plot_samples_[i].clearContentModifiedFlag());
                 populateSampleFeatures(i);
             }
         }
@@ -1051,6 +1058,7 @@ void ofApp::mouseReleased(int x, int y, int button) {
             if (plot_sample_indices_[i] + 1 < data.getNumSamples()) {
                 plot_sample_indices_[i]++;
                 plot_samples_[i].setData(data[plot_sample_indices_[i]].getData());
+                assert(true == plot_samples_[i].clearContentModifiedFlag());
                 populateSampleFeatures(i);
             }
         }
