@@ -37,7 +37,7 @@ class OStream {
   public:
     virtual void onReceive(uint32_t label) = 0;
 
-    virtual void start() { has_started_ = true; }
+    virtual bool start() { has_started_ = true; return true; }
     void setStreamSize(int size) { stream_size_ = size; }
     bool hasStarted() { return has_started_; }
   protected:
@@ -210,18 +210,18 @@ class TcpOStream : public OStream {
         }
     }
 
-    void start() {
+    bool start() {
         // Establish the TCP Connection
         sockfd_ = socket(AF_INET, SOCK_STREAM, 0);
         if (sockfd_ < 0) {
-            perror("ERROR opening socket");
-            exit(errno);
+            ofLog() << "ERROR opening socket";
+            return false;
         }
 
         struct hostent *server = gethostbyname(server_.c_str());
         if (server == NULL) {
-            perror("ERROR resolving host");
-            exit(errno);
+            ofLog() << "ERROR resolving host";
+            return false;
         }
         struct sockaddr_in serveraddr;
 
@@ -233,11 +233,12 @@ class TcpOStream : public OStream {
         if (connect(sockfd_,
                     (struct sockaddr *) &serveraddr,
                     sizeof(serveraddr)) < 0) {
-            perror("ERROR connecting");
-            exit(errno);
+            ofLog() << "ERROR connecting";
+            return false;
         }
 
         has_started_ = true;
+        return true;
     }
 
 private:

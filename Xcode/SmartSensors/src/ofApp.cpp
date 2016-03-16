@@ -79,7 +79,9 @@ void ofApp::setup() {
 
     if (ostream_ != NULL) {
         ostream_->setStreamSize(10000000);
-        ostream_->start();
+        if (!(ostream_->start())) {
+            // TODO(benzh) If failed to start, alert in the GUI.
+        }
     }
 
     istream_->onDataReadyEvent(this, &ofApp::onDataIn);
