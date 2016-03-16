@@ -1,6 +1,6 @@
 #include <SmartSensors.h>
 
-ASCIISerialStream stream(9600, 3);
+ASCIISerialStream stream(0, 9600, 3);
 GestureRecognitionPipeline pipeline;
 TcpOStream oStream("localhost", 5204, 3, "l", "r", " ");
 
@@ -21,7 +21,6 @@ float normalizeArduino101(float input)
 
 void setup()
 {
-    stream.useUSBPort(0);
     stream.useNormalizer(normalizeADXL335);
     useStream(stream);
     

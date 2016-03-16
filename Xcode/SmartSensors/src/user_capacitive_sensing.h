@@ -1,10 +1,9 @@
 #include <SmartSensors.h>
 
-ASCIISerialStream stream(9600, 12);
+ASCIISerialStream stream(0, 9600, 12);
 GestureRecognitionPipeline pipeline;
 
 void setup() {
-    stream.useUSBPort(0);
     useStream(stream);
 
     //pipeline.addPreProcessingModule(MovingAverageFilter(5, 3));

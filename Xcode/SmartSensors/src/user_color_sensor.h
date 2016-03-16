@@ -12,12 +12,11 @@ vector<double> normalize(vector<double> input) {
     return input;
 }
 
-ASCIISerialStream stream(9600, 3);
+ASCIISerialStream stream(0, 9600, 3);
 GestureRecognitionPipeline pipeline;
 TcpOStream oStream("localhost", 5204, 3, "l", "r", " ");
 
 void setup() {
-    stream.useUSBPort(0);
     stream.useNormalizer(normalize);
     useStream(stream);
 
