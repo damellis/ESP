@@ -22,6 +22,7 @@ float normalizeArduino101(float input)
 void setup()
 {
     stream.useNormalizer(normalizeADXL335);
+    stream.setLabelsForAllDimensions({"x", "y", "z"});
     useStream(stream);
     
     pipeline.addFeatureExtractionModule(TimeDomainFeatures(10, 1, 3, false, true, true, false, false));
