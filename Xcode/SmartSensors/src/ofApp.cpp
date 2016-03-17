@@ -905,7 +905,7 @@ void ofApp::keyPressed(int key){
         case 'f': toggleFeatureView(); break;
         case 'h': gui_hide_ = !gui_hide_; break;
         case 'l': loadTrainingData(); break;
-        case 'p': istream_->toggle(); break;
+        case 'p': istream_->toggle(); input_data_.clear(); break;
         case 's': saveTrainingData(); break;
         case 't': trainModel(); break;
 
