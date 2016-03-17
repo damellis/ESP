@@ -8,7 +8,7 @@
 // single output will be more visual.
 const uint32_t kTooManyFeaturesThreshold = 32;
 static const char* kInstruction =
-        "Press capital P/T/A to change tabs. "
+        "Press capital C/P/T/A to change tabs. "
         "`p` to pause or resume, 1-9 to record samples \n"
         "`r` to record test data, `f` to show features, `s` to save data"
         "`l` to load training data, and `t` to train a model.";
@@ -608,29 +608,35 @@ void ofApp::draw() {
     const uint32_t top_margin = 20;
     const uint32_t margin = 20;
 
-    ofDrawBitmapString("[P]ipeline\t[T]raining\t[A]nalysis",
+    ofDrawBitmapString("[C]alibration\t[P]ipeline\t[T]raining\t[A]nalysis",
                        left_margin, top_margin);
     ofColor red = ofColor(0xFF, 0, 0);
     uint32_t tab_start = 0;
     uint32_t kTabWidth = 120;
 
     switch (fragment_) {
+        case CALIBRATION:
+            ofDrawColoredBitmapString(red, "[C]alibration\t",
+                                      left_margin, top_margin);
+            drawCalibration();
+            break;
         case PIPELINE:
-            ofDrawColoredBitmapString(red, "[P]ipeline\t",
+            ofDrawColoredBitmapString(red, "\t\t[P]ipeline\t",
                                       left_margin, top_margin);
             drawLivePipeline();
-            break;
-        case TRAINING:
-            ofDrawColoredBitmapString(red, "\t\t[T]raining",
-                                      left_margin, top_margin);
-            drawTrainingInfo();
             tab_start += kTabWidth;
             break;
+        case TRAINING:
+            ofDrawColoredBitmapString(red, "\t\t\t\t[T]raining",
+                                      left_margin, top_margin);
+            drawTrainingInfo();
+            tab_start +=  2 * kTabWidth;
+            break;
         case ANALYSIS:
-            ofDrawColoredBitmapString(red, "\t\t\t\t[A]nalysis",
+            ofDrawColoredBitmapString(red, "\t\t\t\t\t\t[A]nalysis",
                                       left_margin, top_margin);
             drawAnalysis();
-            tab_start += 2 * kTabWidth;
+            tab_start += 3 * kTabWidth;
             break;
         default:
             ofLog(OF_LOG_ERROR) << "Unknown tag!";
@@ -654,6 +660,9 @@ void ofApp::draw() {
     if (!gui_hide_) {
         gui_.draw();
     }
+}
+
+void ofApp::drawCalibration() {
 }
 
 void ofApp::drawLivePipeline() {
@@ -910,6 +919,7 @@ void ofApp::keyPressed(int key){
         case 't': trainModel(); break;
 
         // Tab related
+        case 'C': fragment_ = CALIBRATION; break;
         case 'P': fragment_ = PIPELINE; break;
         case 'T': fragment_ = TRAINING; break;
         case 'A': fragment_ = ANALYSIS; break;
@@ -1070,10 +1080,12 @@ void ofApp::mouseReleased(int x, int y, int button) {
     const uint32_t tab_width = 120;
     if (x > left_margin && y < top_margin + 5) {
         if (x < left_margin + tab_width) {
-            fragment_ = PIPELINE;
+            fragment_ = CALIBRATION;
         } else if (x < left_margin + 2 * tab_width) {
-            fragment_ = TRAINING;
+            fragment_ = PIPELINE;
         } else if (x < left_margin + 3 * tab_width) {
+            fragment_ = TRAINING;
+        } else if (x < left_margin + 4 * tab_width) {
             fragment_ = ANALYSIS;
         }
     }

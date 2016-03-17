@@ -37,8 +37,9 @@ class ofApp : public ofBaseApp {
     void gotMessage(ofMessage msg);
 
   private:
-    enum Fragment { PIPELINE, TRAINING, ANALYSIS };
+    enum Fragment { CALIBRATION, PIPELINE, TRAINING, ANALYSIS };
     Fragment fragment_;
+    void drawCalibration();
     void drawLivePipeline();
     void drawTrainingInfo();
     void drawAnalysis();
