@@ -53,6 +53,14 @@ void restingDataCollected(Calibrator &calibrator)
 void shakingDataCollected(Calibrator &calibrator) {
 }
 
+
+// Integrate these two into a single calibration object, e.g.
+//   Calibrator accelerationCalibrator(processAccelerometerData);
+//   accelerationCalibrator.addCalibrationSample("Resting", "Rest accelerometer on flat surface, w/ z-axis vertical.", restingDataCollected);
+//   accelerationCalibrator.addCalibrationSample("Shaking", "Shake accelerometer vigorously along all axes.", shakingDataCollected);
+//
+// Keep shortcut for the single sample case: e.g.
+//   Calibrator accelerationCalibrator(processAccelerometerData, "Resting", "Rest accelerometer on flat surface, w/ z-axis vertical.", restingDataCollected);
 Calibrator resting("Resting", "Rest accelerometer on flat surface, w/ z-axis vertical.", restingDataCollected);
 Calibrator shaking("Shaking", "Shake accelerometer vigorously along all axes.", shakingDataCollected);
 
@@ -69,6 +77,11 @@ vector<double> processAccelerometerData(vector<double> input)
     return output;
 }
 
+float analogReadToVoltage(float input)
+{
+    return input / 1024.0 * 5.0;
+}
+
 void setup()
 {
     stream.setLabelsForAllDimensions({"x", "y", "z"});
@@ -80,6 +93,7 @@ void setup()
     
     useCalibrator(resting);
     useCalibrator(shaking);
+    //useCalibrator(analogReadToVoltage);
 
     pipeline.addPreProcessingModule(MovingAverageFilter(5, 3));
     pipeline.addFeatureExtractionModule(TimeDomainFeatures(10, 1, 3, false, true, true, false, false));
