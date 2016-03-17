@@ -22,6 +22,7 @@ float normalizeArduino101(float input)
 void setup()
 {
     stream.useNormalizer(normalizeADXL335);
+    stream.setLabelsForAllDimensions({"x", "y", "z"});
     useStream(stream);
     
     pipeline.setClassifier(DTW(false, true, 0.35)); // use scaling, use null rejection, null rejection parameter

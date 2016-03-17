@@ -18,6 +18,7 @@ TcpOStream oStream("localhost", 5204, 3, "l", "r", " ");
 
 void setup() {
     stream.useNormalizer(normalize);
+    stream.setLabelsForAllDimensions({"red", "green", "blue"});
     useStream(stream);
 
     pipeline.addPreProcessingModule(MovingAverageFilter(5, 3));

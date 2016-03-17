@@ -68,6 +68,7 @@ GestureRecognitionPipeline pipeline;
 void setup()
 {
     stream.useUSBPort(0);
+    stream.setLabelsForAllDimensions({"x", "y", "z"});
     useStream(stream);
     
     pipeline.addPreProcessingModule(MovingAverageFilter(5, 3));
