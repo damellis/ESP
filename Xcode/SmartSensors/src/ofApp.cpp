@@ -1,6 +1,7 @@
 #include "ofApp.h"
 
 #include <algorithm>
+#include <math.h>
 
 #include "user.h"
 
@@ -12,6 +13,8 @@ static const char* kInstruction =
         "`p` to pause or resume, 1-9 to record samples \n"
         "`r` to record test data, `f` to show features, `s` to save data"
         "`l` to load training data, and `t` to train a model.";
+
+const double kPipelineHeightWeight = 0.3;
 
 class Palette {
   public:
@@ -124,13 +127,13 @@ void ofApp::setup() {
 
     // 2. Parse pre-processing.
     uint32_t num_feature_modules = pipeline_->getNumFeatureExtractionModules();
-    num_pipeline_stages_ += num_feature_modules;
     uint32_t num_final_features = 0;
     for (int i = 0; i < num_feature_modules; i++) {
         vector<ofxGrtTimeseriesPlot> feature_at_stage_i;
 
         FeatureExtraction* fe = pipeline_->getFeatureExtractionModule(i);
         uint32_t feature_dim = fe->getNumOutputDimensions();
+
         if (feature_dim < kTooManyFeaturesThreshold) {
             for (int i = 0; i < feature_dim; i++) {
                 ofxGrtTimeseriesPlot plot;
@@ -139,6 +142,10 @@ void ofApp::setup() {
                 plot.setColorPalette(color_palette.generate(feature_dim));
                 feature_at_stage_i.push_back(plot);
             }
+            // Each feature will be draw with a height of stage_height *
+            // kPipelineHeightWeight, therefore, the stage counts need to be
+            // adjusted.
+            num_pipeline_stages_ += ceil(feature_dim * kPipelineHeightWeight);
         } else {
             // We will have only one here.
             ofxGrtTimeseriesPlot plot;
@@ -147,6 +154,10 @@ void ofApp::setup() {
             plot.setDrawInfoText(true);
             plot.setColorPalette(color_palette.generate(feature_dim));
             feature_at_stage_i.push_back(plot);
+
+            // Since we will be drawing each feature in a separate plot, count them
+            // in pipeline stages.
+            num_pipeline_stages_ += 1;
         }
         num_final_features = feature_dim;
 
@@ -156,7 +167,7 @@ void ofApp::setup() {
     for (uint32_t i = 0; i < num_final_features; i++) {
         sample_feature_ranges_.push_back(make_pair(0, 0));
     }
-    
+
     for (uint32_t i = 0; i < calibrators_.size(); i++) {
         uint32_t label_dim = istream_->getNumOutputDimensions();
         Plotter plot;
@@ -680,13 +691,13 @@ void ofApp::drawCalibration() {
     uint32_t stage_top = 70;
     uint32_t stage_height = (ofGetHeight() - stage_top - margin * 2) / 2;
     uint32_t stage_width = ofGetWidth() - margin;
-    
+
     // 1. Draw Input.
     ofPushStyle();
     plot_inputs_.draw(stage_left, stage_top, stage_width, stage_height);
     ofPopStyle();
     stage_top += stage_height + margin;
-    
+
     if (plot_calibrators_.size() == 0) return;
 
     // 2. Draw Calibrators.
@@ -706,7 +717,7 @@ void ofApp::drawLivePipeline() {
     uint32_t stage_left = 10;
     uint32_t stage_top = 70;
     uint32_t stage_height = // Hacky math for dimensions.
-            (ofGetHeight() - margin) / (num_pipeline_stages_ + 1) - 2 * margin;
+            (ofGetHeight() - margin) / (num_pipeline_stages_ + 1) - margin;
     uint32_t stage_width = ofGetWidth() - margin;
 
     // 1. Draw Input.
@@ -729,14 +740,14 @@ void ofApp::drawLivePipeline() {
     for (int i = 0; i < pipeline_->getNumFeatureExtractionModules(); i++) {
         // working on feature extraction stage i.
         ofPushStyle();
-        uint32_t width = stage_width / plot_features_[i].size();
+        uint32_t height = plot_features_[i].size() == 1 ?
+                stage_height : stage_height * kPipelineHeightWeight;
         for (int j = 0; j < plot_features_[i].size(); j++) {
-            plot_features_[i][j].
-                    draw(stage_left + j * width, stage_top,
-                         width, stage_height);
+            plot_features_[i][j].draw(stage_left, stage_top, stage_width, height);
+            stage_top += height;
         }
         ofPopStyle();
-        stage_top += stage_height + margin;
+        stage_top += margin;
     }
 }
 
