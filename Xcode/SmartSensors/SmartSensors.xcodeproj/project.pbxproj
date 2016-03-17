@@ -13,6 +13,7 @@
 		4C01A7D4BC8BE15DE60CCB82 /* ofxPanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F27487FA03169CDBC92552C4 /* ofxPanel.cpp */; };
 		53560FBFF75362D7BE463255 /* ofxToggle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FC54DBBAA5B23FFE6E7FE620 /* ofxToggle.cpp */; };
 		798434EF9EE5EE2E41E2F0DE /* ofxGrtTimeseriesPlot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3016C29D8E0735FBAEF55DFA /* ofxGrtTimeseriesPlot.cpp */; };
+		81AE85841C9B523800BC33BC /* Calibrator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 81AE85821C9B523800BC33BC /* Calibrator.cpp */; };
 		A9F16933D69101A8B2D7DC24 /* ofxBaseGui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B29062C5077E0EBE48BC1E5E /* ofxBaseGui.cpp */; };
 		B5B6A3DBA86CA86AD71CDE31 /* ofxLabel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 64F25F34C1FF51D1DEB91164 /* ofxLabel.cpp */; };
 		DD956AF23DA8C97565D245E4 /* ofxSlider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FBE3DD02DBD21EB4812C6B1 /* ofxSlider.cpp */; };
@@ -72,12 +73,14 @@
 		6F8100B5C8574131C4571B8A /* istream.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = istream.h; path = src/istream.h; sourceTree = SOURCE_ROOT; };
 		7A451F0A26AD1F6604C914AF /* ofxGrt.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxGrt.h; path = "../../third-party/openFrameworks/addons/ofxGrt/src/ofxGrt.h"; sourceTree = SOURCE_ROOT; };
 		7ACE6957882556257F46BB94 /* ofxGrtMatrixPlot.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxGrtMatrixPlot.cpp; path = "../../third-party/openFrameworks/addons/ofxGrt/src/ofxGrtMatrixPlot.cpp"; sourceTree = SOURCE_ROOT; };
-		8108C0911C69537700DC19EC /* user_adxl335_accelerometer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = user_adxl335_accelerometer.h; sourceTree = "<group>"; };
 		811F86D91C6C06E10049F7D5 /* SmartSensors.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SmartSensors.h; sourceTree = "<group>"; };
 		811F86DA1C6C07980049F7D5 /* user_accelerometer_gestures.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = user_accelerometer_gestures.h; sourceTree = "<group>"; };
 		813BB89F1C89020F00E09854 /* user_accelerometer_poses.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = user_accelerometer_poses.h; sourceTree = "<group>"; };
 		815B5E551C8508C800DA0ABD /* user_capacitive_sensing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = user_capacitive_sensing.h; sourceTree = "<group>"; };
 		81ADDF8D1C601C32001F382A /* user_color_sensor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = user_color_sensor.h; sourceTree = "<group>"; };
+		81AE85811C9B4F2D00BC33BC /* user_accelerometer_calibration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = user_accelerometer_calibration.h; sourceTree = "<group>"; };
+		81AE85821C9B523800BC33BC /* Calibrator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Calibrator.cpp; sourceTree = "<group>"; };
+		81AE85831C9B523800BC33BC /* Calibrator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Calibrator.h; sourceTree = "<group>"; };
 		8C2208E103C17F4A39DECE6F /* ofxGrtTimeseriesPlot.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxGrtTimeseriesPlot.h; path = "../../third-party/openFrameworks/addons/ofxGrt/src/ofxGrtTimeseriesPlot.h"; sourceTree = SOURCE_ROOT; };
 		8FBE3DD02DBD21EB4812C6B1 /* ofxSlider.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxSlider.cpp; path = "../../third-party/openFrameworks/addons/ofxGui/src/ofxSlider.cpp"; sourceTree = SOURCE_ROOT; };
 		A97695183B2993F23875A518 /* ofxSliderGroup.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxSliderGroup.h; path = "../../third-party/openFrameworks/addons/ofxGui/src/ofxSliderGroup.h"; sourceTree = SOURCE_ROOT; };
@@ -213,12 +216,14 @@
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
 				811F86D91C6C06E10049F7D5 /* SmartSensors.h */,
 				5939D84F8D015C2971814643 /* user.h */,
+				81AE85811C9B4F2D00BC33BC /* user_accelerometer_calibration.h */,
+				811F86DA1C6C07980049F7D5 /* user_accelerometer_gestures.h */,
+				813BB89F1C89020F00E09854 /* user_accelerometer_poses.h */,
 				498E8A1B1C600A9F0007F149 /* user_audio_beat.h */,
 				81ADDF8D1C601C32001F382A /* user_color_sensor.h */,
 				815B5E551C8508C800DA0ABD /* user_capacitive_sensing.h */,
-				8108C0911C69537700DC19EC /* user_adxl335_accelerometer.h */,
-				811F86DA1C6C07980049F7D5 /* user_accelerometer_gestures.h */,
-				813BB89F1C89020F00E09854 /* user_accelerometer_poses.h */,
+				81AE85821C9B523800BC33BC /* Calibrator.cpp */,
+				81AE85831C9B523800BC33BC /* Calibrator.h */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -335,6 +340,7 @@
 			files = (
 				E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */,
 				E4B69E210A3A1BDC003C02F2 /* ofApp.cpp in Sources */,
+				81AE85841C9B523800BC33BC /* Calibrator.cpp in Sources */,
 				48F7FEF8914B64EA7053CD0A /* istream.cpp in Sources */,
 				490F6D6A1C881E7500B0AA45 /* ostream.cpp in Sources */,
 				E2565612498DE15079C283A3 /* ofxGrtMatrixPlot.cpp in Sources */,

@@ -51,6 +51,10 @@ class Palette {
     std::vector<ofColor> colors;
 };
 
+void ofApp::useCalibrator(Calibrator &calibrator) {
+    calibrators_.push_back(&calibrator); // TODO(damellis): way to remove calibrators?
+}
+
 void ofApp::useStream(IStream &stream) {
     istream_ = &stream;
 }
@@ -151,6 +155,14 @@ void ofApp::setup() {
 
     for (uint32_t i = 0; i < num_final_features; i++) {
         sample_feature_ranges_.push_back(make_pair(0, 0));
+    }
+    
+    for (uint32_t i = 0; i < calibrators_.size(); i++) {
+        uint32_t label_dim = istream_->getNumOutputDimensions();
+        Plotter plot;
+        plot.setup(label_dim, calibrators_[i]->getName());
+        plot.setColorPalette(color_palette.generate(label_dim));
+        plot_calibrators_.push_back(plot);
     }
 
     for (uint32_t i = 0; i < kNumMaxLabels_; i++) {
@@ -663,6 +675,28 @@ void ofApp::draw() {
 }
 
 void ofApp::drawCalibration() {
+    uint32_t margin = 30;
+    uint32_t stage_left = 10;
+    uint32_t stage_top = 70;
+    uint32_t stage_height = (ofGetHeight() - stage_top - margin * 2) / 2;
+    uint32_t stage_width = ofGetWidth() - margin;
+    
+    // 1. Draw Input.
+    ofPushStyle();
+    plot_inputs_.draw(stage_left, stage_top, stage_width, stage_height);
+    ofPopStyle();
+    stage_top += stage_height + margin;
+    
+    if (plot_calibrators_.size() == 0) return;
+
+    // 2. Draw Calibrators.
+    int width = stage_width / plot_calibrators_.size();
+    for (int i = 0; i < plot_calibrators_.size(); i++) {
+        int x = stage_left + width * i;
+        ofPushStyle();
+        plot_calibrators_[i].draw(x, stage_top, width, stage_height);
+        ofPopStyle();
+    }
 }
 
 void ofApp::drawLivePipeline() {
@@ -1017,14 +1051,23 @@ void ofApp::keyReleased(int key) {
 
     is_recording_ = false;
     if (key >= '1' && key <= '9') {
-        training_data_.addSample(label_, sample_data_);
+        if (fragment_ == CALIBRATION) {
+            if (label_ - 1 < calibrators_.size()) {
+                plot_calibrators_[label_ - 1].setData(sample_data_);
+                calibrators_[label_ - 1]->setData(sample_data_);
+                calibrators_[label_ - 1]->calibrate();
+                plot_inputs_.reset();
+            }
+        } else if (fragment_ == TRAINING) {
+            training_data_.addSample(label_, sample_data_);
 
-        plot_samples_[label_ - 1].setData(sample_data_);
-        plot_sample_indices_[label_ - 1] = training_data_.getClassTracker()[
-                  training_data_.getClassLabelIndexValue(label_)].
-                    counter - 1;
+            plot_samples_[label_ - 1].setData(sample_data_);
+            plot_sample_indices_[label_ - 1] = training_data_.getClassTracker()[
+                      training_data_.getClassLabelIndexValue(label_)].
+                        counter - 1;
 
-        should_save_training_data_ = true;
+            should_save_training_data_ = true;
+        }
     }
 
     if (key == 'r') {

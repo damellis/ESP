@@ -12,6 +12,7 @@
 #include "ofxGrt.h"
 
 // custom
+#include "Calibrator.h"
 #include "istream.h"
 #include "plotter.h"
 #include "ostream.h"
@@ -44,10 +45,12 @@ class ofApp : public ofBaseApp {
     void drawTrainingInfo();
     void drawAnalysis();
 
+    void useCalibrator(Calibrator &calibrator);
     void useStream(IStream &stream);
     void usePipeline(GRT::GestureRecognitionPipeline &pipeline);
     void useOStream(OStream &stream);
 
+    friend void useCalibrator(Calibrator &calibrator);
     friend void useStream(IStream &stream);
     friend void usePipeline(GRT::GestureRecognitionPipeline &pipeline);
     friend void useOStream(OStream &stream);
@@ -61,6 +64,10 @@ class ofApp : public ofBaseApp {
     // kBufferSize_ controls the number of points in the plot. Note: This is not
     // the buffer size used for training/prediction.
     const uint32_t kBufferSize_ = 256;
+    
+    
+    // The calibrators that are in use.
+    vector<Calibrator *> calibrators_;
 
     // Input stream, a callback should be registered upon data arrival
     IStream *istream_;
@@ -92,6 +99,9 @@ class ofApp : public ofBaseApp {
 
     // Visuals
     ofxGrtTimeseriesPlot plot_inputs_;
+    
+    vector<Plotter> plot_calibrators_;
+    
     vector<ofxGrtTimeseriesPlot> plot_pre_processed_;
     vector<vector<ofxGrtTimeseriesPlot>> plot_features_;
     vector<Plotter> plot_samples_;

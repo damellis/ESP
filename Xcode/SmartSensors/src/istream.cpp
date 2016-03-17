@@ -211,12 +211,14 @@ void ASCIISerialStream::readSerial() {
 
             while (iss >> d) data.push_back(d);
 
-            data = normalize(data);
+            if (data.size() > 0) {
+                data = normalize(data);
 
-            GRT::MatrixDouble matrix;
-            matrix.push_back(data);
+                GRT::MatrixDouble matrix;
+                matrix.push_back(data);
 
-            data_ready_callback_(matrix);
+                data_ready_callback_(matrix);
+            }
         }
     }
 }
