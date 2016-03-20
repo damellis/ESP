@@ -246,16 +246,11 @@ void ofApp::setup() {
 //    training_data_.setInfoText("This data contains audio data");
     predicted_label_ = 0;
 
-    gui_.setup("", "", ofGetWidth() - 200, 0);
+    gui_.addHeader(":: Parameter Tuning ::");
+    gui_.setAutoDraw(false);
+    gui_.setPosition(ofGetWidth() - 200, 0);
+    gui_.setWidth(180, 100);
     gui_hide_ = true;
-    gui_.add(save_pipeline_button_.setup("Save Pipeline", 200, 30));
-    gui_.add(load_pipeline_button_.setup("Load Pipeline", 200, 30));
-    gui_.add(save_training_data_button_.setup("Save Training Data", 200, 30));
-    gui_.add(load_training_data_button_.setup("Load Training Data", 200, 30));
-    save_pipeline_button_.addListener(this, &ofApp::savePipeline);
-    load_pipeline_button_.addListener(this, &ofApp::loadPipeline);
-    save_training_data_button_.addListener(this, &ofApp::saveTrainingData);
-    load_training_data_button_.addListener(this, &ofApp::loadTrainingData);
 
     ofBackground(54, 54, 54);
 

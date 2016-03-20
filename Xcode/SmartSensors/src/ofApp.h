@@ -8,6 +8,7 @@
 
 // of System
 #include "ofMain.h"
+#include "ofxDatGui.h"
 #include "ofxGui.h"
 #include "ofxGrt.h"
 
@@ -64,8 +65,7 @@ class ofApp : public ofBaseApp {
     // kBufferSize_ controls the number of points in the plot. Note: This is not
     // the buffer size used for training/prediction.
     const uint32_t kBufferSize_ = 256;
-    
-    
+
     // The calibrators that are in use.
     vector<Calibrator *> calibrators_;
 
@@ -99,9 +99,9 @@ class ofApp : public ofBaseApp {
 
     // Visuals
     ofxGrtTimeseriesPlot plot_inputs_;
-    
+
     vector<Plotter> plot_calibrators_;
-    
+
     vector<ofxGrtTimeseriesPlot> plot_pre_processed_;
     vector<vector<ofxGrtTimeseriesPlot>> plot_features_;
     vector<Plotter> plot_samples_;
@@ -126,7 +126,7 @@ class ofApp : public ofBaseApp {
     void runPredictionOnTestData();
 
     // Panel for storing and loading pipeline.
-    ofxPanel gui_;
+    ofxDatGui gui_;
     bool gui_hide_;
     ofxButton save_pipeline_button_;
     void savePipeline();
