@@ -242,14 +242,16 @@ void ofApp::setup() {
     }
 
     training_data_.setNumDimensions(istream_->getNumOutputDimensions());
-//    training_data_.setDatasetName("Audio");
-//    training_data_.setInfoText("This data contains audio data");
     predicted_label_ = 0;
 
     gui_.addHeader(":: Parameter Tuning ::");
     gui_.setAutoDraw(false);
-    gui_.setPosition(ofGetWidth() - 200, 0);
-    gui_.setWidth(180, 100);
+    gui_.setPosition(ofGetWidth() - 300, 0);
+    gui_.setWidth(280, 140);
+
+    for (Tuneable* t : tuneable_parameters_) {
+        t->addToGUI(gui_);
+    }
     gui_hide_ = true;
 
     ofBackground(54, 54, 54);
@@ -1138,6 +1140,11 @@ void ofApp::mouseReleased(int x, int y, int button) {
             fragment_ = ANALYSIS;
         }
     }
+}
+
+void ofApp::reloadPipelineModules() {
+    pipeline_->clearAll();
+    ::setup();
 }
 
 //--------------------------------------------------------------

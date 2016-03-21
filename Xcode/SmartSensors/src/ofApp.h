@@ -17,6 +17,7 @@
 #include "istream.h"
 #include "plotter.h"
 #include "ostream.h"
+#include "tuneable.h"
 
 class ofApp : public ofBaseApp {
   public:
@@ -38,6 +39,11 @@ class ofApp : public ofBaseApp {
     void dragEvent(ofDragInfo dragInfo);
     void gotMessage(ofMessage msg);
 
+    void registerTuneable(Tuneable* t) {
+        tuneable_parameters_.push_back(t);
+    }
+
+    void reloadPipelineModules();
   private:
     enum Fragment { CALIBRATION, PIPELINE, TRAINING, ANALYSIS };
     Fragment fragment_;
@@ -171,6 +177,9 @@ class ofApp : public ofBaseApp {
     // Relabel
     bool is_in_relabeling_ = false;
     uint32_t relabel_source_;
+
+    // tuneable parameters
+    vector<Tuneable*> tuneable_parameters_;
 };
 
 class TrainingSampleGuiListener {
