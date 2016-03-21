@@ -16,8 +16,8 @@ void Tuneable::onSliderEvent(ofxDatGuiSliderEvent e) {
                 int set_value = std::round(e.value);
                 *value = set_value;
 
-                // Because slider only supports double, we have to manually round it to
-                // match integer semantics.
+                // Because slider only supports double, we have to manually
+                // round it to match integer semantics.
                 e.target->setValue(set_value);
             } else {
                 double* value = static_cast<double*>(data_ptr);
