@@ -84,5 +84,5 @@ class Tuneable {
 };
 
 void registerTuneable(int& value, int min, int max, const string& description);
-void registerTuneable(double& value, int min, int max, const string& description);
+void registerTuneable(double& value, double min, double max, const string& description);
 void registerTuneable(bool& value, const string& description);

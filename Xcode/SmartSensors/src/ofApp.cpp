@@ -244,6 +244,7 @@ void ofApp::setup() {
     training_data_.setNumDimensions(istream_->getNumOutputDimensions());
     predicted_label_ = 0;
 
+    gui_.setAssetPath("./");
     gui_.addHeader(":: Parameter Tuning ::");
     gui_.setAutoDraw(false);
     gui_.setPosition(ofGetWidth() - 300, 0);
