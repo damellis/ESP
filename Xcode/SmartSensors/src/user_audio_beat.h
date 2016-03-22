@@ -1,27 +1,23 @@
 #include <SmartSensors.h>
 
-uint32_t DIM = 1;
-// for 44.1k sampling rate, 0.1-second will yield 4410 samples
-// For a hopsize of 128, this creates 34.4 features.
-// We use a post processing of ClassLabelFilter with 50 buffers, 35 occurrance.
+AudioStream stream(10);
+GestureRecognitionPipeline pipeline;
+MacOSKeyboardOStream o_stream(3, 'j', 'd', '\0');
+
+// Audio defaults to 44.1k sampling rate. With a downsample of 10, it's 4.41k.
 uint32_t kFFT_WindowSize = 512;
 uint32_t kFFT_HopSize = 128;
-
-AudioStream stream;
-GestureRecognitionPipeline pipeline;
-MacOSKeyboardOStream o_stream(3, '\0', 'a', 'd');
+uint32_t DIM = 1;
 
 void setup() {
+    stream.setLabelsForAllDimensions({"audio"});
+
     pipeline.addFeatureExtractionModule(
         FFT(kFFT_WindowSize, kFFT_HopSize,
             DIM, FFT::RECTANGULAR_WINDOW, true, false));
 
-    RandomForests forest;
-    forest.setForestSize(10);
-    forest.setNumRandomSplits(100);
-    forest.setMaxDepth(10);
-    forest.setMinNumSamplesPerNode(10);
-    pipeline.setClassifier(forest);
+    pipeline.setClassifier(
+        SVM(SVM::LINEAR_KERNEL, SVM::C_SVC, true, true));
 
     pipeline.addPostProcessingModule(ClassLabelFilter(35, 50));
 
