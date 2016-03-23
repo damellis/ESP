@@ -14,3 +14,6 @@
 [submodule "third-party/SpaceInvaders"]
 	path = third-party/SpaceInvaders
 	url = https://github.com/damellis/Processing_SpaceInv.git
+[submodule "third-party/ofxDatGui"]
+	path = third-party/ofxDatGui
+	url = https://github.com/braitsch/ofxDatGui.git
