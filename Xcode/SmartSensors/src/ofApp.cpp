@@ -244,7 +244,6 @@ void ofApp::setup() {
     training_data_.setNumDimensions(istream_->getNumOutputDimensions());
     predicted_label_ = 0;
 
-    gui_.setAssetPath("./");
     gui_.addHeader(":: Parameter Tuning ::");
     gui_.setAutoDraw(false);
     gui_.setPosition(ofGetWidth() - 300, 0);
@@ -253,7 +252,11 @@ void ofApp::setup() {
     for (Tuneable* t : tuneable_parameters_) {
         t->addToGUI(gui_);
     }
-    gui_hide_ = true;
+    gui_.addFooter();
+    gui_.getFooter()->setLabelWhenExpanded("Click to Hide");
+    gui_.getFooter()->setLabelWhenCollapsed("Click to Tune Parameters");
+
+    gui_hide_ = false;
 
     ofBackground(54, 54, 54);
 
