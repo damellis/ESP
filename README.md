@@ -33,6 +33,7 @@ Instead, we create a symlink to make openFrameworks happy.
 
 ```
 $ ln -s $(pwd)/third-party/ofxGrt/ third-party/openFrameworks/addons/ofxGrt
+$ ln -s $(pwd)/third-party/ofxDatGui/ third-party/openFrameworks/addons/ofxDatGui
 ```
 
 # GRT Installation
@@ -48,7 +49,7 @@ GRT to /usr/local:
 6. make
 7. sudo make install
 
-For details, see [README.md in GRT/build](https://github.com/damellis/grt/tree/master/build). 
+For details, see [README.md in GRT/build](https://github.com/damellis/grt/tree/master/build).
 
 # Tips
 
