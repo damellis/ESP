@@ -25,7 +25,8 @@ void setup() {
     useStream(stream);
 
     pipeline.addPreProcessingModule(MovingAverageFilter(5, 3));
-    pipeline.setClassifier(ANBC(scaling, true, null_rej)); // use scaling, use null rejection, null rejection parameter
+    // use scaling, use null rejection, null rejection parameter
+    pipeline.setClassifier(ANBC(scaling, true, null_rej));
 
     // null rejection parameter is multiplied by the standard deviation to determine
     // the rejection threshold. the higher the number, the looser the filter; the
@@ -34,6 +35,14 @@ void setup() {
     usePipeline(pipeline);
     useOStream(oStream);
 
-    registerTuneable(scaling, "scaling");
-    registerTuneable(null_rej, 1.0, 10.0, "null rejection");
+    registerTuneable(scaling, "scaling",
+                     "If true, the training and prediction data will be scaled "
+                     "to a specific range. Default should be set false.");
+
+    registerTuneable(null_rej, 1.0, 10.0,
+                     "null rejection",
+                     "null rejection parameter is multiplied by the standard deviation"
+                     " to determine the rejection threshold. "
+                     "The higher the number, the looser the filter; "
+                     "the lower the number, the tighter the filter.");
 }
