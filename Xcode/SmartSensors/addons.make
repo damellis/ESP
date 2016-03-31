@@ -1,3 +1,4 @@
 ofxDatGui
 ofxGrt
 ofxGui
+ofxParagraph
