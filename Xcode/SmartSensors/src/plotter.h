@@ -67,8 +67,8 @@ class Plotter {
     }
 
     bool setRanges(float minY, float maxY, bool lockRanges = false) {
-        default_minY_ = minY;
-        default_maxY_ = maxY;
+        minY_ = minY;
+        maxY_ = maxY;
         lock_ranges_ = lockRanges;
         return true;
     }

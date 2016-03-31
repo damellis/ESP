@@ -13,7 +13,7 @@
 #include "ofxGrt.h"
 
 // custom
-#include "Calibrator.h"
+#include "calibrator.h"
 #include "istream.h"
 #include "plotter.h"
 #include "ostream.h"
@@ -72,8 +72,8 @@ class ofApp : public ofBaseApp {
     // the buffer size used for training/prediction.
     const uint32_t kBufferSize_ = 256;
 
-    // The calibrators that are in use.
-    vector<Calibrator *> calibrators_;
+    // The calibrator that is in use.
+    Calibrator *calibrator_;
 
     // Input stream, a callback should be registered upon data arrival
     IStream *istream_;
@@ -104,6 +104,7 @@ class ofApp : public ofBaseApp {
     vector<UINT> test_data_predicted_class_labels_;
 
     // Visuals
+    ofxGrtTimeseriesPlot plot_raw_;
     ofxGrtTimeseriesPlot plot_inputs_;
 
     vector<Plotter> plot_calibrators_;

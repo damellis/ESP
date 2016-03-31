@@ -55,7 +55,7 @@ class Palette {
 };
 
 void ofApp::useCalibrator(Calibrator &calibrator) {
-    calibrators_.push_back(&calibrator); // TODO(damellis): way to remove calibrators?
+    calibrator_ = &calibrator;
 }
 
 void ofApp::useStream(IStream &stream) {
@@ -94,6 +94,10 @@ void ofApp::setup() {
     istream_->onDataReadyEvent(this, &ofApp::onDataIn);
 
     const vector<string>& istream_labels = istream_->getLabels();
+    plot_raw_.setup(kBufferSize_, istream_->getNumOutputDimensions(), "Raw Data");
+    plot_raw_.setDrawGrid(true);
+    plot_raw_.setDrawInfoText(true);
+    plot_raw_.setChannelNames(istream_labels);
     plot_inputs_.setup(kBufferSize_, istream_->getNumOutputDimensions(), "Input");
     plot_inputs_.setDrawGrid(true);
     plot_inputs_.setDrawInfoText(true);
@@ -168,10 +172,11 @@ void ofApp::setup() {
         sample_feature_ranges_.push_back(make_pair(0, 0));
     }
 
-    for (uint32_t i = 0; i < calibrators_.size(); i++) {
+    vector<CalibrateProcess>& calibrators = calibrator_->getCalibrateProcesses();
+    for (uint32_t i = 0; i < calibrators.size(); i++) {
         uint32_t label_dim = istream_->getNumOutputDimensions();
         Plotter plot;
-        plot.setup(label_dim, calibrators_[i]->getName());
+        plot.setup(label_dim, calibrators[i].getName());
         plot.setColorPalette(color_palette.generate(label_dim));
         plot_calibrators_.push_back(plot);
     }
@@ -567,6 +572,10 @@ void ofApp::update() {
     std::lock_guard<std::mutex> guard(input_data_mutex_);
     for (int i = 0; i < input_data_.getNumRows(); i++){
         vector<double> data_point = input_data_.getRowVector(i);
+        plot_raw_.update(data_point);
+        if (calibrator_->isCalibrated()) {
+            data_point = calibrator_->calibrate(data_point);
+        }
 
         if (pipeline_->getTrained()) {
             pipeline_->predict(data_point);
@@ -580,8 +589,11 @@ void ofApp::update() {
             }
         }
 
-        std::string title = training_data_.getClassNameForCorrespondingClassLabel(predicted_label_);
-        if (title == "NOT_SET") title = std::string("Label") + std::to_string(predicted_label_);
+        std::string title =
+                training_data_.getClassNameForCorrespondingClassLabel(predicted_label_);
+        if (title == "NOT_SET") {
+            title = std::string("Label") + std::to_string(predicted_label_);
+        }
 
         plot_inputs_.update(data_point, predicted_label_ != 0, title);
 
@@ -695,17 +707,21 @@ void ofApp::drawCalibration() {
 
     // 1. Draw Input.
     ofPushStyle();
-    plot_inputs_.draw(stage_left, stage_top, stage_width, stage_height);
+    plot_raw_.draw(stage_left, stage_top, stage_width, stage_height);
     ofPopStyle();
     stage_top += stage_height + margin;
 
     if (plot_calibrators_.size() == 0) return;
+
+    float minY = plot_raw_.getRanges().first;
+    float maxY = plot_raw_.getRanges().second;
 
     // 2. Draw Calibrators.
     int width = stage_width / plot_calibrators_.size();
     for (int i = 0; i < plot_calibrators_.size(); i++) {
         int x = stage_left + width * i;
         ofPushStyle();
+        plot_calibrators_[i].setRanges(minY, maxY);
         plot_calibrators_[i].draw(x, stage_top, width, stage_height);
         ofPopStyle();
     }
@@ -1064,10 +1080,11 @@ void ofApp::keyReleased(int key) {
     is_recording_ = false;
     if (key >= '1' && key <= '9') {
         if (fragment_ == CALIBRATION) {
-            if (label_ - 1 < calibrators_.size()) {
+            vector<CalibrateProcess>& calibrators = calibrator_->getCalibrateProcesses();
+            if (label_ - 1 < calibrators.size()) {
                 plot_calibrators_[label_ - 1].setData(sample_data_);
-                calibrators_[label_ - 1]->setData(sample_data_);
-                calibrators_[label_ - 1]->calibrate();
+                calibrators[label_ - 1].setData(sample_data_);
+                calibrators[label_ - 1].calibrate();
                 plot_inputs_.reset();
             }
         } else if (fragment_ == TRAINING) {
