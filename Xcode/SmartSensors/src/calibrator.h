@@ -32,12 +32,23 @@ class CalibrateProcess {
 
 class Calibrator {
   public:
+    typedef std::function<double(double)> SimpleCalibrateFunc;
     typedef std::function<vector<double>(vector<double>)> CalibrateFunc;
-    Calibrator() : calibrate_func_(nullptr) {}
-    Calibrator(CalibrateFunc f) : calibrate_func_(f) {}
+
+    Calibrator() : simple_calibrate_func_(nullptr), calibrate_func_(nullptr) {}
+    Calibrator(SimpleCalibrateFunc f)
+            : simple_calibrate_func_(f), calibrate_func_(nullptr) {}
+    Calibrator(CalibrateFunc f)
+            : simple_calibrate_func_(nullptr), calibrate_func_(f) {}
 
     Calibrator& setCalibrateFunction(CalibrateFunc f) {
+        simple_calibrate_func_ = nullptr;
         calibrate_func_ = f;
+    }
+
+    Calibrator& setCalibrateFunction(SimpleCalibrateFunc f) {
+        simple_calibrate_func_ = f;
+        calibrate_func_ = nullptr;
     }
 
     Calibrator& addCalibrateProcess(CalibrateProcess cp) {
@@ -61,6 +72,12 @@ class Calibrator {
     vector<double> calibrate(vector<double> input) {
         if (calibrate_func_ != nullptr) {
             return calibrate_func_(input);
+        } else {
+            assert(simple_calibrate_func_ != nullptr);
+            vector<double> output;
+            std::transform(input.begin(), input.end(), back_inserter(output),
+                           simple_calibrate_func_);
+            return output;
         }
     }
 
@@ -82,6 +99,7 @@ class Calibrator {
         return registered_.find(cp.getName()) != registered_.end();
     }
 
+    SimpleCalibrateFunc simple_calibrate_func_;
     CalibrateFunc calibrate_func_;
     vector<CalibrateProcess> calibrate_processes_;
     set<string> registered_;
