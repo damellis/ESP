@@ -34,6 +34,7 @@ Instead, we create a symlink to make openFrameworks happy.
 ```
 $ ln -s $(pwd)/third-party/ofxGrt/ third-party/openFrameworks/addons/ofxGrt
 $ ln -s $(pwd)/third-party/ofxDatGui/ third-party/openFrameworks/addons/ofxDatGui
+$ ln -s $(pwd)/third-party/ofxParagraph/ third-party/openFrameworks/addons/ofxParagraph
 ```
 
 # GRT Installation
