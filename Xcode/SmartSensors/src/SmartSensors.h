@@ -1,11 +1,8 @@
-#ifndef SmartSensors_h
-#define SmartSensors_h
+#pragma once
 
 #include "GRT/GRT.h"
+#include "calibrator.h"
 #include "istream.h"
 #include "ostream.h"
-#include "Calibrator.h"
 
 using namespace GRT;
-
-#endif
