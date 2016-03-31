@@ -573,10 +573,16 @@ void ofApp::doRelabelTrainingSample(uint32_t source, uint32_t target) {
 void ofApp::update() {
     std::lock_guard<std::mutex> guard(input_data_mutex_);
     for (int i = 0; i < input_data_.getNumRows(); i++){
-        vector<double> data_point = input_data_.getRowVector(i);
-        plot_raw_.update(data_point);
-        if (calibrator_ != nullptr && calibrator_->isCalibrated()) {
-            data_point = calibrator_->calibrate(data_point);
+        vector<double> raw_data = input_data_.getRowVector(i);
+        vector<double> data_point;
+        plot_raw_.update(raw_data);
+        if (calibrator_ == nullptr) {
+            data_point = raw_data;
+        } else if (calibrator_->isCalibrated()) {
+            data_point = calibrator_->calibrate(raw_data);
+        } else {
+            // Not calibrated! For now, force the tab to be CALIBRATION.
+            fragment_ = CALIBRATION;
         }
 
         if (pipeline_->getTrained()) {
@@ -625,7 +631,11 @@ void ofApp::update() {
         }
 
         if (is_recording_) {
-            sample_data_.push_back(data_point);
+            if (fragment_ == CALIBRATION) {
+                sample_data_.push_back(raw_data);
+            } else {
+                sample_data_.push_back(data_point);
+            }
         }
     }
 }
