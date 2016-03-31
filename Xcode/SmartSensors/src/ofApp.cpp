@@ -172,13 +172,15 @@ void ofApp::setup() {
         sample_feature_ranges_.push_back(make_pair(0, 0));
     }
 
-    vector<CalibrateProcess>& calibrators = calibrator_->getCalibrateProcesses();
-    for (uint32_t i = 0; i < calibrators.size(); i++) {
-        uint32_t label_dim = istream_->getNumOutputDimensions();
-        Plotter plot;
-        plot.setup(label_dim, calibrators[i].getName());
-        plot.setColorPalette(color_palette.generate(label_dim));
-        plot_calibrators_.push_back(plot);
+    if (calibrator_ != nullptr) {
+        vector<CalibrateProcess>& calibrators = calibrator_->getCalibrateProcesses();
+        for (uint32_t i = 0; i < calibrators.size(); i++) {
+            uint32_t label_dim = istream_->getNumOutputDimensions();
+            Plotter plot;
+            plot.setup(label_dim, calibrators[i].getName());
+            plot.setColorPalette(color_palette.generate(label_dim));
+            plot_calibrators_.push_back(plot);
+        }
     }
 
     for (uint32_t i = 0; i < kNumMaxLabels_; i++) {
@@ -573,7 +575,7 @@ void ofApp::update() {
     for (int i = 0; i < input_data_.getNumRows(); i++){
         vector<double> data_point = input_data_.getRowVector(i);
         plot_raw_.update(data_point);
-        if (calibrator_->isCalibrated()) {
+        if (calibrator_ != nullptr && calibrator_->isCalibrated()) {
             data_point = calibrator_->calibrate(data_point);
         }
 
@@ -1080,6 +1082,8 @@ void ofApp::keyReleased(int key) {
     is_recording_ = false;
     if (key >= '1' && key <= '9') {
         if (fragment_ == CALIBRATION) {
+            if (calibrator_ == nullptr) { return; }
+
             vector<CalibrateProcess>& calibrators = calibrator_->getCalibrateProcesses();
             if (label_ - 1 < calibrators.size()) {
                 plot_calibrators_[label_ - 1].setData(sample_data_);
