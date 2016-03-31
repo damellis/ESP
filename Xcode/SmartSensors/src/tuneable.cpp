@@ -41,35 +41,41 @@ void Tuneable::onToggleEvent(ofxDatGuiButtonEvent e) {
     }
 }
 
-void registerTuneable(int& value, int min, int max, const string& description) {
+void registerTuneable(int& value, int min, int max,
+                      const string& title,
+                      const string& description) {
     void* address = &value;
     if (allTuneables.find(address) != allTuneables.end()) {
         return;
     }
 
-    Tuneable* t = new Tuneable(&value, min, max, description);
+    Tuneable* t = new Tuneable(&value, min, max, title, description);
     allTuneables[address] = t;
     ((ofApp *) ofGetAppPtr())->registerTuneable(t);
 }
 
-void registerTuneable(double& value, double min, double max, const string& description) {
+void registerTuneable(double& value, double min, double max,
+                      const string& title,
+                      const string& description) {
     void* address = &value;
     if (allTuneables.find(address) != allTuneables.end()) {
         return;
     }
 
-    Tuneable* t = new Tuneable(&value, min, max, description);
+    Tuneable* t = new Tuneable(&value, min, max, title, description);
     allTuneables[address] = t;
     ((ofApp *) ofGetAppPtr())->registerTuneable(t);
 }
 
-void registerTuneable(bool& value, const string& description) {
+void registerTuneable(bool& value,
+                      const string& title,
+                      const string& description) {
     void* address = &value;
     if (allTuneables.find(address) != allTuneables.end()) {
         return;
     }
 
-    Tuneable* t = new Tuneable(&value, description);
+    Tuneable* t = new Tuneable(&value, title, description);
     allTuneables[address] = t;
     ((ofApp *) ofGetAppPtr())->registerTuneable(t);
 }
