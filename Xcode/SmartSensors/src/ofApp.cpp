@@ -248,7 +248,6 @@ void ofApp::setup() {
     gui_.setAutoDraw(false);
     gui_.setPosition(ofGetWidth() - 300, 0);
     gui_.setWidth(280, 140);
-
     for (Tuneable* t : tuneable_parameters_) {
         t->addToGUI(gui_);
     }
@@ -256,6 +255,7 @@ void ofApp::setup() {
     gui_.getFooter()->setLabelWhenExpanded("Click to Hide");
     gui_.getFooter()->setLabelWhenCollapsed("Click to Tune Parameters");
 
+    gui_.collapseGui();
     gui_hide_ = false;
 
     ofBackground(54, 54, 54);
