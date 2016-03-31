@@ -734,7 +734,7 @@ void ofApp::drawLivePipeline() {
     uint32_t stage_left = 10;
     uint32_t stage_top = 70;
     uint32_t stage_height = // Hacky math for dimensions.
-            (ofGetHeight() - margin) / (num_pipeline_stages_ + 1) - margin;
+            (ofGetHeight() - margin - stage_top) / (num_pipeline_stages_ + 1) - margin;
     uint32_t stage_width = ofGetWidth() - margin;
 
     // 1. Draw Input.
