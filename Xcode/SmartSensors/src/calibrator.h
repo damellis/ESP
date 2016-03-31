@@ -33,7 +33,12 @@ class CalibrateProcess {
 class Calibrator {
   public:
     typedef std::function<vector<double>(vector<double>)> CalibrateFunc;
+    Calibrator() : calibrate_func_(nullptr) {}
     Calibrator(CalibrateFunc f) : calibrate_func_(f) {}
+
+    Calibrator& setCalibrateFunction(CalibrateFunc f) {
+        calibrate_func_ = f;
+    }
 
     Calibrator& addCalibrateProcess(const CalibrateProcess cp) {
         calibrate_processes_.push_back(cp);
