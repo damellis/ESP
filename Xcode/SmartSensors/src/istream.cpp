@@ -85,7 +85,7 @@ void AudioStream::audioIn(float* input, int buffer_size, int nChannel) {
 SerialStream::SerialStream(uint32_t port, uint32_t baud = 115200)
         : port_(port), baud_(baud), serial_(new ofSerial()) {
     // Print all devices for convenience.
-    serial_->listDevices();
+    // serial_->listDevices();
 }
 
 void SerialStream::start() {
