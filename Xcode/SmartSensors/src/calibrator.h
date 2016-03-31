@@ -17,8 +17,8 @@ class CalibrateProcess {
     void calibrate() { cb_(data_); is_calibrated_ = true; }
     bool isCalibrated() const { return is_calibrated_; }
 
-    std::string getName() { return name_; }
-    std::string getDescription() { return description_; }
+    std::string getName() const { return name_; }
+    std::string getDescription() const { return description_; }
 
     void setData(GRT::MatrixDouble data) { data_ = data; }
     GRT::MatrixDouble getData() { return data_; }
@@ -40,8 +40,11 @@ class Calibrator {
         calibrate_func_ = f;
     }
 
-    Calibrator& addCalibrateProcess(const CalibrateProcess cp) {
-        calibrate_processes_.push_back(cp);
+    Calibrator& addCalibrateProcess(CalibrateProcess cp) {
+        if (!isCalibrateProcessRegistered(cp)) {
+            registerCalibrateProcess(cp);
+            calibrate_processes_.push_back(cp);
+        }
         return *this;
     }
 
@@ -71,8 +74,17 @@ class Calibrator {
     }
 
   private:
+    void registerCalibrateProcess(const CalibrateProcess& cp) {
+        registered_.insert(cp.getName());
+    }
+
+    bool isCalibrateProcessRegistered(const CalibrateProcess& cp) {
+        return registered_.find(cp.getName()) != registered_.end();
+    }
+
     CalibrateFunc calibrate_func_;
     vector<CalibrateProcess> calibrate_processes_;
+    set<string> registered_;
 };
 
 void useCalibrator(Calibrator &calibrator);
