@@ -1,7 +1,7 @@
 #include <SmartSensors.h>
 
-SerialStream stream(0, 115200);   // 5k sampling rate
-// AudioStream stream(8);
+// SerialStream stream(0, 115200);   // 5k sampling rate
+AudioStream stream(8);
 GestureRecognitionPipeline pipeline;
 MacOSKeyboardOStream o_stream(3, 'j', 'd', '\0');
 
@@ -26,10 +26,9 @@ void shoutCollected(const MatrixDouble& data) {
     range = std::max(max - bias, bias - min);
 }
 
-vector<double> analogReadToSound(vector<double> data) {
+double analogReadToSound(double data) {
     // Audio data is one dimension
-    data[0] = (data[0] - bias) / range;
-    return data;
+    return (data - bias) / range;
 }
 
 Calibrator calibrator(analogReadToSound);
