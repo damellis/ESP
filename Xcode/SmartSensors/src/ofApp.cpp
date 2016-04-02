@@ -90,6 +90,7 @@ void ofApp::setup() {
         ostream_->setStreamSize(10000000);
         if (!(ostream_->start())) {
             // TODO(benzh) If failed to start, alert in the GUI.
+            ofLog(OF_LOG_ERROR) << "failed to connect to ostream";
         }
     }
 

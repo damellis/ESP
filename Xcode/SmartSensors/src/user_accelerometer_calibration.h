@@ -3,6 +3,7 @@
 ASCIISerialStream stream(0, 9600, 3);
 GestureRecognitionPipeline pipeline;
 Calibrator calibrator;
+TcpOStream oStream("localhost", 5204, 3, " ", "l", "r");
 
 // accelerometer characteristics to be calculated from calibration
 double zeroG, oneG;
@@ -42,7 +43,8 @@ float analogReadToVoltage(float input)
     return input / 1024.0 * 5.0;
 }
 
-double threshold = 0.6;
+int timeout = 500;
+double threshold = 0.4;
 
 void setup()
 {
@@ -57,8 +59,13 @@ void setup()
     useCalibrator(calibrator);
 
     pipeline.setClassifier(DTW(false, true, threshold));
-    pipeline.addPostProcessingModule(ClassLabelFilter(1, 25));
+    pipeline.addPostProcessingModule(ClassLabelTimeoutFilter(timeout));
     usePipeline(pipeline);
-    
-    registerTuneable(threshold, 0.1, 3.0, "Null rejection", "The bigger the number, the more likely it will match.");
+
+    registerTuneable(threshold, 0.1, 3.0, "Null rejection",
+                     "The bigger the number, the more likely it will match.");
+    registerTuneable(timeout, 10, 1000, "Timeout",
+                     "The longer, more filtering effect on the result");
+
+    useOStream(oStream);
 }
