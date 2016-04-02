@@ -42,6 +42,8 @@ float analogReadToVoltage(float input)
     return input / 1024.0 * 5.0;
 }
 
+double threshold = 0.6;
+
 void setup()
 {
     stream.setLabelsForAllDimensions({"x", "y", "z"});
@@ -54,9 +56,9 @@ void setup()
     calibrator.addCalibrateProcess("Resting", "Rest accelerometer on flat surface, w/ z-axis vertical.", restingDataCollected);
     useCalibrator(calibrator);
 
-    pipeline.addPreProcessingModule(MovingAverageFilter(5, 3));
-    pipeline.addFeatureExtractionModule(TimeDomainFeatures(10, 1, 3, false, true, true, false, false));
-    pipeline.setClassifier(ANBC(false, true, 10.0));
-    pipeline.addPostProcessingModule(ClassLabelFilter(3, 5));
+    pipeline.setClassifier(DTW(false, true, threshold));
+    pipeline.addPostProcessingModule(ClassLabelFilter(1, 25));
     usePipeline(pipeline);
+    
+    registerTuneable(threshold, 0.1, 3.0, "Null rejection", "The bigger the number, the more likely it will match.");
 }
