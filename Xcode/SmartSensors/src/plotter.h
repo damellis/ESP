@@ -67,13 +67,18 @@ class Plotter {
     }
 
     bool setRanges(float minY, float maxY, bool lockRanges = false) {
-        minY_ = minY;
-        maxY_ = maxY;
+        default_minY_ = minY_ = minY;
+        default_maxY_ = maxY_ = maxY;
         lock_ranges_ = lockRanges;
         return true;
     }
 
-    std::pair<float, float> getRanges() { return std::make_pair(minY_, maxY_); }
+    std::pair<float, float> getRanges() {
+        if (lock_ranges_)
+            return std::make_pair(default_minY_, default_maxY_);
+        else
+            return std::make_pair(minY_, maxY_);
+    }
 
     bool setColorPalette(const vector<ofColor>& colors) {
         if (colors.size() == num_dimensions_) {
