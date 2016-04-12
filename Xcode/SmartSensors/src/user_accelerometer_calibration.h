@@ -8,17 +8,9 @@ TcpOStream oStream("localhost", 5204, 3, "l", "r", " ");
 // accelerometer characteristics to be calculated from calibration
 double zeroG, oneG;
 
-vector<double> processAccelerometerData(vector<double> input)
+double processAccelerometerData(double input)
 {
-    if (input.size() < 3) return input;
-
-    vector<double> output(input.size());
-
-    output[0] = (input[0] - zeroG) / (oneG - zeroG);
-    output[1] = (input[1] - zeroG) / (oneG - zeroG);
-    output[2] = (input[2] - zeroG) / (oneG - zeroG);
-
-    return output;
+    return (input - zeroG) / (oneG - zeroG);
 }
 
 void restingDataCollected(const MatrixDouble& data)
@@ -33,7 +25,6 @@ void restingDataCollected(const MatrixDouble& data)
         mean[j] /= data.getNumRows();
     }
 
-    // TODO: give warning if mean[0] (X acceleration) and mean[1] (Y accleration) are different.
     zeroG = (mean[0] + mean[1]) / 2; // take average of X and Y acceleration as the zero G value
     oneG = mean[2]; // use Z acceleration as one G value (due to gravity)
 }
