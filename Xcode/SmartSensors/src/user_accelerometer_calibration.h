@@ -3,7 +3,7 @@
 ASCIISerialStream stream(0, 9600, 3);
 GestureRecognitionPipeline pipeline;
 Calibrator calibrator;
-TcpOStream oStream("localhost", 5204, 3, " ", "l", "r");
+TcpOStream oStream("localhost", 5204, 3, "l", "r", " ");
 
 // accelerometer characteristics to be calculated from calibration
 double zeroG, oneG;
@@ -62,10 +62,14 @@ void setup()
     pipeline.addPostProcessingModule(ClassLabelTimeoutFilter(timeout));
     usePipeline(pipeline);
 
-    registerTuneable(threshold, 0.1, 3.0, "Null rejection",
-                     "The bigger the number, the more likely it will match.");
-    registerTuneable(timeout, 10, 1000, "Timeout",
-                     "The longer, more filtering effect on the result");
+    registerTuneable(threshold, 0.1, 3.0,
+        "Distance Threshold",
+        "How similar a live gesture needs to be to a training sample. "
+        "The lower the number, the more similar it needs to be.");
+    registerTuneable(timeout, 10, 1000,
+        "Delay Between Gestures",
+        "How long (in milliseconds) to wait after recognizing a "
+        "gesture before recognizing another one.");
 
     useOStream(oStream);
 }
