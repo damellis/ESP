@@ -1,4 +1,4 @@
-#include <SmartSensors.h>
+#include <ESP.h>
 
 // Normalize by dividing each dimension by the total magnitude.
 // Also add the magnitude as an additional feature.

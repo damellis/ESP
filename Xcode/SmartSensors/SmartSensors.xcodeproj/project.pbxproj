@@ -71,7 +71,7 @@
 		1F8E989A07FC7623F211CE84 /* ofxGuiGroup.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxGuiGroup.cpp; path = "../../third-party/openFrameworks/addons/ofxGui/src/ofxGuiGroup.cpp"; sourceTree = SOURCE_ROOT; };
 		2037A4196661293164557E30 /* ostream.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ostream.h; path = src/ostream.h; sourceTree = SOURCE_ROOT; };
 		282D6B378B12A303CCC10AC9 /* ofxSmartFont.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxSmartFont.h; path = "../../third-party/openFrameworks/addons/ofxDatGui/src/libs/ofxSmartFont/ofxSmartFont.h"; sourceTree = SOURCE_ROOT; };
-		2FF4BD20EA806510FB8490D2 /* SmartSensors.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = SmartSensors.h; path = src/SmartSensors.h; sourceTree = SOURCE_ROOT; };
+		2FF4BD20EA806510FB8490D2 /* ESP.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ESP.h; path = src/ESP.h; sourceTree = SOURCE_ROOT; };
 		3016C29D8E0735FBAEF55DFA /* ofxGrtTimeseriesPlot.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxGrtTimeseriesPlot.cpp; path = "../../third-party/openFrameworks/addons/ofxGrt/src/ofxGrtTimeseriesPlot.cpp"; sourceTree = SOURCE_ROOT; };
 		33590F0CD7DAD6FE90515E35 /* ofxGuiGroup.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxGuiGroup.h; path = "../../third-party/openFrameworks/addons/ofxGui/src/ofxGuiGroup.h"; sourceTree = SOURCE_ROOT; };
 		33AE35DBE2EBE926124EFA8A /* ofxGui.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxGui.h; path = "../../third-party/openFrameworks/addons/ofxGui/src/ofxGui.h"; sourceTree = SOURCE_ROOT; };
@@ -336,7 +336,7 @@
 				FACCFB9E3EA79675FAB70179 /* ostream.cpp */,
 				2037A4196661293164557E30 /* ostream.h */,
 				9F470C57CD92526D67F7E4B8 /* plotter.h */,
-				2FF4BD20EA806510FB8490D2 /* SmartSensors.h */,
+				2FF4BD20EA806510FB8490D2 /* ESP.h */,
 				3B41658326AAF509E0B38863 /* tuneable.cpp */,
 				E53D01ADA7297C38566E691F /* tuneable.h */,
 				5939D84F8D015C2971814643 /* user.h */,

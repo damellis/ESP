@@ -1,4 +1,4 @@
-#include <SmartSensors.h>
+#include <ESP.h>
 
 // SerialStream stream(0, 115200);   // 5k sampling rate
 AudioStream stream(8);

@@ -1,4 +1,4 @@
-#include <SmartSensors.h>
+#include <ESP.h>
 
 ASCIISerialStream stream(0, 9600, 12);
 GestureRecognitionPipeline pipeline;
