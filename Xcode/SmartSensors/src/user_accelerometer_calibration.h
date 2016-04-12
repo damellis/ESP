@@ -5,8 +5,7 @@ GestureRecognitionPipeline pipeline;
 Calibrator calibrator;
 TcpOStream oStream("localhost", 5204, 3, "l", "r", " ");
 
-// accelerometer characteristics to be calculated from calibration
-double zeroG, oneG;
+double zeroG = 0, oneG = 0;
 
 double processAccelerometerData(double input)
 {
@@ -15,26 +14,12 @@ double processAccelerometerData(double input)
 
 void restingDataCollected(const MatrixDouble& data)
 {
-    std::vector<float> mean(3, 0.0);
-
-    for (int j = 0; j < 3; j++) {
-        for (int i = 0; i < data.getNumRows(); i++)
-        {
-            mean[j] += data[i][j];
-        }
-        mean[j] /= data.getNumRows();
-    }
-
-    zeroG = (mean[0] + mean[1]) / 2; // take average of X and Y acceleration as the zero G value
-    oneG = mean[2]; // use Z acceleration as one G value (due to gravity)
+    // take average of X and Y acceleration as the zero G value
+    zeroG = (data.getMean()[0] + data.getMean()[1]) / 2;
+    oneG = data.getMean()[2]; // use Z acceleration as one G value
 }
 
-float analogReadToVoltage(float input)
-{
-    return input / 1024.0 * 5.0;
-}
-
-int timeout = 500;
+int timeout = 500; // milliseconds
 double threshold = 0.4;
 
 void setup()
@@ -43,10 +28,8 @@ void setup()
     useStream(stream);
 
     calibrator.setCalibrateFunction(processAccelerometerData);
-    // The elaborate version is:
-    // CalibrateProcess cp("Resting", "Rest accelerometer on flat surface, w/ z-axis vertical.", restingDataCollected);
-    // calibrator.addCalibrateProcess(cp);
-    calibrator.addCalibrateProcess("Resting", "Rest accelerometer on flat surface, w/ z-axis vertical.", restingDataCollected);
+    calibrator.addCalibrateProcess("Resting",
+        "Rest accelerometer on flat surface.", restingDataCollected);
     useCalibrator(calibrator);
 
     pipeline.setClassifier(DTW(false, true, threshold));
@@ -54,11 +37,11 @@ void setup()
     usePipeline(pipeline);
 
     registerTuneable(threshold, 0.1, 3.0,
-        "Distance Threshold",
+        "Similarity",
         "How similar a live gesture needs to be to a training sample. "
         "The lower the number, the more similar it needs to be.");
-    registerTuneable(timeout, 10, 1000,
-        "Delay Between Gestures",
+    registerTuneable(timeout, 1, 1000,
+        "Timeout",
         "How long (in milliseconds) to wait after recognizing a "
         "gesture before recognizing another one.");
 
