@@ -1,0 +1,14 @@
+#!/bin/bash
+
+git submodule init
+git submodule update --depth 1 -- third-party/openFrameworks
+git submodule update
+ln -s $(pwd)/third-party/ofxGrt/ third-party/openFrameworks/addons/ofxGrt
+ln -s $(pwd)/third-party/ofxDatGui/ third-party/openFrameworks/addons/ofxDatGui
+ln -s $(pwd)/third-party/ofxParagraph/ third-party/openFrameworks/addons/ofxParagraph
+cd third-party/grt/build
+mkdir tmp
+cd tmp
+cmake ..
+make
+sudo make install
