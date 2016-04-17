@@ -12,21 +12,15 @@
 
 #include <ApplicationServices/ApplicationServices.h>
 
-#include <arpa/inet.h>
-#include <errno.h>
-#include <netdb.h>
-#include <netinet/in.h>
 #include <stdarg.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/socket.h>
-#include <sys/types.h>
-#include <unistd.h>
 
 #include "ofMain.h"
 #include "ofApp.h"
+#include "ofxTCPClient.h"
 
 const uint64_t kGracePeriod = 500; // 0.5 second
 
@@ -211,34 +205,9 @@ class TcpOStream : public OStream {
     }
 
     bool start() {
-        // Establish the TCP Connection
-        sockfd_ = socket(AF_INET, SOCK_STREAM, 0);
-        if (sockfd_ < 0) {
-            ofLog() << "ERROR opening socket";
-            return false;
-        }
-
-        struct hostent *server = gethostbyname(server_.c_str());
-        if (server == NULL) {
-            ofLog() << "ERROR resolving host";
-            return false;
-        }
-        struct sockaddr_in serveraddr;
-
-        bzero((char *) &serveraddr, sizeof(serveraddr));
-        serveraddr.sin_family = AF_INET;
-        bcopy((char *) server->h_addr,
-              (char *) &serveraddr.sin_addr.s_addr, server->h_length);
-        serveraddr.sin_port = htons(port_);
-        if (connect(sockfd_,
-                    (struct sockaddr *) &serveraddr,
-                    sizeof(serveraddr)) < 0) {
-            ofLog() << "ERROR connecting";
-            return false;
-        }
-
-        has_started_ = true;
-        return true;
+        has_started_ = client_.setup(server_, port_);
+        client_.setMessageDelimiter("\n");
+        return has_started_;
     }
 
 private:
@@ -248,7 +217,9 @@ private:
         }
         elapsed_time_ = ofGetElapsedTimeMillis();
 
-        write(sockfd_, tosend.c_str(), tosend.size());
+        if (client_.isConnected()) {
+            client_.send(tosend);
+        }
     }
 
     string getStreamString(uint32_t label) {
@@ -257,9 +228,10 @@ private:
 
     string server_;
     int port_;
+    ofxTCPClient client_;
+
     uint64_t elapsed_time_ = 0;
     std::map<uint32_t, string> tcp_stream_mapping_;
-    int sockfd_;
 };
 
 void useOStream(OStream &stream);
