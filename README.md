@@ -1,4 +1,4 @@
-# Smart Sensors
+# ESP (Example-based Sensor Predictions)
 
 This project aims to help novices make sophisticated use of sensors in
 interactive projects through the application of machine learning.
