@@ -871,7 +871,7 @@ void ofApp::drawTrainingInfo() {
         uint32_t height = stage_height / feature_plots.size() - margin;
 
         for (uint32_t j = 0; j < feature_plots.size(); j++) {
-            pair<uint32_t, uint32_t> range = sample_feature_ranges_[j];
+            pair<double, double> range = sample_feature_ranges_[j];
 
             feature_plots[j].setRanges(range.first, range.second);
             feature_plots[j].draw(x, y, width, height);

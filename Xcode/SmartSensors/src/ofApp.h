@@ -118,7 +118,7 @@ class ofApp : public ofBaseApp {
     void toggleFeatureView();
     bool is_in_feature_view_ = false;
     void populateSampleFeatures(uint32_t sample_index);
-    vector<pair<uint32_t, uint32_t>> sample_feature_ranges_;
+    vector<pair<double, double>> sample_feature_ranges_;
 
     ofxGrtTimeseriesPlot plot_prediction_;
     vector<int> plot_sample_indices_; // the index of the currently plotted sample for each class label
