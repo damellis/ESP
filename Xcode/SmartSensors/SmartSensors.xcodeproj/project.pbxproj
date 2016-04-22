@@ -122,7 +122,6 @@
 		9F470C57CD92526D67F7E4B8 /* plotter.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = plotter.h; path = src/plotter.h; sourceTree = SOURCE_ROOT; };
 		A047724C3CB291D0DD3E8610 /* ofxDatGuiTimeGraph.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxDatGuiTimeGraph.h; path = "../../third-party/openFrameworks/addons/ofxDatGui/src/components/ofxDatGuiTimeGraph.h"; sourceTree = SOURCE_ROOT; };
 		A0B4FE6D3EADF19C5E8A120B /* ofxParagraph.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxParagraph.cpp; path = "../../third-party/openFrameworks/addons/ofxParagraph/src/ofxParagraph.cpp"; sourceTree = SOURCE_ROOT; };
-		A7EE10CD986B9A95AD61F67C /* user_accelerometer_calibration.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = user_accelerometer_calibration.h; path = src/user_accelerometer_calibration.h; sourceTree = SOURCE_ROOT; };
 		A97695183B2993F23875A518 /* ofxSliderGroup.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxSliderGroup.h; path = "../../third-party/openFrameworks/addons/ofxGui/src/ofxSliderGroup.h"; sourceTree = SOURCE_ROOT; };
 		AA5BA44556C8DCB2CC4F6404 /* user_color_sensor.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = user_color_sensor.h; path = src/user_color_sensor.h; sourceTree = SOURCE_ROOT; };
 		B29062C5077E0EBE48BC1E5E /* ofxBaseGui.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxBaseGui.cpp; path = "../../third-party/openFrameworks/addons/ofxGui/src/ofxBaseGui.cpp"; sourceTree = SOURCE_ROOT; };
@@ -384,7 +383,6 @@
 				3B41658326AAF509E0B38863 /* tuneable.cpp */,
 				E53D01ADA7297C38566E691F /* tuneable.h */,
 				5939D84F8D015C2971814643 /* user.h */,
-				A7EE10CD986B9A95AD61F67C /* user_accelerometer_calibration.h */,
 				CA04A68E6A155553BDF7A252 /* user_accelerometer_gestures.h */,
 				6B92F1EA749EF18D2462EF7D /* user_accelerometer_poses.h */,
 				0AD12F507A410105D2618288 /* user_audio_beat.h */,
