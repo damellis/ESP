@@ -3,7 +3,7 @@
 using std::string;
 
 Plotter::Plotter() :
-        initialized_(false), is_content_modified_(false),
+        initialized_(false), is_content_modified_(false), is_in_renaming_(false),
         lock_ranges_(false), minY_(0), maxY_(0),
         x_start_(0), x_end_(0),
         is_tracking_mouse_(false), range_selected_callback_(nullptr) {
@@ -85,6 +85,14 @@ bool Plotter::setTitle(const string& title) {
     return true;
 }
 
+void Plotter::renameTitleStart() {
+    is_in_renaming_ = true;
+}
+
+void Plotter::renameTitleDone() {
+    is_in_renaming_ = false;
+}
+
 const string& Plotter::getTitle() const {
     return title_;
 }
@@ -144,7 +152,12 @@ bool Plotter::draw(uint32_t x, uint32_t y, uint32_t w, uint32_t h) {
     int textX = 10;
     int textY = ofBitmapFontHeight + 5;
     if (title_ != ""){
-        string display_title = is_content_modified_ ? (title_ + "*") : title_;
+        string display_title = title_;
+
+        // If modified and not in renaming, show a start
+        if (is_content_modified_ && !is_in_renaming_) {
+            display_title += "*";
+        }
         ofSetColor(0xFF, 0xFF, 0xFF);
         ofDrawBitmapString(display_title, textX, textY);
     }

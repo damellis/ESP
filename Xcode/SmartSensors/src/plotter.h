@@ -31,6 +31,8 @@ class Plotter {
     bool setColorPalette(const vector<ofColor>& colors);
 
     bool setTitle(const string& title);
+    void renameTitleStart();
+    void renameTitleDone();
 
     const string& getTitle() const;
 
@@ -55,6 +57,7 @@ class Plotter {
   private:
     bool initialized_;
     bool is_content_modified_;
+    bool is_in_renaming_;
     uint32_t num_dimensions_;
     vector<ofColor> colors_;
     string title_;

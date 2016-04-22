@@ -435,8 +435,8 @@ void ofApp::renameTrainingSample(int num) {
     is_in_renaming_ = true;
     rename_target_ = label;
     display_title_ = rename_title_;
+    plot_samples_[rename_target_ - 1].renameTitleStart();
     plot_samples_[rename_target_ - 1].setTitle(display_title_);
-
     ofAddListener(ofEvents().update, this, &ofApp::updateEventReceived);
 }
 
@@ -445,6 +445,7 @@ void ofApp::renameTrainingSampleDone() {
                                                           rename_target_);
     is_in_renaming_ = false;
     plot_samples_[rename_target_ - 1].setTitle(rename_title_);
+    plot_samples_[rename_target_ - 1].renameTitleDone();
     ofRemoveListener(ofEvents().update, this, &ofApp::updateEventReceived);
     should_save_training_data_ = true;
 }
