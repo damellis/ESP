@@ -2,51 +2,46 @@
 
 ASCIISerialStream stream(0, 9600, 3);
 GestureRecognitionPipeline pipeline;
+Calibrator calibrator;
 TcpOStream oStream("localhost", 5204, 3, "l", "r", " ");
 
-float analogReadToVoltage(float input)
+double zeroG = 0, oneG = 0;
+
+double processAccelerometerData(double input)
 {
-    return input / 1024.0 * 5.0;
+    return (input - zeroG) / (oneG - zeroG);
 }
 
-float normalizeADXL335(float input)
+void restingDataCollected(const MatrixDouble& data)
 {
-    return (analogReadToVoltage(input) - 1.66) / 0.333;
+    // take average of X and Y acceleration as the zero G value
+    zeroG = (data.getMean()[0] + data.getMean()[1]) / 2;
+    oneG = data.getMean()[2]; // use Z acceleration as one G value
 }
 
-float normalizeArduino101(float input)
-{
-    return input / 4096;
-}
-
-int timeout = 500;
+int timeout = 500; // milliseconds
 double threshold = 0.4;
 
 void setup()
 {
-    stream.useNormalizer(normalizeADXL335);
     stream.setLabelsForAllDimensions({"x", "y", "z"});
     useStream(stream);
-    
-    pipeline.setClassifier(DTW(false, true, threshold)); // don't use scaling, use null rejection, null rejection parameter
-    // null rejection parameter is multiplied by the standard deviation to determine
-    // the rejection threshold. the higher the number, the looser the filter; the
-    // lower the number, the tighter the filter.
-    
-    // We don't use a ClassLabelTimeoutFilter because it doesn't work
-    // properly when replaying saved sensor data (which is stored without
-    // timestamps). Instead, filter by number of samples using a
-    // ClassLabelFilter.
+
+    calibrator.setCalibrateFunction(processAccelerometerData);
+    calibrator.addCalibrateProcess("Resting",
+        "Rest accelerometer on flat surface.", restingDataCollected);
+    useCalibrator(calibrator);
+
+    pipeline.setClassifier(DTW(false, true, threshold));
     pipeline.addPostProcessingModule(ClassLabelTimeoutFilter(timeout));
-    //pipeline.addPostProcessingModule(ClassLabelFilter(1, 25));
     usePipeline(pipeline);
-    
+
     registerTuneable(threshold, 0.1, 3.0,
-        "Distance Threshold",
+        "Similarity",
         "How similar a live gesture needs to be to a training sample. "
         "The lower the number, the more similar it needs to be.");
-    registerTuneable(timeout, 10, 1000,
-        "Delay Between Gestures",
+    registerTuneable(timeout, 1, 1000,
+        "Timeout",
         "How long (in milliseconds) to wait after recognizing a "
         "gesture before recognizing another one.");
 
