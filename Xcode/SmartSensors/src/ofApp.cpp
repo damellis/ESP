@@ -8,11 +8,24 @@
 // If the feature output dimension is larger than 32, making the visualization a
 // single output will be more visual.
 const uint32_t kTooManyFeaturesThreshold = 32;
-static const char* kInstruction =
+
+// Instructions for each tab.
+static const char* kCalibrateInstruction =
+        "You must collect calibration samples before you can start training.\n"
+        "Use key 1-9 to record calibration samples.";
+
+static const char* kPipelineInstruction =
+        "Press capital C/P/T/A to change tabs, `p` to pause or resume.\n";
+
+static const char* kTrainingInstruction =
         "Press capital C/P/T/A to change tabs. "
         "`p` to pause or resume, 1-9 to record samples \n"
         "`r` to record test data, `f` to show features, `s` to save data"
         "`l` to load training data, and `t` to train a model.";
+
+static const char* kAnalysisInstruction =
+        "Press capital C/P/T/A to change tabs. \n"
+        "Press `p` to pause or resume; hold `r` to record test data.";
 
 const double kPipelineHeightWeight = 0.3;
 
@@ -669,23 +682,31 @@ void ofApp::draw() {
         case CALIBRATION:
             ofDrawColoredBitmapString(red, "[C]alibration\t",
                                       left_margin, top_margin);
+            ofDrawBitmapString(kCalibrateInstruction,
+                               left_margin, top_margin + margin);
             drawCalibration();
             break;
         case PIPELINE:
             ofDrawColoredBitmapString(red, "\t\t[P]ipeline\t",
                                       left_margin, top_margin);
+            ofDrawBitmapString(kPipelineInstruction,
+                               left_margin, top_margin + margin);
             drawLivePipeline();
             tab_start += kTabWidth;
             break;
         case TRAINING:
             ofDrawColoredBitmapString(red, "\t\t\t\t[T]raining",
                                       left_margin, top_margin);
+            ofDrawBitmapString(kTrainingInstruction,
+                               left_margin, top_margin + margin);
             drawTrainingInfo();
             tab_start +=  2 * kTabWidth;
             break;
         case ANALYSIS:
             ofDrawColoredBitmapString(red, "\t\t\t\t\t\t[A]nalysis",
                                       left_margin, top_margin);
+            ofDrawBitmapString(kAnalysisInstruction,
+                               left_margin, top_margin + margin);
             drawAnalysis();
             tab_start += 3 * kTabWidth;
             break;
@@ -704,9 +725,6 @@ void ofApp::draw() {
     ofDrawLine(tab_start, ceiling, tab_start + kTabWidth, ceiling);
     ofDrawLine(tab_start + kTabWidth, ceiling, tab_start + kTabWidth, bottom);
     ofDrawLine(tab_start + kTabWidth, bottom, ofGetWidth(), bottom);
-
-    // Show instructions across all tabs.
-    ofDrawBitmapString(kInstruction, left_margin, top_margin + margin);
 
     if (!gui_hide_) {
         gui_.draw();
