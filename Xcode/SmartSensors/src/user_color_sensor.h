@@ -16,7 +16,7 @@ ASCIISerialStream stream(0, 9600, 3);
 GestureRecognitionPipeline pipeline;
 TcpOStream oStream("localhost", 5204, 3, "l", "r", " ");
 
-bool scaling = false;
+bool always_pick_something = false;
 double null_rej = 5.0;
 
 void setup() {
@@ -26,7 +26,7 @@ void setup() {
 
     pipeline.addPreProcessingModule(MovingAverageFilter(5, 3));
     // use scaling, use null rejection, null rejection parameter
-    pipeline.setClassifier(ANBC(scaling, true, null_rej));
+    pipeline.setClassifier(ANBC(false, !always_pick_something, null_rej));
 
     // null rejection parameter is multiplied by the standard deviation to determine
     // the rejection threshold. the higher the number, the looser the filter; the
@@ -35,14 +35,13 @@ void setup() {
     usePipeline(pipeline);
     useOStream(oStream);
 
-    registerTuneable(scaling, "scaling",
-                     "If true, the training and prediction data will be scaled "
-                     "to a specific range. Default should be set false.");
+    registerTuneable(always_pick_something, "Always Pick Something",
+        "Whether to always pick (predict) one of the classes of training data, "
+        "even if it's not a very good match. If selected, 'Color Variability' "
+        "will not be used.");
 
-    registerTuneable(null_rej, 1.0, 10.0,
-                     "null rejection",
-                     "null rejection parameter is multiplied by the standard deviation"
-                     " to determine the rejection threshold. "
-                     "The higher the number, the looser the filter; "
-                     "the lower the number, the tighter the filter.");
+    registerTuneable(null_rej, 1.0, 25.0, "Color Variability",
+         "How different from the training data a new color reading can be and "
+         "still be considered the same color. The higher the number, the more "
+         "different it can be.");
 }
