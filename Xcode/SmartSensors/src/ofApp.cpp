@@ -180,7 +180,7 @@ void ofApp::setup() {
         for (uint32_t i = 0; i < calibrators.size(); i++) {
             uint32_t label_dim = istream_->getNumOutputDimensions();
             Plotter plot;
-            plot.setup(label_dim, calibrators[i].getName());
+            plot.setup(label_dim, calibrators[i].getName(), calibrators[i].getDescription());
             plot.setColorPalette(color_palette.generate(label_dim));
             plot_calibrators_.push_back(plot);
         }
