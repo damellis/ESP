@@ -22,6 +22,8 @@
 		53560FBFF75362D7BE463255 /* ofxToggle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FC54DBBAA5B23FFE6E7FE620 /* ofxToggle.cpp */; };
 		637A06C23B6F54498F35B81F /* ofxSmartFont.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00C32701B394C1DD8762AD1E /* ofxSmartFont.cpp */; };
 		798434EF9EE5EE2E41E2F0DE /* ofxGrtTimeseriesPlot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3016C29D8E0735FBAEF55DFA /* ofxGrtTimeseriesPlot.cpp */; };
+		817BE7751CCB063E00FE581B /* libgrt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 817BE7741CCB063E00FE581B /* libgrt.dylib */; };
+		817BE7761CCB067800FE581B /* libgrt.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 817BE7741CCB063E00FE581B /* libgrt.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		9E339FEC563CF250C60DBD84 /* ofxDatGui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8B699EEC2E838CB52082554A /* ofxDatGui.cpp */; };
 		A9F16933D69101A8B2D7DC24 /* ofxBaseGui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B29062C5077E0EBE48BC1E5E /* ofxBaseGui.cpp */; };
 		B5B6A3DBA86CA86AD71CDE31 /* ofxLabel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 64F25F34C1FF51D1DEB91164 /* ofxLabel.cpp */; };
@@ -59,6 +61,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				817BE7761CCB067800FE581B /* libgrt.dylib in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -115,6 +118,7 @@
 		7ACE6957882556257F46BB94 /* ofxGrtMatrixPlot.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxGrtMatrixPlot.cpp; path = "../../third-party/openFrameworks/addons/ofxGrt/src/ofxGrtMatrixPlot.cpp"; sourceTree = SOURCE_ROOT; };
 		7DCB1F9D3560D19E614EEA45 /* ofxDatGuiButton.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxDatGuiButton.h; path = "../../third-party/openFrameworks/addons/ofxDatGui/src/components/ofxDatGuiButton.h"; sourceTree = SOURCE_ROOT; };
 		806F715C55B9B786D65F7B33 /* ofxDatGuiSlider.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxDatGuiSlider.h; path = "../../third-party/openFrameworks/addons/ofxDatGui/src/components/ofxDatGuiSlider.h"; sourceTree = SOURCE_ROOT; };
+		817BE7741CCB063E00FE581B /* libgrt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libgrt.dylib; sourceTree = "<group>"; };
 		879E8BE84F6F719ED42446C3 /* ofxDatGuiTextInput.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxDatGuiTextInput.h; path = "../../third-party/openFrameworks/addons/ofxDatGui/src/components/ofxDatGuiTextInput.h"; sourceTree = SOURCE_ROOT; };
 		8B699EEC2E838CB52082554A /* ofxDatGui.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxDatGui.cpp; path = "../../third-party/openFrameworks/addons/ofxDatGui/src/ofxDatGui.cpp"; sourceTree = SOURCE_ROOT; };
 		8C2208E103C17F4A39DECE6F /* ofxGrtTimeseriesPlot.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxGrtTimeseriesPlot.h; path = "../../third-party/openFrameworks/addons/ofxGrt/src/ofxGrtTimeseriesPlot.h"; sourceTree = SOURCE_ROOT; };
@@ -156,6 +160,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				817BE7751CCB063E00FE581B /* libgrt.dylib in Frameworks */,
 				E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -355,6 +360,7 @@
 		E4B69B4A0A3A1720003C02F2 = {
 			isa = PBXGroup;
 			children = (
+				817BE7741CCB063E00FE581B /* libgrt.dylib */,
 				E4B6FCAD0C3E899E008CF71C /* openFrameworks-Info.plist */,
 				E4EB6923138AFD0F00A09F29 /* Project.xcconfig */,
 				E4B69E1C0A3A1BDC003C02F2 /* src */,
@@ -724,7 +730,10 @@
 				ICON_FILE = "$(ICON_FILE_PATH)$(ICON)";
 				INFOPLIST_FILE = "openFrameworks-Info.plist";
 				INSTALL_PATH = /Applications;
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				OTHER_LDFLAGS = (
 					"$(OF_CORE_FRAMEWORKS)",
 					"$(OF_CORE_LIBS)",
@@ -782,7 +791,10 @@
 				ICON_FILE = "$(ICON_FILE_PATH)$(ICON)";
 				INFOPLIST_FILE = "openFrameworks-Info.plist";
 				INSTALL_PATH = /Applications;
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				OTHER_LDFLAGS = (
 					"$(OF_CORE_FRAMEWORKS)",
 					"$(OF_CORE_LIBS)",
