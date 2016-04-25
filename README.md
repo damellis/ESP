@@ -6,8 +6,7 @@ interactive projects through the application of machine learning.
 ## Pre-requisites
 
 At the moment, this project runs only on OS X. You'll need Xcode and
-git (to clone this repository and its submodules). You'll also need
-[cmake](https://cmake.org) to build the GRT (see dependencies below).
+git (to clone this repository and its submodules).
 
 ## Installation
 
@@ -19,9 +18,7 @@ cd sensors
 ./setup
 ```
 
-This will clone the relevant git submodules, create some symbolic links,
-and compile and install the GRT (see dependencies below).  The GRT gets
-installed to /usr/local using sudo, requiring you to enter your password.
+This will clone the relevant git submodules and create some symbolic links.
 
 ## Running
 
