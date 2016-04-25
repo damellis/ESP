@@ -91,6 +91,7 @@ ofApp::ofApp() : fragment_(TRAINING),
                  ostream_(NULL),
                  should_save_calibration_data_(false),
                  should_save_training_data_(false),
+                 should_save_test_data_(false),
                  calibrator_(nullptr) {
 }
 
