@@ -53,8 +53,10 @@ void restingDataCollected(const MatrixDouble& data)
     oneG = mean[2]; // use Z acceleration as one G value (due to gravity)
 }
 
-int timeout = 500;
 double null_rej = 5.0;
+bool always_pick_something = false;
+bool send_repeated_predictions = false;
+int timeout = 100;
 
 void setup()
 {
@@ -70,22 +72,32 @@ void setup()
     useCalibrator(calibrator);
     
     pipeline.addFeatureExtractionModule(TimeDomainFeatures(10, 1, 3, false, true, true, false, false));
-    pipeline.setClassifier(ANBC(false, true, null_rej)); // use scaling, use null rejection, null rejection parameter
+    pipeline.setClassifier(ANBC(false, !always_pick_something, null_rej)); // use scaling, use null rejection, null rejection parameter
     // null rejection parameter is multiplied by the standard deviation to determine
     // the rejection threshold. the higher the number, the looser the filter; the
     // lower the number, the tighter the filter.
 
-    pipeline.addPostProcessingModule(ClassLabelTimeoutFilter(timeout));
+    if (send_repeated_predictions)
+        pipeline.addPostProcessingModule(ClassLabelTimeoutFilter(timeout));
     usePipeline(pipeline);
     
-    registerTuneable(timeout, 10, 1000, "Timeout",
-                     "The longer, more filtering effect on the result");
-    registerTuneable(null_rej, 0.1, 20.0,
-                     "null rejection",
-                     "null rejection parameter is multiplied by the standard deviation"
-                     " to determine the rejection threshold. "
-                     "The higher the number, the looser the filter; "
-                     "the lower the number, the tighter the filter.");
+    registerTuneable(always_pick_something, "Always Pick Something",
+        "Whether to always pick (predict) one of the classes of training data, "
+        "even if it's not a very good match. If selected, 'Variability' will "
+        "not be used.");
+    registerTuneable(null_rej, 1.0, 25.0, "Variability",
+         "How different from the training data a new gesture can be and "
+         "still be considered the same gesture. The higher the number, the more "
+         "different it can be.");
+    registerTuneable(send_repeated_predictions, "Send Repeated Predictions",
+        "Whether to send repeated predictions while a pose is being held. If "
+        "not selected, predictions will only be sent on transition from one "
+        "pose to another.");
+    registerTuneable(timeout, 1, 3000,
+        "Timeout",
+        "How long (in milliseconds) to wait after recognizing a class before "
+        "recognizing a different one. Only used if 'Send Repeated Predictions' "
+        "is selected.");
 
     useOStream(oStream);
 }

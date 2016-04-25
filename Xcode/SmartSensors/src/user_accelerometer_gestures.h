@@ -20,7 +20,7 @@ void restingDataCollected(const MatrixDouble& data)
 }
 
 int timeout = 500; // milliseconds
-double threshold = 0.4;
+double null_rej = 0.4;
 
 void setup()
 {
@@ -32,15 +32,15 @@ void setup()
         "Rest accelerometer on flat surface.", restingDataCollected);
     useCalibrator(calibrator);
 
-    pipeline.setClassifier(DTW(false, true, threshold));
+    pipeline.setClassifier(DTW(false, true, null_rej));
     pipeline.addPostProcessingModule(ClassLabelTimeoutFilter(timeout));
     usePipeline(pipeline);
 
-    registerTuneable(threshold, 0.1, 3.0,
-        "Similarity",
-        "How similar a live gesture needs to be to a training sample. "
-        "The lower the number, the more similar it needs to be.");
-    registerTuneable(timeout, 1, 1000,
+    registerTuneable(null_rej, 1.0, 25.0, "Variability",
+         "How different from the training data a new gesture can be and "
+         "still be considered the same gesture. The higher the number, the "
+         "more different it can be.");
+    registerTuneable(timeout, 1, 3000,
         "Timeout",
         "How long (in milliseconds) to wait after recognizing a "
         "gesture before recognizing another one.");
