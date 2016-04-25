@@ -1037,75 +1037,6 @@ void ofApp::onDataIn(GRT::MatrixDouble input) {
 }
 
 //--------------------------------------------------------------
-void ofApp::keyPressed(int key){
-    if (is_in_renaming_) {
-        // Add normal characters.
-        if (key >= 32 && key <= 126) {
-            // key code 32 is for space, we remap it to '_'.
-            key = (key == 32) ? '_' : key;
-            rename_title_ += key;
-            return;
-        }
-
-        switch (key) {
-          case OF_KEY_BACKSPACE:
-            rename_title_ = rename_title_.substr(0, rename_title_.size() - 1);
-            break;
-          case OF_KEY_RETURN:
-            renameTrainingSampleDone();
-            return;
-          default:
-            break;
-        }
-
-        plot_samples_[rename_target_ - 1].setTitle(display_title_);
-        return;
-    }
-
-    // If in relabeling, take action at key release stage.
-    if (is_in_relabeling_) { return; }
-
-    if (key >= '1' && key <= '9') {
-        if (!is_recording_) {
-            is_recording_ = true;
-            label_ = key - '0';
-            sample_data_.clear();
-        }
-    }
-
-    switch (key) {
-        case 'r':
-            if (!is_recording_) {
-                is_recording_ = true;
-                label_ = 255;
-                sample_data_.clear();
-                test_data_.clear();
-                plot_testdata_window_.reset();
-            }
-            break;
-        case 'f': toggleFeatureView(); break;
-        case 'h': gui_hide_ = !gui_hide_; break;
-        case 'l':
-            if (fragment_ == CALIBRATION) loadCalibrationData();
-            else if (fragment_ == TRAINING) loadTrainingData();
-            else if (fragment_ == ANALYSIS) loadTestData();
-            break;
-        case 'p': istream_->toggle(); input_data_.clear(); break;
-        case 's':
-            if (fragment_ == CALIBRATION) saveCalibrationData();
-            else if (fragment_ == TRAINING) saveTrainingData();
-            else if (fragment_ == ANALYSIS) saveTestData();
-            break;
-        case 't': trainModel(); break;
-
-        // Tab related
-        case 'C': fragment_ = CALIBRATION; break;
-        case 'P': fragment_ = PIPELINE; break;
-        case 'T': fragment_ = TRAINING; break;
-        case 'A': fragment_ = ANALYSIS; break;
-    }
-}
-
 void ofApp::toggleFeatureView() {
     if (fragment_ != TRAINING) { return; }
 
@@ -1203,7 +1134,81 @@ void ofApp::loadTestData() {
     updateTestWindowPlot();
 }
 
+void ofApp::reloadPipelineModules() {
+    pipeline_->clearAll();
+    ::setup();
+}
+
 //--------------------------------------------------------------
+void ofApp::keyPressed(int key){
+    if (is_in_renaming_) {
+        // Add normal characters.
+        if (key >= 32 && key <= 126) {
+            // key code 32 is for space, we remap it to '_'.
+            key = (key == 32) ? '_' : key;
+            rename_title_ += key;
+            return;
+        }
+
+        switch (key) {
+          case OF_KEY_BACKSPACE:
+            rename_title_ = rename_title_.substr(0, rename_title_.size() - 1);
+            break;
+          case OF_KEY_RETURN:
+            renameTrainingSampleDone();
+            return;
+          default:
+            break;
+        }
+
+        plot_samples_[rename_target_ - 1].setTitle(display_title_);
+        return;
+    }
+
+    // If in relabeling, take action at key release stage.
+    if (is_in_relabeling_) { return; }
+
+    if (key >= '1' && key <= '9') {
+        if (!is_recording_) {
+            is_recording_ = true;
+            label_ = key - '0';
+            sample_data_.clear();
+        }
+    }
+
+    switch (key) {
+        case 'r':
+            if (!is_recording_) {
+                is_recording_ = true;
+                label_ = 255;
+                sample_data_.clear();
+                test_data_.clear();
+                plot_testdata_window_.reset();
+            }
+            break;
+        case 'f': toggleFeatureView(); break;
+        case 'h': gui_hide_ = !gui_hide_; break;
+        case 'l':
+            if (fragment_ == CALIBRATION) loadCalibrationData();
+            else if (fragment_ == TRAINING) loadTrainingData();
+            else if (fragment_ == ANALYSIS) loadTestData();
+            break;
+        case 'p': istream_->toggle(); input_data_.clear(); break;
+        case 's':
+            if (fragment_ == CALIBRATION) saveCalibrationData();
+            else if (fragment_ == TRAINING) saveTrainingData();
+            else if (fragment_ == ANALYSIS) saveTestData();
+            break;
+        case 't': trainModel(); break;
+
+        // Tab related
+        case 'C': fragment_ = CALIBRATION; break;
+        case 'P': fragment_ = PIPELINE; break;
+        case 'T': fragment_ = TRAINING; break;
+        case 'A': fragment_ = ANALYSIS; break;
+    }
+}
+
 void ofApp::keyReleased(int key) {
     if (is_in_renaming_) { return; }
 
@@ -1301,11 +1306,6 @@ void ofApp::mouseReleased(int x, int y, int button) {
             fragment_ = ANALYSIS;
         }
     }
-}
-
-void ofApp::reloadPipelineModules() {
-    pipeline_->clearAll();
-    ::setup();
 }
 
 //--------------------------------------------------------------
