@@ -155,9 +155,6 @@ class ofApp : public ofBaseApp {
     void relabelTrainingSample(int num);
     void doRelabelTrainingSample(uint32_t from, uint32_t to);
 
-    void loadTestData();
-    void saveTestData();
-
     // Rename
     bool is_in_renaming_ = false;
     int rename_target_ = -1;
@@ -168,6 +165,14 @@ class ofApp : public ofBaseApp {
     // Multithreading to avoid GUI blocked.
     std::thread training_thread_;
 
+    void loadCalibrationData();
+    void saveCalibrationData();
+
+    void loadTestData();
+    void saveTestData();
+    
+    // Prompts to ask the user to save the calibration data if changed.
+    bool should_save_calibration_data_;
     // Prompts to ask the user to save the training data if changed.
     bool should_save_training_data_;
     // Prompts to ask the user to save the test data if changed.

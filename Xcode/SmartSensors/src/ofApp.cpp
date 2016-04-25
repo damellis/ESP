@@ -12,7 +12,8 @@ const uint32_t kTooManyFeaturesThreshold = 32;
 // Instructions for each tab.
 static const char* kCalibrateInstruction =
         "You must collect calibration samples before you can start training.\n"
-        "Use key 1-9 to record calibration samples.";
+        "Use key 1-9 to record calibration samples. "
+        "Press `l` to load calibration data, `s` to save.";
 
 static const char* kPipelineInstruction =
         "Press capital C/P/T/A to change tabs, `p` to pause or resume.\n";
@@ -88,6 +89,7 @@ void ofApp::useOStream(OStream &stream) {
 ofApp::ofApp() : fragment_(TRAINING),
                  num_pipeline_stages_(0),
                  ostream_(NULL),
+                 should_save_calibration_data_(false),
                  should_save_training_data_(false),
                  calibrator_(nullptr) {
 }
@@ -395,6 +397,66 @@ void ofApp::runPredictionOnTestData() {
         }
     }
 
+}
+
+void ofApp::saveCalibrationData() {
+    ofFileDialogResult result = ofSystemSaveDialog("CalibrationData.grt",
+                                                   "Save your calibration data?");
+    if (result.bSuccess) {
+        // Pack calibration samples into a TimeSeriesClassificationData so they
+        // can all be saved in a single file.
+        GRT::TimeSeriesClassificationData data(istream_->getNumOutputDimensions(),
+                                               "CalibrationData");
+        auto calibrators = calibrator_->getCalibrateProcesses();
+        for (int i = 0; i < calibrators.size(); i++) {
+            data.addSample(i, calibrators[i].getData());
+            data.setClassNameForCorrespondingClassLabel(calibrators[i].getName(), i);
+        }
+        data.save(result.getPath());
+    }
+
+    should_save_calibration_data_ = false;
+}
+
+void ofApp::loadCalibrationData() {
+    vector<CalibrateProcess>& calibrators = calibrator_->getCalibrateProcesses();
+    GRT::TimeSeriesClassificationData data;
+    ofFileDialogResult result = ofSystemLoadDialog("Load existing calibration data", true);
+
+    if (!result.bSuccess) return;
+
+    if (!data.load(result.getPath()) ){
+        ofLog(OF_LOG_ERROR) << "Failed to load the calibration data!"
+                            << " path: " << result.getPath();
+        return;
+    }
+    
+    if (data.getNumSamples() != calibrators.size()) {
+        ofLog(OF_LOG_ERROR) << "Number of samples in file differs from the "
+                            << "number of calibration samples.";
+        return;
+    }
+    
+    if (data.getNumDimensions() != istream_->getNumOutputDimensions()) {
+        ofLog(OF_LOG_ERROR) << "Number of dimensions of data in file differs "
+                            << "from the number of dimensions expected.";
+        return;
+    }
+    
+    for (int i = 0; i < data.getNumSamples(); i++) {
+        if (data.getClassNameForCorrespondingClassLabel(i) != calibrators[i].getName()) {
+            ofLog(OF_LOG_WARNING) << "Name of saved calibration sample " << (i + 1) << " ('"
+                                  << data.getClassNameForCorrespondingClassLabel(i)
+                                  << "') differs from current calibration sample name ('"
+                                  << calibrators[i].getName() << "')";
+        }
+        plot_calibrators_[i].setData(data[i].getData());
+        calibrators[i].setData(data[i].getData());
+        calibrators[i].calibrate();
+    }
+    
+    plot_inputs_.reset();
+    should_save_calibration_data_ = false;
 }
 
 void ofApp::savePipeline() {
@@ -933,6 +995,7 @@ void ofApp::exit() {
     istream_->stop();
 
     // Save data here!
+    if (should_save_calibration_data_) { saveCalibrationData(); }
     if (should_save_training_data_) { saveTrainingData(); }
     if (should_save_test_data_) { saveTestData(); }
 
@@ -1022,12 +1085,14 @@ void ofApp::keyPressed(int key){
         case 'f': toggleFeatureView(); break;
         case 'h': gui_hide_ = !gui_hide_; break;
         case 'l':
-            if (fragment_ == TRAINING) loadTrainingData();
+            if (fragment_ == CALIBRATION) loadCalibrationData();
+            else if (fragment_ == TRAINING) loadTrainingData();
             else if (fragment_ == ANALYSIS) loadTestData();
             break;
         case 'p': istream_->toggle(); input_data_.clear(); break;
         case 's':
-            if (fragment_ == TRAINING) saveTrainingData();
+            if (fragment_ == CALIBRATION) saveCalibrationData();
+            else if (fragment_ == TRAINING) saveTrainingData();
             else if (fragment_ == ANALYSIS) saveTestData();
             break;
         case 't': trainModel(); break;
@@ -1158,6 +1223,7 @@ void ofApp::keyReleased(int key) {
                 calibrators[label_ - 1].setData(sample_data_);
                 calibrators[label_ - 1].calibrate();
                 plot_inputs_.reset();
+                should_save_calibration_data_ = true;
             }
         } else if (fragment_ == TRAINING) {
             training_data_.addSample(label_, sample_data_);
