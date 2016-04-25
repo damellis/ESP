@@ -25,7 +25,8 @@ static const char* kTrainingInstruction =
 
 static const char* kAnalysisInstruction =
         "Press capital C/P/T/A to change tabs. \n"
-        "Press `p` to pause or resume; hold `r` to record test data.";
+        "Press `p` to pause or resume; hold `r` to record test data; "
+        "press `s` to save test data and `l` to load test data.";
 
 const double kPipelineHeightWeight = 0.3;
 
@@ -931,8 +932,9 @@ void ofApp::exit() {
     }
     istream_->stop();
 
-    // Save training data here!
+    // Save data here!
     if (should_save_training_data_) { saveTrainingData(); }
+    if (should_save_test_data_) { saveTestData(); }
 
     // Clear all listeners.
     save_pipeline_button_.removeListener(this, &ofApp::savePipeline);
@@ -953,6 +955,16 @@ void ofApp::saveTrainingData() {
     }
 
     should_save_training_data_ = false;
+}
+
+void ofApp::saveTestData() {
+    ofFileDialogResult result = ofSystemSaveDialog("TestData.csv",
+                                                   "Save your test data?");
+    if (result.bSuccess) {
+        test_data_.save(result.getPath());
+    }
+
+    should_save_test_data_ = false;
 }
 
 void ofApp::onDataIn(GRT::MatrixDouble input) {
@@ -1009,9 +1021,15 @@ void ofApp::keyPressed(int key){
             break;
         case 'f': toggleFeatureView(); break;
         case 'h': gui_hide_ = !gui_hide_; break;
-        case 'l': loadTrainingData(); break;
+        case 'l':
+            if (fragment_ == TRAINING) loadTrainingData();
+            else if (fragment_ == ANALYSIS) loadTestData();
+            break;
         case 'p': istream_->toggle(); input_data_.clear(); break;
-        case 's': saveTrainingData(); break;
+        case 's':
+            if (fragment_ == TRAINING) saveTrainingData();
+            else if (fragment_ == ANALYSIS) saveTestData();
+            break;
         case 't': trainModel(); break;
 
         // Tab related
@@ -1101,6 +1119,24 @@ void ofApp::loadTrainingData() {
     trainModel();
 }
 
+void ofApp::loadTestData() {
+    GRT::MatrixDouble test_data;
+    ofFileDialogResult result = ofSystemLoadDialog("Load existing test data", true);
+
+    if (!result.bSuccess) return;
+
+    if (!test_data.load(result.getPath()) ){
+        ofLog(OF_LOG_ERROR) << "Failed to load the test data!"
+                            << " path: " << result.getPath();
+    }
+
+    test_data_ = test_data;
+    should_save_test_data_ = false;
+    plot_testdata_overview_.setData(test_data_);
+    runPredictionOnTestData();
+    updateTestWindowPlot();
+}
+
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key) {
     if (is_in_renaming_) { return; }
@@ -1140,6 +1176,7 @@ void ofApp::keyReleased(int key) {
         plot_testdata_overview_.setData(test_data_);
         runPredictionOnTestData();
         updateTestWindowPlot();
+        should_save_test_data_ = true;
     }
 }
 

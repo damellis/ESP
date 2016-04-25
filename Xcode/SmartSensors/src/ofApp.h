@@ -155,7 +155,8 @@ class ofApp : public ofBaseApp {
     void relabelTrainingSample(int num);
     void doRelabelTrainingSample(uint32_t from, uint32_t to);
 
-    void doSaveTestData();
+    void loadTestData();
+    void saveTestData();
 
     // Rename
     bool is_in_renaming_ = false;
@@ -169,6 +170,8 @@ class ofApp : public ofBaseApp {
 
     // Prompts to ask the user to save the training data if changed.
     bool should_save_training_data_;
+    // Prompts to ask the user to save the test data if changed.
+    bool should_save_test_data_;
 
     friend class TrainingSampleGuiListener;
 
