@@ -680,8 +680,8 @@ void ofApp::update() {
 
         std::string title =
                 training_data_.getClassNameForCorrespondingClassLabel(predicted_label_);
-        if (title == "NOT_SET") {
-            title = std::string("Label") + std::to_string(predicted_label_);
+        if (title == "NOT_SET" || title == "CLASS_LABEL_NOT_FOUND") {
+            title = plot_samples_[predicted_label_ - 1].getTitle();
         }
 
         plot_inputs_.update(data_point, predicted_label_ != 0, title);
@@ -1233,11 +1233,15 @@ void ofApp::keyReleased(int key) {
             }
         } else if (fragment_ == TRAINING) {
             training_data_.addSample(label_, sample_data_);
+            int num_samples = training_data_.getClassTracker()
+                [training_data_.getClassLabelIndexValue(label_)].counter;
+            
+            if (num_samples == 1)
+                training_data_.setClassNameForCorrespondingClassLabel(
+                    plot_samples_[label_ - 1].getTitle(), label_);
 
             plot_samples_[label_ - 1].setData(sample_data_);
-            plot_sample_indices_[label_ - 1] = training_data_.getClassTracker()[
-                      training_data_.getClassLabelIndexValue(label_)].
-                        counter - 1;
+            plot_sample_indices_[label_ - 1] = num_samples - 1;
 
             should_save_training_data_ = true;
         }
