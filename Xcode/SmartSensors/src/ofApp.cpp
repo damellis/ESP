@@ -9,6 +9,9 @@
 // single output will be more visual.
 const uint32_t kTooManyFeaturesThreshold = 32;
 
+// This delay is needed so that UI can update to reflect the training status.
+const uint32_t kDelayBeforeTraining = 50;  // milliseconds
+
 // Instructions for each tab.
 static const char* kCalibrateInstruction =
         "You must collect calibration samples before you can start training.\n"
@@ -92,7 +95,8 @@ ofApp::ofApp() : fragment_(TRAINING),
                  should_save_calibration_data_(false),
                  should_save_training_data_(false),
                  should_save_test_data_(false),
-                 calibrator_(nullptr) {
+                 calibrator_(nullptr),
+                 is_training_scheduled_(false) {
 }
 
 //--------------------------------------------------------------
@@ -752,6 +756,11 @@ void ofApp::update() {
             }
         }
     }
+
+    if (is_training_scheduled_ == true &&
+        (ofGetElapsedTimeMillis() - schedule_time_ > kDelayBeforeTraining)) {
+        trainModel();
+    }
 }
 
 void ofDrawColoredBitmapString(ofColor color,
@@ -907,6 +916,9 @@ void ofApp::drawTrainingInfo() {
     uint32_t stage_top = margin_top;
     uint32_t stage_width = ofGetWidth() - margin;
     uint32_t stage_height = (ofGetHeight() - 200 - 4 * margin) / 2;
+
+    // 0. Show status at the bottom
+    ofDrawBitmapString(status_text_, stage_left, ofGetHeight() - 20);
 
     // 1. Draw Input
     if (!is_in_feature_view_) {
@@ -1083,7 +1095,16 @@ void ofApp::toggleFeatureView() {
     }
 }
 
+void ofApp::beginTrainModel() {
+    // Update UI to reflect training starts.
+    status_text_ = "Training the model . . .";
+    is_training_scheduled_ = true;
+    schedule_time_ = ofGetElapsedTimeMillis();
+}
+
 void ofApp::trainModel() {
+    is_training_scheduled_ = false;
+
    // If prior training has not finished, we wait.
    if (training_thread_.joinable()) {
        training_thread_.join();
@@ -1111,6 +1132,10 @@ void ofApp::trainModel() {
        runPredictionOnTestData();
        updateTestWindowPlot();
        pipeline_->reset();
+
+       status_text_ = "Training was successful";
+   } else {
+       status_text_ = "Training failed";
    }
 }
 
@@ -1146,7 +1171,7 @@ void ofApp::loadTrainingData() {
     // After we load the training data,
     should_save_training_data_ = false;
 
-    trainModel();
+    beginTrainModel();
 }
 
 void ofApp::loadTestData() {
@@ -1232,7 +1257,7 @@ void ofApp::keyPressed(int key){
             else if (fragment_ == TRAINING) saveTrainingData();
             else if (fragment_ == ANALYSIS) saveTestData();
             break;
-        case 't': trainModel(); break;
+        case 't': beginTrainModel(); break;
 
         // Tab related
         case 'C': fragment_ = CALIBRATION; break;

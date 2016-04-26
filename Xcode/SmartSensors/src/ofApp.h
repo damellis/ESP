@@ -149,6 +149,8 @@ class ofApp : public ofBaseApp {
     void saveTuneables(ofxDatGuiButtonEvent e);
     void loadTuneables(ofxDatGuiButtonEvent e);
 
+    void beginTrainModel();
+    void drawEventReceived(ofEventArgs& arg);
     void trainModel();
 
     vector<ofxPanel *> training_sample_guis_;
@@ -193,6 +195,11 @@ class ofApp : public ofBaseApp {
 
     // tuneable parameters
     vector<Tuneable*> tuneable_parameters_;
+
+    // Status for user
+    string status_text_;
+    bool is_training_scheduled_;
+    uint64_t schedule_time_;
 };
 
 class TrainingSampleGuiListener {
