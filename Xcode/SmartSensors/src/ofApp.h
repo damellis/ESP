@@ -145,6 +145,10 @@ class ofApp : public ofBaseApp {
     void loadTrainingData();
     void saveTrainingData();
 
+    // Tuneable parameters
+    void saveTuneables(ofxDatGuiButtonEvent e);
+    void loadTuneables(ofxDatGuiButtonEvent e);
+
     void trainModel();
 
     vector<ofxPanel *> training_sample_guis_;
@@ -170,7 +174,7 @@ class ofApp : public ofBaseApp {
 
     void loadTestData();
     void saveTestData();
-    
+
     // Prompts to ask the user to save the calibration data if changed.
     bool should_save_calibration_data_;
     // Prompts to ask the user to save the training data if changed.

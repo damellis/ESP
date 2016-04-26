@@ -278,6 +278,14 @@ void ofApp::setup() {
     for (Tuneable* t : tuneable_parameters_) {
         t->addToGUI(gui_);
     }
+
+    // Two extra button for saving/loading tuneable parameters.
+    gui_.addBreak()->setHeight(30.0f);
+    ofxDatGuiButton* save_button = gui_.addButton("Save");
+    ofxDatGuiButton* load_button = gui_.addButton("Load");
+    save_button->onButtonEvent(this, &ofApp::saveTuneables);
+    load_button->onButtonEvent(this, &ofApp::loadTuneables);
+
     gui_.addFooter();
     gui_.getFooter()->setLabelWhenExpanded("Click to Hide");
     gui_.getFooter()->setLabelWhenCollapsed("Click to Tune Parameters");
@@ -431,19 +439,19 @@ void ofApp::loadCalibrationData() {
                             << " path: " << result.getPath();
         return;
     }
-    
+
     if (data.getNumSamples() != calibrators.size()) {
         ofLog(OF_LOG_ERROR) << "Number of samples in file differs from the "
                             << "number of calibration samples.";
         return;
     }
-    
+
     if (data.getNumDimensions() != istream_->getNumOutputDimensions()) {
         ofLog(OF_LOG_ERROR) << "Number of dimensions of data in file differs "
                             << "from the number of dimensions expected.";
         return;
     }
-    
+
     for (int i = 0; i < data.getNumSamples(); i++) {
         if (data.getClassNameForCorrespondingClassLabel(i) != calibrators[i].getName()) {
             ofLog(OF_LOG_WARNING) << "Name of saved calibration sample " << (i + 1) << " ('"
@@ -455,7 +463,7 @@ void ofApp::loadCalibrationData() {
         calibrators[i].setData(data[i].getData());
         calibrators[i].calibrate();
     }
-    
+
     plot_inputs_.reset();
     should_save_calibration_data_ = false;
 }
@@ -479,6 +487,31 @@ void ofApp::loadPipeline() {
     // TODO(benzh) Compare the two pipelines and warn the user if the
     // loaded one is different from his.
     (*pipeline_) = pipeline;
+}
+
+void ofApp::saveTuneables(ofxDatGuiButtonEvent e) {
+    ofFileDialogResult result = ofSystemSaveDialog("TuneableParameters.grt",
+                                                   "Save your tuneable parameters?");
+    if (!result.bSuccess) { return; }
+
+    std::ofstream file(result.getPath());
+    for (Tuneable* t : tuneable_parameters_) {
+        file << t->toString() << std::endl;
+    }
+    file.close();
+}
+
+void ofApp::loadTuneables(ofxDatGuiButtonEvent e) {
+    ofFileDialogResult result = ofSystemLoadDialog("Save tuneable parameters", true);
+    if (!result.bSuccess) { return; }
+
+    std::string line;
+    std::ifstream file(result.getPath());
+    for (Tuneable* t : tuneable_parameters_) {
+        std::getline(file, line);
+        t->fromString(line);
+    }
+    file.close();
 }
 
 void ofApp::renameTrainingSample(int num) {
@@ -1235,7 +1268,7 @@ void ofApp::keyReleased(int key) {
             training_data_.addSample(label_, sample_data_);
             int num_samples = training_data_.getClassTracker()
                 [training_data_.getClassLabelIndexValue(label_)].counter;
-            
+
             if (num_samples == 1)
                 training_data_.setClassNameForCorrespondingClassLabel(
                     plot_samples_[label_ - 1].getTitle(), label_);

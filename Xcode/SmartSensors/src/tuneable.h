@@ -8,6 +8,7 @@ using std::string;
 
 class Tuneable {
   public:
+    // Set is not implemented, yet.
     enum Type { SET, INT_RANGE, DOUBLE_RANGE, BOOL };
 
     // Range tuneable (int)
@@ -61,6 +62,54 @@ class Tuneable {
 
           default: break;
         }
+    }
+
+    std::string toString() {
+        switch (type_) {
+          case INT_RANGE: {
+            int* value = static_cast<int*>(value_ptr_);
+            return "INT " + std::to_string(*value);
+          }
+          case DOUBLE_RANGE: {
+            double* value = static_cast<double*>(value_ptr_);
+            return "DOUBLE " + std::to_string(*value);
+          }
+          case BOOL: {
+            bool* value = static_cast<bool*>(value_ptr_);
+            return std::string("BOOL ") + (*value ? "true" : "false");
+          }
+          default: {
+            ofLog(OF_LOG_ERROR) << "Unknown type";
+            break;
+          }
+        }
+    }
+
+    // Return value indicates success or not.
+    bool fromString(std::string str) {
+        std::istringstream iss(str);
+        std::string word;
+
+        iss >> word;
+        if (word == "INT") {
+            int* p = static_cast<int*>(value_ptr_);
+            iss >> *p;
+            ofxDatGuiSlider *slider = static_cast<ofxDatGuiSlider*>(ui_ptr_);
+            slider->setValue(*p);
+        } else if (word == "DOUBLE") {
+            double* p = static_cast<double*>(value_ptr_);
+            iss >> *p;
+            ofxDatGuiSlider *slider = static_cast<ofxDatGuiSlider*>(ui_ptr_);
+            slider->setValue(*p);
+        } else if (word == "BOOL") {
+            bool* p = static_cast<bool*>(value_ptr_);
+            iss >> word;
+            *p = (word == "true") ? true : false;
+            ofxDatGuiToggle *toggle = static_cast<ofxDatGuiToggle*>(ui_ptr_);
+            toggle->setEnabled(*p);
+        }
+
+        return false;
     }
 
     void* getUIAddress() const {
