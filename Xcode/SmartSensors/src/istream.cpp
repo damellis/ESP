@@ -43,18 +43,20 @@ const vector<string>& IStream::getLabels() const {
 AudioStream::AudioStream(uint32_t downsample_rate)
         : downsample_rate_(downsample_rate),
           sound_stream_(new ofSoundStream()) {
-    sound_stream_->setup(this, 0, 2,
-                         kOfSoundStream_SamplingRate,
-                         kOfSoundStream_BufferSize,
-                         kOfSoundStream_nBuffers);
+    setup_successful_ = sound_stream_->setup(this, 0, 2,
+                                             kOfSoundStream_SamplingRate,
+                                             kOfSoundStream_BufferSize,
+                                             kOfSoundStream_nBuffers);
     sound_stream_->stop();
 }
 
-void AudioStream::start() {
+bool AudioStream::start() {
+    if (!setup_successful_) return false;
     if (!has_started_) {
         sound_stream_->start();
         has_started_ = true;
     }
+    return true;
 }
 
 void AudioStream::stop() {
@@ -88,16 +90,19 @@ SerialStream::SerialStream(uint32_t port, uint32_t baud = 115200)
     // serial_->listDevices();
 }
 
-void SerialStream::start() {
+bool SerialStream::start() {
     if (port_ == -1) {
         ofLog(OF_LOG_ERROR) << "USB Port has not been properly set";
+        return false;
     }
 
     if (!has_started_) {
-        serial_->setup(port_, baud_);
+        if (!serial_->setup(port_, baud_)) return false;
         reading_thread_.reset(new std::thread(&SerialStream::readSerial, this));
         has_started_ = true;
     }
+    
+    return true;
 }
 
 void SerialStream::stop() {
@@ -163,16 +168,19 @@ ASCIISerialStream::ASCIISerialStream(uint32_t port, uint32_t baud, uint32_t dim)
     //serial_->listDevices();
 }
 
-void ASCIISerialStream::start() {
+bool ASCIISerialStream::start() {
     if (port_ == -1) {
         ofLog(OF_LOG_ERROR) << "USB Port has not been properly set";
+        return false;
     }
 
     if (!has_started_) {
-        serial_->setup(port_, baud_);
+        if (!serial_->setup(port_, baud_)) return false;
         reading_thread_.reset(new std::thread(&ASCIISerialStream::readSerial, this));
         has_started_ = true;
     }
+    
+    return true;
 }
 
 void ASCIISerialStream::stop() {
@@ -232,25 +240,28 @@ void FirmataStream::useAnalogPin(int i) {
     pins_.push_back(i);
 };
 
-void FirmataStream::start() {
+bool FirmataStream::start() {
     if (port_ == -1) {
         ofLog(OF_LOG_ERROR) << "USB Port has not been properly set";
-        return;
+        return false;
     }
 
     if (pins_.size() == 0) {
         ofLog(OF_LOG_ERROR) << "Pin has not been properly set";
-        return;
+        return false;
     }
 
 
     if (!has_started_) {
         ofSerial serial;
         configured_arduino_ = false;
-        arduino_.connect(serial.getDeviceList()[port_].getDevicePath());
+        if (!arduino_.connect(serial.getDeviceList()[port_].getDevicePath()))
+            return false;
         update_thread_.reset(new std::thread(&FirmataStream::update, this));
         has_started_ = true;
     }
+    
+    return true;
 }
 
 void FirmataStream::stop() {

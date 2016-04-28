@@ -20,7 +20,7 @@ class IStream {
     IStream();
     virtual ~IStream() = default;
 
-    virtual void start() = 0;
+    virtual bool start() = 0;
     virtual void stop() = 0;
 
     void toggle() {
@@ -87,18 +87,19 @@ class AudioStream : public ofBaseApp, public IStream {
   public:
     AudioStream(uint32_t downsample_rate = 1);
     void audioIn(float *input, int buffer_size, int nChannel);
-    virtual void start() final;
+    virtual bool start() final;
     virtual void stop() final;
     virtual int getNumInputDimensions() final;
   private:
     uint32_t downsample_rate_;
     unique_ptr<ofSoundStream> sound_stream_;
+    bool setup_successful_;
 };
 
 class SerialStream : public IStream {
   public:
     SerialStream(uint32_t usb_port_num, uint32_t baud);
-    virtual void start() final;
+    virtual bool start() final;
     virtual void stop() final;
     virtual int getNumInputDimensions() final;
   private:
@@ -117,7 +118,7 @@ class SerialStream : public IStream {
 class ASCIISerialStream : public IStream {
   public:
     ASCIISerialStream(uint32_t port, uint32_t baud, uint32_t numDimensions);
-    virtual void start() final;
+    virtual bool start() final;
     virtual void stop() final;
     virtual int getNumInputDimensions() final;
   private:
@@ -134,7 +135,7 @@ class ASCIISerialStream : public IStream {
 class FirmataStream : public IStream {
   public:
     FirmataStream(uint32_t port);
-    virtual void start() final;
+    virtual bool start() final;
     virtual void stop() final;
     virtual int getNumInputDimensions() final;
     void useAnalogPin(int i);
