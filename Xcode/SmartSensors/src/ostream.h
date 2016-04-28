@@ -32,10 +32,8 @@ class OStream {
     virtual void onReceive(uint32_t label) = 0;
 
     virtual bool start() { has_started_ = true; return true; }
-    void setStreamSize(int size) { stream_size_ = size; }
     bool hasStarted() { return has_started_; }
   protected:
-    int stream_size_ = -1;
     bool has_started_ = false;
 };
 
@@ -59,7 +57,7 @@ class MacOSKeyboardOStream : public OStream {
     }
 
     virtual void onReceive(uint32_t label) {
-        if (has_started_ && stream_size_-- >= 0) {
+        if (has_started_) {
             if (getChar(label) != '\0') {
                 sendKey(getChar(label));
             }
@@ -131,7 +129,7 @@ class MacOSMouseOStream : public OStream {
     }
 
     virtual void onReceive(uint32_t label) {
-        if (has_started_ && stream_size_-- >= 0) {
+        if (has_started_) {
             pair<uint32_t, uint32_t> mouse = getMousePosition(label);
             if (mouse.first > 0 & mouse.second > 0) {
                 clickMouse(mouse);
@@ -196,7 +194,7 @@ class TcpOStream : public OStream {
     }
 
     virtual void onReceive(uint32_t label) {
-        if (has_started_ && stream_size_-- >= 0) {
+        if (has_started_) {
             string to_send = getStreamString(label);
             if (!to_send.empty()) {
                 sendString(to_send);
