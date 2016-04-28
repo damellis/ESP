@@ -8,8 +8,10 @@ class CalibrateProcess {
   public:
     typedef void (*CalibratorCallback)(const MatrixDouble&);
 
-    CalibrateProcess(std::string name, std::string description, CalibratorCallback cb)
-            : name_(name), description_(description), cb_(cb), is_calibrated_(false) {}
+    CalibrateProcess(std::string name, std::string description,
+                     CalibratorCallback cb)
+            : name_(name), description_(description), cb_(cb),
+            is_calibrated_(false) {}
 
     // run the user callback to apply the calibration function to the
     // calibration data.  this should only be called after setData() is called.
@@ -23,10 +25,10 @@ class CalibrateProcess {
     void setData(GRT::MatrixDouble data) { data_ = data; }
     GRT::MatrixDouble getData() { return data_; }
   private:
-    bool is_calibrated_;
-    CalibratorCallback cb_;
     std::string name_;
     std::string description_;
+    CalibratorCallback cb_;
+    bool is_calibrated_;
     GRT::MatrixDouble data_;
 };
 
@@ -44,11 +46,13 @@ class Calibrator {
     Calibrator& setCalibrateFunction(CalibrateFunc f) {
         simple_calibrate_func_ = nullptr;
         calibrate_func_ = f;
+        return *this;
     }
 
     Calibrator& setCalibrateFunction(SimpleCalibrateFunc f) {
         simple_calibrate_func_ = f;
         calibrate_func_ = nullptr;
+        return *this;
     }
 
     Calibrator& addCalibrateProcess(CalibrateProcess cp) {

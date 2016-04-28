@@ -133,6 +133,7 @@ class InteractiveTimeSeriesPlot : public ofxGrtTimeseriesPlot {
             ofSetColor(0xFF, 0xFF, 0xFF, 0x2F);
             ofDrawRectangle(x_ + x_start_, y_, x_end_ - x_start_, h);
         }
+        return true;
     }
 
     void onRangeSelected(const onRangeSelectedCallback& cb, void* data) {

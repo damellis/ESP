@@ -83,6 +83,7 @@ class Tuneable {
             break;
           }
         }
+        return "";
     }
 
     // Return value indicates success or not.
@@ -129,10 +130,10 @@ class Tuneable {
 
     void* value_ptr_;
     void* ui_ptr_;
+    Type type_;
 
     string title_;
     string description_;
-    Type type_;
     double min_;
     double max_;
 };

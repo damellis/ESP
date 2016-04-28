@@ -91,11 +91,11 @@ void ofApp::useOStream(OStream &stream) {
 // TODO(benzh): initialize other members as well.
 ofApp::ofApp() : fragment_(TRAINING),
                  num_pipeline_stages_(0),
+                 calibrator_(nullptr),
                  ostream_(NULL),
                  should_save_calibration_data_(false),
                  should_save_training_data_(false),
                  should_save_test_data_(false),
-                 calibrator_(nullptr),
                  is_training_scheduled_(false) {
 }
 
