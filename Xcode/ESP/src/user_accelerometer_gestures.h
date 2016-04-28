@@ -16,7 +16,7 @@ void restingDataCollected(const MatrixDouble& data)
 {
     // take average of X and Y acceleration as the zero G value
     zeroG = (data.getMean()[0] + data.getMean()[1]) / 2;
-    oneG = abs(data.getMean()[2] - zeroG); // use Z acceleration as one G value
+    oneG = data.getMean()[2]; // use Z acceleration as one G value
 }
 
 int timeout = 500; // milliseconds
