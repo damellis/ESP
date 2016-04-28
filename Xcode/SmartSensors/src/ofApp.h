@@ -105,7 +105,10 @@ class ofApp : public ofBaseApp {
 
     // Visuals
     ofxGrtTimeseriesPlot plot_raw_;
-    ofxGrtTimeseriesPlot plot_inputs_;
+    InteractiveTimeSeriesPlot plot_inputs_;
+    void onInputPlotSelection(InteractiveTimeSeriesPlot::CallbackArgs arg);
+    bool enable_history_recording_ = false;
+    bool is_in_history_recording_ = false;
 
     vector<Plotter> plot_calibrators_;
 
@@ -121,7 +124,8 @@ class ofApp : public ofBaseApp {
     vector<pair<double, double>> sample_feature_ranges_;
 
     ofxGrtTimeseriesPlot plot_prediction_;
-    vector<int> plot_sample_indices_; // the index of the currently plotted sample for each class label
+    vector<int> plot_sample_indices_; // the index of the currently plotted
+                                      // sample for each class label
     vector<pair<ofRectangle, ofRectangle>> plot_sample_button_locations_;
     void onPlotRangeSelected(Plotter::CallbackArgs arg);
     bool is_final_features_too_many_ = false;

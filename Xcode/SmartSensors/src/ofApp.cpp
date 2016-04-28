@@ -125,6 +125,7 @@ void ofApp::setup() {
     plot_inputs_.setDrawGrid(true);
     plot_inputs_.setDrawInfoText(true);
     plot_inputs_.setChannelNames(istream_labels);
+    plot_inputs_.onRangeSelected(this, &ofApp::onInputPlotSelection, NULL);
 
     plot_testdata_window_.setup(kBufferSize_, istream_->getNumOutputDimensions(), "Test Data");
     plot_testdata_window_.setDrawGrid(true);
@@ -364,6 +365,18 @@ void ofApp::populateSampleFeatures(uint32_t sample_index) {
             feature_plots[0].setData(feature_matrix);
         }
     }
+}
+
+void ofApp::onInputPlotSelection(InteractiveTimeSeriesPlot::CallbackArgs arg) {
+    if (!enable_history_recording_) {
+        plot_inputs_.clearSelection();
+        return;
+    }
+
+    status_text_ = "Press 1-9 to extract from live data to training data.";
+    is_in_history_recording_ = true;
+    sample_data_.clear();
+    sample_data_ = plot_inputs_.getSelectedData();
 }
 
 void ofApp::onTestOverviewPlotSelection(Plotter::CallbackArgs arg) {
@@ -1222,6 +1235,8 @@ void ofApp::keyPressed(int key){
         return;
     }
 
+    if (is_in_history_recording_) { return; }
+
     // If in relabeling, take action at key release stage.
     if (is_in_relabeling_) { return; }
 
@@ -1250,7 +1265,12 @@ void ofApp::keyPressed(int key){
             else if (fragment_ == TRAINING) loadTrainingData();
             else if (fragment_ == ANALYSIS) loadTestData();
             break;
-        case 'p': istream_->toggle(); input_data_.clear(); break;
+        case 'p': {
+            istream_->toggle();
+            enable_history_recording_ = !enable_history_recording_;
+            input_data_.clear();
+            break;
+        }
         case 's':
             if (fragment_ == CALIBRATION) saveCalibrationData();
             else if (fragment_ == TRAINING) saveTrainingData();
@@ -1268,6 +1288,29 @@ void ofApp::keyPressed(int key){
 
 void ofApp::keyReleased(int key) {
     if (is_in_renaming_) { return; }
+    if (is_in_history_recording_) {
+        // Pressing 1-9 will turn the samples into training data
+        if (key >= '1' && key <= '9') {
+            label_ = key - '0';
+            training_data_.addSample(key - '0', sample_data_);
+            int num_samples = training_data_.getClassTracker()
+                    [training_data_.getClassLabelIndexValue(label_)].counter;
+
+            if (num_samples == 1)
+                training_data_.setClassNameForCorrespondingClassLabel(
+                    plot_samples_[label_ - 1].getTitle(), label_);
+
+            plot_samples_[label_ - 1].setData(sample_data_);
+            plot_sample_indices_[label_ - 1] = num_samples - 1;
+
+            should_save_training_data_ = true;
+        }
+        // Reset the status of the GUI
+        is_in_history_recording_ = false;
+        status_text_ = "";
+        plot_inputs_.clearSelection();
+        return;
+    }
 
     if (is_in_relabeling_ && key >= '1' && key <= '9') {
         doRelabelTrainingSample(relabel_source_, key - '0');
