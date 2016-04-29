@@ -1,3 +1,14 @@
+/**
+ @file tuneable.h
+ @brief Functions for specifying parameters that can be tuned by the user.
+ 
+ For each tuneable parameter, a corresponding slider or checkbox is created in
+ the interface to allow the user to modify the value of that parameter.
+ Currently, when the user changes the value of a tuneable parameter, the ESP
+ system re-runs the entire setup() function with the tuneable parameters set
+ to their new values.
+ */
+
 #pragma once
 
 #include <string>
@@ -138,10 +149,61 @@ class Tuneable {
     double max_;
 };
 
+/**
+ Create a tuneable parameter of type int. This will generate a slider in the
+ interface allowing the user to modify the value of the variable referenced by
+ this tuneable parameter.
+ 
+ @param value: reference to the variable in which the value of this tuneable
+ parameter is stored. The initial value of the tuneable parameter will be taken
+ from the value of this variable when this function is called. When the user
+ changes the value of the tuneable parameter, the variable referenced by this
+ parameter will be set to the new value.
+ @param min: the minimum value of the parameter, used to contrain the range of
+ values to which the user can set the tuneable parameter.
+ @param max: the maximum value of the parameter, used to contrain the range of
+ values to which the user can set the tuneable parameter.
+ @param name: the name of the tuneable parameter. Will be shown to the user.
+ @param description: the description of the tuneable parameter. Shown to the
+ user.
+ */
 void registerTuneable(int& value, int min, int max,
                       const string& name, const string& description);
 
+/**
+ Create a tuneable parameter of type double. This will generate a slider in the
+ interface allowing the user to modify the value of the variable referenced by
+ this tuneable parameter.
+ 
+ @param value: reference to the variable in which the value of this tuneable
+ parameter is stored. The initial value of the tuneable parameter will be taken
+ from the value of this variable when this function is called. When the user
+ changes the value of the tuneable parameter, the variable referenced by this
+ parameter will be set to the new value.
+ @param min: the minimum value of the parameter, used to contrain the range of
+ values to which the user can set the tuneable parameter.
+ @param max: the maximum value of the parameter, used to contrain the range of
+ values to which the user can set the tuneable parameter.
+ @param name: the name of the tuneable parameter. Will be shown to the user.
+ @param description: the description of the tuneable parameter. Shown to the
+ user.
+ */
 void registerTuneable(double& value, double min, double max,
                       const string& name, const string& description);
 
+/**
+ Create a tuneable parameter of type bool. This will generate a checkbox in the
+ interface allowing the user to modify the value of the variable referenced by
+ this tuneable parameter. Checking the checkbox sets the variable to true; 
+ unchecking it sets it to false.
+ 
+ @param value: reference to the variable in which the value of this tuneable
+ parameter is stored. The initial value of the tuneable parameter will be taken
+ from the value of this variable when this function is called. When the user
+ changes the value of the tuneable parameter, the variable referenced by this
+ parameter will be set to the new value.
+ @param name: the name of the tuneable parameter. Will be shown to the user.
+ @param description: the description of the tuneable parameter. Shown to the
+ user.
+ */
 void registerTuneable(bool& value, const string& name, const string& description);
