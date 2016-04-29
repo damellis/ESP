@@ -65,4 +65,4 @@ These should be automatically installed by the setup script:
 
 ## License
 
-See LICENSE.txt for licensing information.
+See [LICENSE.txt](LICENSE.txt) for licensing information.
