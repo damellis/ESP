@@ -65,4 +65,4 @@ These should be automatically installed by the setup script:
 
 ## License
 
-TODO add license (BSD?)
+See LICENSE.txt for licensing information.
