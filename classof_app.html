@@ -169,6 +169,7 @@ Friends</h2></td></tr>
 <tr class="memitem:aa9076c44e77ba8045b038405efc2741d"><td class="memItemLeft" align="right" valign="top">class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classof_app.html#aa9076c44e77ba8045b038405efc2741d">TrainingSampleGuiListener</a></td></tr>
 <tr class="separator:aa9076c44e77ba8045b038405efc2741d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa56b17a8db41c36d20d29c360cd4b5bd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classof_app.html#aa56b17a8db41c36d20d29c360cd4b5bd">useCalibrator</a> (<a class="el" href="class_calibrator.html">Calibrator</a> &amp;<a class="el" href="user__audio__beat_8h.html#a9a0fe3559d6b3624511614596e3b8689">calibrator</a>)</td></tr>
+<tr class="memdesc:aa56b17a8db41c36d20d29c360cd4b5bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specify the <a class="el" href="class_calibrator.html" title="Specifies data samples and code used to calibrate incoming sensor data. ">Calibrator</a> to be used by the ESP system.  <a href="#aa56b17a8db41c36d20d29c360cd4b5bd">More...</a><br /></td></tr>
 <tr class="separator:aa56b17a8db41c36d20d29c360cd4b5bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac134b04107cbfe98c9b2bcfdc1622413"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classof_app.html#ac134b04107cbfe98c9b2bcfdc1622413">useStream</a> (<a class="el" href="class_i_stream.html">IStream</a> &amp;<a class="el" href="user__color__sensor_8h.html#a9d7a960e4cf7cb51ba843e63f5704d54">stream</a>)</td></tr>
 <tr class="separator:ac134b04107cbfe98c9b2bcfdc1622413"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -600,6 +601,9 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Specify the <a class="el" href="class_calibrator.html" title="Specifies data samples and code used to calibrate incoming sensor data. ">Calibrator</a> to be used by the ESP system. </p>
+<p>This <a class="el" href="class_calibrator.html" title="Specifies data samples and code used to calibrate incoming sensor data. ">Calibrator</a> will be applied to data coming from the current input stream (<a class="el" href="class_i_stream.html" title="Base class for input streams that provide live sensor data to the ESP system. ">IStream</a> instance specified by <a class="el" href="istream_8cpp.html#ac134b04107cbfe98c9b2bcfdc1622413">useStream()</a>) before it is passed to the current machine learning pipeline (GestureRecognitionPipeline specified by <a class="el" href="istream_8cpp.html#a4e89d8b7f053b8e3f5855d084164b39a">usePipeline()</a>). Only one calibrator can be active at a time, but it can include multiple <a class="el" href="class_calibrate_process.html" title="A data sample to be collected by the user and callback for processing that sample. ">CalibrateProcess</a> instances, each of which specifies one sample of calibration data to be collected by the user. </p>
+
 </div>
 </div>
 <a class="anchor" id="a35fe680d22f1f003291694660486f403"></a>
@@ -647,6 +651,8 @@ Friends</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Tells the ESP system which machine learning pipeline to use. Call from your <a class="el" href="classof_app.html#af68eaa1366244f7a541cd08e02199c12">setup()</a> function. Note that only one pipeline is supported; subsequent calls to <a class="el" href="istream_8cpp.html#a4e89d8b7f053b8e3f5855d084164b39a">usePipeline()</a> will replace the previously-specified pipeline.</p>
+<p>The pipeline will be fed with data from the input stream specified using <a class="el" href="istream_8cpp.html#ac134b04107cbfe98c9b2bcfdc1622413">useStream()</a>. </p>
 
 </div>
 </div>
@@ -671,6 +677,13 @@ Friends</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Tells the ESP system which input stream to use. Call from your <a class="el" href="classof_app.html#af68eaa1366244f7a541cd08e02199c12">setup()</a> function. The specified stream will be automatically started by the ESP system. Note that only one input stream is supported; subsequent calls to <a class="el" href="istream_8cpp.html#ac134b04107cbfe98c9b2bcfdc1622413">useStream()</a> will replace the previously-specified stream.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">stream</td><td>the input stream to use </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

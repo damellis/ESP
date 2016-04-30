@@ -115,13 +115,18 @@ $(document).ready(function(){initNavTree('class_calibrator.html','');});
 </div><!--header-->
 <div class="contents">
 
+<p>Specifies data samples and code used to calibrate incoming sensor data.  
+ <a href="class_calibrator.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="calibrator_8h_source.html">calibrator.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
 <tr class="memitem:a6159d619bd1f30733bb8d93af296cb41"><td class="memItemLeft" align="right" valign="top">typedef std::function&lt; double(double)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_calibrator.html#a6159d619bd1f30733bb8d93af296cb41">SimpleCalibrateFunc</a></td></tr>
+<tr class="memdesc:a6159d619bd1f30733bb8d93af296cb41"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transforms each dimension of incoming samples of live sensor data.  <a href="#a6159d619bd1f30733bb8d93af296cb41">More...</a><br /></td></tr>
 <tr class="separator:a6159d619bd1f30733bb8d93af296cb41"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a753a0c65848966e966bff8b378009daf"><td class="memItemLeft" align="right" valign="top">typedef std::function&lt; vector&lt; double &gt;vector&lt; double &gt;)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_calibrator.html#a753a0c65848966e966bff8b378009daf">CalibrateFunc</a></td></tr>
+<tr class="memdesc:a753a0c65848966e966bff8b378009daf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transforms incoming samples of live sensor data.  <a href="#a753a0c65848966e966bff8b378009daf">More...</a><br /></td></tr>
 <tr class="separator:a753a0c65848966e966bff8b378009daf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -147,7 +152,13 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af6198cc48284540594e171447ea32b14"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_calibrator.html#af6198cc48284540594e171447ea32b14">isCalibrated</a> ()</td></tr>
 <tr class="separator:af6198cc48284540594e171447ea32b14"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Typedef Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Specifies data samples and code used to calibrate incoming sensor data. </p>
+<p>A <a class="el" href="class_calibrator.html" title="Specifies data samples and code used to calibrate incoming sensor data. ">Calibrator</a> consists of two basic parts. The calibration function transforms each sample of incoming live sensor data. It's called with data coming from the input stream and its output is passed to the machine learning pipeline.</p>
+<p>The calibration processes (<a class="el" href="class_calibrate_process.html" title="A data sample to be collected by the user and callback for processing that sample. ">CalibrateProcess</a> instances) consist of a data sample to be collected by the user and a callback for processing that data sample once it's collected. Typically, the calibration process callback performs some analysis of the data sample collected by the user and stores that information for later use by the calibration function. For instance, a calibration process callback might record the mean values of data in the sample and use it as a baseline to be subtracted from future live sensor inputs in the calibration function.</p>
+<p>The calibration function will not be called until the user has collected a sample of data for each <a class="el" href="class_calibrate_process.html" title="A data sample to be collected by the user and callback for processing that sample. ">CalibrateProcess</a> instance and the corresponding callbacks have run. There is, however, no guarantee about the order in which the <a class="el" href="class_calibrate_process.html" title="A data sample to be collected by the user and callback for processing that sample. ">CalibrateProcess</a> callbacks will be executed, as it depends on the order in which the user collects the corresponding samples of calibration data.</p>
+<p>To tell the ESP system to use a <a class="el" href="class_calibrator.html" title="Specifies data samples and code used to calibrate incoming sensor data. ">Calibrator</a>, pass it to <a class="el" href="calibrator_8cpp.html#aa56b17a8db41c36d20d29c360cd4b5bd" title="Specify the Calibrator to be used by the ESP system. ">useCalibrator()</a> in your <a class="el" href="user__accelerometer__gestures_8h.html#a4fc01d736fe50cf5b977f755b675f11d">setup()</a> function. </p>
+</div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a class="anchor" id="a753a0c65848966e966bff8b378009daf"></a>
 <div class="memitem">
 <div class="memproto">
@@ -157,6 +168,9 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Transforms incoming samples of live sensor data. </p>
+<p>CalibrateFunc allows for more complex transformations of incoming sensor data, e.g. for different dimensions of a sample to be transformed in different way, or for transformations that need to be be calculated using multiple dimensions of the incoming data. Note that currently the number of input dimensions must equal the number of output dimensions (i.e. the vector returned by the calibration function must have the same size as the vector passed in to the calibration function), although this may change in the future. </p>
 
 </div>
 </div>
@@ -169,6 +183,9 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Transforms each dimension of incoming samples of live sensor data. </p>
+<p>SimpleCalibrateFunc are used in cases where the same transformation should be applied to each dimension of incoming sensor data. The function is called on each dimension of incoming data. </p>
 
 </div>
 </div>
@@ -193,6 +210,7 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Create a <a class="el" href="class_calibrator.html" title="Specifies data samples and code used to calibrate incoming sensor data. ">Calibrator</a> without specifying a calibration function. If you use this constructor, you'll need to specify the calibration function with <a class="el" href="class_calibrator.html#ac157fec5ed6dc65618c2e13c17dc6108">setCalibrateFunction()</a>. </p>
 
 </div>
 </div>
@@ -217,6 +235,7 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Create a <a class="el" href="class_calibrator.html" title="Specifies data samples and code used to calibrate incoming sensor data. ">Calibrator</a> with the specified SimpleCalibrateFunc. This function will be applied to incoming live sensor data. </p>
 
 </div>
 </div>
@@ -241,6 +260,7 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Create a <a class="el" href="class_calibrator.html" title="Specifies data samples and code used to calibrate incoming sensor data. ">Calibrator</a> with the specified CalibrateFunc. This function will be applied to incoming live sensor data. </p>
 
 </div>
 </div>
@@ -266,6 +286,8 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Add a <a class="el" href="class_calibrate_process.html" title="A data sample to be collected by the user and callback for processing that sample. ">CalibrateProcess</a> to this <a class="el" href="class_calibrator.html" title="Specifies data samples and code used to calibrate incoming sensor data. ">Calibrator</a>. The <a class="el" href="class_calibrate_process.html" title="A data sample to be collected by the user and callback for processing that sample. ">CalibrateProcess</a> instances in the active <a class="el" href="class_calibrator.html" title="Specifies data samples and code used to calibrate incoming sensor data. ">Calibrator</a> (as set by <a class="el" href="calibrator_8cpp.html#aa56b17a8db41c36d20d29c360cd4b5bd" title="Specify the Calibrator to be used by the ESP system. ">useCalibrator()</a>) are the ones that will be shown to the user in the interface.</p>
+<dl class="section return"><dt>Returns</dt><dd>*this, to allow for chaining of <a class="el" href="class_calibrator.html" title="Specifies data samples and code used to calibrate incoming sensor data. ">Calibrator</a> methods </dd></dl>
 
 </div>
 </div>
@@ -306,6 +328,8 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Shortcut for adding a new <a class="el" href="class_calibrate_process.html" title="A data sample to be collected by the user and callback for processing that sample. ">CalibrateProcess</a> to this <a class="el" href="class_calibrator.html" title="Specifies data samples and code used to calibrate incoming sensor data. ">Calibrator</a>. This creates a new <a class="el" href="class_calibrate_process.html" title="A data sample to be collected by the user and callback for processing that sample. ">CalibrateProcess</a> with the specified name, description, and callback and adds it to the <a class="el" href="class_calibrator.html" title="Specifies data samples and code used to calibrate incoming sensor data. ">Calibrator</a>. See CalibrateProcess::CalibrationProcess() for a description of the arguments.</p>
+<dl class="section return"><dt>Returns</dt><dd>*this, to allow for chaining of <a class="el" href="class_calibrator.html" title="Specifies data samples and code used to calibrate incoming sensor data. ">Calibrator</a> methods </dd></dl>
 
 </div>
 </div>
@@ -353,6 +377,7 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Get the <a class="el" href="class_calibrate_process.html" title="A data sample to be collected by the user and callback for processing that sample. ">CalibrateProcess</a> instances in this <a class="el" href="class_calibrator.html" title="Specifies data samples and code used to calibrate incoming sensor data. ">Calibrator</a>. </p>
 
 </div>
 </div>
@@ -400,6 +425,8 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Set the calibration function. Replaces any currently set calibration function.</p>
+<dl class="section return"><dt>Returns</dt><dd>*this, to allow for chaining of <a class="el" href="class_calibrator.html" title="Specifies data samples and code used to calibrate incoming sensor data. ">Calibrator</a> methods </dd></dl>
 
 </div>
 </div>
@@ -424,6 +451,8 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Set the calibration function. Replaces any currently set calibration function.</p>
+<dl class="section return"><dt>Returns</dt><dd>*this, to allow for chaining of <a class="el" href="class_calibrator.html" title="Specifies data samples and code used to calibrate incoming sensor data. ">Calibrator</a> methods </dd></dl>
 
 </div>
 </div>

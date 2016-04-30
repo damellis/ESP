@@ -111,6 +111,9 @@ $(document).ready(function(){initNavTree('tuneable_8h.html','');});
 <div class="title">tuneable.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Functions for specifying parameters that can be tuned by the user.  
+<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;string&gt;</code><br />
 <code>#include &quot;ofxDatGui.h&quot;</code><br />
 </div>
@@ -130,7 +133,10 @@ Functions</h2></td></tr>
 <tr class="memitem:a7130854c93f62a09e5b1ee01955e3be0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tuneable_8h.html#a7130854c93f62a09e5b1ee01955e3be0">registerTuneable</a> (bool &amp;value, const string &amp;name, const string &amp;description)</td></tr>
 <tr class="separator:a7130854c93f62a09e5b1ee01955e3be0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Functions for specifying parameters that can be tuned by the user. </p>
+<p>For each tuneable parameter, a corresponding slider or checkbox is created in the interface to allow the user to modify the value of that parameter. Currently, when the user changes the value of a tuneable parameter, the ESP system re-runs the entire <a class="el" href="user__accelerometer__gestures_8h.html#a4fc01d736fe50cf5b977f755b675f11d">setup()</a> function with the tuneable parameters set to their new values. </p>
+</div><h2 class="groupheader">Function Documentation</h2>
 <a class="anchor" id="ab70b66eef36d646163bde25ec79415e8"></a>
 <div class="memitem">
 <div class="memproto">
@@ -172,6 +178,17 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Create a tuneable parameter of type int. This will generate a slider in the interface allowing the user to modify the value of the variable referenced by this tuneable parameter.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">value</td><td>reference to the variable in which the value of this tuneable parameter is stored. The initial value of the tuneable parameter will be taken from the value of this variable when this function is called. When the user changes the value of the tuneable parameter, the variable referenced by this parameter will be set to the new value. </td></tr>
+    <tr><td class="paramname">min</td><td>the minimum value of the parameter, used to contrain the range of values to which the user can set the tuneable parameter. </td></tr>
+    <tr><td class="paramname">max</td><td>the maximum value of the parameter, used to contrain the range of values to which the user can set the tuneable parameter. </td></tr>
+    <tr><td class="paramname">name</td><td>the name of the tuneable parameter. Will be shown to the user. </td></tr>
+    <tr><td class="paramname">description</td><td>the description of the tuneable parameter. Shown to the user. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -216,6 +233,17 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Create a tuneable parameter of type double. This will generate a slider in the interface allowing the user to modify the value of the variable referenced by this tuneable parameter.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">value</td><td>reference to the variable in which the value of this tuneable parameter is stored. The initial value of the tuneable parameter will be taken from the value of this variable when this function is called. When the user changes the value of the tuneable parameter, the variable referenced by this parameter will be set to the new value. </td></tr>
+    <tr><td class="paramname">min</td><td>the minimum value of the parameter, used to contrain the range of values to which the user can set the tuneable parameter. </td></tr>
+    <tr><td class="paramname">max</td><td>the maximum value of the parameter, used to contrain the range of values to which the user can set the tuneable parameter. </td></tr>
+    <tr><td class="paramname">name</td><td>the name of the tuneable parameter. Will be shown to the user. </td></tr>
+    <tr><td class="paramname">description</td><td>the description of the tuneable parameter. Shown to the user. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -248,6 +276,15 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Create a tuneable parameter of type bool. This will generate a checkbox in the interface allowing the user to modify the value of the variable referenced by this tuneable parameter. Checking the checkbox sets the variable to true; unchecking it sets it to false.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">value</td><td>reference to the variable in which the value of this tuneable parameter is stored. The initial value of the tuneable parameter will be taken from the value of this variable when this function is called. When the user changes the value of the tuneable parameter, the variable referenced by this parameter will be set to the new value. </td></tr>
+    <tr><td class="paramname">name</td><td>the name of the tuneable parameter. Will be shown to the user. </td></tr>
+    <tr><td class="paramname">description</td><td>the description of the tuneable parameter. Shown to the user. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

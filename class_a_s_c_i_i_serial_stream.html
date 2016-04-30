@@ -114,6 +114,9 @@ $(document).ready(function(){initNavTree('class_a_s_c_i_i_serial_stream.html',''
 </div><!--header-->
 <div class="contents">
 
+<p>Input stream for reading ASCII data from a (USB) serial port.  
+ <a href="class_a_s_c_i_i_serial_stream.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="istream_8h_source.html">istream.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for ASCIISerialStream:</div>
@@ -121,7 +124,7 @@ Inheritance diagram for ASCIISerialStream:</div>
  <div class="center">
   <img src="class_a_s_c_i_i_serial_stream.png" usemap="#ASCIISerialStream_map" alt=""/>
   <map id="ASCIISerialStream_map" name="ASCIISerialStream_map">
-<area href="class_i_stream.html" alt="IStream" shape="rect" coords="0,0,116,24"/>
+<area href="class_i_stream.html" title="Base class for input streams that provide live sensor data to the ESP system. " alt="IStream" shape="rect" coords="0,0,116,24"/>
 </map>
  </div></div>
 <table class="memberdecls">
@@ -186,7 +189,10 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memitem:a80fb3b9faab847ff756b00f80175f1c2 inherit pro_attribs_class_i_stream"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_i_stream.html#a9388c3740bb6c7e5f18b7c2ea4db49c2">vectorNormalizeFunc</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_stream.html#a80fb3b9faab847ff756b00f80175f1c2">vectorNormalizer_</a></td></tr>
 <tr class="separator:a80fb3b9faab847ff756b00f80175f1c2 inherit pro_attribs_class_i_stream"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Input stream for reading ASCII data from a (USB) serial port. </p>
+<p>Data should be formatted as ASCII text, in newline-terminated lines. Each line consists of whitespace-separated numbers, e.g. </p><pre class="fragment">123 45 678 90 </pre><p>To use an <a class="el" href="class_a_s_c_i_i_serial_stream.html" title="Input stream for reading ASCII data from a (USB) serial port. ">ASCIISerialStream</a> in your application, pass it to <a class="el" href="istream_8cpp.html#ac134b04107cbfe98c9b2bcfdc1622413">useStream()</a> in your <a class="el" href="user__accelerometer__gestures_8h.html#a4fc01d736fe50cf5b977f755b675f11d">setup()</a> function. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a0c2dc56b1a52c6e089c94b92bf87c6c4"></a>
 <div class="memitem">
 <div class="memproto">
@@ -216,6 +222,15 @@ Additional Inherited Members</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Create an <a class="el" href="class_a_s_c_i_i_serial_stream.html" title="Input stream for reading ASCII data from a (USB) serial port. ">ASCIISerialStream</a> instance.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">port</td><td>the index of the (USB) serial port to use. </td></tr>
+    <tr><td class="paramname">baud</td><td>the baud rate at which to communicate with the serial port </td></tr>
+    <tr><td class="paramname">numDimensions</td><td>the number of dimensions in the data that will come from the serial port (i.e. the number of numbers in each line of data). </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -240,6 +255,7 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Get the number of dimensions of the data that's provided by the input stream (before it's run through the normalizer, if any). </p>
 
 <p>Implements <a class="el" href="class_i_stream.html#a8abc256ea633733ffac5eabe3ee7f71e">IStream</a>.</p>
 
@@ -265,6 +281,7 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Start the input stream. </p>
 
 <p>Implements <a class="el" href="class_i_stream.html#aa4cbbb93c7dfb5b963a1e81fa80eacb7">IStream</a>.</p>
 

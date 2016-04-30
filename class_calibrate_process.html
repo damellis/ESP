@@ -115,6 +115,9 @@ $(document).ready(function(){initNavTree('class_calibrate_process.html','');});
 </div><!--header-->
 <div class="contents">
 
+<p>A data sample to be collected by the user and callback for processing that sample.  
+ <a href="class_calibrate_process.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="calibrator_8h_source.html">calibrator.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
@@ -139,7 +142,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a38cac73ff3aa5baa02c6719f379b8008"><td class="memItemLeft" align="right" valign="top">GRT::MatrixDouble&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_calibrate_process.html#a38cac73ff3aa5baa02c6719f379b8008">getData</a> ()</td></tr>
 <tr class="separator:a38cac73ff3aa5baa02c6719f379b8008"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Typedef Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>A data sample to be collected by the user and callback for processing that sample. </p>
+<p>A <a class="el" href="class_calibrate_process.html" title="A data sample to be collected by the user and callback for processing that sample. ">CalibrateProcess</a> stores the name and description of a sample of sensor data to be collected by the user, along with a callback for processing that sample once it's collected. To use a <a class="el" href="class_calibrate_process.html" title="A data sample to be collected by the user and callback for processing that sample. ">CalibrateProcess</a> instance, add it to a <a class="el" href="class_calibrator.html" title="Specifies data samples and code used to calibrate incoming sensor data. ">Calibrator</a> with <a class="el" href="class_calibrator.html#ae3f733522d3b33c467924c38d9eb8c7c">Calibrator::addCalibrateProcess()</a>. </p>
+</div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a class="anchor" id="a148f8f966fb2f20931b8f8d4be123070"></a>
 <div class="memitem">
 <div class="memproto">
@@ -190,6 +196,15 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Create a <a class="el" href="class_calibrate_process.html" title="A data sample to be collected by the user and callback for processing that sample. ">CalibrateProcess</a>.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td>the name of the calibration sample to be collected by the user </td></tr>
+    <tr><td class="paramname">description</td><td>the description of the calibration sample to be collected by the user </td></tr>
+    <tr><td class="paramname">cb</td><td>the callback to call with the data collected by the user (as a MatrixDouble &amp;). Called each time the user collects or re-collects the associated calibration sample. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

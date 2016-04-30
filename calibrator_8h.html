@@ -119,13 +119,16 @@ $(document).ready(function(){initNavTree('calibrator_8h.html','');});
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_calibrate_process.html">CalibrateProcess</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A data sample to be collected by the user and callback for processing that sample.  <a href="class_calibrate_process.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_calibrator.html">Calibrator</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specifies data samples and code used to calibrate incoming sensor data.  <a href="class_calibrator.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:aa56b17a8db41c36d20d29c360cd4b5bd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="calibrator_8h.html#aa56b17a8db41c36d20d29c360cd4b5bd">useCalibrator</a> (<a class="el" href="class_calibrator.html">Calibrator</a> &amp;<a class="el" href="user__audio__beat_8h.html#a9a0fe3559d6b3624511614596e3b8689">calibrator</a>)</td></tr>
+<tr class="memdesc:aa56b17a8db41c36d20d29c360cd4b5bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specify the <a class="el" href="class_calibrator.html" title="Specifies data samples and code used to calibrate incoming sensor data. ">Calibrator</a> to be used by the ESP system.  <a href="#aa56b17a8db41c36d20d29c360cd4b5bd">More...</a><br /></td></tr>
 <tr class="separator:aa56b17a8db41c36d20d29c360cd4b5bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
@@ -142,6 +145,9 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Specify the <a class="el" href="class_calibrator.html" title="Specifies data samples and code used to calibrate incoming sensor data. ">Calibrator</a> to be used by the ESP system. </p>
+<p>This <a class="el" href="class_calibrator.html" title="Specifies data samples and code used to calibrate incoming sensor data. ">Calibrator</a> will be applied to data coming from the current input stream (<a class="el" href="class_i_stream.html" title="Base class for input streams that provide live sensor data to the ESP system. ">IStream</a> instance specified by <a class="el" href="istream_8cpp.html#ac134b04107cbfe98c9b2bcfdc1622413">useStream()</a>) before it is passed to the current machine learning pipeline (GestureRecognitionPipeline specified by <a class="el" href="istream_8cpp.html#a4e89d8b7f053b8e3f5855d084164b39a">usePipeline()</a>). Only one calibrator can be active at a time, but it can include multiple <a class="el" href="class_calibrate_process.html" title="A data sample to be collected by the user and callback for processing that sample. ">CalibrateProcess</a> instances, each of which specifies one sample of calibration data to be collected by the user. </p>
 
 </div>
 </div>
