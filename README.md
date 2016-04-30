@@ -46,6 +46,10 @@ appropriate sketch. Example include:
 - user_accelerometer_poses.h: recognizes the orientations of an object using
   a naive Bayes classifier. Works with accelerometers as for the
   user_accelerometer_calibration.h example.
+  
+## API
+
+See the [online documentation of the ESP API](http://damellis.github.io/ESP/).
 
 ## Dependencies
 
