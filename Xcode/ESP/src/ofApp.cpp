@@ -114,6 +114,10 @@ void ofApp::setup() {
         }
     }
 
+    if (!(calibrator_->isCalibrated())) {
+        fragment_ = CALIBRATION;
+    }
+
     istream_->onDataReadyEvent(this, &ofApp::onDataIn);
 
     const vector<string>& istream_labels = istream_->getLabels();
@@ -294,7 +298,7 @@ void ofApp::setup() {
     gui_.getFooter()->setLabelWhenExpanded("Click to Hide");
     gui_.getFooter()->setLabelWhenCollapsed("Click to Tune Parameters");
 
-    gui_.collapseGui();
+    gui_.collapse();
     gui_hide_ = false;
 
     ofBackground(54, 54, 54);
@@ -305,11 +309,14 @@ void ofApp::setup() {
     if (!istream_->start()) {
         if (ASCIISerialStream* ss = dynamic_cast<ASCIISerialStream*>(istream_)) {
             vector<string> serials = ss->getSerialDeviceList();
-            ofxDatGuiDropdown* serial_selection =
-                    gui_.addDropdown("Select Serial Port", serials);
-            serial_selection->onDropdownEvent(this,
-                                              &ofApp::onSerialSelectionDropdownEvent);
+            serial_selection_dropdown_ =
+                    gui_.addDropdown("Select A Serial Port", serials);
+            serial_selection_dropdown_->onDropdownEvent(
+                this, &ofApp::onSerialSelectionDropdownEvent);
             status_text_ = "Please select a serial port from the dropdown menu";
+
+            // We will open the panel
+            gui_.expand();
         }
     }
 
@@ -546,8 +553,14 @@ void ofApp::loadTuneables(ofxDatGuiButtonEvent e) {
 }
 
 void ofApp::onSerialSelectionDropdownEvent(ofxDatGuiDropdownEvent e) {
+    if (istream_->hasStarted()) { return; }
+
     if (ASCIISerialStream* ss = dynamic_cast<ASCIISerialStream*>(istream_)) {
-        if (!ss->selectSerialDevice(e.child)) {
+        if (ss->selectSerialDevice(e.child)) {
+            serial_selection_dropdown_->collapse();
+            serial_selection_dropdown_->setVisible(false);
+            gui_.collapse();
+        } else {
             status_text_ = "Please select another serial port!";
         }
     }
