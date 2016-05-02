@@ -299,8 +299,19 @@ void ofApp::setup() {
 
     ofBackground(54, 54, 54);
 
-    // After everything is setup, start streaming.
-    istream_->start();
+    // After everything is setup, start input streaming.
+    // If failed, this could be due to serial stream's port configuration.
+    // We prompt to ask for the port.
+    if (!istream_->start()) {
+        if (ASCIISerialStream* ss = dynamic_cast<ASCIISerialStream*>(istream_)) {
+            vector<string> serials = ss->getSerialDeviceList();
+            ofxDatGuiDropdown* serial_selection =
+                    gui_.addDropdown("Select Serial Port", serials);
+            serial_selection->onDropdownEvent(this,
+                                              &ofApp::onSerialSelectionDropdownEvent);
+            status_text_ = "Please select a serial port from the dropdown menu";
+        }
+    }
 
     // Register myself as logging observer but disable first.
     GRT::ErrorLog::enableLogging(false);
@@ -532,6 +543,14 @@ void ofApp::loadTuneables(ofxDatGuiButtonEvent e) {
         t->fromString(line);
     }
     file.close();
+}
+
+void ofApp::onSerialSelectionDropdownEvent(ofxDatGuiDropdownEvent e) {
+    if (ASCIISerialStream* ss = dynamic_cast<ASCIISerialStream*>(istream_)) {
+        if (!ss->selectSerialDevice(e.child)) {
+            status_text_ = "Please select another serial port!";
+        }
+    }
 }
 
 void ofApp::renameTrainingSample(int num) {

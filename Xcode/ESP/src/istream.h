@@ -18,7 +18,7 @@ const uint32_t kOfSoundStream_nBuffers = 4;
 /**
  @brief Base class for input streams that provide live sensor data to the ESP
  system.
- 
+
  To use an IStream instance in your application, pass it to useStream() in your
  setup() function.
  */
@@ -131,11 +131,11 @@ class SerialStream : public IStream {
 
 /**
  @brief Input stream for reading ASCII data from a (USB) serial port.
- 
+
  Data should be formatted as ASCII text, in newline-terminated lines. Each line
  consists of whitespace-separated numbers, e.g.
  @verbatim 123 45 678 90 @endverbatim
- 
+
  To use an ASCIISerialStream in your application, pass it to useStream() in
  your setup() function.
  */
@@ -143,17 +143,55 @@ class ASCIISerialStream : public IStream {
   public:
     /**
      Create an ASCIISerialStream instance.
-     
-     @param port: the index of the (USB) serial port to use. 
+
+     @param port: the index of the (USB) serial port to use.
      @param baud: the baud rate at which to communicate with the serial port
      @param numDimensions: the number of dimensions in the data that will come
      from the serial port (i.e. the number of numbers in each line of data).
      */
     ASCIISerialStream(uint32_t port, uint32_t baud, uint32_t numDimensions);
-    
+
+    /**
+     Create an ASCIISerialStream instance.
+
+     This constructor doesn't require USB port so users will be asked to select
+     them at runtime.
+
+     @param baud: the baud rate at which to communicate with the serial port
+     @param numDimensions: the number of dimensions in the data that will come
+     from the serial port (i.e. the number of numbers in each line of data).
+     */
+    ASCIISerialStream(uint32_t baud, uint32_t numDimensions);
+
     virtual bool start() final;
     virtual void stop() final;
     virtual int getNumInputDimensions() final;
+
+    vector<string> getSerialDeviceList() {
+        serial_->listDevices();
+        vector<string> retval;
+        vector<ofSerialDeviceInfo> device_list = serial_->getDeviceList();
+        retval.reserve(device_list.size());
+        for (auto& d : device_list) {
+            retval.push_back(d.getDevicePath());
+        }
+        return retval;
+    }
+
+    bool selectSerialDevice(uint32_t port) {
+        assert(has_started_ == false
+               && "Should only reach here if ASCIISerialStream hasn't started");
+
+        port_ = port;
+        if (!serial_->setup(port_, baud_)) {
+            return false;
+        }
+
+        reading_thread_.reset(new std::thread(&ASCIISerialStream::readSerial, this));
+        has_started_ = true;
+        return true;
+    }
+
   private:
     unique_ptr<ofSerial> serial_;
     uint32_t port_;
@@ -167,7 +205,7 @@ class ASCIISerialStream : public IStream {
 
 /**
  @brief Input stream for reading analog data from an Arduino running Firmata.
- 
+
  To use an FirmataStream in your application, pass it to useStream() in your
  setup() function.
  */
@@ -176,21 +214,21 @@ class FirmataStream : public IStream {
     /**
      Create a FirmataStream instance. Assumes the Arduino is communicating at
      57600 baud.
-     
+
      @param port: the index of the (USB) serial port to use.
      */
     FirmataStream(uint32_t port);
     virtual bool start() final;
-    virtual void stop() final;    
+    virtual void stop() final;
     virtual int getNumInputDimensions() final;
-    
+
     /**
      Include readings from the specified analog pin in the data reported by
      this FirmataStream. Data will be ordered according to the sequence of
      calls to this function (i.e. readings from the pin passed to the first
      call to useAnalogPin() will appear first in the data provided by the
      FirmataStream).
-     
+
      @param i: an analog pin to read from
      */
     void useAnalogPin(int i);
@@ -211,7 +249,7 @@ class FirmataStream : public IStream {
  function. The specified stream will be automatically started by the ESP
  system. Note that only one input stream is supported; subsequent calls to
  useStream() will replace the previously-specified stream.
- 
+
  @param stream: the input stream to use
  */
 void useStream(IStream &stream);
@@ -220,7 +258,7 @@ void useStream(IStream &stream);
  Tells the ESP system which machine learning pipeline to use. Call from your
  setup() function. Note that only one pipeline is supported; subsequent calls
  to usePipeline() will replace the previously-specified pipeline.
- 
+
  The pipeline will be fed with data from the input stream specified using
  useStream().
  */

@@ -159,6 +159,8 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     void saveTuneables(ofxDatGuiButtonEvent e);
     void loadTuneables(ofxDatGuiButtonEvent e);
 
+    void onSerialSelectionDropdownEvent(ofxDatGuiDropdownEvent e);
+
     void beginTrainModel();
     void drawEventReceived(ofEventArgs& arg);
     void trainModel();

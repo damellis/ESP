@@ -101,7 +101,7 @@ bool SerialStream::start() {
         reading_thread_.reset(new std::thread(&SerialStream::readSerial, this));
         has_started_ = true;
     }
-    
+
     return true;
 }
 
@@ -164,13 +164,15 @@ void SerialStream::readSerial() {
 
 ASCIISerialStream::ASCIISerialStream(uint32_t port, uint32_t baud, uint32_t dim)
         : serial_(new ofSerial()), port_(port), baud_(baud), numDimensions_(dim) {
-    // Print all devices for convenience.
-    //serial_->listDevices();
+}
+
+ASCIISerialStream::ASCIISerialStream(uint32_t baud, uint32_t dim)
+        : serial_(new ofSerial()), port_(-1), baud_(baud), numDimensions_(dim) {
 }
 
 bool ASCIISerialStream::start() {
     if (port_ == -1) {
-        ofLog(OF_LOG_ERROR) << "USB Port has not been properly set";
+        ofLog(OF_LOG_ERROR) << "USB Port will be selected by user";
         return false;
     }
 
@@ -179,7 +181,7 @@ bool ASCIISerialStream::start() {
         reading_thread_.reset(new std::thread(&ASCIISerialStream::readSerial, this));
         has_started_ = true;
     }
-    
+
     return true;
 }
 
@@ -260,7 +262,7 @@ bool FirmataStream::start() {
         update_thread_.reset(new std::thread(&FirmataStream::update, this));
         has_started_ = true;
     }
-    
+
     return true;
 }
 
