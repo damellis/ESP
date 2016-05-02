@@ -301,6 +301,10 @@ void ofApp::setup() {
 
     // After everything is setup, start streaming.
     istream_->start();
+
+    // Register myself as logging observer but disable first.
+    GRT::ErrorLog::enableLogging(false);
+    GRT::ErrorLog::registerObserver(*this);
 }
 
 void ofApp::onPlotRangeSelected(Plotter::CallbackArgs arg) {
@@ -1124,6 +1128,11 @@ void ofApp::trainModel() {
 
    auto training_func = [this]() -> bool {
        ofLog() << "Training started";
+       bool training_status = false;
+
+       // Enable logging. GRT error logs will call ofApp::notify().
+       GRT::ErrorLog::enableLogging(true);
+
        if (pipeline_->train(training_data_)) {
            ofLog() << "Training is successful";
 
@@ -1131,11 +1140,14 @@ void ofApp::trainModel() {
                assert(true == plot.clearContentModifiedFlag());
            }
 
-           return true;
+           training_status = true;
        } else {
            ofLog(OF_LOG_ERROR) << "Failed to train the model";
-           return false;
        }
+
+       // Stop logging.
+       GRT::ErrorLog::enableLogging(false);
+       return training_status;
    };
 
    // TODO(benzh) Fix data race issue later.
@@ -1146,8 +1158,6 @@ void ofApp::trainModel() {
        pipeline_->reset();
 
        status_text_ = "Training was successful";
-   } else {
-       status_text_ = "Training failed";
    }
 }
 

@@ -19,31 +19,37 @@
 #include "ostream.h"
 #include "tuneable.h"
 
-class ofApp : public ofBaseApp {
+class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
   public:
     ofApp();
-    void setup();
-    void update();
-    void draw();
-    void exit();
+    void setup() final;
+    void update() final;
+    void draw() final;
+    void exit() final;
 
-    void keyPressed(int key);
-    void keyReleased(int key);
-    void mouseMoved(int x, int y );
-    void mouseDragged(int x, int y, int button);
-    void mousePressed(int x, int y, int button);
-    void mouseReleased(int x, int y, int button);
-    void mouseEntered(int x, int y);
-    void mouseExited(int x, int y);
-    void windowResized(int w, int h);
-    void dragEvent(ofDragInfo dragInfo);
-    void gotMessage(ofMessage msg);
+    void keyPressed(int key) final;
+    void keyReleased(int key) final;
+    void mouseMoved(int x, int y ) final;
+    void mouseDragged(int x, int y, int button) final;
+    void mousePressed(int x, int y, int button) final;
+    void mouseReleased(int x, int y, int button) final;
+    void mouseEntered(int x, int y) final;
+    void mouseExited(int x, int y) final;
+    void windowResized(int w, int h) final;
+    void dragEvent(ofDragInfo dragInfo) final;
+    void gotMessage(ofMessage msg) final;
 
     void registerTuneable(Tuneable* t) {
         tuneable_parameters_.push_back(t);
     }
 
     void reloadPipelineModules();
+
+    // GRT error log observer callback: we simply display it as status text.
+    virtual void notify(const ErrorLogMessage& data) final {
+        status_text_ = data.getMessage();
+    }
+
   private:
     enum Fragment { CALIBRATION, PIPELINE, TRAINING, ANALYSIS };
     Fragment fragment_;
