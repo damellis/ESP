@@ -34,7 +34,6 @@
 
 #include "GRT/GRT.h"
 #include "calibrator.h"
-#include "istream.h"
-#include "ostream.h"
+#include "iostream.h"
 
 using namespace GRT;

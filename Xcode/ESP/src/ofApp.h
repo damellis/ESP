@@ -14,9 +14,8 @@
 
 // custom
 #include "calibrator.h"
-#include "istream.h"
+#include "iostream.h"
 #include "plotter.h"
-#include "ostream.h"
 #include "tuneable.h"
 
 class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {

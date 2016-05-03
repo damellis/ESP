@@ -22,7 +22,6 @@
 #include <string.h>
 
 #include "ofMain.h"
-#include "ofApp.h"
 #include "ofxTCPClient.h"
 #include "stream.h"
 
