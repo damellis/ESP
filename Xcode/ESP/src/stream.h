@@ -2,6 +2,8 @@
 
 class Stream {
   public:
+    Stream() : has_started_(false) {}
+
     /**
      Start the stream.
      */
@@ -17,5 +19,4 @@ class Stream {
 
   protected:
     bool has_started_;
-
 };
