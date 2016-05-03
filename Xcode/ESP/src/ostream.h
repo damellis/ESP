@@ -1,11 +1,14 @@
-/*
- * OStream supports emitting prediction results to some downstream consumers,
- * e.g. Mac OS Keyboard Emulator, OSC Stream, TCP Stream, etc.
+/**
+ * @file ostream.h
+ * @brief OStream supports emitting prediction results to some downstream
+ * consumers, e.g. Mac OS Keyboard Emulator, OSC Stream, TCP Stream, etc.
  *
- * OStream* ostream = new MacOSKeyboardOStream(3, '\0', 'f', 'd');
- * OStream* ostream = new MacOSMouseOStream(3, 0, 0, 240, 240, 400, 400);
- * OStream* ostream = new TcpOStream("localhost", 9999, 3, "", "mouse 300, 300.", "mouse 400, 400.");
- * OStream* ostream = new TcpOStream("localhost", 5204, 3, "l", "r", " ");
+ * @verbatim
+ * MacOSKeyboardOStream ostream(3, '\0', 'f', 'd');
+ * MacOSMouseOStream ostream(3, 0, 0, 240, 240, 400, 400);
+ * TcpOStream ostream("localhost", 9999, 3, "", "mouse 300, 300.", "mouse 400, 400.");
+ * TcpOStream ostream("localhost", 5204, 3, "l", "r", " ");
+ * @endverbatim
  *
  */
 #pragma once
@@ -27,6 +30,13 @@ const uint64_t kGracePeriod = 500; // 0.5 second
 // Forward declaration.
 class ofApp;
 
+/**
+ @brief Base class for output streams that forward ESP prediction results to
+ other systems.
+
+ To use an OStream instance in your application, pass it to useOStream() in
+ your setup() function.
+ */
 class OStream {
   public:
     virtual void onReceive(uint32_t label) = 0;
@@ -37,16 +47,40 @@ class OStream {
     bool has_started_ = false;
 };
 
-// MacOSKeyboardOStream will emulate keyboard key press event upon receiving
-// classification results (via the callback `onReceive`). Users of this class
-// can supply a map<integer, char> so that the labels will be translated to
-// proper key strokes.
+/**
+ @brief Emulate keyboard key presses corresponding to prediction results.
+ 
+ This class generates a key-down then key-up command for keys corresponding
+ to class labels predicted by the current pipeline. The mapping from class
+ labels to keys is specified in the constructor. Note that no key press
+ will be generated if less than 500 ms have elapsed since the last key press.
+
+ To use an MacOSKeyboardOStream instance in your application, pass it to
+ useOStream() in your setup() function.
+ */
 class MacOSKeyboardOStream : public OStream {
   public:
+    /**
+     @brief Create a MacOSKeyboardOStream instance, specifying the key presses
+     to emulate for each predicted class label.
+     
+     @param key_mapping: a map from predicted class labels to keys. Note that
+     class 0 is the GRT's special null prediction label and is not used to 
+     generate key presses.
+    */
     MacOSKeyboardOStream(std::map<uint32_t, char> key_mapping)
             : key_mapping_(key_mapping) {
     }
 
+    /**
+     @brief Create a MacOSKeyboardOStream instance, specifying the key presses
+     to emulate for each predicted class label.
+     
+     @param count: the number of keys specified
+     @param ...: the key to "press" upon prediction of the corresponding class
+     label. Each key is a UTF16 character passed as an int. The first key
+     specified corresponds to class label 1, the second to class label 2, etc.
+    */
     MacOSKeyboardOStream(uint32_t count, ...) {
         va_list args;
         va_start(args, count);
@@ -110,13 +144,43 @@ class MacOSKeyboardOStream : public OStream {
     std::map<uint32_t, char> key_mapping_;
 };
 
-// MacOSMouseOStream
+/**
+ @brief Emulate mouse double-clicks at locations corresponding to prediction
+ results.
+ 
+ This class generates a mouse double-click at locations corresponding to class
+ labels predicted by the current pipeline. The mapping from class
+ labels to locations is specified in the constructor. Note that no double-click
+ will be generated if less than 500 ms have elapsed since the last double-click.
+
+ To use an MacOSMouseOStream instance in your application, pass it to
+ useOStream() in your setup() function.
+ */
 class MacOSMouseOStream : public OStream {
   public:
+    /**
+     @brief Create a MacOSMouseOStream instance, specifying the locations at
+     which to double-click the mouse for each predicted class label.
+     
+     @param mouse_mapping: a map from predicted class labels to screen
+     locations (x, y pairs). Note that class 0 is the GRT's special null
+     prediction label and is not used to generate mouse clicks.
+    */
     MacOSMouseOStream(std::map<uint32_t, pair<uint32_t, uint32_t> > mouse_mapping)
     : mouse_mapping_(mouse_mapping) {
     }
 
+    /**
+     @brief Create a MacOSMouseOStream instance, specifying the location at
+     which to double-click the mouse for each predicted class label.
+     
+     @param count: the number of locations specified
+     @param ...: the location at which to "double-click" upon prediction of
+     the corresponding class label. Each location is specified by two uint32_t
+     parameters: x then y. The first location (first two parameters) specified
+     corresponds to class label 1, the second (parameters 3 and 4) to class
+     label 2, etc.
+    */
     MacOSMouseOStream(uint32_t count, ...) {
         va_list args;
         va_start(args, count);
@@ -173,15 +237,48 @@ private:
     std::map<uint32_t, pair<uint32_t, uint32_t>> mouse_mapping_;
 };
 
-// TcpOStream
+/**
+ @brief Send strings over a TCP socket based on pipeline predictions.
+ 
+ This class connects to a TCP server and sends it strings when predictions are
+ made by the current machine learning pipeline.  The TCP connection is only
+ made once, when ESP first starts, and is not restored if the other side
+ disconnects.
+
+ To use an TcpOStream instance in your application, pass it to useOStream() in
+ your setup() function.
+ */
 class TcpOStream : public OStream {
   public:
+    /**
+     Create a TCPOStream instance.
+     
+     @param server: the hostname or IP address of the TCP server to connect to
+     @param port: the port of the TCP server to connect to
+     @tcp_stream_mapping: a map from predicted class labels to strings to send
+     over the TCP connection. No delimiters or other characters are added to
+     the strings specified, so, if they're required, be sure to include them
+     in the provided strings. Note that 0 is a special GRT class label
+     indicating no prediction, and will not trigger the sending of a string.
+     */
     TcpOStream(string server, int port,
                std::map<uint32_t, string> tcp_stream_mapping)
             : server_(server), port_(port),
             tcp_stream_mapping_(tcp_stream_mapping) {
     }
 
+    /**
+     Create a TCPOStream instance.
+     
+     @param server: the hostname or IP address of the TCP server to connect to
+     @param port: the port of the TCP server to connect to
+     @param count: the number of strings provided
+     @param ...: the strings to send over the TCP connection for each predicted
+     class label. The first string provided corresponds to class label 1, the
+     second to class label 2, etc. No delimiters or other characters are added
+     to the strings specified, so, if they're required, be sure to include them
+     in the provided strings.
+     */
     TcpOStream(string server, int port, uint32_t count, ...)
             : server_(server), port_(port) {
         va_list args;
@@ -232,4 +329,12 @@ private:
     std::map<uint32_t, string> tcp_stream_mapping_;
 };
 
+/**
+ @brief Specify the OStream to use.
+ 
+ Note that currently only one OStream is supported at a time. Subsequent calls
+ to useOStream() will replace the previously-specified streams.
+ 
+ @param stream: the OStream to use
+ */
 void useOStream(OStream &stream);

@@ -97,6 +97,9 @@ class IStream {
     vector<double> normalize(vector<double>);
 };
 
+/**
+ @brief Input stream for reading audio from the computer's microphone.
+ */
 class AudioStream : public ofBaseApp, public IStream {
   public:
     AudioStream(uint32_t downsample_rate = 1);
@@ -135,6 +138,7 @@ class SerialStream : public IStream {
  Data should be formatted as ASCII text, in newline-terminated lines. Each line
  consists of whitespace-separated numbers, e.g.
  @verbatim 123 45 678 90 @endverbatim
+ The numbers in each line of text are turned into a single data sample.
 
  To use an ASCIISerialStream in your application, pass it to useStream() in
  your setup() function.
