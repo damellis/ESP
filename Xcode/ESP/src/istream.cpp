@@ -71,12 +71,12 @@ int AudioStream::getNumInputDimensions() {
 }
 
 void AudioStream::audioIn(float* input, int buffer_size, int nChannel) {
-    // set nChannel as 1 to load only a single channel (left).
-    nChannel = 1;
-    GRT::MatrixDouble data(buffer_size / nChannel / downsample_rate_, nChannel);
+    // set nChannelOut as 1 to load only a single channel (left).
+    int nChannelOut = 1;
+    GRT::MatrixDouble data(buffer_size / nChannel / downsample_rate_, nChannelOut);
 
     for (int i = 0; i < buffer_size / nChannel / downsample_rate_; i++)
-        for (int j = 0; j < nChannel; j++)
+        for (int j = 0; j < nChannelOut; j++)
             data[i][j] = input[i * nChannel * downsample_rate_ + j];
 
     if (data_ready_callback_ != nullptr) {
