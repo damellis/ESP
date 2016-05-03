@@ -115,17 +115,17 @@ $(document).ready(function(){initNavTree('ostream_8cpp.html','');});
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a35fe680d22f1f003291694660486f403"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ostream_8cpp.html#a35fe680d22f1f003291694660486f403">useOStream</a> (<a class="el" href="class_o_stream.html">OStream</a> &amp;<a class="el" href="user__color__sensor_8h.html#a9d7a960e4cf7cb51ba843e63f5704d54">stream</a>)</td></tr>
-<tr class="memdesc:a35fe680d22f1f003291694660486f403"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specify the <a class="el" href="class_o_stream.html" title="Base class for output streams that forward ESP prediction results to other systems. ">OStream</a> to use.  <a href="#a35fe680d22f1f003291694660486f403">More...</a><br /></td></tr>
-<tr class="separator:a35fe680d22f1f003291694660486f403"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a279f55018c4c054ad565198954f8eb16"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ostream_8cpp.html#a279f55018c4c054ad565198954f8eb16">useOutputStream</a> (<a class="el" href="class_o_stream.html">OStream</a> &amp;<a class="el" href="user__color__sensor_8h.html#a9d7a960e4cf7cb51ba843e63f5704d54">stream</a>)</td></tr>
+<tr class="memdesc:a279f55018c4c054ad565198954f8eb16"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specify the <a class="el" href="class_o_stream.html" title="Base class for output streams that forward ESP prediction results to other systems. ">OStream</a> to which to stream predictions made by the active ESP pipeline.  <a href="#a279f55018c4c054ad565198954f8eb16">More...</a><br /></td></tr>
+<tr class="separator:a279f55018c4c054ad565198954f8eb16"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a class="anchor" id="a35fe680d22f1f003291694660486f403"></a>
+<a class="anchor" id="a279f55018c4c054ad565198954f8eb16"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void useOStream </td>
+          <td class="memname">void useOutputStream </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="class_o_stream.html">OStream</a> &amp;&#160;</td>
           <td class="paramname"><em>stream</em></td><td>)</td>
@@ -134,8 +134,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Specify the <a class="el" href="class_o_stream.html" title="Base class for output streams that forward ESP prediction results to other systems. ">OStream</a> to use. </p>
-<p>Note that currently only one <a class="el" href="class_o_stream.html" title="Base class for output streams that forward ESP prediction results to other systems. ">OStream</a> is supported at a time. Subsequent calls to <a class="el" href="ostream_8h.html#a35fe680d22f1f003291694660486f403" title="Specify the OStream to use. ">useOStream()</a> will replace the previously-specified streams.</p>
+<p>Specify the <a class="el" href="class_o_stream.html" title="Base class for output streams that forward ESP prediction results to other systems. ">OStream</a> to which to stream predictions made by the active ESP pipeline. </p>
+<p>Note that currently only one <a class="el" href="class_o_stream.html" title="Base class for output streams that forward ESP prediction results to other systems. ">OStream</a> is supported at a time. Subsequent calls to <a class="el" href="ostream_8h.html#a279f55018c4c054ad565198954f8eb16" title="Specify the OStream to which to stream predictions made by the active ESP pipeline. ">useOutputStream()</a> will replace the previously-specified streams.</p>
+<p>See also: <a class="el" href="istream_8cpp.html#a28ecae66cc8c204679f3995fafc93ae6">useInputStream()</a> to specify the input stream (from which to read sensor data into the ESP pipeline); and <a class="el" href="iostream_8cpp.html#aff979b7370726d96aac43c99e3f7af10">useStream()</a> to specify a single stream for both input and output.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">stream</td><td>the <a class="el" href="class_o_stream.html" title="Base class for output streams that forward ESP prediction results to other systems. ">OStream</a> to use </td></tr>

@@ -21,7 +21,8 @@ var classof_app =
     [ "windowResized", "classof_app.html#a0dc7a2bd0a10e38346a7a6e70470664c", null ],
     [ "TrainingSampleGuiListener", "classof_app.html#aa9076c44e77ba8045b038405efc2741d", null ],
     [ "useCalibrator", "classof_app.html#aa56b17a8db41c36d20d29c360cd4b5bd", null ],
-    [ "useOStream", "classof_app.html#a35fe680d22f1f003291694660486f403", null ],
+    [ "useInputStream", "classof_app.html#a28ecae66cc8c204679f3995fafc93ae6", null ],
+    [ "useOutputStream", "classof_app.html#a279f55018c4c054ad565198954f8eb16", null ],
     [ "usePipeline", "classof_app.html#a4e89d8b7f053b8e3f5855d084164b39a", null ],
-    [ "useStream", "classof_app.html#ac134b04107cbfe98c9b2bcfdc1622413", null ]
+    [ "useStream", "classof_app.html#aff979b7370726d96aac43c99e3f7af10", null ]
 ];

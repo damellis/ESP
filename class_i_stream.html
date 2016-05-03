@@ -127,10 +127,12 @@ Inheritance diagram for IStream:</div>
  <div class="center">
   <img src="class_i_stream.png" usemap="#IStream_map" alt=""/>
   <map id="IStream_map" name="IStream_map">
-<area href="class_a_s_c_i_i_serial_stream.html" title="Input stream for reading ASCII data from a (USB) serial port. " alt="ASCIISerialStream" shape="rect" coords="0,56,116,80"/>
-<area href="class_audio_stream.html" title="Input stream for reading audio from the computer&#39;s microphone. " alt="AudioStream" shape="rect" coords="126,56,242,80"/>
-<area href="class_firmata_stream.html" title="Input stream for reading analog data from an Arduino running Firmata. " alt="FirmataStream" shape="rect" coords="252,56,368,80"/>
-<area href="class_serial_stream.html" alt="SerialStream" shape="rect" coords="378,56,494,80"/>
+<area href="class_stream.html" alt="Stream" shape="rect" coords="189,0,305,24"/>
+<area href="class_audio_stream.html" title="Input stream for reading audio from the computer&#39;s microphone. " alt="AudioStream" shape="rect" coords="0,112,116,136"/>
+<area href="class_firmata_stream.html" title="Input stream for reading analog data from an Arduino running Firmata. " alt="FirmataStream" shape="rect" coords="126,112,242,136"/>
+<area href="class_i_o_stream.html" alt="IOStream" shape="rect" coords="252,112,368,136"/>
+<area href="class_serial_stream.html" alt="SerialStream" shape="rect" coords="378,112,494,136"/>
+<area href="class_a_s_c_i_i_serial_stream.html" title="Input stream for reading ASCII data from a (USB) serial port. " alt="ASCIISerialStream" shape="rect" coords="252,168,368,192"/>
 </map>
  </div></div>
 <table class="memberdecls">
@@ -149,12 +151,6 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a7b60704e8dd3872a5b2d131b162ab868"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a78b9543926dc09be94c01842f775c28b"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_stream.html#a78b9543926dc09be94c01842f775c28b">~IStream</a> ()=default</td></tr>
 <tr class="separator:a78b9543926dc09be94c01842f775c28b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa4cbbb93c7dfb5b963a1e81fa80eacb7"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_stream.html#aa4cbbb93c7dfb5b963a1e81fa80eacb7">start</a> ()=0</td></tr>
-<tr class="separator:aa4cbbb93c7dfb5b963a1e81fa80eacb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af6fb5b0ef35bdf113ceb08a9356217d0"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_stream.html#af6fb5b0ef35bdf113ceb08a9356217d0">stop</a> ()=0</td></tr>
-<tr class="separator:af6fb5b0ef35bdf113ceb08a9356217d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a48e680657ccda80239d3c4961b612f33"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_stream.html#a48e680657ccda80239d3c4961b612f33">toggle</a> ()</td></tr>
-<tr class="separator:a48e680657ccda80239d3c4961b612f33"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8abc256ea633733ffac5eabe3ee7f71e"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_stream.html#a8abc256ea633733ffac5eabe3ee7f71e">getNumInputDimensions</a> ()=0</td></tr>
 <tr class="separator:a8abc256ea633733ffac5eabe3ee7f71e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acc13709a1660a1f79ffae5d10f0128d0"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_stream.html#acc13709a1660a1f79ffae5d10f0128d0">getNumOutputDimensions</a> ()</td></tr>
@@ -163,8 +159,6 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:af49e0329f543fa8165d54664e713c9c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a735f29a1bce1791514aec9c7e003df95"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_stream.html#a735f29a1bce1791514aec9c7e003df95">useNormalizer</a> (<a class="el" href="class_i_stream.html#a9388c3740bb6c7e5f18b7c2ea4db49c2">vectorNormalizeFunc</a> f)</td></tr>
 <tr class="separator:a735f29a1bce1791514aec9c7e003df95"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9de5d69ca715b59db8452899ae86308f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_stream.html#a9de5d69ca715b59db8452899ae86308f">hasStarted</a> ()</td></tr>
-<tr class="separator:a9de5d69ca715b59db8452899ae86308f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa88c2888539953f1b41a335af446d7ee"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_stream.html#aa88c2888539953f1b41a335af446d7ee">onDataReadyEvent</a> (<a class="el" href="class_i_stream.html#a66dbd2ab258482a52f442819969e6fa7">onDataReadyCallback</a> callback)</td></tr>
 <tr class="separator:aa88c2888539953f1b41a335af446d7ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeb04318f7ed0e01339e087fad42698e6"><td class="memTemplParams" colspan="2">template&lt;typename T1 , typename arg , class T &gt; </td></tr>
@@ -176,6 +170,17 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ada4dd6d16ff5aa59a52f0fd830a163b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af457fc846b2c4d05224212e6ac9d5a60"><td class="memItemLeft" align="right" valign="top">const vector&lt; string &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_stream.html#af457fc846b2c4d05224212e6ac9d5a60">getLabels</a> () const </td></tr>
 <tr class="separator:af457fc846b2c4d05224212e6ac9d5a60"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_class_stream"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_stream')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_stream.html">Stream</a></td></tr>
+<tr class="memitem:a8c3f05bd00361ec92627fa41f330a39b inherit pub_methods_class_stream"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_stream.html#a8c3f05bd00361ec92627fa41f330a39b">Stream</a> ()</td></tr>
+<tr class="separator:a8c3f05bd00361ec92627fa41f330a39b inherit pub_methods_class_stream"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33f0f6370d7506ff77d899f6394c4168 inherit pub_methods_class_stream"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_stream.html#a33f0f6370d7506ff77d899f6394c4168">start</a> ()</td></tr>
+<tr class="separator:a33f0f6370d7506ff77d899f6394c4168 inherit pub_methods_class_stream"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac83e7ed98b8428142dccf9aee4302b7f inherit pub_methods_class_stream"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_stream.html#ac83e7ed98b8428142dccf9aee4302b7f">stop</a> ()</td></tr>
+<tr class="separator:ac83e7ed98b8428142dccf9aee4302b7f inherit pub_methods_class_stream"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30d42badb068bfd21de779bab3e9b014 inherit pub_methods_class_stream"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_stream.html#a30d42badb068bfd21de779bab3e9b014">toggle</a> ()</td></tr>
+<tr class="separator:a30d42badb068bfd21de779bab3e9b014 inherit pub_methods_class_stream"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad63b787c4151fc7aed2a8f03f180e2b3 inherit pub_methods_class_stream"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_stream.html#ad63b787c4151fc7aed2a8f03f180e2b3">hasStarted</a> ()</td></tr>
+<tr class="separator:ad63b787c4151fc7aed2a8f03f180e2b3 inherit pub_methods_class_stream"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -186,18 +191,19 @@ Protected Member Functions</h2></td></tr>
 Protected Attributes</h2></td></tr>
 <tr class="memitem:a65a53ad77a58e34cf8c19309e1c30b84"><td class="memItemLeft" align="right" valign="top">vector&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_stream.html#a65a53ad77a58e34cf8c19309e1c30b84">istream_labels_</a></td></tr>
 <tr class="separator:a65a53ad77a58e34cf8c19309e1c30b84"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a043806f3a24852af36ee29c3ef31c0c2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_stream.html#a043806f3a24852af36ee29c3ef31c0c2">has_started_</a></td></tr>
-<tr class="separator:a043806f3a24852af36ee29c3ef31c0c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a37db7a4d5a94d22e19abd39a23e590b8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_i_stream.html#a66dbd2ab258482a52f442819969e6fa7">onDataReadyCallback</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_stream.html#a37db7a4d5a94d22e19abd39a23e590b8">data_ready_callback_</a></td></tr>
 <tr class="separator:a37db7a4d5a94d22e19abd39a23e590b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a26c77af75042d089bb285f7193288277"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_i_stream.html#a599578a001d17e084683286f108d2928">normalizeFunc</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_stream.html#a26c77af75042d089bb285f7193288277">normalizer_</a></td></tr>
 <tr class="separator:a26c77af75042d089bb285f7193288277"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a80fb3b9faab847ff756b00f80175f1c2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_i_stream.html#a9388c3740bb6c7e5f18b7c2ea4db49c2">vectorNormalizeFunc</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_stream.html#a80fb3b9faab847ff756b00f80175f1c2">vectorNormalizer_</a></td></tr>
 <tr class="separator:a80fb3b9faab847ff756b00f80175f1c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_class_stream"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_class_stream')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="class_stream.html">Stream</a></td></tr>
+<tr class="memitem:ac14e5cd2f0e1165f1e2d1448a1691bef inherit pro_attribs_class_stream"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_stream.html#ac14e5cd2f0e1165f1e2d1448a1691bef">has_started_</a></td></tr>
+<tr class="separator:ac14e5cd2f0e1165f1e2d1448a1691bef inherit pro_attribs_class_stream"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Base class for input streams that provide live sensor data to the ESP system. </p>
-<p>To use an <a class="el" href="class_i_stream.html" title="Base class for input streams that provide live sensor data to the ESP system. ">IStream</a> instance in your application, pass it to <a class="el" href="istream_8cpp.html#ac134b04107cbfe98c9b2bcfdc1622413">useStream()</a> in your <a class="el" href="user__accelerometer__gestures_8h.html#a4fc01d736fe50cf5b977f755b675f11d">setup()</a> function. </p>
+<p>To use an <a class="el" href="class_i_stream.html" title="Base class for input streams that provide live sensor data to the ESP system. ">IStream</a> instance in your application, pass it to <a class="el" href="istream_8cpp.html#a28ecae66cc8c204679f3995fafc93ae6">useInputStream()</a> in your <a class="el" href="user__accelerometer__gestures_8h.html#a4fc01d736fe50cf5b977f755b675f11d">setup()</a> function. </p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a class="anchor" id="a599578a001d17e084683286f108d2928"></a>
 <div class="memitem">
@@ -312,7 +318,7 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Get the number of dimensions of the data that's provided by the input stream (before it's run through the normalizer, if any). </p>
 
-<p>Implemented in <a class="el" href="class_firmata_stream.html#afdd759e32df8453e589f08f238f46613">FirmataStream</a>, <a class="el" href="class_a_s_c_i_i_serial_stream.html#a029d65fca103c025a73691d848338fec">ASCIISerialStream</a>, <a class="el" href="class_serial_stream.html#a85a7eee8f1b73aed2d59a0563bac3069">SerialStream</a>, and <a class="el" href="class_audio_stream.html#a374a55bab6de1c331e3899256559a2db">AudioStream</a>.</p>
+<p>Implemented in <a class="el" href="class_firmata_stream.html#afdd759e32df8453e589f08f238f46613">FirmataStream</a>, <a class="el" href="class_serial_stream.html#a85a7eee8f1b73aed2d59a0563bac3069">SerialStream</a>, <a class="el" href="class_audio_stream.html#a374a55bab6de1c331e3899256559a2db">AudioStream</a>, and <a class="el" href="class_a_s_c_i_i_serial_stream.html#a029d65fca103c025a73691d848338fec">ASCIISerialStream</a>.</p>
 
 </div>
 </div>
@@ -333,29 +339,6 @@ Protected Attributes</h2></td></tr>
   </td>
   <td class="mlabels-right">
 <span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a9de5d69ca715b59db8452899ae86308f"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool IStream::hasStarted </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -478,80 +461,6 @@ template&lt;typename T1 , typename arg , class T &gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="aa4cbbb93c7dfb5b963a1e81fa80eacb7"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual bool IStream::start </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Start the input stream. </p>
-
-<p>Implemented in <a class="el" href="class_firmata_stream.html#a028798d961aea59427ed4ea272e95e4e">FirmataStream</a>, <a class="el" href="class_a_s_c_i_i_serial_stream.html#a25527534c54bf6a6e0d9c41b7f62e4a6">ASCIISerialStream</a>, <a class="el" href="class_serial_stream.html#afe8f428de53d4c4ca30bc699f1aa2b89">SerialStream</a>, and <a class="el" href="class_audio_stream.html#a420fd8324be27f4cd072fdd926bde7f8">AudioStream</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="af6fb5b0ef35bdf113ceb08a9356217d0"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual void IStream::stop </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Implemented in <a class="el" href="class_firmata_stream.html#aae1d1172e3049f3bdb97016c8b0110e1">FirmataStream</a>, <a class="el" href="class_a_s_c_i_i_serial_stream.html#a6e2bf766911928d1d6d061ce1b90d5ba">ASCIISerialStream</a>, <a class="el" href="class_serial_stream.html#ab05ab340356431ab2638be923c17e924">SerialStream</a>, and <a class="el" href="class_audio_stream.html#a9b202fb8f50b22515ad09ef54129481b">AudioStream</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a48e680657ccda80239d3c4961b612f33"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void IStream::toggle </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a class="anchor" id="af49e0329f543fa8165d54664e713c9c6"></a>
 <div class="memitem">
 <div class="memproto">
@@ -610,26 +519,6 @@ template&lt;typename T1 , typename arg , class T &gt; </div>
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="class_i_stream.html#a66dbd2ab258482a52f442819969e6fa7">onDataReadyCallback</a> IStream::data_ready_callback_</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a043806f3a24852af36ee29c3ef31c0c2"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool IStream::has_started_</td>
         </tr>
       </table>
   </td>

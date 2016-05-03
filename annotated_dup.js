@@ -6,6 +6,7 @@ var annotated_dup =
     [ "Calibrator", "class_calibrator.html", "class_calibrator" ],
     [ "FirmataStream", "class_firmata_stream.html", "class_firmata_stream" ],
     [ "InteractiveTimeSeriesPlot", "class_interactive_time_series_plot.html", "class_interactive_time_series_plot" ],
+    [ "IOStream", "class_i_o_stream.html", null ],
     [ "IStream", "class_i_stream.html", "class_i_stream" ],
     [ "MacOSKeyboardOStream", "class_mac_o_s_keyboard_o_stream.html", "class_mac_o_s_keyboard_o_stream" ],
     [ "MacOSMouseOStream", "class_mac_o_s_mouse_o_stream.html", "class_mac_o_s_mouse_o_stream" ],
@@ -14,6 +15,7 @@ var annotated_dup =
     [ "Palette", "class_palette.html", "class_palette" ],
     [ "Plotter", "class_plotter.html", "class_plotter" ],
     [ "SerialStream", "class_serial_stream.html", "class_serial_stream" ],
+    [ "Stream", "class_stream.html", "class_stream" ],
     [ "TcpOStream", "class_tcp_o_stream.html", "class_tcp_o_stream" ],
     [ "TrainingSampleGuiListener", "class_training_sample_gui_listener.html", "class_training_sample_gui_listener" ],
     [ "Tuneable", "class_tuneable.html", "class_tuneable" ]

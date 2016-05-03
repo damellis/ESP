@@ -2,7 +2,7 @@ var searchData=
 [
   ['tcpostream',['TcpOStream',['../class_tcp_o_stream.html',1,'TcpOStream'],['../class_tcp_o_stream.html#a57669c1e4e78cb7b9ca8eff0c3a40150',1,'TcpOStream::TcpOStream(string server, int port, std::map&lt; uint32_t, string &gt; tcp_stream_mapping)'],['../class_tcp_o_stream.html#a1062a9c187f255d62d1e091db19d2e26',1,'TcpOStream::TcpOStream(string server, int port, uint32_t count,...)']]],
   ['timeout',['timeout',['../user__accelerometer__gestures_8h.html#a493b57f443cc38b3d3df9c1e584d9d82',1,'timeout():&#160;user_accelerometer_gestures.h'],['../user__accelerometer__poses_8h.html#a493b57f443cc38b3d3df9c1e584d9d82',1,'timeout():&#160;user_accelerometer_poses.h'],['../user__color__sensor_8h.html#a493b57f443cc38b3d3df9c1e584d9d82',1,'timeout():&#160;user_color_sensor.h']]],
-  ['toggle',['toggle',['../class_i_stream.html#a48e680657ccda80239d3c4961b612f33',1,'IStream']]],
+  ['toggle',['toggle',['../class_stream.html#a30d42badb068bfd21de779bab3e9b014',1,'Stream']]],
   ['tostring',['toString',['../class_tuneable.html#a58beec1e00c1c09c4ea99db07a2de967',1,'Tuneable']]],
   ['trainingsampleguilistener',['TrainingSampleGuiListener',['../class_training_sample_gui_listener.html',1,'TrainingSampleGuiListener'],['../classof_app.html#aa9076c44e77ba8045b038405efc2741d',1,'ofApp::TrainingSampleGuiListener()'],['../class_training_sample_gui_listener.html#a791d317493ce00ec5a00befc186bc870',1,'TrainingSampleGuiListener::TrainingSampleGuiListener()']]],
   ['trimbuttonpressed',['trimButtonPressed',['../class_training_sample_gui_listener.html#a6514b03309d9d1d1cb00d756b0853b03',1,'TrainingSampleGuiListener']]],
