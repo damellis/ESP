@@ -24,6 +24,7 @@
 #include "ofMain.h"
 #include "ofApp.h"
 #include "ofxTCPClient.h"
+#include "stream.h"
 
 const uint64_t kGracePeriod = 500; // 0.5 second
 
@@ -37,14 +38,9 @@ class ofApp;
  To use an OStream instance in your application, pass it to useOStream() in
  your setup() function.
  */
-class OStream {
+class OStream : public virtual Stream {
   public:
     virtual void onReceive(uint32_t label) = 0;
-
-    virtual bool start() { has_started_ = true; return true; }
-    bool hasStarted() { return has_started_; }
-  protected:
-    bool has_started_ = false;
 };
 
 /**

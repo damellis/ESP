@@ -6,6 +6,7 @@
 
 #include "GRT/GRT.h"
 #include "ofMain.h"
+#include "stream.h"
 
 #include <cstdint>
 
@@ -22,21 +23,10 @@ const uint32_t kOfSoundStream_nBuffers = 4;
  To use an IStream instance in your application, pass it to useStream() in your
  setup() function.
  */
-class IStream {
+class IStream : public virtual Stream {
   public:
     IStream();
     virtual ~IStream() = default;
-
-    /**
-     Start the input stream.
-     */
-    virtual bool start() = 0;
-    virtual void stop() = 0;
-
-    void toggle() {
-        if (has_started_) { stop(); }
-        else { start(); }
-    }
 
     /**
      Get the number of dimensions of the data that's provided by the
@@ -65,8 +55,6 @@ class IStream {
         normalizer_ = nullptr;
         vectorNormalizer_ = f;
     }
-
-    bool hasStarted() { return has_started_; }
 
     typedef std::function<void(GRT::MatrixDouble)> onDataReadyCallback;
 
