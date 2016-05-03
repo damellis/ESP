@@ -279,10 +279,32 @@ void ofApp::setup() {
     training_data_.setNumDimensions(istream_->getNumOutputDimensions());
     predicted_label_ = 0;
 
-    gui_.addHeader(":: Parameter Tuning ::");
+    gui_.addHeader(":: Configuration ::");
     gui_.setAutoDraw(false);
     gui_.setPosition(ofGetWidth() - 300, 0);
     gui_.setWidth(280, 140);
+
+    bool should_expand_gui = false;
+    // Start input streaming.
+    // If failed, this could be due to serial stream's port configuration.
+    // We prompt to ask for the port.
+    if (!istream_->start()) {
+        if (ASCIISerialStream* ss = dynamic_cast<ASCIISerialStream*>(istream_)) {
+            vector<string> serials = ss->getSerialDeviceList();
+            serial_selection_dropdown_ =
+                    gui_.addDropdown("Select A Serial Port", serials);
+            serial_selection_dropdown_->onDropdownEvent(
+                this, &ofApp::onSerialSelectionDropdownEvent);
+            gui_.addBreak()->setHeight(5.0f);
+
+            status_text_ = "Please select a serial port from the dropdown menu";
+
+            // We will keep the gui open.
+            should_expand_gui = true;
+        }
+    }
+
+    // Add the rest of the tuneables.
     for (Tuneable* t : tuneable_parameters_) {
         t->addToGUI(gui_);
     }
@@ -296,29 +318,17 @@ void ofApp::setup() {
 
     gui_.addFooter();
     gui_.getFooter()->setLabelWhenExpanded("Click to Hide");
-    gui_.getFooter()->setLabelWhenCollapsed("Click to Tune Parameters");
+    gui_.getFooter()->setLabelWhenCollapsed("Click to Open Configuration");
 
-    gui_.collapse();
+    if (should_expand_gui) {
+        gui_.expand();
+    } else {
+        gui_.collapse();
+    }
+
     gui_hide_ = false;
 
     ofBackground(54, 54, 54);
-
-    // After everything is setup, start input streaming.
-    // If failed, this could be due to serial stream's port configuration.
-    // We prompt to ask for the port.
-    if (!istream_->start()) {
-        if (ASCIISerialStream* ss = dynamic_cast<ASCIISerialStream*>(istream_)) {
-            vector<string> serials = ss->getSerialDeviceList();
-            serial_selection_dropdown_ =
-                    gui_.addDropdown("Select A Serial Port", serials);
-            serial_selection_dropdown_->onDropdownEvent(
-                this, &ofApp::onSerialSelectionDropdownEvent);
-            status_text_ = "Please select a serial port from the dropdown menu";
-
-            // We will open the panel
-            gui_.expand();
-        }
-    }
 
     // Register myself as logging observer but disable first.
     GRT::ErrorLog::enableLogging(false);
