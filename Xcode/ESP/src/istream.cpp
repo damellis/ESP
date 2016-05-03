@@ -12,7 +12,7 @@ void usePipeline(GRT::GestureRecognitionPipeline &pipeline) {
     ((ofApp *) ofGetAppPtr())->usePipeline(pipeline);
 }
 
-IStream::IStream() : has_started_(false), data_ready_callback_(nullptr) {}
+IStream::IStream() : data_ready_callback_(nullptr) {}
 
 vector<double> IStream::normalize(vector<double> input) {
     if (vectorNormalizer_ != nullptr) {

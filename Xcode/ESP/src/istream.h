@@ -77,7 +77,6 @@ class IStream : public virtual Stream {
 
   protected:
     vector<string> istream_labels_;
-    bool has_started_;
     onDataReadyCallback data_ready_callback_;
     normalizeFunc normalizer_;
     vectorNormalizeFunc vectorNormalizer_;
