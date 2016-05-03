@@ -1,6 +1,11 @@
 /**
  @file istream.h
  @brief Definition of input streams: serial, audio, etc.
+ 
+ These input streams provide sensor data to the machine learning pipeline.
+ Each stream provides a sequence data samples, each of which is a
+ multi-dimensional vector representing a single reading from a sensor (or
+ group of sensors).
  */
 #pragma once
 
@@ -20,8 +25,8 @@ const uint32_t kOfSoundStream_nBuffers = 4;
  @brief Base class for input streams that provide live sensor data to the ESP
  system.
 
- To use an IStream instance in your application, pass it to useStream() in your
- setup() function.
+ To use an IStream instance in your application, pass it to useInputStream()
+ in your setup() function.
  */
 class IStream : public virtual Stream {
   public:
@@ -123,8 +128,8 @@ class SerialStream : public IStream {
 /**
  @brief Input stream for reading analog data from an Arduino running Firmata.
 
- To use an FirmataStream in your application, pass it to useStream() in your
- setup() function.
+ To use an FirmataStream in your application, pass it to useInputStream() in
+ your setup() function.
  */
 class FirmataStream : public IStream {
   public:
@@ -162,14 +167,20 @@ class FirmataStream : public IStream {
 };
 
 /**
- Tells the ESP system which input stream to use. Call from your setup()
+ Tells the ESP system from which input stream to read sensor data for
+ processing by the active machine learning pipeline. Call from your setup()
  function. The specified stream will be automatically started by the ESP
  system. Note that only one input stream is supported; subsequent calls to
- useStream() will replace the previously-specified stream.
+ useInputStream() will replace the previously-specified stream.
+ 
+ See also: useOutputStream() for specifying an output stream (to which to
+ stream the predictions made by the ESP pipeline) and useStream() to specify
+ a stream to use for both input and output.
 
- @param stream: the input stream to use
+ @param stream: the input stream to use. May be an IOStream instance, in which
+ case the stream will only be used for input.
  */
-void useStream(IStream &stream);
+void useInputStream(IStream &stream);
 
 /**
  Tells the ESP system which machine learning pipeline to use. Call from your
@@ -177,6 +188,7 @@ void useStream(IStream &stream);
  to usePipeline() will replace the previously-specified pipeline.
 
  The pipeline will be fed with data from the input stream specified using
- useStream().
+ useStream() or useInputStream(), as modified by the calibrators specified
+ using useCalibrator().
  */
 void usePipeline(GRT::GestureRecognitionPipeline &pipeline);

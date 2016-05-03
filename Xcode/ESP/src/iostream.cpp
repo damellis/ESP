@@ -1,4 +1,10 @@
+#include "ofApp.h"
 #include "iostream.h"
+
+void useStream(IOStream &stream) {
+    ((ofApp *) ofGetAppPtr())->useIStream(stream);
+    ((ofApp *) ofGetAppPtr())->useOStream(stream);
+}
 
 ASCIISerialStream::ASCIISerialStream(uint32_t port, uint32_t baud, uint32_t dim)
         : serial_(new ofSerial()), port_(port), baud_(baud), numDimensions_(dim) {

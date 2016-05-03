@@ -219,8 +219,8 @@ class Calibrator {
  @brief Specify the Calibrator to be used by the ESP system.
  
  This Calibrator will be applied to data coming from the current input stream
- (IStream instance specified by useStream()) before it is passed to the current
- machine learning pipeline (GestureRecognitionPipeline specified by 
+ (IStream instance specified by useInputStream()) before it is passed to the
+ current machine learning pipeline (GestureRecognitionPipeline specified by 
  usePipeline()). Only one calibrator can be active at a time, but it can
  include multiple CalibrateProcess instances, each of which specifies one
  sample of calibration data to be collected by the user.

@@ -76,7 +76,7 @@ void ofApp::useCalibrator(Calibrator &calibrator) {
     calibrator_ = &calibrator;
 }
 
-void ofApp::useStream(IStream &stream) {
+void ofApp::useIStream(IStream &stream) {
     istream_ = &stream;
 }
 

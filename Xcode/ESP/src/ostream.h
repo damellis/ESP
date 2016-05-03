@@ -34,8 +34,8 @@ class ofApp;
  @brief Base class for output streams that forward ESP prediction results to
  other systems.
 
- To use an OStream instance in your application, pass it to useOStream() in
- your setup() function.
+ To use an OStream instance in your application, pass it to useOutputStream()
+ in your setup() function.
  */
 class OStream : public virtual Stream {
   public:
@@ -51,7 +51,7 @@ class OStream : public virtual Stream {
  will be generated if less than 500 ms have elapsed since the last key press.
 
  To use an MacOSKeyboardOStream instance in your application, pass it to
- useOStream() in your setup() function.
+ useOutputStream() in your setup() function.
  */
 class MacOSKeyboardOStream : public OStream {
   public:
@@ -149,7 +149,7 @@ class MacOSKeyboardOStream : public OStream {
  will be generated if less than 500 ms have elapsed since the last double-click.
 
  To use an MacOSMouseOStream instance in your application, pass it to
- useOStream() in your setup() function.
+ useOutputStream() in your setup() function.
  */
 class MacOSMouseOStream : public OStream {
   public:
@@ -240,8 +240,8 @@ private:
  made once, when ESP first starts, and is not restored if the other side
  disconnects.
 
- To use an TcpOStream instance in your application, pass it to useOStream() in
- your setup() function.
+ To use an TcpOStream instance in your application, pass it to
+ useOutputStream() in your setup() function.
  */
 class TcpOStream : public OStream {
   public:
@@ -325,11 +325,16 @@ private:
 };
 
 /**
- @brief Specify the OStream to use.
+ @brief Specify the OStream to which to stream predictions made by the active
+ ESP pipeline.
  
  Note that currently only one OStream is supported at a time. Subsequent calls
- to useOStream() will replace the previously-specified streams.
+ to useOutputStream() will replace the previously-specified streams.
+ 
+ See also: useInputStream() to specify the input stream (from which to read
+ sensor data into the ESP pipeline); and useStream() to specify a single
+ stream for both input and output.
  
  @param stream: the OStream to use
  */
-void useOStream(OStream &stream);
+void useOutputStream(OStream &stream);

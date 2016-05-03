@@ -83,3 +83,15 @@ class ASCIISerialStream : public IOStream {
     void readSerial();
 };
 
+/**
+ Tells the ESP system which stream to use, for both input and output. Call
+ from your setup() function. The specified stream will be automatically
+ started by the ESP system. Note that only one i/o stream is supported;
+ subsequent calls to useStream() will replace the previously-specified stream,
+ as well as any input streams specified using useInputStream() and ouput
+ streams specified using useOutputStream()).
+
+ @param stream: the stream to use for input and output
+ */
+void useStream(IOStream &stream);
+
