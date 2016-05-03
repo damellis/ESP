@@ -132,12 +132,18 @@ Inheritance diagram for ASCIISerialStream:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a0c2dc56b1a52c6e089c94b92bf87c6c4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_s_c_i_i_serial_stream.html#a0c2dc56b1a52c6e089c94b92bf87c6c4">ASCIISerialStream</a> (uint32_t port, uint32_t baud, uint32_t numDimensions)</td></tr>
 <tr class="separator:a0c2dc56b1a52c6e089c94b92bf87c6c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7bfc32bd0760e174fbcef7e31c76a31"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_s_c_i_i_serial_stream.html#ac7bfc32bd0760e174fbcef7e31c76a31">ASCIISerialStream</a> (uint32_t baud, uint32_t numDimensions)</td></tr>
+<tr class="separator:ac7bfc32bd0760e174fbcef7e31c76a31"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a25527534c54bf6a6e0d9c41b7f62e4a6"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_s_c_i_i_serial_stream.html#a25527534c54bf6a6e0d9c41b7f62e4a6">start</a> () final</td></tr>
 <tr class="separator:a25527534c54bf6a6e0d9c41b7f62e4a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e2bf766911928d1d6d061ce1b90d5ba"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_s_c_i_i_serial_stream.html#a6e2bf766911928d1d6d061ce1b90d5ba">stop</a> () final</td></tr>
 <tr class="separator:a6e2bf766911928d1d6d061ce1b90d5ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a029d65fca103c025a73691d848338fec"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_s_c_i_i_serial_stream.html#a029d65fca103c025a73691d848338fec">getNumInputDimensions</a> () final</td></tr>
 <tr class="separator:a029d65fca103c025a73691d848338fec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0fa19c77f893c9480510b66f76849389"><td class="memItemLeft" align="right" valign="top">vector&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_s_c_i_i_serial_stream.html#a0fa19c77f893c9480510b66f76849389">getSerialDeviceList</a> ()</td></tr>
+<tr class="separator:a0fa19c77f893c9480510b66f76849389"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7d18d192f4bf012ff51f356636861f5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_s_c_i_i_serial_stream.html#aa7d18d192f4bf012ff51f356636861f5">selectSerialDevice</a> (uint32_t port)</td></tr>
+<tr class="separator:aa7d18d192f4bf012ff51f356636861f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_i_stream"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_i_stream')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_i_stream.html">IStream</a></td></tr>
 <tr class="memitem:a7b60704e8dd3872a5b2d131b162ab868 inherit pub_methods_class_i_stream"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_stream.html#a7b60704e8dd3872a5b2d131b162ab868">IStream</a> ()</td></tr>
 <tr class="separator:a7b60704e8dd3872a5b2d131b162ab868 inherit pub_methods_class_i_stream"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -191,7 +197,8 @@ Additional Inherited Members</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Input stream for reading ASCII data from a (USB) serial port. </p>
-<p>Data should be formatted as ASCII text, in newline-terminated lines. Each line consists of whitespace-separated numbers, e.g. </p><pre class="fragment">123 45 678 90 </pre><p>To use an <a class="el" href="class_a_s_c_i_i_serial_stream.html" title="Input stream for reading ASCII data from a (USB) serial port. ">ASCIISerialStream</a> in your application, pass it to <a class="el" href="istream_8cpp.html#ac134b04107cbfe98c9b2bcfdc1622413">useStream()</a> in your <a class="el" href="user__accelerometer__gestures_8h.html#a4fc01d736fe50cf5b977f755b675f11d">setup()</a> function. </p>
+<p>Data should be formatted as ASCII text, in newline-terminated lines. Each line consists of whitespace-separated numbers, e.g. </p><pre class="fragment">123 45 678 90 </pre><p> The numbers in each line of text are turned into a single data sample.</p>
+<p>To use an <a class="el" href="class_a_s_c_i_i_serial_stream.html" title="Input stream for reading ASCII data from a (USB) serial port. ">ASCIISerialStream</a> in your application, pass it to <a class="el" href="istream_8cpp.html#ac134b04107cbfe98c9b2bcfdc1622413">useStream()</a> in your <a class="el" href="user__accelerometer__gestures_8h.html#a4fc01d736fe50cf5b977f755b675f11d">setup()</a> function. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a0c2dc56b1a52c6e089c94b92bf87c6c4"></a>
 <div class="memitem">
@@ -234,6 +241,41 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="ac7bfc32bd0760e174fbcef7e31c76a31"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ASCIISerialStream::ASCIISerialStream </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>baud</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>numDimensions</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Create an <a class="el" href="class_a_s_c_i_i_serial_stream.html" title="Input stream for reading ASCII data from a (USB) serial port. ">ASCIISerialStream</a> instance.</p>
+<p>This constructor doesn't require USB port so users will be asked to select them at runtime.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">baud</td><td>the baud rate at which to communicate with the serial port </td></tr>
+    <tr><td class="paramname">numDimensions</td><td>the number of dimensions in the data that will come from the serial port (i.e. the number of numbers in each line of data). </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a029d65fca103c025a73691d848338fec"></a>
 <div class="memitem">
@@ -258,6 +300,53 @@ Additional Inherited Members</h2></td></tr>
 <p>Get the number of dimensions of the data that's provided by the input stream (before it's run through the normalizer, if any). </p>
 
 <p>Implements <a class="el" href="class_i_stream.html#a8abc256ea633733ffac5eabe3ee7f71e">IStream</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a0fa19c77f893c9480510b66f76849389"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">vector&lt;string&gt; ASCIISerialStream::getSerialDeviceList </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="aa7d18d192f4bf012ff51f356636861f5"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool ASCIISerialStream::selectSerialDevice </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>port</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>

@@ -10,6 +10,9 @@ var hierarchy =
       [ "FirmataStream", "class_firmata_stream.html", null ],
       [ "SerialStream", "class_serial_stream.html", null ]
     ] ],
+    [ "Observer", null, [
+      [ "ofApp", "classof_app.html", null ]
+    ] ],
     [ "ofBaseApp", null, [
       [ "AudioStream", "class_audio_stream.html", null ],
       [ "ofApp", "classof_app.html", null ]

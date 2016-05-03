@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['update',['update',['../classof_app.html#afef41ea4aee5a22ea530afba33ae7a7b',1,'ofApp']]],
+  ['update',['update',['../classof_app.html#a8680f78f6fa3b5ef74833027b0b80e9b',1,'ofApp']]],
   ['useanalogpin',['useAnalogPin',['../class_firmata_stream.html#a31af414f0859a05f44aeddaa2ce40e86',1,'FirmataStream']]],
   ['usecalibrator',['useCalibrator',['../calibrator_8cpp.html#aa56b17a8db41c36d20d29c360cd4b5bd',1,'useCalibrator(Calibrator &amp;calibrator):&#160;calibrator.cpp'],['../calibrator_8h.html#aa56b17a8db41c36d20d29c360cd4b5bd',1,'useCalibrator(Calibrator &amp;calibrator):&#160;calibrator.cpp']]],
   ['usenormalizer',['useNormalizer',['../class_i_stream.html#af49e0329f543fa8165d54664e713c9c6',1,'IStream::useNormalizer(normalizeFunc f)'],['../class_i_stream.html#a735f29a1bce1791514aec9c7e003df95',1,'IStream::useNormalizer(vectorNormalizeFunc f)']]],

@@ -115,6 +115,9 @@ $(document).ready(function(){initNavTree('class_o_stream.html','');});
 </div><!--header-->
 <div class="contents">
 
+<p>Base class for output streams that forward ESP prediction results to other systems.  
+ <a href="class_o_stream.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="ostream_8h_source.html">ostream.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for OStream:</div>
@@ -122,9 +125,9 @@ Inheritance diagram for OStream:</div>
  <div class="center">
   <img src="class_o_stream.png" usemap="#OStream_map" alt=""/>
   <map id="OStream_map" name="OStream_map">
-<area href="class_mac_o_s_keyboard_o_stream.html" alt="MacOSKeyboardOStream" shape="rect" coords="0,56,159,80"/>
-<area href="class_mac_o_s_mouse_o_stream.html" alt="MacOSMouseOStream" shape="rect" coords="169,56,328,80"/>
-<area href="class_tcp_o_stream.html" alt="TcpOStream" shape="rect" coords="338,56,497,80"/>
+<area href="class_mac_o_s_keyboard_o_stream.html" title="Emulate keyboard key presses corresponding to prediction results. " alt="MacOSKeyboardOStream" shape="rect" coords="0,56,159,80"/>
+<area href="class_mac_o_s_mouse_o_stream.html" title="Emulate mouse double-clicks at locations corresponding to prediction results. " alt="MacOSMouseOStream" shape="rect" coords="169,56,328,80"/>
+<area href="class_tcp_o_stream.html" title="Send strings over a TCP socket based on pipeline predictions. " alt="TcpOStream" shape="rect" coords="338,56,497,80"/>
 </map>
  </div></div>
 <table class="memberdecls">
@@ -142,7 +145,10 @@ Protected Attributes</h2></td></tr>
 <tr class="memitem:af419a94c2926445393721545d4129725"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_o_stream.html#af419a94c2926445393721545d4129725">has_started_</a> = false</td></tr>
 <tr class="separator:af419a94c2926445393721545d4129725"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Base class for output streams that forward ESP prediction results to other systems. </p>
+<p>To use an <a class="el" href="class_o_stream.html" title="Base class for output streams that forward ESP prediction results to other systems. ">OStream</a> instance in your application, pass it to <a class="el" href="ostream_8cpp.html#a35fe680d22f1f003291694660486f403" title="Specify the OStream to use. ">useOStream()</a> in your <a class="el" href="user__accelerometer__gestures_8h.html#a4fc01d736fe50cf5b977f755b675f11d">setup()</a> function. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="acd1184d24a5f916fa8e6790b0b9006eb"></a>
 <div class="memitem">
 <div class="memproto">

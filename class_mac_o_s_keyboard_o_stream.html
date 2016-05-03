@@ -114,6 +114,9 @@ $(document).ready(function(){initNavTree('class_mac_o_s_keyboard_o_stream.html',
 </div><!--header-->
 <div class="contents">
 
+<p>Emulate keyboard key presses corresponding to prediction results.  
+ <a href="class_mac_o_s_keyboard_o_stream.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="ostream_8h_source.html">ostream.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for MacOSKeyboardOStream:</div>
@@ -121,15 +124,17 @@ Inheritance diagram for MacOSKeyboardOStream:</div>
  <div class="center">
   <img src="class_mac_o_s_keyboard_o_stream.png" usemap="#MacOSKeyboardOStream_map" alt=""/>
   <map id="MacOSKeyboardOStream_map" name="MacOSKeyboardOStream_map">
-<area href="class_o_stream.html" alt="OStream" shape="rect" coords="0,0,159,24"/>
+<area href="class_o_stream.html" title="Base class for output streams that forward ESP prediction results to other systems. " alt="OStream" shape="rect" coords="0,0,159,24"/>
 </map>
  </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ab440b9df1a731ce5bf47c25b5b08ccce"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mac_o_s_keyboard_o_stream.html#ab440b9df1a731ce5bf47c25b5b08ccce">MacOSKeyboardOStream</a> (std::map&lt; uint32_t, char &gt; key_mapping)</td></tr>
+<tr class="memdesc:ab440b9df1a731ce5bf47c25b5b08ccce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a <a class="el" href="class_mac_o_s_keyboard_o_stream.html" title="Emulate keyboard key presses corresponding to prediction results. ">MacOSKeyboardOStream</a> instance, specifying the key presses to emulate for each predicted class label.  <a href="#ab440b9df1a731ce5bf47c25b5b08ccce">More...</a><br /></td></tr>
 <tr class="separator:ab440b9df1a731ce5bf47c25b5b08ccce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afa43bc4e4457b42e83798dffc2d26159"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mac_o_s_keyboard_o_stream.html#afa43bc4e4457b42e83798dffc2d26159">MacOSKeyboardOStream</a> (uint32_t count,...)</td></tr>
+<tr class="memdesc:afa43bc4e4457b42e83798dffc2d26159"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a <a class="el" href="class_mac_o_s_keyboard_o_stream.html" title="Emulate keyboard key presses corresponding to prediction results. ">MacOSKeyboardOStream</a> instance, specifying the key presses to emulate for each predicted class label.  <a href="#afa43bc4e4457b42e83798dffc2d26159">More...</a><br /></td></tr>
 <tr class="separator:afa43bc4e4457b42e83798dffc2d26159"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afc7e6f75b0ff7d7bd6c47ba6298cc1ad"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mac_o_s_keyboard_o_stream.html#afc7e6f75b0ff7d7bd6c47ba6298cc1ad">onReceive</a> (uint32_t label)</td></tr>
 <tr class="separator:afc7e6f75b0ff7d7bd6c47ba6298cc1ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -145,7 +150,11 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memitem:af419a94c2926445393721545d4129725 inherit pro_attribs_class_o_stream"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_o_stream.html#af419a94c2926445393721545d4129725">has_started_</a> = false</td></tr>
 <tr class="separator:af419a94c2926445393721545d4129725 inherit pro_attribs_class_o_stream"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Emulate keyboard key presses corresponding to prediction results. </p>
+<p>This class generates a key-down then key-up command for keys corresponding to class labels predicted by the current pipeline. The mapping from class labels to keys is specified in the constructor. Note that no key press will be generated if less than 500 ms have elapsed since the last key press.</p>
+<p>To use an <a class="el" href="class_mac_o_s_keyboard_o_stream.html" title="Emulate keyboard key presses corresponding to prediction results. ">MacOSKeyboardOStream</a> instance in your application, pass it to <a class="el" href="ostream_8cpp.html#a35fe680d22f1f003291694660486f403" title="Specify the OStream to use. ">useOStream()</a> in your <a class="el" href="user__accelerometer__gestures_8h.html#a4fc01d736fe50cf5b977f755b675f11d">setup()</a> function. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="ab440b9df1a731ce5bf47c25b5b08ccce"></a>
 <div class="memitem">
 <div class="memproto">
@@ -167,6 +176,14 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Create a <a class="el" href="class_mac_o_s_keyboard_o_stream.html" title="Emulate keyboard key presses corresponding to prediction results. ">MacOSKeyboardOStream</a> instance, specifying the key presses to emulate for each predicted class label. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">key_mapping</td><td>a map from predicted class labels to keys. Note that class 0 is the GRT's special null prediction label and is not used to generate key presses. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -201,6 +218,15 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Create a <a class="el" href="class_mac_o_s_keyboard_o_stream.html" title="Emulate keyboard key presses corresponding to prediction results. ">MacOSKeyboardOStream</a> instance, specifying the key presses to emulate for each predicted class label. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">count</td><td>the number of keys specified </td></tr>
+    <tr><td class="paramname">...</td><td>the key to "press" upon prediction of the corresponding class label. Each key is a UTF16 character passed as an int. The first key specified corresponds to class label 1, the second to class label 2, etc. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

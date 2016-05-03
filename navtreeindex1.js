@@ -1,5 +1,9 @@
 var NAVTREEINDEX1 =
 {
+"user__accelerometer__gestures_8h.html#addc7ddd3b45227e1cd1b2c862a63534a":[1,0,0,15,10],
+"user__accelerometer__gestures_8h_source.html":[1,0,0,15],
+"user__accelerometer__poses_8h.html":[1,0,0,16],
+"user__accelerometer__poses_8h.html#a2dfd966029091cbf3bc049ece6a957ce":[1,0,0,16,9],
 "user__accelerometer__poses_8h.html#a493b57f443cc38b3d3df9c1e584d9d82":[1,0,0,16,14],
 "user__accelerometer__poses_8h.html#a4fc01d736fe50cf5b977f755b675f11d":[1,0,0,16,6],
 "user__accelerometer__poses_8h.html#a6423f81bc2d048133f946ad3c0c22aaf":[1,0,0,16,11],

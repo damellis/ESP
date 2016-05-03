@@ -12,8 +12,9 @@ var searchData=
   ['getranges',['getRanges',['../class_plotter.html#a39a8239c89e8d77da437011f40ef6b59',1,'Plotter']]],
   ['getselecteddata',['getSelectedData',['../class_interactive_time_series_plot.html#a79e99237072f9f9a1580f98c0a584544',1,'InteractiveTimeSeriesPlot']]],
   ['getselection',['getSelection',['../class_plotter.html#a414d068ad8a83b50fe511b7d75a350b6',1,'Plotter']]],
+  ['getserialdevicelist',['getSerialDeviceList',['../class_a_s_c_i_i_serial_stream.html#a0fa19c77f893c9480510b66f76849389',1,'ASCIISerialStream']]],
   ['gettitle',['getTitle',['../class_plotter.html#abfcc8916b55235fea0425d747f5be768',1,'Plotter']]],
   ['gettype',['getType',['../class_tuneable.html#a617dd226d19f0dcd32cb3a0b5e8ecc52',1,'Tuneable']]],
   ['getuiaddress',['getUIAddress',['../class_tuneable.html#abcdda8d4277c8fbff8107078b45a33c9',1,'Tuneable']]],
-  ['gotmessage',['gotMessage',['../classof_app.html#a885672a72340a5e998af1d16718dc766',1,'ofApp']]]
+  ['gotmessage',['gotMessage',['../classof_app.html#aea71298b6d1720b3bd8fcdd4628fb41f',1,'ofApp']]]
 ];

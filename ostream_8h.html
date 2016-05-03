@@ -112,6 +112,9 @@ $(document).ready(function(){initNavTree('ostream_8h.html','');});
 <div class="title">ostream.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><a class="el" href="class_o_stream.html" title="Base class for output streams that forward ESP prediction results to other systems. ">OStream</a> supports emitting prediction results to some downstream consumers, e.g. Mac OS Keyboard Emulator, OSC Stream, TCP Stream, etc.  
+<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;ApplicationServices/ApplicationServices.h&gt;</code><br />
 <code>#include &lt;stdarg.h&gt;</code><br />
 <code>#include &lt;stdint.h&gt;</code><br />
@@ -127,17 +130,22 @@ $(document).ready(function(){initNavTree('ostream_8h.html','');});
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_o_stream.html">OStream</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base class for output streams that forward ESP prediction results to other systems.  <a href="class_o_stream.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mac_o_s_keyboard_o_stream.html">MacOSKeyboardOStream</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emulate keyboard key presses corresponding to prediction results.  <a href="class_mac_o_s_keyboard_o_stream.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mac_o_s_mouse_o_stream.html">MacOSMouseOStream</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emulate mouse double-clicks at locations corresponding to prediction results.  <a href="class_mac_o_s_mouse_o_stream.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tcp_o_stream.html">TcpOStream</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send strings over a TCP socket based on pipeline predictions.  <a href="class_tcp_o_stream.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a35fe680d22f1f003291694660486f403"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ostream_8h.html#a35fe680d22f1f003291694660486f403">useOStream</a> (<a class="el" href="class_o_stream.html">OStream</a> &amp;<a class="el" href="user__color__sensor_8h.html#a9d7a960e4cf7cb51ba843e63f5704d54">stream</a>)</td></tr>
+<tr class="memdesc:a35fe680d22f1f003291694660486f403"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specify the <a class="el" href="class_o_stream.html" title="Base class for output streams that forward ESP prediction results to other systems. ">OStream</a> to use.  <a href="#a35fe680d22f1f003291694660486f403">More...</a><br /></td></tr>
 <tr class="separator:a35fe680d22f1f003291694660486f403"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
@@ -145,7 +153,13 @@ Variables</h2></td></tr>
 <tr class="memitem:a2c0918946b2cc90bd6a19c497d5f0c8e"><td class="memItemLeft" align="right" valign="top">const uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ostream_8h.html#a2c0918946b2cc90bd6a19c497d5f0c8e">kGracePeriod</a> = 500</td></tr>
 <tr class="separator:a2c0918946b2cc90bd6a19c497d5f0c8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p><a class="el" href="class_o_stream.html" title="Base class for output streams that forward ESP prediction results to other systems. ">OStream</a> supports emitting prediction results to some downstream consumers, e.g. Mac OS Keyboard Emulator, OSC Stream, TCP Stream, etc. </p>
+<pre class="fragment">* MacOSKeyboardOStream ostream(3, '\0', 'f', 'd');
+* MacOSMouseOStream ostream(3, 0, 0, 240, 240, 400, 400);
+* TcpOStream ostream("localhost", 9999, 3, "", "mouse 300, 300.", "mouse 400, 400.");
+* TcpOStream ostream("localhost", 5204, 3, "l", "r", " ");
+* </pre> </div><h2 class="groupheader">Function Documentation</h2>
 <a class="anchor" id="a35fe680d22f1f003291694660486f403"></a>
 <div class="memitem">
 <div class="memproto">
@@ -159,6 +173,15 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Specify the <a class="el" href="class_o_stream.html" title="Base class for output streams that forward ESP prediction results to other systems. ">OStream</a> to use. </p>
+<p>Note that currently only one <a class="el" href="class_o_stream.html" title="Base class for output streams that forward ESP prediction results to other systems. ">OStream</a> is supported at a time. Subsequent calls to <a class="el" href="ostream_8h.html#a35fe680d22f1f003291694660486f403" title="Specify the OStream to use. ">useOStream()</a> will replace the previously-specified streams.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">stream</td><td>the <a class="el" href="class_o_stream.html" title="Base class for output streams that forward ESP prediction results to other systems. ">OStream</a> to use </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
