@@ -57,6 +57,8 @@ class CalibrateProcess {
  A Calibrator consists of two basic parts. The calibration function transforms
  each sample of incoming live sensor data. It's called with data coming from
  the input stream and its output is passed to the machine learning pipeline.
+ Note that incoming data is processed by the calibration function before being
+ stored in a training sample (i.e. training samples record calibrated data).
  
  The calibration processes (CalibrateProcess instances) consist of a data
  sample to be collected by the user and a callback for processing that data
