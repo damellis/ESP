@@ -135,7 +135,6 @@ bool Plotter::draw(uint32_t x, uint32_t y, uint32_t w, uint32_t h) {
     ofNoFill();
     for(uint32_t n = 0; n < num_dimensions_; n++){
         xPos = 0;
-        index = 0;
         ofSetColor(colors_[n][0], colors_[n][1], colors_[n][2]);
         ofBeginShape();
         for(uint32_t i = 0; i < data_.getNumRows(); i++){

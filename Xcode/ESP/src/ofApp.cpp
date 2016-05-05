@@ -891,6 +891,9 @@ void ofApp::draw() {
     ofDrawLine(tab_start + kTabWidth, ceiling, tab_start + kTabWidth, bottom);
     ofDrawLine(tab_start + kTabWidth, bottom, ofGetWidth(), bottom);
 
+    // Status text at the bottom
+    ofDrawBitmapString(status_text_, left_margin, ofGetHeight() - 20);
+
     if (!gui_hide_) {
         gui_.draw();
     }
@@ -900,7 +903,7 @@ void ofApp::drawCalibration() {
     uint32_t margin = 30;
     uint32_t stage_left = 10;
     uint32_t stage_top = 70;
-    uint32_t stage_height = (ofGetHeight() - stage_top - margin * 2) / 2;
+    uint32_t stage_height = (ofGetHeight() - stage_top - margin * 3) / 2;
     uint32_t stage_width = ofGetWidth() - margin;
 
     // 1. Draw Input.
@@ -974,9 +977,6 @@ void ofApp::drawTrainingInfo() {
     uint32_t stage_top = margin_top;
     uint32_t stage_width = ofGetWidth() - margin;
     uint32_t stage_height = (ofGetHeight() - 200 - 4 * margin) / 2;
-
-    // 0. Show status at the bottom
-    ofDrawBitmapString(status_text_, stage_left, ofGetHeight() - 20);
 
     // 1. Draw Input
     if (!is_in_feature_view_) {
@@ -1073,7 +1073,7 @@ void ofApp::drawAnalysis() {
     uint32_t stage_left = margin_left;
     uint32_t stage_top = margin_top;
     uint32_t stage_width = ofGetWidth() - margin;
-    uint32_t stage_height = (ofGetHeight() - 3 * margin - margin_top) / 2.25;
+    uint32_t stage_height = (ofGetHeight() - 4 * margin - margin_top) / 2.25;
 
     // 1. Draw Input
     ofPushStyle();
@@ -1089,7 +1089,6 @@ void ofApp::drawAnalysis() {
     ofPushStyle();
     plot_testdata_overview_.draw(stage_left, stage_top, stage_width, stage_height / 4);
     ofPopStyle();
-    stage_top += stage_height / 4 + margin;
 }
 
 void ofApp::exit() {
