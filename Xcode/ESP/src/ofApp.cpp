@@ -394,6 +394,8 @@ void ofApp::populateSampleFeatures(uint32_t sample_index) {
             MatrixDouble feature_matrix;
             feature_matrix.resize(feature.size(), 1);
             feature_matrix.setColVector(feature, 0);
+            sample_feature_ranges_[0].first = feature_matrix.getMinValue();
+            sample_feature_ranges_[0].second = feature_matrix.getMaxValue();
             feature_plots[0].setData(feature_matrix);
         }
     }
