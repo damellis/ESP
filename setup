@@ -2,10 +2,10 @@
 
 OF_RELEASE=http://openframeworks.cc/versions/v0.9.3/of_v0.9.3_osx_release.zip
 
-## Stop on any error
+## Stop on any error.
 set -e
 
-## Default we use openframework release
+## Default we show help message.
 if [ $# -ge 1 ]; then
     TYPE=$1
 else
