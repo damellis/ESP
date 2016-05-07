@@ -1,17 +1,65 @@
 #!/bin/bash
 
-git submodule init
-git submodule update --depth 1 -- third-party/openFrameworks
-git submodule update
+OF_RELEASE=http://openframeworks.cc/versions/v0.9.3/of_v0.9.3_osx_release.zip
+
+## Stop on any error
+set -e
+
+## Default we use openframework release
+if [ $# -ge 1 ]; then
+    TYPE=$1
+else
+    TYPE=help
+fi
+
+case $TYPE in
+    help)
+        echo "./setup [type]"
+        echo
+        echo "type is one of the following:"
+        echo "  minimal: download and install openframework from release"
+        echo "  full   : clone the full openframework git repository"
+        exit
+        ;;
+    minimal)
+        echo "Install openframework from release"
+        curl $OF_RELEASE > third-party/of.zip
+        unzip third-party/.zip -d third-party
+        mv third-part/of_v0.9.3_osx_release third-part/openFrameworks
+        rm -rf third-part/of.zip
+        ;;
+    full)
+        echo "Install openframework from its github repository"
+        echo "!!! Not recommended!"
+
+case $TYPE in
+    help)
+        echo "./setup [type]"
+        echo
+        echo "type is one of the following:"
+        echo "  minimal: download and install openframework from release"
+        echo "  full   : clone the full openframework git repository"
+        exit
+        ;;
+    minimal)
+        echo "Install openframework from release"
+        curl $OF_RELEASE > third-party/of.zip
+        unzip third-party/.zip -d third-party
+        mv third-part/of_v0.9.3_osx_release third-part/openFrameworks
+        rm -rf third-part/of.zip
+
+        git submodule init
+        git submodule update -- third-party/ofxGrt
+        git submodule update -- third-party/ofxDatGui
+        git submodule update -- third-party/ofxParagraph
+        ;;
+    full)
+        echo "Install openframework from its github repository"
+        git submodule init
+        git submodule update
+        ;;
+esac
+
 ln -s $(pwd)/third-party/ofxGrt/ third-party/openFrameworks/addons/ofxGrt
 ln -s $(pwd)/third-party/ofxDatGui/ third-party/openFrameworks/addons/ofxDatGui
 ln -s $(pwd)/third-party/ofxParagraph/ third-party/openFrameworks/addons/ofxParagraph
-
-# uncomment the following lines to build the grt
-# this shouldn't be needed, as libgrt.dylib is included in the Xcode project
-#cd third-party/grt/build
-#mkdir tmp
-#cd tmp
-#cmake ..
-#make
-#sudo make install
