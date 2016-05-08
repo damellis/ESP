@@ -572,6 +572,7 @@ void ofApp::onSerialSelectionDropdownEvent(ofxDatGuiDropdownEvent e) {
             serial_selection_dropdown_->collapse();
             serial_selection_dropdown_->setVisible(false);
             gui_.collapse();
+            status_text_ = "";
         } else {
             status_text_ = "Please select another serial port!";
         }
