@@ -25,7 +25,9 @@ double null_rej = 0.4;
 void setup()
 {
     stream.setLabelsForAllDimensions({"x", "y", "z"});
-    useStream(stream);
+    useInputStream(stream);
+    useOutputStream(oStream);
+    //useStream(stream);
 
     calibrator.setCalibrateFunction(processAccelerometerData);
     calibrator.addCalibrateProcess("Resting",
@@ -44,6 +46,4 @@ void setup()
         "Timeout",
         "How long (in milliseconds) to wait after recognizing a "
         "gesture before recognizing another one.");
-
-    useOStream(oStream);
 }

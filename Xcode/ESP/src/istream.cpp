@@ -4,8 +4,8 @@
 #include <chrono>         // std::chrono::milliseconds
 #include <thread>         // std::this_thread::sleep_for
 
-void useStream(IStream &stream) {
-    ((ofApp *) ofGetAppPtr())->useStream(stream);
+void useInputStream(IStream &stream) {
+    ((ofApp *) ofGetAppPtr())->useIStream(stream);
 }
 
 void usePipeline(GRT::GestureRecognitionPipeline &pipeline) {

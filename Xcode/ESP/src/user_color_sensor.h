@@ -24,7 +24,9 @@ int timeout = 100;
 void setup() {
     stream.useNormalizer(normalize);
     stream.setLabelsForAllDimensions({"red", "green", "blue"});
-    useStream(stream);
+    useInputStream(stream);
+    useOutputStream(oStream);
+    // useStream(stream);
 
     pipeline.addPreProcessingModule(MovingAverageFilter(5, 3));
     // use scaling, use null rejection, null rejection parameter
@@ -38,7 +40,6 @@ void setup() {
         pipeline.addPostProcessingModule(ClassLabelTimeoutFilter(timeout));
 
     usePipeline(pipeline);
-    useOStream(oStream);
 
     registerTuneable(always_pick_something, "Always Pick Something",
         "Whether to always pick (predict) one of the classes of training data, "

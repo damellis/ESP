@@ -49,8 +49,8 @@ void setup() {
             .addCalibrateProcess("Bias", "Remain silent", backgroundCollected)
             .addCalibrateProcess("Range", "Shout as much as possible", shoutCollected);
 
-    useStream(stream);
+    useInputStream(stream);
     useCalibrator(calibrator);
     usePipeline(pipeline);
-    // useOStream(o_stream);
+    // useOutputStream(o_stream);
 }

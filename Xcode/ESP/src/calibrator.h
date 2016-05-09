@@ -57,6 +57,8 @@ class CalibrateProcess {
  A Calibrator consists of two basic parts. The calibration function transforms
  each sample of incoming live sensor data. It's called with data coming from
  the input stream and its output is passed to the machine learning pipeline.
+ Note that incoming data is processed by the calibration function before being
+ stored in a training sample (i.e. training samples record calibrated data).
  
  The calibration processes (CalibrateProcess instances) consist of a data
  sample to be collected by the user and a callback for processing that data
@@ -219,8 +221,8 @@ class Calibrator {
  @brief Specify the Calibrator to be used by the ESP system.
  
  This Calibrator will be applied to data coming from the current input stream
- (IStream instance specified by useStream()) before it is passed to the current
- machine learning pipeline (GestureRecognitionPipeline specified by 
+ (IStream instance specified by useInputStream()) before it is passed to the
+ current machine learning pipeline (GestureRecognitionPipeline specified by 
  usePipeline()). Only one calibrator can be active at a time, but it can
  include multiple CalibrateProcess instances, each of which specifies one
  sample of calibration data to be collected by the user.

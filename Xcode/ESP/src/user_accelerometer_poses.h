@@ -62,7 +62,9 @@ void setup()
 {
     stream.useNormalizer(normalizeADXL335);
     stream.setLabelsForAllDimensions({"x", "y", "z"});
-    useStream(stream);
+    useInputStream(stream);
+    useOutputStream(oStream);
+    //useStream(stream);
 
     calibrator.setCalibrateFunction(processAccelerometerData);
     // The elaborate version is:
@@ -98,6 +100,4 @@ void setup()
         "How long (in milliseconds) to wait after recognizing a class before "
         "recognizing a different one. Only used if 'Send Repeated Predictions' "
         "is selected.");
-
-    useOStream(oStream);
 }

@@ -1,6 +1,6 @@
 #include "ofApp.h"
 #include "ostream.h"
 
-void useOStream(OStream &stream) {
+void useOutputStream(OStream &stream) {
     ((ofApp *) ofGetAppPtr())->useOStream(stream);
 }

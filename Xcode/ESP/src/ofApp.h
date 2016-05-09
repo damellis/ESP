@@ -58,14 +58,15 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     void drawAnalysis();
 
     void useCalibrator(Calibrator &calibrator);
-    void useStream(IStream &stream);
     void usePipeline(GRT::GestureRecognitionPipeline &pipeline);
+    void useIStream(IStream &stream);
     void useOStream(OStream &stream);
 
     friend void useCalibrator(Calibrator &calibrator);
-    friend void useStream(IStream &stream);
     friend void usePipeline(GRT::GestureRecognitionPipeline &pipeline);
-    friend void useOStream(OStream &stream);
+    friend void useInputStream(IStream &stream);
+    friend void useOutputStream(OStream &stream);
+    friend void useStream(IOStream &stream);
 
     uint32_t num_pipeline_stages_;
 
