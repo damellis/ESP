@@ -26,6 +26,7 @@ case $TYPE in
         curl $OF_RELEASE > third-party/of.zip
         unzip -q third-party/of.zip -d third-party
         cd third-party
+        rm -f openFramework
         mv of_v0.9.3_osx_release openFrameworks
         rm -f of.zip
         cd ..
