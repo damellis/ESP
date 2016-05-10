@@ -24,9 +24,11 @@ case $TYPE in
     minimal)
         echo "Install openframework from release"
         curl $OF_RELEASE > third-party/of.zip
-        unzip third-party/.zip -d third-party
-        mv third-part/of_v0.9.3_osx_release third-part/openFrameworks
-        rm -rf third-part/of.zip
+        unzip -q third-party/of.zip -d third-party
+        cd third-party
+        mv of_v0.9.3_osx_release openFrameworks
+        rm -f of.zip
+        cd ..
 
         git submodule init
         git submodule update -- third-party/ofxGrt
