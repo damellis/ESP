@@ -15,7 +15,7 @@ To install, first clone this repository, then run the setup script:
 ```
 git clone https://github.com/damellis/ESP.git
 cd ESP
-./setup
+./setup minimal
 ```
 
 This will clone the relevant git submodules and create some symbolic links.
