@@ -1,9 +1,9 @@
 #include <ESP.h>
 
-ASCIISerialStream stream(0, 9600, 3);
+ASCIISerialStream stream(9600, 3);
 GestureRecognitionPipeline pipeline;
 Calibrator calibrator;
-TcpOStream oStream("localhost", 5204, 3, "l", "r", " ");
+TcpOStream oStream("localhost", 5204);
 
 double zeroG = 0, oneG = 0;
 
@@ -25,7 +25,7 @@ double null_rej = 0.4;
 void setup()
 {
     stream.setLabelsForAllDimensions({"x", "y", "z"});
-    useInputStream(stream);
+    useStream(stream);
     useOutputStream(oStream);
     //useStream(stream);
 
@@ -38,7 +38,7 @@ void setup()
     pipeline.addPostProcessingModule(ClassLabelTimeoutFilter(timeout));
     usePipeline(pipeline);
 
-    registerTuneable(null_rej, 0.1, 25.0, "Variability",
+    registerTuneable(null_rej, 0.1, 5.0, "Variability",
          "How different from the training data a new gesture can be and "
          "still be considered the same gesture. The higher the number, the "
          "more different it can be.");
