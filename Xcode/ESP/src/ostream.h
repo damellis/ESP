@@ -246,6 +246,18 @@ private:
 class TcpOStream : public OStream {
   public:
     /**
+     Create a TCPOStream instance. This passes the predicted class labels
+     directly to the TCP stream, as ASCII-formatted, newline-terminated
+     strings (e.g. class label 1 will be sent as the string "1\n").
+     
+     @param server: the hostname or IP address of the TCP server to connect to
+     @param port: the port of the TCP server to connect to
+     */
+    TcpOStream(string server, int port)
+            : server_(server), port_(port),
+            use_tcp_stream_mapping_(false) {}
+
+    /**
      Create a TCPOStream instance.
      
      @param server: the hostname or IP address of the TCP server to connect to
@@ -259,6 +271,7 @@ class TcpOStream : public OStream {
     TcpOStream(string server, int port,
                std::map<uint32_t, string> tcp_stream_mapping)
             : server_(server), port_(port),
+            use_tcp_stream_mapping_(true),
             tcp_stream_mapping_(tcp_stream_mapping) {
     }
 
@@ -275,7 +288,7 @@ class TcpOStream : public OStream {
      in the provided strings.
      */
     TcpOStream(string server, int port, uint32_t count, ...)
-            : server_(server), port_(port) {
+            : server_(server), port_(port), use_tcp_stream_mapping_(true) {
         va_list args;
         va_start(args, count);
         for (uint32_t i = 1; i <= count; i++) {
@@ -313,7 +326,8 @@ private:
     }
 
     string getStreamString(uint32_t label) {
-        return tcp_stream_mapping_[label];
+        if (use_tcp_stream_mapping_) return tcp_stream_mapping_[label];
+        else return std::to_string(label) + "\n";
     }
 
     string server_;
@@ -322,6 +336,7 @@ private:
 
     uint64_t elapsed_time_ = 0;
     std::map<uint32_t, string> tcp_stream_mapping_;
+    bool use_tcp_stream_mapping_;
 };
 
 /**
