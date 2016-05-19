@@ -340,11 +340,8 @@ private:
 };
 
 /**
- @brief Specify the OStream to which to stream predictions made by the active
- ESP pipeline.
- 
- Note that currently only one OStream is supported at a time. Subsequent calls
- to useOutputStream() will replace the previously-specified streams.
+ @brief Specify an OStream to which to stream predictions made by the active
+ ESP pipeline. Multiple output streams are supported.
  
  See also: useInputStream() to specify the input stream (from which to read
  sensor data into the ESP pipeline); and useStream() to specify a single

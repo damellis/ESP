@@ -77,7 +77,7 @@ void ofApp::useCalibrator(Calibrator &calibrator) {
 }
 
 void ofApp::useIStream(IStream &stream) {
-    istream_ = &stream;
+    if (!setup_finished_) istream_ = &stream;
 }
 
 void ofApp::usePipeline(GRT::GestureRecognitionPipeline &pipeline) {
@@ -85,14 +85,13 @@ void ofApp::usePipeline(GRT::GestureRecognitionPipeline &pipeline) {
 }
 
 void ofApp::useOStream(OStream &stream) {
-    ostream_ = &stream;
+    if (!setup_finished_) ostreams_.push_back(&stream);
 }
 
 // TODO(benzh): initialize other members as well.
 ofApp::ofApp() : fragment_(TRAINING),
                  num_pipeline_stages_(0),
                  calibrator_(nullptr),
-                 ostream_(NULL),
                  should_save_calibration_data_(false),
                  should_save_training_data_(false),
                  should_save_test_data_(false),
@@ -105,10 +104,10 @@ void ofApp::setup() {
     is_recording_ = false;
 
     // setup() is a user-defined function.
-    ::setup();
+    ::setup(); setup_finished_ = true;
 
-    if (ostream_ != NULL) {
-        if (!(ostream_->start())) {
+    for (OStream *ostream : ostreams_) {
+        if (!(ostream->start())) {
             // TODO(benzh) If failed to start, alert in the GUI.
             ofLog(OF_LOG_ERROR) << "failed to connect to ostream";
         }
@@ -771,8 +770,9 @@ void ofApp::update() {
             predicted_class_likelihoods_ = pipeline_->getClassLikelihoods();
             predicted_class_labels_ = pipeline_->getClassifier()->getClassLabels();
 
-            if (ostream_ != NULL && predicted_label_ != 0) {
-                ostream_->onReceive(predicted_label_);
+            if (predicted_label_ != 0) {
+                for (OStream *ostream : ostreams_)
+                    ostream->onReceive(predicted_label_);
             }
         }
 

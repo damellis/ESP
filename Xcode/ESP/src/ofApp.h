@@ -68,6 +68,8 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     friend void useOutputStream(OStream &stream);
     friend void useStream(IOStream &stream);
 
+    bool setup_finished_ = false;
+
     uint32_t num_pipeline_stages_;
 
     // Currently, we support labels (stored in label_) from 1 to 9.
@@ -87,7 +89,7 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     void onDataIn(GRT::MatrixDouble in);
 
     // Input stream, a callback should be registered upon data arrival
-    OStream *ostream_;
+    vector<OStream *> ostreams_;
 
     // When button 1-9 is pressed, is_recording_ will be set and data will be
     // added to sample_data_.
