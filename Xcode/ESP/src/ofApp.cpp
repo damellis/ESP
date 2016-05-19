@@ -840,8 +840,14 @@ void ofApp::draw() {
     const uint32_t top_margin = 20;
     const uint32_t margin = 20;
 
-    ofDrawBitmapString("[C]alibration\t[P]ipeline\t[T]raining\t[A]nalysis",
-                       left_margin, top_margin);
+    if (pipeline_->getClassifier() != nullptr) {
+        ofDrawBitmapString("[C]alibration\t[P]ipeline\t[A]nalysis\t[T]raining",
+                           left_margin, top_margin);
+    } else {
+        ofDrawBitmapString("[C]alibration\t[P]ipeline\t[A]nalysis",
+                           left_margin, top_margin);
+    }
+
     ofColor red = ofColor(0xFF, 0, 0);
     uint32_t tab_start = 0;
     uint32_t kTabWidth = 120;
@@ -862,20 +868,21 @@ void ofApp::draw() {
             drawLivePipeline();
             tab_start += kTabWidth;
             break;
-        case TRAINING:
-            ofDrawColoredBitmapString(red, "\t\t\t\t[T]raining",
-                                      left_margin, top_margin);
-            ofDrawBitmapString(kTrainingInstruction,
-                               left_margin, top_margin + margin);
-            drawTrainingInfo();
-            tab_start +=  2 * kTabWidth;
-            break;
         case ANALYSIS:
-            ofDrawColoredBitmapString(red, "\t\t\t\t\t\t[A]nalysis",
+            ofDrawColoredBitmapString(red, "\t\t\t\t[A]nalysis",
                                       left_margin, top_margin);
             ofDrawBitmapString(kAnalysisInstruction,
                                left_margin, top_margin + margin);
             drawAnalysis();
+            tab_start += 2 * kTabWidth;
+            break;
+        case TRAINING:
+            if (pipeline_->getClassifier() == nullptr) { break; }
+            ofDrawColoredBitmapString(red, "\t\t\t\t\t\t[T]raining",
+                                      left_margin, top_margin);
+            ofDrawBitmapString(kTrainingInstruction,
+                               left_margin, top_margin + margin);
+            drawTrainingInfo();
             tab_start += 3 * kTabWidth;
             break;
         default:
@@ -1335,7 +1342,12 @@ void ofApp::keyPressed(int key){
         // Tab related
         case 'C': fragment_ = CALIBRATION; break;
         case 'P': fragment_ = PIPELINE; break;
-        case 'T': fragment_ = TRAINING; break;
+        case 'T': {
+            if (pipeline_->getClassifier() != nullptr) {
+                fragment_ = TRAINING;
+            }
+            break;
+        }
         case 'A': fragment_ = ANALYSIS; break;
     }
 }
@@ -1459,9 +1471,10 @@ void ofApp::mouseReleased(int x, int y, int button) {
         } else if (x < left_margin + 2 * tab_width) {
             fragment_ = PIPELINE;
         } else if (x < left_margin + 3 * tab_width) {
-            fragment_ = TRAINING;
-        } else if (x < left_margin + 4 * tab_width) {
             fragment_ = ANALYSIS;
+        } else if (x < left_margin + 4 * tab_width
+                   && pipeline_->getClassifier() != nullptr) {
+            fragment_ = TRAINING;
         }
     }
 }

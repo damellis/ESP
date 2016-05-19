@@ -1,6 +1,6 @@
 #include "user_audio_beat.h"
 //#include "user_color_sensor.h"
-//#include "user_accelerometer_calibration.h"
 //#include "user_accelerometer_gestures.h"
 //#include "user_accelerometer_poses.h"
 //#include "user_capacitive_sensing.h"
+//#include "user_sudden_motion.h"
