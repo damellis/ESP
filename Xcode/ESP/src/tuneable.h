@@ -1,7 +1,7 @@
 /**
  @file tuneable.h
  @brief Functions for specifying parameters that can be tuned by the user.
- 
+
  For each tuneable parameter, a corresponding slider or checkbox is created in
  the interface to allow the user to modify the value of that parameter.
  Currently, when the user changes the value of a tuneable parameter, the ESP
@@ -153,7 +153,7 @@ class Tuneable {
  Create a tuneable parameter of type int. This will generate a slider in the
  interface allowing the user to modify the value of the variable referenced by
  this tuneable parameter.
- 
+
  @param value: reference to the variable in which the value of this tuneable
  parameter is stored. The initial value of the tuneable parameter will be taken
  from the value of this variable when this function is called. When the user
@@ -174,7 +174,7 @@ void registerTuneable(int& value, int min, int max,
  Create a tuneable parameter of type double. This will generate a slider in the
  interface allowing the user to modify the value of the variable referenced by
  this tuneable parameter.
- 
+
  @param value: reference to the variable in which the value of this tuneable
  parameter is stored. The initial value of the tuneable parameter will be taken
  from the value of this variable when this function is called. When the user
@@ -194,9 +194,9 @@ void registerTuneable(double& value, double min, double max,
 /**
  Create a tuneable parameter of type bool. This will generate a checkbox in the
  interface allowing the user to modify the value of the variable referenced by
- this tuneable parameter. Checking the checkbox sets the variable to true; 
+ this tuneable parameter. Checking the checkbox sets the variable to true;
  unchecking it sets it to false.
- 
+
  @param value: reference to the variable in which the value of this tuneable
  parameter is stored. The initial value of the tuneable parameter will be taken
  from the value of this variable when this function is called. When the user

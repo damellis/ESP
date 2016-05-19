@@ -13,16 +13,16 @@ git (to clone this repository and its submodules).
 To install, first clone this repository, then run the setup script:
 
 ```
-git clone https://github.com/damellis/sensors.git
-cd sensors
-./setup
+git clone https://github.com/damellis/ESP.git
+cd ESP
+./setup minimal
 ```
 
 This will clone the relevant git submodules and create some symbolic links.
 
 ## Running
 
-The main application is the SmartSensors Xcode project. To select an example
+The main application is the ESP Xcode project. To select an example
 to run, uncomment the corresponding line in user.h. Many of these examples
 expect an Arduino board to be connected to the computer and running an
 appropriate sketch. Example include:

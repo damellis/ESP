@@ -730,9 +730,9 @@
 					"../../third-party/openFrameworks/addons/ofxDatGui/src/libs/ofxSmartFont",
 					"../../third-party/openFrameworks/addons/ofxDatGui/src/themes",
 					"../../third-party/openFrameworks/addons/ofxGrt/src",
-					/usr/local/include,
 					"../../third-party/openFrameworks/addons/ofxGui/src",
 					"../../third-party/openFrameworks/addons/ofxParagraph/src",
+					"../../third-party/grt",
 				);
 				ICON = "$(ICON_NAME_DEBUG)";
 				ICON_FILE = "$(ICON_FILE_PATH)$(ICON)";
@@ -791,9 +791,9 @@
 					"../../third-party/openFrameworks/addons/ofxDatGui/src/libs/ofxSmartFont",
 					"../../third-party/openFrameworks/addons/ofxDatGui/src/themes",
 					"../../third-party/openFrameworks/addons/ofxGrt/src",
-					/usr/local/include,
 					"../../third-party/openFrameworks/addons/ofxGui/src",
 					"../../third-party/openFrameworks/addons/ofxParagraph/src",
+					"../../third-party/grt",
 				);
 				ICON = "$(ICON_NAME_RELEASE)";
 				ICON_FILE = "$(ICON_FILE_PATH)$(ICON)";

@@ -38,7 +38,7 @@ void setup()
     pipeline.addPostProcessingModule(ClassLabelTimeoutFilter(timeout));
     usePipeline(pipeline);
 
-    registerTuneable(null_rej, 1.0, 25.0, "Variability",
+    registerTuneable(null_rej, 0.1, 25.0, "Variability",
          "How different from the training data a new gesture can be and "
          "still be considered the same gesture. The higher the number, the "
          "more different it can be.");
