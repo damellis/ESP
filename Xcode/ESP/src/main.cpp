@@ -4,6 +4,7 @@
 int main( ){
 
     ofSetupOpenGL(1024, 768, OF_WINDOW);
+    ofSetDataPathRoot("../Resources/data/");
     ofxDatGui::setAssetPath("./");
 
     // this kicks off the running of my app
