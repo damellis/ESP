@@ -1,9 +1,14 @@
-int vinpin = A0;
-int voutpin = A1;
-int gndpin = A2;
 int zpin = A3;
 int ypin = A4;
 int xpin = A5;
+
+// Uncomment the following lines if you're using an ADXL335 on an
+// Adafruit breakout board (https://www.adafruit.com/products/163)
+// and want to plug it directly into (and power it from) the analog
+// input pins of your Arduino board.
+//int vinpin = A0;
+//int voutpin = A1;
+//int gndpin = A2;
 
 void setup() {
   Serial.begin(9600);
