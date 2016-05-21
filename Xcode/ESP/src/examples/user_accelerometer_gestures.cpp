@@ -1,3 +1,6 @@
+/** @example user_accelerometer_gestures.cpp
+ * Gesture detection using accelerometers.
+ */
 #include <ESP.h>
 
 ASCIISerialStream stream(9600, 3);

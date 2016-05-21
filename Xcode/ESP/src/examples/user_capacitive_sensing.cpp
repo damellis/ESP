@@ -1,3 +1,6 @@
+/** @example user_capacitive_sensing.cpp
+ * Capacitve sensing.
+ */
 #include <ESP.h>
 
 ASCIISerialStream stream(0, 9600, 12);

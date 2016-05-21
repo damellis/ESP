@@ -1,3 +1,6 @@
+/** @example user_color_sensor.cpp
+ * Color sensing.
+ */
 #include <ESP.h>
 
 // Normalize by dividing each dimension by the total magnitude.

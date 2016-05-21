@@ -1,3 +1,6 @@
+/** @example user_audio_beat.cpp
+ * Audio beat detection examples.
+ */
 #include <ESP.h>
 
 // SerialStream stream(0, 115200);   // 5k sampling rate

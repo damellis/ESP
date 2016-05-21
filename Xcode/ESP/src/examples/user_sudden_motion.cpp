@@ -1,3 +1,6 @@
+/** @example user_sudden_motion.cpp
+ * Detect sudden motions.
+ */
 #include <ESP.h>
 
 ASCIISerialStream stream(0, 9600, 3);

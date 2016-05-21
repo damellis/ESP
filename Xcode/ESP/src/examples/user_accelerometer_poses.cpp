@@ -1,3 +1,6 @@
+/** @example user_accelerometer_poses.cpp
+ * Pose detection using accelerometers.
+ */
 #include <ESP.h>
 
 ASCIISerialStream stream(0, 9600, 3);
