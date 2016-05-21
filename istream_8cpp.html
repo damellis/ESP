@@ -50,6 +50,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
+      <li><a href="examples.html"><span>Examples</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -117,9 +118,9 @@ $(document).ready(function(){initNavTree('istream_8cpp.html','');});
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a28ecae66cc8c204679f3995fafc93ae6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="istream_8cpp.html#a28ecae66cc8c204679f3995fafc93ae6">useInputStream</a> (<a class="el" href="class_i_stream.html">IStream</a> &amp;<a class="el" href="user__color__sensor_8h.html#a9d7a960e4cf7cb51ba843e63f5704d54">stream</a>)</td></tr>
+<tr class="memitem:a28ecae66cc8c204679f3995fafc93ae6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="istream_8cpp.html#a28ecae66cc8c204679f3995fafc93ae6">useInputStream</a> (<a class="el" href="class_i_stream.html">IStream</a> &amp;<a class="el" href="user__sudden__motion_8cpp.html#aa0c0eb30458e60c0433f27b43a4c603e">stream</a>)</td></tr>
 <tr class="separator:a28ecae66cc8c204679f3995fafc93ae6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4e89d8b7f053b8e3f5855d084164b39a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="istream_8cpp.html#a4e89d8b7f053b8e3f5855d084164b39a">usePipeline</a> (GRT::GestureRecognitionPipeline &amp;<a class="el" href="user__color__sensor_8h.html#ad04a77e9fb154385d1f97731437390e4">pipeline</a>)</td></tr>
+<tr class="memitem:a4e89d8b7f053b8e3f5855d084164b39a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="istream_8cpp.html#a4e89d8b7f053b8e3f5855d084164b39a">usePipeline</a> (GRT::GestureRecognitionPipeline &amp;<a class="el" href="user__sudden__motion_8cpp.html#ad04a77e9fb154385d1f97731437390e4">pipeline</a>)</td></tr>
 <tr class="separator:a4e89d8b7f053b8e3f5855d084164b39a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
@@ -136,15 +137,16 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Tells the ESP system from which input stream to read sensor data for processing by the active machine learning pipeline. Call from your <a class="el" href="user__accelerometer__gestures_8h.html#a4fc01d736fe50cf5b977f755b675f11d">setup()</a> function. The specified stream will be automatically started by the ESP system. Note that only one input stream is supported; subsequent calls to <a class="el" href="istream_8h.html#a28ecae66cc8c204679f3995fafc93ae6">useInputStream()</a> will replace the previously-specified stream.</p>
-<p>See also: <a class="el" href="ostream_8cpp.html#a279f55018c4c054ad565198954f8eb16" title="Specify the OStream to which to stream predictions made by the active ESP pipeline. ">useOutputStream()</a> for specifying an output stream (to which to stream the predictions made by the ESP pipeline) and <a class="el" href="iostream_8cpp.html#aff979b7370726d96aac43c99e3f7af10">useStream()</a> to specify a stream to use for both input and output.</p>
+<p>Tells the ESP system from which input stream to read sensor data for processing by the active machine learning pipeline. Call from your <a class="el" href="user__accelerometer__gestures_8cpp.html#a4fc01d736fe50cf5b977f755b675f11d">setup()</a> function. The specified stream will be automatically started by the ESP system. Note that only one input stream is supported; subsequent calls to <a class="el" href="istream_8h.html#a28ecae66cc8c204679f3995fafc93ae6">useInputStream()</a> will replace the previously-specified stream.</p>
+<p>See also: <a class="el" href="ostream_8cpp.html#a279f55018c4c054ad565198954f8eb16" title="Specify an OStream to which to stream predictions made by the active ESP pipeline. Multiple output streams are supported. ">useOutputStream()</a> for specifying an output stream (to which to stream the predictions made by the ESP pipeline) and <a class="el" href="iostream_8cpp.html#aff979b7370726d96aac43c99e3f7af10">useStream()</a> to specify a stream to use for both input and output.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">stream</td><td>the input stream to use. May be an <a class="el" href="class_i_o_stream.html">IOStream</a> instance, in which case the stream will only be used for input. </td></tr>
   </table>
   </dd>
 </dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="user_accelerometer_poses_8cpp-example.html#a21">user_accelerometer_poses.cpp</a>, <a class="el" href="user_audio_beat_8cpp-example.html#a18">user_audio_beat.cpp</a>, <a class="el" href="user_color_sensor_8cpp-example.html#a13">user_color_sensor.cpp</a>, and <a class="el" href="user_sudden_motion_8cpp-example.html#a12">user_sudden_motion.cpp</a>.</dd>
+</dl>
 </div>
 </div>
 <a class="anchor" id="a4e89d8b7f053b8e3f5855d084164b39a"></a>
@@ -160,9 +162,10 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Tells the ESP system which machine learning pipeline to use. Call from your <a class="el" href="user__accelerometer__gestures_8h.html#a4fc01d736fe50cf5b977f755b675f11d">setup()</a> function. Note that only one pipeline is supported; subsequent calls to <a class="el" href="istream_8h.html#a4e89d8b7f053b8e3f5855d084164b39a">usePipeline()</a> will replace the previously-specified pipeline.</p>
+<p>Tells the ESP system which machine learning pipeline to use. Call from your <a class="el" href="user__accelerometer__gestures_8cpp.html#a4fc01d736fe50cf5b977f755b675f11d">setup()</a> function. Note that only one pipeline is supported; subsequent calls to <a class="el" href="istream_8h.html#a4e89d8b7f053b8e3f5855d084164b39a">usePipeline()</a> will replace the previously-specified pipeline.</p>
 <p>The pipeline will be fed with data from the input stream specified using <a class="el" href="iostream_8cpp.html#aff979b7370726d96aac43c99e3f7af10">useStream()</a> or <a class="el" href="istream_8h.html#a28ecae66cc8c204679f3995fafc93ae6">useInputStream()</a>, as modified by the calibrators specified using <a class="el" href="calibrator_8cpp.html#aa56b17a8db41c36d20d29c360cd4b5bd" title="Specify the Calibrator to be used by the ESP system. ">useCalibrator()</a>. </p>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="user_accelerometer_gestures_8cpp-example.html#a20">user_accelerometer_gestures.cpp</a>, <a class="el" href="user_accelerometer_poses_8cpp-example.html#a26">user_accelerometer_poses.cpp</a>, <a class="el" href="user_audio_beat_8cpp-example.html#a20">user_audio_beat.cpp</a>, <a class="el" href="user_capacitive_sensing_8cpp-example.html#a5">user_capacitive_sensing.cpp</a>, <a class="el" href="user_color_sensor_8cpp-example.html#a15">user_color_sensor.cpp</a>, and <a class="el" href="user_sudden_motion_8cpp-example.html#a16">user_sudden_motion.cpp</a>.</dd>
+</dl>
 </div>
 </div>
 </div><!-- contents -->

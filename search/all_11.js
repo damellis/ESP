@@ -7,11 +7,13 @@ var searchData=
   ['usenormalizer',['useNormalizer',['../class_i_stream.html#af49e0329f543fa8165d54664e713c9c6',1,'IStream::useNormalizer(normalizeFunc f)'],['../class_i_stream.html#a735f29a1bce1791514aec9c7e003df95',1,'IStream::useNormalizer(vectorNormalizeFunc f)']]],
   ['useoutputstream',['useOutputStream',['../classof_app.html#a279f55018c4c054ad565198954f8eb16',1,'ofApp::useOutputStream()'],['../ostream_8cpp.html#a279f55018c4c054ad565198954f8eb16',1,'useOutputStream(OStream &amp;stream):&#160;ostream.cpp'],['../ostream_8h.html#a279f55018c4c054ad565198954f8eb16',1,'useOutputStream(OStream &amp;stream):&#160;ostream.cpp']]],
   ['usepipeline',['usePipeline',['../classof_app.html#a4e89d8b7f053b8e3f5855d084164b39a',1,'ofApp::usePipeline()'],['../istream_8cpp.html#a4e89d8b7f053b8e3f5855d084164b39a',1,'usePipeline(GRT::GestureRecognitionPipeline &amp;pipeline):&#160;istream.cpp'],['../istream_8h.html#a4e89d8b7f053b8e3f5855d084164b39a',1,'usePipeline(GRT::GestureRecognitionPipeline &amp;pipeline):&#160;istream.cpp']]],
+  ['user_2ecpp',['user.cpp',['../user_8cpp.html',1,'']]],
   ['user_2eh',['user.h',['../user_8h.html',1,'']]],
-  ['user_5faccelerometer_5fgestures_2eh',['user_accelerometer_gestures.h',['../user__accelerometer__gestures_8h.html',1,'']]],
-  ['user_5faccelerometer_5fposes_2eh',['user_accelerometer_poses.h',['../user__accelerometer__poses_8h.html',1,'']]],
-  ['user_5faudio_5fbeat_2eh',['user_audio_beat.h',['../user__audio__beat_8h.html',1,'']]],
-  ['user_5fcapacitive_5fsensing_2eh',['user_capacitive_sensing.h',['../user__capacitive__sensing_8h.html',1,'']]],
-  ['user_5fcolor_5fsensor_2eh',['user_color_sensor.h',['../user__color__sensor_8h.html',1,'']]],
+  ['user_5faccelerometer_5fgestures_2ecpp',['user_accelerometer_gestures.cpp',['../user__accelerometer__gestures_8cpp.html',1,'']]],
+  ['user_5faccelerometer_5fposes_2ecpp',['user_accelerometer_poses.cpp',['../user__accelerometer__poses_8cpp.html',1,'']]],
+  ['user_5faudio_5fbeat_2ecpp',['user_audio_beat.cpp',['../user__audio__beat_8cpp.html',1,'']]],
+  ['user_5fcapacitive_5fsensing_2ecpp',['user_capacitive_sensing.cpp',['../user__capacitive__sensing_8cpp.html',1,'']]],
+  ['user_5fcolor_5fsensor_2ecpp',['user_color_sensor.cpp',['../user__color__sensor_8cpp.html',1,'']]],
+  ['user_5fsudden_5fmotion_2ecpp',['user_sudden_motion.cpp',['../user__sudden__motion_8cpp.html',1,'']]],
   ['usestream',['useStream',['../classof_app.html#aff979b7370726d96aac43c99e3f7af10',1,'ofApp::useStream()'],['../iostream_8cpp.html#aff979b7370726d96aac43c99e3f7af10',1,'useStream(IOStream &amp;stream):&#160;iostream.cpp'],['../iostream_8h.html#aff979b7370726d96aac43c99e3f7af10',1,'useStream(IOStream &amp;stream):&#160;iostream.cpp']]]
 ];

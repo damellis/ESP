@@ -50,6 +50,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
+      <li><a href="examples.html"><span>Examples</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -143,7 +144,7 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a155c75f06d6d6bfec320ef91ceb51291"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae3f733522d3b33c467924c38d9eb8c7c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_calibrator.html">Calibrator</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_calibrator.html#ae3f733522d3b33c467924c38d9eb8c7c">addCalibrateProcess</a> (<a class="el" href="class_calibrate_process.html">CalibrateProcess</a> cp)</td></tr>
 <tr class="separator:ae3f733522d3b33c467924c38d9eb8c7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af53a2c38c70a759315594406b207b959"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_calibrator.html">Calibrator</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_calibrator.html#af53a2c38c70a759315594406b207b959">addCalibrateProcess</a> (const string &amp;name, const string &amp;description, const <a class="el" href="class_calibrate_process.html#a148f8f966fb2f20931b8f8d4be123070">CalibrateProcess::CalibratorCallback</a> cb)</td></tr>
+<tr class="memitem:af53a2c38c70a759315594406b207b959"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_calibrator.html">Calibrator</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_calibrator.html#af53a2c38c70a759315594406b207b959">addCalibrateProcess</a> (const string &amp;name, const string &amp;description, const <a class="el" href="class_calibrate_process.html#aad963a1a778f82032674dc081c8a7dca">CalibrateProcess::CalibratorCallback</a> cb)</td></tr>
 <tr class="separator:af53a2c38c70a759315594406b207b959"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a804541020228f0b93b45f12b5d33359d"><td class="memItemLeft" align="right" valign="top">vector&lt; <a class="el" href="class_calibrate_process.html">CalibrateProcess</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_calibrator.html#a804541020228f0b93b45f12b5d33359d">getCalibrateProcesses</a> ()</td></tr>
 <tr class="separator:a804541020228f0b93b45f12b5d33359d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -154,11 +155,12 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Specifies data samples and code used to calibrate incoming sensor data. </p>
-<p>A <a class="el" href="class_calibrator.html" title="Specifies data samples and code used to calibrate incoming sensor data. ">Calibrator</a> consists of two basic parts. The calibration function transforms each sample of incoming live sensor data. It's called with data coming from the input stream and its output is passed to the machine learning pipeline.</p>
+<p>A <a class="el" href="class_calibrator.html" title="Specifies data samples and code used to calibrate incoming sensor data. ">Calibrator</a> consists of two basic parts. The calibration function transforms each sample of incoming live sensor data. It's called with data coming from the input stream and its output is passed to the machine learning pipeline. Note that incoming data is processed by the calibration function before being stored in a training sample (i.e. training samples record calibrated data).</p>
 <p>The calibration processes (<a class="el" href="class_calibrate_process.html" title="A data sample to be collected by the user and callback for processing that sample. ">CalibrateProcess</a> instances) consist of a data sample to be collected by the user and a callback for processing that data sample once it's collected. Typically, the calibration process callback performs some analysis of the data sample collected by the user and stores that information for later use by the calibration function. For instance, a calibration process callback might record the mean values of data in the sample and use it as a baseline to be subtracted from future live sensor inputs in the calibration function.</p>
 <p>The calibration function will not be called until the user has collected a sample of data for each <a class="el" href="class_calibrate_process.html" title="A data sample to be collected by the user and callback for processing that sample. ">CalibrateProcess</a> instance and the corresponding callbacks have run. There is, however, no guarantee about the order in which the <a class="el" href="class_calibrate_process.html" title="A data sample to be collected by the user and callback for processing that sample. ">CalibrateProcess</a> callbacks will be executed, as it depends on the order in which the user collects the corresponding samples of calibration data.</p>
-<p>To tell the ESP system to use a <a class="el" href="class_calibrator.html" title="Specifies data samples and code used to calibrate incoming sensor data. ">Calibrator</a>, pass it to <a class="el" href="calibrator_8cpp.html#aa56b17a8db41c36d20d29c360cd4b5bd" title="Specify the Calibrator to be used by the ESP system. ">useCalibrator()</a> in your <a class="el" href="user__accelerometer__gestures_8h.html#a4fc01d736fe50cf5b977f755b675f11d">setup()</a> function. </p>
-</div><h2 class="groupheader">Member Typedef Documentation</h2>
+<p>To tell the ESP system to use a <a class="el" href="class_calibrator.html" title="Specifies data samples and code used to calibrate incoming sensor data. ">Calibrator</a>, pass it to <a class="el" href="calibrator_8cpp.html#aa56b17a8db41c36d20d29c360cd4b5bd" title="Specify the Calibrator to be used by the ESP system. ">useCalibrator()</a> in your <a class="el" href="user__accelerometer__gestures_8cpp.html#a4fc01d736fe50cf5b977f755b675f11d">setup()</a> function. </p>
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="user_accelerometer_gestures_8cpp-example.html#_a3">user_accelerometer_gestures.cpp</a>, <a class="el" href="user_accelerometer_poses_8cpp-example.html#_a3">user_accelerometer_poses.cpp</a>, <a class="el" href="user_audio_beat_8cpp-example.html#_a13">user_audio_beat.cpp</a>, and <a class="el" href="user_sudden_motion_8cpp-example.html#_a3">user_sudden_motion.cpp</a>.</dd>
+</dl></div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a class="anchor" id="a753a0c65848966e966bff8b378009daf"></a>
 <div class="memitem">
 <div class="memproto">
@@ -288,7 +290,8 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Add a <a class="el" href="class_calibrate_process.html" title="A data sample to be collected by the user and callback for processing that sample. ">CalibrateProcess</a> to this <a class="el" href="class_calibrator.html" title="Specifies data samples and code used to calibrate incoming sensor data. ">Calibrator</a>. The <a class="el" href="class_calibrate_process.html" title="A data sample to be collected by the user and callback for processing that sample. ">CalibrateProcess</a> instances in the active <a class="el" href="class_calibrator.html" title="Specifies data samples and code used to calibrate incoming sensor data. ">Calibrator</a> (as set by <a class="el" href="calibrator_8cpp.html#aa56b17a8db41c36d20d29c360cd4b5bd" title="Specify the Calibrator to be used by the ESP system. ">useCalibrator()</a>) are the ones that will be shown to the user in the interface.</p>
 <dl class="section return"><dt>Returns</dt><dd>*this, to allow for chaining of <a class="el" href="class_calibrator.html" title="Specifies data samples and code used to calibrate incoming sensor data. ">Calibrator</a> methods </dd></dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="user_accelerometer_gestures_8cpp-example.html#a18">user_accelerometer_gestures.cpp</a>, <a class="el" href="user_accelerometer_poses_8cpp-example.html#a24">user_accelerometer_poses.cpp</a>, <a class="el" href="user_audio_beat_8cpp-example.html#a17">user_audio_beat.cpp</a>, and <a class="el" href="user_sudden_motion_8cpp-example.html#a14">user_sudden_motion.cpp</a>.</dd>
+</dl>
 </div>
 </div>
 <a class="anchor" id="af53a2c38c70a759315594406b207b959"></a>
@@ -313,7 +316,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="class_calibrate_process.html#a148f8f966fb2f20931b8f8d4be123070">CalibrateProcess::CalibratorCallback</a>&#160;</td>
+          <td class="paramtype">const <a class="el" href="class_calibrate_process.html#aad963a1a778f82032674dc081c8a7dca">CalibrateProcess::CalibratorCallback</a>&#160;</td>
           <td class="paramname"><em>cb</em>&#160;</td>
         </tr>
         <tr>
@@ -427,7 +430,8 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Set the calibration function. Replaces any currently set calibration function.</p>
 <dl class="section return"><dt>Returns</dt><dd>*this, to allow for chaining of <a class="el" href="class_calibrator.html" title="Specifies data samples and code used to calibrate incoming sensor data. ">Calibrator</a> methods </dd></dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="user_accelerometer_gestures_8cpp-example.html#a17">user_accelerometer_gestures.cpp</a>, <a class="el" href="user_accelerometer_poses_8cpp-example.html#a23">user_accelerometer_poses.cpp</a>, and <a class="el" href="user_sudden_motion_8cpp-example.html#a13">user_sudden_motion.cpp</a>.</dd>
+</dl>
 </div>
 </div>
 <a class="anchor" id="a155c75f06d6d6bfec320ef91ceb51291"></a>

@@ -7,5 +7,5 @@ var searchData=
   ['renametitledone',['renameTitleDone',['../class_plotter.html#a6487bc2a2cb7c96808b0a969d182b396',1,'Plotter']]],
   ['renametitlestart',['renameTitleStart',['../class_plotter.html#a1365d5dfa4576abbcabccae818d0f6dd',1,'Plotter']]],
   ['reset',['reset',['../class_plotter.html#afe114c1ace4acbc41c0f86dfa57f76bc',1,'Plotter']]],
-  ['restingdatacollected',['restingDataCollected',['../user__accelerometer__gestures_8h.html#ad2f2516298c9b9f78832a45f4d97467f',1,'restingDataCollected(const MatrixDouble &amp;data):&#160;user_accelerometer_gestures.h'],['../user__accelerometer__poses_8h.html#ad2f2516298c9b9f78832a45f4d97467f',1,'restingDataCollected(const MatrixDouble &amp;data):&#160;user_accelerometer_poses.h']]]
+  ['restingdatacollected',['restingDataCollected',['../user__accelerometer__gestures_8cpp.html#ad2f2516298c9b9f78832a45f4d97467f',1,'restingDataCollected(const MatrixDouble &amp;data):&#160;user_accelerometer_gestures.cpp'],['../user__accelerometer__poses_8cpp.html#ad2f2516298c9b9f78832a45f4d97467f',1,'restingDataCollected(const MatrixDouble &amp;data):&#160;user_accelerometer_poses.cpp'],['../user__sudden__motion_8cpp.html#ad2f2516298c9b9f78832a45f4d97467f',1,'restingDataCollected(const MatrixDouble &amp;data):&#160;user_sudden_motion.cpp']]]
 ];

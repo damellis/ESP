@@ -1,5 +1,6 @@
 var dir_68267d1309a1af8e8297ef4c3efbcdba =
 [
+    [ "examples", "dir_e931c1a3f0014e624d0645a271726ad2.html", "dir_e931c1a3f0014e624d0645a271726ad2" ],
     [ "calibrator.cpp", "calibrator_8cpp.html", "calibrator_8cpp" ],
     [ "calibrator.h", "calibrator_8h.html", "calibrator_8h" ],
     [ "ESP.h", "_e_s_p_8h.html", null ],
@@ -27,10 +28,6 @@ var dir_68267d1309a1af8e8297ef4c3efbcdba =
     ] ],
     [ "tuneable.cpp", "tuneable_8cpp.html", "tuneable_8cpp" ],
     [ "tuneable.h", "tuneable_8h.html", "tuneable_8h" ],
-    [ "user.h", "user_8h.html", null ],
-    [ "user_accelerometer_gestures.h", "user__accelerometer__gestures_8h.html", "user__accelerometer__gestures_8h" ],
-    [ "user_accelerometer_poses.h", "user__accelerometer__poses_8h.html", "user__accelerometer__poses_8h" ],
-    [ "user_audio_beat.h", "user__audio__beat_8h.html", "user__audio__beat_8h" ],
-    [ "user_capacitive_sensing.h", "user__capacitive__sensing_8h.html", "user__capacitive__sensing_8h" ],
-    [ "user_color_sensor.h", "user__color__sensor_8h.html", "user__color__sensor_8h" ]
+    [ "user.cpp", "user_8cpp.html", null ],
+    [ "user.h", "user_8h.html", "user_8h" ]
 ];

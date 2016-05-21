@@ -1,6 +1,6 @@
 var class_calibrate_process =
 [
-    [ "CalibratorCallback", "class_calibrate_process.html#a148f8f966fb2f20931b8f8d4be123070", null ],
+    [ "CalibratorCallback", "class_calibrate_process.html#aad963a1a778f82032674dc081c8a7dca", null ],
     [ "CalibrateProcess", "class_calibrate_process.html#a54624e8591367284029ad1ef8284279d", null ],
     [ "calibrate", "class_calibrate_process.html#a06cb13208871594b235dd164e50ab90e", null ],
     [ "getData", "class_calibrate_process.html#a38cac73ff3aa5baa02c6719f379b8008", null ],

@@ -50,6 +50,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
+      <li><a href="examples.html"><span>Examples</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -115,7 +116,7 @@ $(document).ready(function(){initNavTree('iostream_8cpp.html','');});
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:aff979b7370726d96aac43c99e3f7af10"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="iostream_8cpp.html#aff979b7370726d96aac43c99e3f7af10">useStream</a> (<a class="el" href="class_i_o_stream.html">IOStream</a> &amp;<a class="el" href="user__color__sensor_8h.html#a9d7a960e4cf7cb51ba843e63f5704d54">stream</a>)</td></tr>
+<tr class="memitem:aff979b7370726d96aac43c99e3f7af10"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="iostream_8cpp.html#aff979b7370726d96aac43c99e3f7af10">useStream</a> (<a class="el" href="class_i_o_stream.html">IOStream</a> &amp;<a class="el" href="user__sudden__motion_8cpp.html#aa0c0eb30458e60c0433f27b43a4c603e">stream</a>)</td></tr>
 <tr class="separator:aff979b7370726d96aac43c99e3f7af10"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
@@ -132,14 +133,15 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Tells the ESP system which stream to use, for both input and output. Call from your <a class="el" href="user__accelerometer__gestures_8h.html#a4fc01d736fe50cf5b977f755b675f11d">setup()</a> function. The specified stream will be automatically started by the ESP system. Note that only one i/o stream is supported; subsequent calls to <a class="el" href="iostream_8h.html#aff979b7370726d96aac43c99e3f7af10">useStream()</a> will replace the previously-specified stream, as well as any input streams specified using <a class="el" href="istream_8cpp.html#a28ecae66cc8c204679f3995fafc93ae6">useInputStream()</a> and ouput streams specified using <a class="el" href="ostream_8cpp.html#a279f55018c4c054ad565198954f8eb16" title="Specify the OStream to which to stream predictions made by the active ESP pipeline. ">useOutputStream()</a>).</p>
+<p>Tells the ESP system which stream to use, for both input and output. Call from your <a class="el" href="user__accelerometer__gestures_8cpp.html#a4fc01d736fe50cf5b977f755b675f11d">setup()</a> function. The specified stream will be automatically started by the ESP system. Note that only one input stream is supported at a time; subsequent calls to <a class="el" href="iostream_8h.html#aff979b7370726d96aac43c99e3f7af10">useStream()</a> will cause the new stream to be used for input, replacing input from streams passed to any previous calls to <a class="el" href="iostream_8h.html#aff979b7370726d96aac43c99e3f7af10">useStream()</a> or <a class="el" href="istream_8cpp.html#a28ecae66cc8c204679f3995fafc93ae6">useInputStream()</a>. Multiple simultaneous output streams are supported, however, so calling <a class="el" href="iostream_8h.html#aff979b7370726d96aac43c99e3f7af10">useStream()</a> will cause output to be sent to the specified stream in addition to streams previously specified with <a class="el" href="iostream_8h.html#aff979b7370726d96aac43c99e3f7af10">useStream()</a> or <a class="el" href="ostream_8cpp.html#a279f55018c4c054ad565198954f8eb16" title="Specify an OStream to which to stream predictions made by the active ESP pipeline. Multiple output streams are supported. ">useOutputStream()</a>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">stream</td><td>the stream to use for input and output </td></tr>
   </table>
   </dd>
 </dl>
-
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="user_accelerometer_gestures_8cpp-example.html#a15">user_accelerometer_gestures.cpp</a>, and <a class="el" href="user_capacitive_sensing_8cpp-example.html#a4">user_capacitive_sensing.cpp</a>.</dd>
+</dl>
 </div>
 </div>
 </div><!-- contents -->

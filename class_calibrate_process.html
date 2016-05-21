@@ -50,6 +50,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
+      <li><a href="examples.html"><span>Examples</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -122,12 +123,12 @@ $(document).ready(function(){initNavTree('class_calibrate_process.html','');});
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a148f8f966fb2f20931b8f8d4be123070"><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_calibrate_process.html#a148f8f966fb2f20931b8f8d4be123070">CalibratorCallback</a>) (const MatrixDouble &amp;)</td></tr>
-<tr class="separator:a148f8f966fb2f20931b8f8d4be123070"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad963a1a778f82032674dc081c8a7dca"><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_calibrate_process.html#aad963a1a778f82032674dc081c8a7dca">CalibratorCallback</a>) (const GRT::MatrixDouble &amp;)</td></tr>
+<tr class="separator:aad963a1a778f82032674dc081c8a7dca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a54624e8591367284029ad1ef8284279d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_calibrate_process.html#a54624e8591367284029ad1ef8284279d">CalibrateProcess</a> (std::string name, std::string description, <a class="el" href="class_calibrate_process.html#a148f8f966fb2f20931b8f8d4be123070">CalibratorCallback</a> cb)</td></tr>
+<tr class="memitem:a54624e8591367284029ad1ef8284279d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_calibrate_process.html#a54624e8591367284029ad1ef8284279d">CalibrateProcess</a> (std::string name, std::string description, <a class="el" href="class_calibrate_process.html#aad963a1a778f82032674dc081c8a7dca">CalibratorCallback</a> cb)</td></tr>
 <tr class="separator:a54624e8591367284029ad1ef8284279d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a06cb13208871594b235dd164e50ab90e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_calibrate_process.html#a06cb13208871594b235dd164e50ab90e">calibrate</a> ()</td></tr>
 <tr class="separator:a06cb13208871594b235dd164e50ab90e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -146,12 +147,12 @@ Public Member Functions</h2></td></tr>
 <div class="textblock"><p>A data sample to be collected by the user and callback for processing that sample. </p>
 <p>A <a class="el" href="class_calibrate_process.html" title="A data sample to be collected by the user and callback for processing that sample. ">CalibrateProcess</a> stores the name and description of a sample of sensor data to be collected by the user, along with a callback for processing that sample once it's collected. To use a <a class="el" href="class_calibrate_process.html" title="A data sample to be collected by the user and callback for processing that sample. ">CalibrateProcess</a> instance, add it to a <a class="el" href="class_calibrator.html" title="Specifies data samples and code used to calibrate incoming sensor data. ">Calibrator</a> with <a class="el" href="class_calibrator.html#ae3f733522d3b33c467924c38d9eb8c7c">Calibrator::addCalibrateProcess()</a>. </p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
-<a class="anchor" id="a148f8f966fb2f20931b8f8d4be123070"></a>
+<a class="anchor" id="aad963a1a778f82032674dc081c8a7dca"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef void(* CalibrateProcess::CalibratorCallback) (const MatrixDouble &amp;)</td>
+          <td class="memname">typedef void(* CalibrateProcess::CalibratorCallback) (const GRT::MatrixDouble &amp;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -181,7 +182,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="class_calibrate_process.html#a148f8f966fb2f20931b8f8d4be123070">CalibratorCallback</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="class_calibrate_process.html#aad963a1a778f82032674dc081c8a7dca">CalibratorCallback</a>&#160;</td>
           <td class="paramname"><em>cb</em>&#160;</td>
         </tr>
         <tr>

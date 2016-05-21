@@ -22,14 +22,15 @@ var NAVTREE =
         [ "Functions", "globals_func.html", null ],
         [ "Variables", "globals_vars.html", null ]
       ] ]
-    ] ]
+    ] ],
+    [ "Examples", "examples.html", "examples" ]
   ] ]
 ];
 
 var NAVTREEINDEX =
 [
 "_e_s_p_8h.html",
-"user__accelerometer__gestures_8h.html#a493b57f443cc38b3d3df9c1e584d9d82"
+"user_8h.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
