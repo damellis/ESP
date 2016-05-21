@@ -74,26 +74,28 @@ set(ESP_SRC
   ${ESP_PATH}/src/tuneable.cpp
 )
 
+set(GRT_LIBS ${CMAKE_CURRENT_SOURCE_DIR}/Xcode/ESP/libgrt.dylib "-lgrt")
+set(GRT_INCLUDES ${CMAKE_CURRENT_SOURCE_DIR}/third-party/grt/)
+set(SYS_LIBS "-lobjc" "-L/usr/local/lib")
+
 # =============================================================
 #   Create executables
 # =============================================================
 add_executable(${PROJECT} ${ADDONS_SRC} ${ESP_SRC})
 
-target_include_directories(${PROJECT}
-  PUBLIC ${openFrameworks_INCLUDES}
+target_include_directories(${PROJECT} PUBLIC
+  ${openFrameworks_INCLUDES}
   ${ADDONS_INCLUDE_PATH}
   ${ESP_PATH}/src
+  ${GRT_INCLUDES}
   )
 
-set(GRT_LIBRARY ${CMAKE_CURRENT_SOURCE_DIR}/Xcode/ESP/libgrt.dylib "-lgrt")
-set(SYS_LIBRARY "-lobjc" "-L/usr/local/lib")
-
-target_link_libraries(${PROJECT}
-  PUBLIC ${openFrameworks_LIBRARIES}
+target_link_libraries(${PROJECT} PUBLIC
+  ${openFrameworks_LIBRARIES}
   ${ADDONS_LIBS}
   ${ESP_LIBS}
-  ${GRT_LIBRARY}
-  ${SYS_LIBRARY}
+  ${GRT_LIBS}
+  ${SYS_LIBS}
   )
 
 # =============================================================
