@@ -1,4 +1,5 @@
 third-party/*.zip
+build
 
 #########################
 # openFrameworks patterns
