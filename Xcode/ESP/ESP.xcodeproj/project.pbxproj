@@ -16,6 +16,7 @@
 		497D66D41CC3232900D5C3DC /* ofxTCPManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 497D66CD1CC3232900D5C3DC /* ofxTCPManager.cpp */; };
 		497D66D51CC3232900D5C3DC /* ofxTCPServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 497D66CF1CC3232900D5C3DC /* ofxTCPServer.cpp */; };
 		497D66D61CC3232900D5C3DC /* ofxUDPManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 497D66D11CC3232900D5C3DC /* ofxUDPManager.cpp */; };
+		49B9D96C1CF0340A008AA943 /* user.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 49B9D96A1CF0340A008AA943 /* user.cpp */; };
 		49F58CC41CACBECA005F322C /* calibrator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 49F58CC21CACBECA005F322C /* calibrator.cpp */; };
 		4C01A7D4BC8BE15DE60CCB82 /* ofxPanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F27487FA03169CDBC92552C4 /* ofxPanel.cpp */; };
 		50958D8DFAF12469DAFEB044 /* tuneable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B41658326AAF509E0B38863 /* tuneable.cpp */; };
@@ -73,10 +74,8 @@
 		00CE9583E881F7E346D71B77 /* ofxPanel.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxPanel.h; path = "../../third-party/openFrameworks/addons/ofxGui/src/ofxPanel.h"; sourceTree = SOURCE_ROOT; };
 		05DA5E2790D1660300433C54 /* ofxDatGuiFRM.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxDatGuiFRM.h; path = "../../third-party/openFrameworks/addons/ofxDatGui/src/components/ofxDatGuiFRM.h"; sourceTree = SOURCE_ROOT; };
 		06AB5C007F9ABA878C941FA0 /* ofxDatGuiGroups.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxDatGuiGroups.h; path = "../../third-party/openFrameworks/addons/ofxDatGui/src/components/ofxDatGuiGroups.h"; sourceTree = SOURCE_ROOT; };
-		0AD12F507A410105D2618288 /* user_audio_beat.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = user_audio_beat.h; path = src/user_audio_beat.h; sourceTree = SOURCE_ROOT; };
 		17C83082A0E9F6D2BB7FE07D /* ofxButton.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxButton.cpp; path = "../../third-party/openFrameworks/addons/ofxGui/src/ofxButton.cpp"; sourceTree = SOURCE_ROOT; };
 		18C4BE08EEF363F2E25EBFC4 /* istream.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = istream.cpp; path = src/istream.cpp; sourceTree = SOURCE_ROOT; };
-		1F26CF2A468F99CE667E11E9 /* user_capacitive_sensing.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = user_capacitive_sensing.h; path = src/user_capacitive_sensing.h; sourceTree = SOURCE_ROOT; };
 		1F8E989A07FC7623F211CE84 /* ofxGuiGroup.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxGuiGroup.cpp; path = "../../third-party/openFrameworks/addons/ofxGui/src/ofxGuiGroup.cpp"; sourceTree = SOURCE_ROOT; };
 		2037A4196661293164557E30 /* ostream.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ostream.h; path = src/ostream.h; sourceTree = SOURCE_ROOT; };
 		282D6B378B12A303CCC10AC9 /* ofxSmartFont.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxSmartFont.h; path = "../../third-party/openFrameworks/addons/ofxDatGui/src/libs/ofxSmartFont/ofxSmartFont.h"; sourceTree = SOURCE_ROOT; };
@@ -98,6 +97,8 @@
 		497D66D01CC3232900D5C3DC /* ofxTCPServer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxTCPServer.h; sourceTree = "<group>"; };
 		497D66D11CC3232900D5C3DC /* ofxUDPManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxUDPManager.cpp; sourceTree = "<group>"; };
 		497D66D21CC3232900D5C3DC /* ofxUDPManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxUDPManager.h; sourceTree = "<group>"; };
+		49B9D96A1CF0340A008AA943 /* user.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = user.cpp; sourceTree = "<group>"; };
+		49E70B941CF035EB0091BADC /* examples */ = {isa = PBXFileReference; lastKnownFileType = folder; path = examples; sourceTree = "<group>"; };
 		49F58CC21CACBECA005F322C /* calibrator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = calibrator.cpp; sourceTree = "<group>"; };
 		49F58CC31CACBECA005F322C /* calibrator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = calibrator.h; sourceTree = "<group>"; };
 		4C42376EF0C93B60AB080532 /* ofxBaseGui.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxBaseGui.h; path = "../../third-party/openFrameworks/addons/ofxGui/src/ofxBaseGui.h"; sourceTree = SOURCE_ROOT; };
@@ -108,7 +109,6 @@
 		5C2E46669FF5622BBDD19D50 /* ofxDatGuiEvents.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxDatGuiEvents.h; path = "../../third-party/openFrameworks/addons/ofxDatGui/src/core/ofxDatGuiEvents.h"; sourceTree = SOURCE_ROOT; };
 		64F25F34C1FF51D1DEB91164 /* ofxLabel.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxLabel.cpp; path = "../../third-party/openFrameworks/addons/ofxGui/src/ofxLabel.cpp"; sourceTree = SOURCE_ROOT; };
 		66F3ADBD2888068E11FF60AE /* ofxDatGuiComponent.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxDatGuiComponent.h; path = "../../third-party/openFrameworks/addons/ofxDatGui/src/core/ofxDatGuiComponent.h"; sourceTree = SOURCE_ROOT; };
-		6B92F1EA749EF18D2462EF7D /* user_accelerometer_poses.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = user_accelerometer_poses.h; path = src/user_accelerometer_poses.h; sourceTree = SOURCE_ROOT; };
 		6EFCEE1D53FA8941E6503D8E /* ofxLabel.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxLabel.h; path = "../../third-party/openFrameworks/addons/ofxGui/src/ofxLabel.h"; sourceTree = SOURCE_ROOT; };
 		6F37BA38F428973FAF939B4A /* ofxDatGuiTheme.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxDatGuiTheme.h; path = "../../third-party/openFrameworks/addons/ofxDatGui/src/themes/ofxDatGuiTheme.h"; sourceTree = SOURCE_ROOT; };
 		6F8100B5C8574131C4571B8A /* istream.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = istream.h; path = src/istream.h; sourceTree = SOURCE_ROOT; };
@@ -123,7 +123,6 @@
 		8164C6741CD9274100DFEF70 /* iostream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iostream.h; sourceTree = "<group>"; };
 		8164C6751CD927F900DFEF70 /* iostream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = iostream.cpp; sourceTree = "<group>"; };
 		817BE7741CCB063E00FE581B /* libgrt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libgrt.dylib; sourceTree = "<group>"; };
-		818C025E1CEE666E003F85F4 /* user_sudden_motion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = user_sudden_motion.h; sourceTree = "<group>"; };
 		879E8BE84F6F719ED42446C3 /* ofxDatGuiTextInput.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxDatGuiTextInput.h; path = "../../third-party/openFrameworks/addons/ofxDatGui/src/components/ofxDatGuiTextInput.h"; sourceTree = SOURCE_ROOT; };
 		8B699EEC2E838CB52082554A /* ofxDatGui.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxDatGui.cpp; path = "../../third-party/openFrameworks/addons/ofxDatGui/src/ofxDatGui.cpp"; sourceTree = SOURCE_ROOT; };
 		8C2208E103C17F4A39DECE6F /* ofxGrtTimeseriesPlot.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxGrtTimeseriesPlot.h; path = "../../third-party/openFrameworks/addons/ofxGrt/src/ofxGrtTimeseriesPlot.h"; sourceTree = SOURCE_ROOT; };
@@ -132,14 +131,12 @@
 		A047724C3CB291D0DD3E8610 /* ofxDatGuiTimeGraph.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxDatGuiTimeGraph.h; path = "../../third-party/openFrameworks/addons/ofxDatGui/src/components/ofxDatGuiTimeGraph.h"; sourceTree = SOURCE_ROOT; };
 		A0B4FE6D3EADF19C5E8A120B /* ofxParagraph.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxParagraph.cpp; path = "../../third-party/openFrameworks/addons/ofxParagraph/src/ofxParagraph.cpp"; sourceTree = SOURCE_ROOT; };
 		A97695183B2993F23875A518 /* ofxSliderGroup.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxSliderGroup.h; path = "../../third-party/openFrameworks/addons/ofxGui/src/ofxSliderGroup.h"; sourceTree = SOURCE_ROOT; };
-		AA5BA44556C8DCB2CC4F6404 /* user_color_sensor.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = user_color_sensor.h; path = src/user_color_sensor.h; sourceTree = SOURCE_ROOT; };
 		B29062C5077E0EBE48BC1E5E /* ofxBaseGui.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxBaseGui.cpp; path = "../../third-party/openFrameworks/addons/ofxGui/src/ofxBaseGui.cpp"; sourceTree = SOURCE_ROOT; };
 		B2BF0D43F88E6741A40E63F1 /* ofxDatGuiConstants.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxDatGuiConstants.h; path = "../../third-party/openFrameworks/addons/ofxDatGui/src/core/ofxDatGuiConstants.h"; sourceTree = SOURCE_ROOT; };
 		B622729224CA2FE53AAF01A0 /* ofxDatGuiControls.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxDatGuiControls.h; path = "../../third-party/openFrameworks/addons/ofxDatGui/src/components/ofxDatGuiControls.h"; sourceTree = SOURCE_ROOT; };
 		C1D604CD10BE6BD87CEE2129 /* ofxButton.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxButton.h; path = "../../third-party/openFrameworks/addons/ofxGui/src/ofxButton.h"; sourceTree = SOURCE_ROOT; };
 		C6BB7735611A4E1064304E5A /* ofxToggle.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxToggle.h; path = "../../third-party/openFrameworks/addons/ofxGui/src/ofxToggle.h"; sourceTree = SOURCE_ROOT; };
 		C8F6DA64B0955604B18EBFD5 /* ofxDatGuiThemes.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxDatGuiThemes.h; path = "../../third-party/openFrameworks/addons/ofxDatGui/src/themes/ofxDatGuiThemes.h"; sourceTree = SOURCE_ROOT; };
-		CA04A68E6A155553BDF7A252 /* user_accelerometer_gestures.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = user_accelerometer_gestures.h; path = src/user_accelerometer_gestures.h; sourceTree = SOURCE_ROOT; };
 		CA2AF8F1C7D26400EE944467 /* ofxDatGuiMatrix.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxDatGuiMatrix.h; path = "../../third-party/openFrameworks/addons/ofxDatGui/src/components/ofxDatGuiMatrix.h"; sourceTree = SOURCE_ROOT; };
 		D9D9E934E086DE128CB032CD /* ofxDatGuiColorPicker.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxDatGuiColorPicker.h; path = "../../third-party/openFrameworks/addons/ofxDatGui/src/components/ofxDatGuiColorPicker.h"; sourceTree = SOURCE_ROOT; };
 		E28FFAE01315AB1CC3DFFE2E /* ofxSliderGroup.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxSliderGroup.cpp; path = "../../third-party/openFrameworks/addons/ofxGui/src/ofxSliderGroup.cpp"; sourceTree = SOURCE_ROOT; };
@@ -379,6 +376,7 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				49E70B941CF035EB0091BADC /* examples */,
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
 				E4B69E1E0A3A1BDC003C02F2 /* ofApp.cpp */,
 				E4B69E1F0A3A1BDC003C02F2 /* ofApp.h */,
@@ -393,13 +391,8 @@
 				2FF4BD20EA806510FB8490D2 /* ESP.h */,
 				3B41658326AAF509E0B38863 /* tuneable.cpp */,
 				E53D01ADA7297C38566E691F /* tuneable.h */,
+				49B9D96A1CF0340A008AA943 /* user.cpp */,
 				5939D84F8D015C2971814643 /* user.h */,
-				CA04A68E6A155553BDF7A252 /* user_accelerometer_gestures.h */,
-				6B92F1EA749EF18D2462EF7D /* user_accelerometer_poses.h */,
-				0AD12F507A410105D2618288 /* user_audio_beat.h */,
-				1F26CF2A468F99CE667E11E9 /* user_capacitive_sensing.h */,
-				AA5BA44556C8DCB2CC4F6404 /* user_color_sensor.h */,
-				818C025E1CEE666E003F85F4 /* user_sudden_motion.h */,
 				8164C6731CD924EC00DFEF70 /* stream.h */,
 				8164C6741CD9274100DFEF70 /* iostream.h */,
 				8164C6751CD927F900DFEF70 /* iostream.cpp */,
@@ -555,6 +548,7 @@
 				49341C4F1CC9EF0200C9F7C4 /* plotter.cpp in Sources */,
 				E53A43EAD208AC6F06A451D3 /* ofxParagraph.cpp in Sources */,
 				497D66D31CC3232900D5C3DC /* ofxTCPClient.cpp in Sources */,
+				49B9D96C1CF0340A008AA943 /* user.cpp in Sources */,
 				497D66D41CC3232900D5C3DC /* ofxTCPManager.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -1,8 +1,8 @@
 #pragma once
 
-#include <string>
-
 #include <GRT/GRT.h>
+#include <set>
+#include <string>
 
 /**
  @brief A data sample to be collected by the user and callback for processing
@@ -15,7 +15,7 @@
  */
 class CalibrateProcess {
   public:
-    typedef void (*CalibratorCallback)(const MatrixDouble&);
+    typedef void (*CalibratorCallback)(const GRT::MatrixDouble&);
 
     /**
     Create a CalibrateProcess.
@@ -214,7 +214,7 @@ class Calibrator {
     SimpleCalibrateFunc simple_calibrate_func_;
     CalibrateFunc calibrate_func_;
     vector<CalibrateProcess> calibrate_processes_;
-    set<string> registered_;
+    std::set<std::string> registered_;
 };
 
 /**
