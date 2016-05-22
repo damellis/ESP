@@ -72,6 +72,7 @@ set(ESP_SRC
   ${ESP_PATH}/src/ostream.cpp
   ${ESP_PATH}/src/plotter.cpp
   ${ESP_PATH}/src/tuneable.cpp
+  ${ESP_PATH}/src/user.cpp
 )
 
 set(GRT_LIBS ${CMAKE_CURRENT_SOURCE_DIR}/Xcode/ESP/libgrt.dylib "-lgrt")

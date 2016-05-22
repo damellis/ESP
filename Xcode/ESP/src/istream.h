@@ -1,7 +1,7 @@
 /**
  @file istream.h
  @brief Definition of input streams: serial, audio, etc.
- 
+
  These input streams provide sensor data to the machine learning pipeline.
  Each stream provides a sequence data samples, each of which is a
  multi-dimensional vector representing a single reading from a sensor (or
@@ -44,8 +44,8 @@ class IStream : public virtual Stream {
         return output.size();
     }
 
-    typedef std::function<double(double)> normalizeFunc;
-    typedef std::function<vector<double>(vector<double>)> vectorNormalizeFunc;
+    using normalizeFunc = std::function<double(double)>;
+    using vectorNormalizeFunc = std::function<vector<double>(vector<double>)>;
 
     // Supply a normalization function: double -> double.
     // Applied to each dimension of each vector of incoming data.
@@ -171,7 +171,7 @@ class FirmataStream : public IStream {
  function. The specified stream will be automatically started by the ESP
  system. Note that only one input stream is supported; subsequent calls to
  useInputStream() will replace the previously-specified stream.
- 
+
  See also: useOutputStream() for specifying an output stream (to which to
  stream the predictions made by the ESP pipeline) and useStream() to specify
  a stream to use for both input and output.
