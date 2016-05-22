@@ -75,7 +75,7 @@ set(ESP_SRC
   ${ESP_PATH}/src/user.cpp
 )
 
-set(GRT_LIBS ${CMAKE_CURRENT_SOURCE_DIR}/Xcode/ESP/libgrt.dylib "-lgrt")
+set(GRT_LIBS ${CMAKE_CURRENT_SOURCE_DIR}/Xcode/ESP/libgrt.dylib)
 set(GRT_INCLUDES ${CMAKE_CURRENT_SOURCE_DIR}/third-party/grt/)
 set(SYS_LIBS "-lobjc" "-L/usr/local/lib")
 

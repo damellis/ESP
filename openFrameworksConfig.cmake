@@ -69,7 +69,7 @@ set(openFrameworks_INCLUDES
 
 set(openFrameworks_LIBRARIES
   # openFrameworks
-  ${openFrameworksRoot}/libs/openFrameworksCompiled/lib/${PLATFORM}/libopenFrameworks.a
+  ${openFrameworksRoot}/libs/openFrameworksCompiled/lib/${PLATFORM}/${LIB_PREFIX}openFrameworks.a
   # oF-supplied libraries
   ${openFrameworksRoot}/libs/boost/lib/${PLATFORM}/${LIB_PREFIX}boost.a
   ${openFrameworksRoot}/libs/boost/lib/${PLATFORM}/${LIB_PREFIX}boost_filesystem.a
