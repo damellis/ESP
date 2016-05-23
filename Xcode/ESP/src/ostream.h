@@ -44,7 +44,7 @@ class OStream : public virtual Stream {
 
 /**
  @brief Emulate keyboard key presses corresponding to prediction results.
- 
+
  This class generates a key-down then key-up command for keys corresponding
  to class labels predicted by the current pipeline. The mapping from class
  labels to keys is specified in the constructor. Note that no key press
@@ -58,9 +58,9 @@ class MacOSKeyboardOStream : public OStream {
     /**
      @brief Create a MacOSKeyboardOStream instance, specifying the key presses
      to emulate for each predicted class label.
-     
+
      @param key_mapping: a map from predicted class labels to keys. Note that
-     class 0 is the GRT's special null prediction label and is not used to 
+     class 0 is the GRT's special null prediction label and is not used to
      generate key presses.
     */
     MacOSKeyboardOStream(std::map<uint32_t, char> key_mapping)
@@ -70,7 +70,7 @@ class MacOSKeyboardOStream : public OStream {
     /**
      @brief Create a MacOSKeyboardOStream instance, specifying the key presses
      to emulate for each predicted class label.
-     
+
      @param count: the number of keys specified
      @param ...: the key to "press" upon prediction of the corresponding class
      label. Each key is a UTF16 character passed as an int. The first key
@@ -94,42 +94,9 @@ class MacOSKeyboardOStream : public OStream {
     }
 
   private:
-    void sendKey(char c) {
-        if (ofGetElapsedTimeMillis() < elapsed_time_ + kGracePeriod) {
-            return;
-        }
-        elapsed_time_ = ofGetElapsedTimeMillis();
+    void sendKey(char c);
 
-        // Get the process number for the front application.
-        ProcessSerialNumber psn = { 0, kNoProcess };
-        GetFrontProcess( &psn );
-
-        UniChar uni_char = c;
-        CGEventRef key_down = CGEventCreateKeyboardEvent(NULL, 0, true);
-        CGEventRef key_up = CGEventCreateKeyboardEvent(NULL, 0, false);
-        CGEventKeyboardSetUnicodeString(key_down, 1, &uni_char);
-        CGEventKeyboardSetUnicodeString(key_up, 1, &uni_char);
-        CGEventPostToPSN(&psn, key_down);
-        CGEventPostToPSN(&psn, key_up);
-        CFRelease(key_down);
-        CFRelease(key_up);
-    }
-
-    void sendString(const std::string& str) {
-        // Get the process number for the front application.
-        ProcessSerialNumber psn = { 0, kNoProcess };
-        GetFrontProcess( &psn );
-
-        UniChar s[str.length()];
-        for (uint32_t i = 0; i < str.length(); i++) {
-            s[i] = str[i];
-        }
-
-        CGEventRef e = CGEventCreateKeyboardEvent(NULL, 0, true);
-        CGEventKeyboardSetUnicodeString(e, str.length(), s);
-        CGEventPostToPSN(&psn, e);
-        CFRelease(e);
-    }
+    void sendString(const std::string& str);
 
     char getChar(uint32_t label) {
         return key_mapping_[label];
@@ -142,7 +109,7 @@ class MacOSKeyboardOStream : public OStream {
 /**
  @brief Emulate mouse double-clicks at locations corresponding to prediction
  results.
- 
+
  This class generates a mouse double-click at locations corresponding to class
  labels predicted by the current pipeline. The mapping from class
  labels to locations is specified in the constructor. Note that no double-click
@@ -156,7 +123,7 @@ class MacOSMouseOStream : public OStream {
     /**
      @brief Create a MacOSMouseOStream instance, specifying the locations at
      which to double-click the mouse for each predicted class label.
-     
+
      @param mouse_mapping: a map from predicted class labels to screen
      locations (x, y pairs). Note that class 0 is the GRT's special null
      prediction label and is not used to generate mouse clicks.
@@ -168,7 +135,7 @@ class MacOSMouseOStream : public OStream {
     /**
      @brief Create a MacOSMouseOStream instance, specifying the location at
      which to double-click the mouse for each predicted class label.
-     
+
      @param count: the number of locations specified
      @param ...: the location at which to "double-click" upon prediction of
      the corresponding class label. Each location is specified by two uint32_t
@@ -197,32 +164,8 @@ class MacOSMouseOStream : public OStream {
     }
 
 private:
-    void clickMouse(pair<uint32_t, uint32_t> mouse) {
-        if (ofGetElapsedTimeMillis() < elapsed_time_ + kGracePeriod) {
-            return;
-        }
-        elapsed_time_ = ofGetElapsedTimeMillis();
-
-        doubleClick(CGPointMake(mouse.first, mouse.second));
-    }
-
-    void doubleClick(CGPoint point, int clickCount = 2) {
-        CGEventRef theEvent = CGEventCreateMouseEvent(
-            NULL, kCGEventLeftMouseDown, point, kCGMouseButtonLeft);
-
-        ProcessSerialNumber psn = { 0, kNoProcess };
-        GetFrontProcess( &psn );
-
-        CGEventSetIntegerValueField(theEvent, kCGMouseEventClickState, clickCount);
-        CGEventPostToPSN(&psn, theEvent);
-        CGEventSetType(theEvent, kCGEventLeftMouseUp);
-        CGEventPostToPSN(&psn, theEvent);
-        CGEventSetType(theEvent, kCGEventLeftMouseDown);
-        CGEventPostToPSN(&psn, theEvent);
-        CGEventSetType(theEvent, kCGEventLeftMouseUp);
-        CGEventPostToPSN(&psn, theEvent);
-        CFRelease(theEvent);
-    }
+    void clickMouse(pair<uint32_t, uint32_t> mouse);
+    void doubleClick(CGPoint point, int clickCount = 2);
 
     pair<uint32_t, uint32_t> getMousePosition(uint32_t label) {
         return mouse_mapping_[label];
@@ -234,7 +177,7 @@ private:
 
 /**
  @brief Send strings over a TCP socket based on pipeline predictions.
- 
+
  This class connects to a TCP server and sends it strings when predictions are
  made by the current machine learning pipeline.  The TCP connection is only
  made once, when ESP first starts, and is not restored if the other side
@@ -249,7 +192,7 @@ class TcpOStream : public OStream {
      Create a TCPOStream instance. This passes the predicted class labels
      directly to the TCP stream, as ASCII-formatted, newline-terminated
      strings (e.g. class label 1 will be sent as the string "1\n").
-     
+
      @param server: the hostname or IP address of the TCP server to connect to
      @param port: the port of the TCP server to connect to
      */
@@ -259,7 +202,7 @@ class TcpOStream : public OStream {
 
     /**
      Create a TCPOStream instance.
-     
+
      @param server: the hostname or IP address of the TCP server to connect to
      @param port: the port of the TCP server to connect to
      @tcp_stream_mapping: a map from predicted class labels to strings to send
@@ -277,7 +220,7 @@ class TcpOStream : public OStream {
 
     /**
      Create a TCPOStream instance.
-     
+
      @param server: the hostname or IP address of the TCP server to connect to
      @param port: the port of the TCP server to connect to
      @param count: the number of strings provided
@@ -314,16 +257,7 @@ class TcpOStream : public OStream {
     }
 
 private:
-    void sendString(const string& tosend) {
-        if (ofGetElapsedTimeMillis() < elapsed_time_ + kGracePeriod) {
-            return;
-        }
-        elapsed_time_ = ofGetElapsedTimeMillis();
-
-        if (client_.isConnected()) {
-            client_.send(tosend);
-        }
-    }
+    void sendString(const string& tosend);
 
     string getStreamString(uint32_t label) {
         if (use_tcp_stream_mapping_) return tcp_stream_mapping_[label];
@@ -342,11 +276,11 @@ private:
 /**
  @brief Specify an OStream to which to stream predictions made by the active
  ESP pipeline. Multiple output streams are supported.
- 
+
  See also: useInputStream() to specify the input stream (from which to read
  sensor data into the ESP pipeline); and useStream() to specify a single
  stream for both input and output.
- 
+
  @param stream: the OStream to use
  */
 void useOutputStream(OStream &stream);

@@ -21,10 +21,6 @@ set(OFX_DATGUI_SRC
   ${ADDONS_PATH}/ofxDatGui/src/ofxDatGui.cpp
   )
 
-set(OFX_PARAGRAPH_SRC
-  ${ADDONS_PATH}/ofxParagraph/src/ofxParagraph.cpp
-  )
-
 set(OFX_GRT_SRC
   ${ADDONS_PATH}/ofxGrt/src/ofxGrtTimeseriesPlot.cpp
   )
@@ -40,11 +36,23 @@ set(OFX_GUI_SRC
   ${ADDONS_PATH}/ofxGui/src/ofxToggle.cpp
   )
 
+set(OFX_NET_SRC
+  ${ADDONS_PATH}/ofxNetwork/src/ofxTCPClient.cpp
+  ${ADDONS_PATH}/ofxNetwork/src/ofxTCPManager.cpp
+  ${ADDONS_PATH}/ofxNetwork/src/ofxTCPServer.cpp
+  ${ADDONS_PATH}/ofxNetwork/src/ofxUDPManager.cpp
+  )
+
+set(OFX_PARAGRAPH_SRC
+  ${ADDONS_PATH}/ofxParagraph/src/ofxParagraph.cpp
+  )
+
 list(APPEND ADDONS_SRC
   ${OFX_DATGUI_SRC}
   ${OFX_GRT_SRC}
   ${OFX_GUI_SRC}
   ${OFX_PARAGRAPH_SRC}
+  ${OFX_NET_SRC}
   )
 
 list(APPEND ADDONS_INCLUDE_PATH
@@ -112,3 +120,15 @@ FILE(COPY ${fmodex_LIBRARY} DESTINATION ${PROJECT}.app/Contents/MacOS)
 
 set(OFX_ASSETS ${ADDONS_PATH}/ofxDatGui/ofxbraitsch)
 FILE(COPY ${OFX_ASSETS} DESTINATION ${PROJECT}.app/Contents/Resources/data/)
+
+# =============================================================
+#   Doxygen and documentations
+# =============================================================
+find_package(Doxygen)
+if(DOXYGEN_FOUND)
+  add_custom_target(doc
+    ${DOXYGEN_EXECUTABLE} Doxyfile
+    working_directory ${CMAKE_CURRENT_SOURCE_DIR}/Xcode/ESP
+    comment "Generating API documentation with Doxygen" VERBATIM
+    )
+endif(DOXYGEN_FOUND)

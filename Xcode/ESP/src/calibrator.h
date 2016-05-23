@@ -7,7 +7,7 @@
 /**
  @brief A data sample to be collected by the user and callback for processing
  that sample.
- 
+
  A CalibrateProcess stores the name and description of a sample of sensor data
  to be collected by the user, along with a callback for processing that sample
  once it's collected. To use a CalibrateProcess instance, add it to a
@@ -19,9 +19,9 @@ class CalibrateProcess {
 
     /**
     Create a CalibrateProcess.
-    
+
     @param name: the name of the calibration sample to be collected by the user
-    @param description: the description of the calibration sample to be 
+    @param description: the description of the calibration sample to be
     collected by the user
     @param cb: the callback to call with the data collected by the user (as a
     MatrixDouble &). Called each time the user collects or re-collects the
@@ -53,13 +53,13 @@ class CalibrateProcess {
 
 /**
  @brief Specifies data samples and code used to calibrate incoming sensor data.
- 
+
  A Calibrator consists of two basic parts. The calibration function transforms
  each sample of incoming live sensor data. It's called with data coming from
  the input stream and its output is passed to the machine learning pipeline.
  Note that incoming data is processed by the calibration function before being
  stored in a training sample (i.e. training samples record calibrated data).
- 
+
  The calibration processes (CalibrateProcess instances) consist of a data
  sample to be collected by the user and a callback for processing that data
  sample once it's collected. Typically, the calibration process callback
@@ -68,13 +68,13 @@ class CalibrateProcess {
  calibration process callback might record the mean values of data in the
  sample and use it as a baseline to be subtracted from future live sensor
  inputs in the calibration function.
- 
+
  The calibration function will not be called until the user has collected a
  sample of data for each CalibrateProcess instance and the corresponding
  callbacks have run. There is, however, no guarantee about the order in which
  the CalibrateProcess callbacks will be executed, as it depends on the order
  in which the user collects the corresponding samples of calibration data.
- 
+
  To tell the ESP system to use a Calibrator, pass it to useCalibrator() in
  your setup() function.
  */
@@ -82,15 +82,16 @@ class Calibrator {
   public:
     /**
      @brief Transforms each dimension of incoming samples of live sensor data.
-     
+
      SimpleCalibrateFunc are used in cases where the same transformation should
      be applied to each dimension of incoming sensor data. The function is
      called on each dimension of incoming data.
      */
-    typedef std::function<double(double)> SimpleCalibrateFunc;
+    using SimpleCalibrateFunc = std::function<double(double)>;
+
     /**
      @brief Transforms incoming samples of live sensor data.
-     
+
      CalibrateFunc allows for more complex transformations of incoming sensor
      data, e.g. for different dimensions of a sample to be transformed in
      different way, or for transformations that need to be be calculated using
@@ -100,7 +101,7 @@ class Calibrator {
      the vector passed in to the calibration function), although this may
      change in the future.
      */
-    typedef std::function<vector<double>(vector<double>)> CalibrateFunc;
+    using CalibrateFunc = std::function<vector<double>(vector<double>)>;
 
     /**
      Create a Calibrator without specifying a calibration function. If you use
@@ -108,6 +109,7 @@ class Calibrator {
      setCalibrateFunction().
      */
     Calibrator() : simple_calibrate_func_(nullptr), calibrate_func_(nullptr) {}
+
     /**
      Create a Calibrator with the specified SimpleCalibrateFunc. This function
      will be applied to incoming live sensor data.
@@ -124,56 +126,38 @@ class Calibrator {
     /**
      Set the calibration function. Replaces any currently set calibration
      function.
-     
+
      @return *this, to allow for chaining of Calibrator methods
      */
-    Calibrator& setCalibrateFunction(CalibrateFunc f) {
-        simple_calibrate_func_ = nullptr;
-        calibrate_func_ = f;
-        return *this;
-    }
+    Calibrator& setCalibrateFunction(CalibrateFunc f);
 
     /**
      Set the calibration function. Replaces any currently set calibration
      function.
-     
+
      @return *this, to allow for chaining of Calibrator methods
      */
-    Calibrator& setCalibrateFunction(SimpleCalibrateFunc f) {
-        simple_calibrate_func_ = f;
-        calibrate_func_ = nullptr;
-        return *this;
-    }
-
+    Calibrator& setCalibrateFunction(SimpleCalibrateFunc f);
     /**
      Add a CalibrateProcess to this Calibrator. The CalibrateProcess instances
      in the active Calibrator (as set by useCalibrator()) are the ones that
      will be shown to the user in the interface.
-     
+
      @return *this, to allow for chaining of Calibrator methods
      */
-    Calibrator& addCalibrateProcess(CalibrateProcess cp) {
-        if (!isCalibrateProcessRegistered(cp)) {
-            registerCalibrateProcess(cp);
-            calibrate_processes_.push_back(cp);
-        }
-        return *this;
-    }
+    Calibrator& addCalibrateProcess(CalibrateProcess cp);
 
     /**
      Shortcut for adding a new CalibrateProcess to this Calibrator. This
      creates a new CalibrateProcess with the specified name, description, and
      callback and adds it to the Calibrator. See
      CalibrateProcess::CalibrationProcess() for a description of the arguments.
-     
+
      @return *this, to allow for chaining of Calibrator methods
      */
-    Calibrator& addCalibrateProcess(const string& name, const string& description,
-                                    const CalibrateProcess::CalibratorCallback cb) {
-        CalibrateProcess cp(name, description, cb);
-        return addCalibrateProcess(cp);
-    }
-
+    Calibrator& addCalibrateProcess(const string& name,
+                                    const string& description,
+                                    const CalibrateProcess::CalibratorCallback cb);
     /**
      Get the CalibrateProcess instances in this Calibrator.
      */
@@ -181,35 +165,26 @@ class Calibrator {
         return calibrate_processes_;
     }
 
-    vector<double> calibrate(vector<double> input) {
-        if (calibrate_func_ != nullptr) {
-            return calibrate_func_(input);
-        } else {
-            assert(simple_calibrate_func_ != nullptr);
-            vector<double> output;
-            std::transform(input.begin(), input.end(), back_inserter(output),
-                           simple_calibrate_func_);
-            return output;
-        }
-    }
+    /**
+     * Calibrate the input data using functions registered. If a CalibrateFunc
+     * is provided and set, use it to calibrate the input; otherwise,
+     * SimpleCalibrateFunc must be set and will be used.
+     *
+     * @param input, an input vector
+     * @return output, the filtered result
+     */
+    vector<double> calibrate(vector<double> input);
 
-    bool isCalibrated() {
-        for (const auto& cp : calibrate_processes_) {
-            if (!cp.isCalibrated()) {
-                return false;
-            }
-        }
-        return true;
-    }
+
+    /**
+     * Returns true if all calibrate processes are calibrated.
+     */
+    bool isCalibrated();
 
   private:
-    void registerCalibrateProcess(const CalibrateProcess& cp) {
-        registered_.insert(cp.getName());
-    }
+    void registerCalibrateProcess(const CalibrateProcess& cp);
 
-    bool isCalibrateProcessRegistered(const CalibrateProcess& cp) {
-        return registered_.find(cp.getName()) != registered_.end();
-    }
+    bool isCalibrateProcessRegistered(const CalibrateProcess& cp);
 
     SimpleCalibrateFunc simple_calibrate_func_;
     CalibrateFunc calibrate_func_;
@@ -219,10 +194,10 @@ class Calibrator {
 
 /**
  @brief Specify the Calibrator to be used by the ESP system.
- 
+
  This Calibrator will be applied to data coming from the current input stream
  (IStream instance specified by useInputStream()) before it is passed to the
- current machine learning pipeline (GestureRecognitionPipeline specified by 
+ current machine learning pipeline (GestureRecognitionPipeline specified by
  usePipeline()). Only one calibrator can be active at a time, but it can
  include multiple CalibrateProcess instances, each of which specifies one
  sample of calibration data to be collected by the user.
