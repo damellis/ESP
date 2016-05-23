@@ -1,0 +1,44 @@
+language: cpp
+os: osx
+osx_image: xcode7.3
+
+env:
+  - BUILD_TOOL=Xcode
+  - BUILD_TOOL=CMake
+
+git:
+  submodules: false
+
+branches:
+  only:
+    - master
+
+compiler:
+  - clang
+
+before_script:
+  # Take care of dependencies.
+  - sed -i '' 's/git@github.com:/https:\/\/github.com\//' .gitmodules
+  - ./setup minimal
+  - >
+    xcodebuild -configuration Release -target emptyExample
+    -project "third-party/openFrameworks/scripts/templates/osx/emptyExample.xcodeproj"
+  # CMake
+  - >
+    if [ "$BUILD_TOOL" = "CMake" ]; then
+      mkdir build
+      cd build
+      cmake ..
+    fi
+script:
+  - >
+    if [ "$BUILD_TOOL" = "CMake" ]; then
+      make;
+    fi;
+  - >
+    if [ "$BUILD_TOOL" = "Xcode" ]; then
+      xcodebuild -configuration Release -target ESP -project "Xcode/ESP/ESP.xcodeproj"
+    fi
+cache:
+  directories:
+    - third-party/openFrameworks/libs
