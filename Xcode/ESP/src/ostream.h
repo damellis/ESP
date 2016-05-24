@@ -13,8 +13,6 @@
  */
 #pragma once
 
-#include <ApplicationServices/ApplicationServices.h>
-
 #include <stdarg.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -165,7 +163,7 @@ class MacOSMouseOStream : public OStream {
 
 private:
     void clickMouse(pair<uint32_t, uint32_t> mouse);
-    void doubleClick(CGPoint point, int clickCount = 2);
+    void doubleClick(pair<uint32_t, uint32_t> mouse, int clickCount = 2);
 
     pair<uint32_t, uint32_t> getMousePosition(uint32_t label) {
         return mouse_mapping_[label];

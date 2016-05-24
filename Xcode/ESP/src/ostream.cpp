@@ -1,11 +1,16 @@
 #include "ofApp.h"
 #include "ostream.h"
 
+#if __APPLE__
+#include <ApplicationServices/ApplicationServices.h>
+#endif
+
 void useOutputStream(OStream &stream) {
     ((ofApp *) ofGetAppPtr())->useOStream(stream);
 }
 
 void MacOSKeyboardOStream::sendKey(char c) {
+#if __APPLE__
     if (ofGetElapsedTimeMillis() < elapsed_time_ + kGracePeriod) {
         return;
     }
@@ -24,9 +29,11 @@ void MacOSKeyboardOStream::sendKey(char c) {
     CGEventPostToPSN(&psn, key_up);
     CFRelease(key_down);
     CFRelease(key_up);
+#endif
 }
 
 void MacOSKeyboardOStream::sendString(const std::string& str) {
+#if __APPLE__
     // Get the process number for the front application.
     ProcessSerialNumber psn = { 0, kNoProcess };
     GetFrontProcess( &psn );
@@ -40,18 +47,23 @@ void MacOSKeyboardOStream::sendString(const std::string& str) {
     CGEventKeyboardSetUnicodeString(e, str.length(), s);
     CGEventPostToPSN(&psn, e);
     CFRelease(e);
+#endif
 }
 
 void MacOSMouseOStream::clickMouse(pair<uint32_t, uint32_t> mouse) {
+#if __APPLE__
     if (ofGetElapsedTimeMillis() < elapsed_time_ + kGracePeriod) {
         return;
     }
     elapsed_time_ = ofGetElapsedTimeMillis();
 
-    doubleClick(CGPointMake(mouse.first, mouse.second));
+    doubleClick(mouse);
+#endif
 }
 
-void MacOSMouseOStream::doubleClick(CGPoint point, int clickCount) {
+void MacOSMouseOStream::doubleClick(pair<uint32_t, uint32_t> mouse, int clickCount) {
+#if __APPLE__
+    CGPointMake point(mouse.first, mouse.second);
     CGEventRef theEvent = CGEventCreateMouseEvent(
         NULL, kCGEventLeftMouseDown, point, kCGMouseButtonLeft);
 
@@ -67,6 +79,7 @@ void MacOSMouseOStream::doubleClick(CGPoint point, int clickCount) {
     CGEventSetType(theEvent, kCGEventLeftMouseUp);
     CGEventPostToPSN(&psn, theEvent);
     CFRelease(theEvent);
+#endif
 }
 
 void TcpOStream::sendString(const string& tosend) {

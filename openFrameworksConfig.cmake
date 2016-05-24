@@ -4,6 +4,9 @@ get_filename_component(openFrameworksRoot
   ABSOLUTE
   )
 
+# Use $ROOT/cmake/ as custom module path
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/")
+
 set(LIB_PREFIX)
 # Having to make the following distinction is a result of openFrameworks being
 # not properly deployed into standard lib/include paths as of yet, but this is
@@ -21,18 +24,61 @@ elseif(${WIN32})
   set(PLATFORM "vs")
 endif()
 
-if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU")
+if("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU")
   execute_process(
     COMMAND ${CMAKE_CXX_COMPILER} -dumpversion OUTPUT_VARIABLE GCC_VERSION)
   if ((GCC_VERSION VERSION_GREATER 4.3 OR GCC_VERSION VERSION_EQUAL 4.3))
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-  else()
+  else ()
     message(FATAL_ERROR
       "openFrameworks requires >=gcc-4.3 for C++11 support.")
-  endif ()
+  endif()
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-endif ()
+endif()
+
+if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+  set(CAIRO_INCLUDE_DIRS ${openFrameworksRoot}/libs/cairo/include/cairo)
+  set(CAIRO_LIBRARIES
+    ${openFrameworksRoot}/libs/cairo/lib/${PLATFORM}/${LIB_PREFIX}cairo-script-interpreter.a
+    ${openFrameworksRoot}/libs/cairo/lib/${PLATFORM}/${LIB_PREFIX}cairo.a
+    ${openFrameworksRoot}/libs/cairo/lib/${PLATFORM}/${LIB_PREFIX}pixman-1.a
+    ${openFrameworksRoot}/libs/cairo/lib/${PLATFORM}/${LIB_PREFIX}png.a
+    )
+  set(BOOST_LIBRARIES
+    ${openFrameworksRoot}/libs/boost/lib/${PLATFORM}/${LIB_PREFIX}boost.a
+    ${openFrameworksRoot}/libs/boost/lib/${PLATFORM}/${LIB_PREFIX}boost_filesystem.a
+    ${openFrameworksRoot}/libs/boost/lib/${PLATFORM}/${LIB_PREFIX}boost_system.a
+    )
+  set(FREEIMAGE_LIBRARIES
+    ${openFrameworksRoot}/libs/FreeImage/lib/${PLATFORM}/${LIB_PREFIX}freeimage.a
+    )
+  set(FREETYPE_LIBRARIES
+    ${openFrameworksRoot}/libs/freetype/lib/${PLATFORM}/${LIB_PREFIX}freetype.a
+    )
+  set(GLEW_LIBRARIES
+    ${openFrameworksRoot}/libs/glew/lib/${PLATFORM}/${LIB_PREFIX}glew.a
+    )
+  set(OPENSSL_CRYPTO_LIBRARY
+    ${openFrameworksRoot}/libs/openssl/lib/${PLATFORM}/${LIB_PREFIX}crypto.a
+    )
+  set(OPENSSL_SSL_LIBRARY
+    ${openFrameworksRoot}/libs/openssl/lib/${PLATFORM}/${LIB_PREFIX}ssl.a
+    )
+  set(RTAUDIO_LIBRARIES
+    ${openFrameworksRoot}/libs/rtAudio/lib/${PLATFORM}/${LIB_PREFIX}rtAudio.a
+    )
+else(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+  find_package(Cairo REQUIRED)
+  find_package(GStreamer REQUIRED)
+  find_package(GLib REQUIRED)
+  find_package(Boost REQUIRED)
+  find_package(FreeImage REQUIRED)
+  find_package(Freetype REQUIRED)
+  find_package(GLEW REQUIRED)
+  find_package(OpenSSL REQUIRED)
+  find_package(RtAudio REQUIRED)
+endif()
 
 set(openFrameworks_INCLUDES
   # oF include directories
@@ -51,7 +97,6 @@ set(openFrameworks_INCLUDES
   # oF-supplied 3rd party include directories
   ${openFrameworksRoot}/libs/FreeImage/include
   ${openFrameworksRoot}/libs/boost/include
-  ${openFrameworksRoot}/libs/cairo/include/cairo
   ${openFrameworksRoot}/libs/fmodex/include
   ${openFrameworksRoot}/libs/freetype/include
   ${openFrameworksRoot}/libs/glew/include
@@ -65,25 +110,19 @@ set(openFrameworks_INCLUDES
   ${openFrameworksRoot}/libs/tess2/include
   ${openFrameworksRoot}/libs/utf8cpp/include
   ${openFrameworksRoot}/libs/videoInput/include
+  ${CAIRO_INCLUDE_DIRS}
+  ${GLIB_INCLUDE_DIRS}
+  ${GSTREAMER_BASE_INCLUDE_DIRS}
+  ${GSTREAMER_INCLUDE_DIRS}
+  # System includes
+  /usr/include
   )
 
 set(openFrameworks_LIBRARIES
   # openFrameworks
   ${openFrameworksRoot}/libs/openFrameworksCompiled/lib/${PLATFORM}/${LIB_PREFIX}openFrameworks.a
   # oF-supplied libraries
-  ${openFrameworksRoot}/libs/boost/lib/${PLATFORM}/${LIB_PREFIX}boost.a
-  ${openFrameworksRoot}/libs/boost/lib/${PLATFORM}/${LIB_PREFIX}boost_filesystem.a
-  ${openFrameworksRoot}/libs/boost/lib/${PLATFORM}/${LIB_PREFIX}boost_system.a
-  ${openFrameworksRoot}/libs/cairo/lib/${PLATFORM}/${LIB_PREFIX}cairo-script-interpreter.a
-  ${openFrameworksRoot}/libs/cairo/lib/${PLATFORM}/${LIB_PREFIX}cairo.a
-  ${openFrameworksRoot}/libs/cairo/lib/${PLATFORM}/${LIB_PREFIX}pixman-1.a
-  ${openFrameworksRoot}/libs/cairo/lib/${PLATFORM}/${LIB_PREFIX}png.a
-  ${openFrameworksRoot}/libs/FreeImage/lib/${PLATFORM}/${LIB_PREFIX}freeimage.a
-  ${openFrameworksRoot}/libs/freetype/lib/${PLATFORM}/${LIB_PREFIX}freetype.a
-  ${openFrameworksRoot}/libs/glew/lib/${PLATFORM}/${LIB_PREFIX}glew.a
   ${openFrameworksRoot}/libs/glfw/lib/${PLATFORM}/${LIB_PREFIX}glfw3.a
-  ${openFrameworksRoot}/libs/openssl/lib/${PLATFORM}/${LIB_PREFIX}crypto.a
-  ${openFrameworksRoot}/libs/openssl/lib/${PLATFORM}/${LIB_PREFIX}ssl.a
   ${openFrameworksRoot}/libs/poco/lib/${PLATFORM}/${LIB_PREFIX}PocoCrypto.a
   ${openFrameworksRoot}/libs/poco/lib/${PLATFORM}/${LIB_PREFIX}PocoData.a
   ${openFrameworksRoot}/libs/poco/lib/${PLATFORM}/${LIB_PREFIX}PocoDataSQLite.a
@@ -95,12 +134,55 @@ set(openFrameworks_LIBRARIES
   ${openFrameworksRoot}/libs/poco/lib/${PLATFORM}/${LIB_PREFIX}PocoUtil.a
   ${openFrameworksRoot}/libs/poco/lib/${PLATFORM}/${LIB_PREFIX}PocoXML.a
   ${openFrameworksRoot}/libs/poco/lib/${PLATFORM}/${LIB_PREFIX}PocoZip.a
-  ${openFrameworksRoot}/libs/rtAudio/lib/${PLATFORM}/${LIB_PREFIX}rtAudio.a
   ${openFrameworksRoot}/libs/tess2/lib/${PLATFORM}/${LIB_PREFIX}tess2.a
+  # System libraries
+  ${BOOST_LIBRARIES}
+  ${CAIRO_LIBRARIES}
+  ${FREEIMAGE_LIBRARIES}
+  ${FREETYPE_LIBRARIES}
+  ${GLEW_LIBRARIES}
+  ${GLIB_LIBRARIES}
+  ${GSTREAMER_APP_LIBRARIES}
+  ${GSTREAMER_BASE_LIBRARIES}
+  ${GSTREAMER_LIBRARIES}
+  ${GSTREAMER_VIDEO_LIBRARIES}
+  ${OPENSSL_CRYPTO_LIBRARY}
+  ${OPENSSL_SSL_LIBRARY}
+  ${RTAUDIO_LIBRARIES}
+  -L${openFrameworksRoot}/libs/poco/lib/${PLATFORM}
   )
 
-# osx-specific
-if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+  # Linux Specific
+  find_library(X11_LIB X11)
+  find_library(PTHREAD_LIB pthread)
+  find_package(Fontconfig REQUIRED)
+  find_package(GObject REQUIRED)
+  find_package(GTK2 REQUIRED)
+  find_package(OpenAL REQUIRED)
+  find_package(OpenGL REQUIRED)
+
+  # libraries
+  list(APPEND openFrameworks_LIBRARIES
+    ${openFrameworksRoot}/libs/tess2/lib/${PLATFORM}/libtess2.a
+    ${openFrameworksRoot}/libs/kiss/lib/${PLATFORM}/libkiss.a
+    ${FONTCONFIG_LIBRARIES}
+    ${GOBJECT_LIBRARIES}
+    ${OPENAL_LIBRARY}
+    ${OPENGL_gl_LIBRARIES}
+    ${OPENGL_glu_LIBRARIES}
+    ${PTHREAD_LIB}
+    ${GTK2_LIBRARIES}
+    ${X11_LIB}
+    "-lGL -lGLU -lglut -lXxf86vm -lXrandr -lXi -lXcursor -lsndfile"
+    "-lgrt -lboost_filesystem -lboost_system"
+    "-lPocoCrypto -lPocoData -lPocoFoundation -lPocoJSON"
+    "-lPocoNet -lPocoUtil -lPocoXML -lPocoZip"
+    )
+
+elseif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+  # osx-specific
+
   # fmodex dylib
   set(fmodex_LIBRARY ${openFrameworksRoot}/libs/fmodex/lib/${PLATFORM}/libfmodex.dylib)
 
@@ -112,8 +194,8 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
   # All libraries
   set(openFrameworks_LIBRARIES
-    ${fmodex_LIBRARY}
     ${openFrameworks_LIBRARIES}
+    ${fmodex_LIBRARY}
     "-framework Accelerate -framework QTKit -framework GLUT -framework AGL"
     "-framework ApplicationServices -framework AudioToolbox -framework CoreAudio"
     "-framework CoreFoundation -framework CoreServices -framework OpenGL"
