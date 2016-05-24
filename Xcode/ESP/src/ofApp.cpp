@@ -113,8 +113,10 @@ void ofApp::setup() {
         }
     }
 
-    if (!(calibrator_->isCalibrated())) {
+    if (calibrator_ && !(calibrator_->isCalibrated())) {
         fragment_ = CALIBRATION;
+    } else {
+        fragment_ = PIPELINE;
     }
 
     istream_->onDataReadyEvent(this, &ofApp::onDataIn);
