@@ -4,9 +4,6 @@
 [submodule "third-party/grt"]
 	path = third-party/grt
 	url = git@github.com:damellis/grt.git
-[submodule "openFrameworks"]
-	path = third-party/openFrameworks
-	url = git@github.com:openFrameworks/openFrameworks.git
 [submodule "Arduino/libraries/grt"]
 	path = Arduino/libraries/grt
 	url = https://github.com/damellis/grt.git

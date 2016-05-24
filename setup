@@ -5,45 +5,17 @@ OF_RELEASE=http://openframeworks.cc/versions/v0.9.3/of_v0.9.3_osx_release.zip
 ## Stop on any error.
 set -e
 
-## Default we show help message.
-if [ $# -ge 1 ]; then
-    TYPE=$1
-else
-    TYPE=help
-fi
+curl $OF_RELEASE > third-party/of.zip
+unzip -q third-party/of.zip -d third-party
+cd third-party
+mkdir -p openFrameworks
+( cd of_v0.9.3_osx_release && tar cf - . ) | (cd openFrameworks && tar xpf - )
+rm -rf of_v0.9.3_osx_release/
+rm -f of.zip
+cd ..
 
-case $TYPE in
-    help)
-        echo "./setup [type]"
-        echo
-        echo "type is one of the following:"
-        echo "  minimal: download and install openframework from release"
-        echo "  full   : clone the full openframework git repository"
-        exit
-        ;;
-    minimal)
-        echo "Install openframework from release"
-        curl $OF_RELEASE > third-party/of.zip
-        unzip -q third-party/of.zip -d third-party
-        cd third-party
-        mkdir -p openFrameworks
-        ( cd of_v0.9.3_osx_release && tar cf - . ) | (cd openFrameworks && tar xpf - )
-        rm -rf of_v0.9.3_osx_release/
-        rm -f of.zip
-        cd ..
-
-        git submodule init
-        git submodule update -- third-party/ofxGrt
-        git submodule update -- third-party/ofxDatGui
-        git submodule update -- third-party/ofxParagraph
-        git submodule update -- third-party/grt
-        ;;
-    full)
-        echo "Install openframework from its github repository"
-        git submodule init
-        git submodule update
-        ;;
-esac
+git submodule init
+git submodule update
 
 ln -s $(pwd)/third-party/ofxGrt/ third-party/openFrameworks/addons/ofxGrt
 ln -s $(pwd)/third-party/ofxDatGui/ third-party/openFrameworks/addons/ofxDatGui
