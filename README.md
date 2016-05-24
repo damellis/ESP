@@ -1,5 +1,7 @@
 # ESP (Example-based Sensor Predictions)
 
+[![Build Status](https://travis-ci.org/damellis/ESP.svg?branch=master)](https://travis-ci.org/damellis/ESP)
+
 This project aims to help novices make sophisticated use of sensors in
 interactive projects through the application of machine learning.
 
