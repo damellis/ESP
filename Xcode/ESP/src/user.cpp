@@ -7,4 +7,5 @@
 //#include "examples/user_accelerometer_gestures.cpp"
 //#include "examples/user_accelerometer_poses.cpp"
 //#include "examples/user_capacitive_sensing.cpp"
+//#include "examples/user_speech_detection.cpp"
 //#include "examples/user_sudden_motion.cpp"
