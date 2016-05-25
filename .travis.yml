@@ -19,7 +19,7 @@ compiler:
 before_script:
   # Take care of dependencies.
   - sed -i '' 's/git@github.com:/https:\/\/github.com\//' .gitmodules
-  - ./setup minimal
+  - ./setup
   - >
     xcodebuild -configuration Release -target emptyExample
     -project "third-party/openFrameworks/scripts/templates/osx/emptyExample.xcodeproj"
