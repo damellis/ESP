@@ -63,7 +63,7 @@ void MacOSMouseOStream::clickMouse(pair<uint32_t, uint32_t> mouse) {
 
 void MacOSMouseOStream::doubleClick(pair<uint32_t, uint32_t> mouse, int clickCount) {
 #if __APPLE__
-    CGPointMake point(mouse.first, mouse.second);
+    CGPoint point = CGPointMake(mouse.first, mouse.second);
     CGEventRef theEvent = CGEventCreateMouseEvent(
         NULL, kCGEventLeftMouseDown, point, kCGMouseButtonLeft);
 
