@@ -61,8 +61,8 @@ list(APPEND ADDONS_INCLUDE_PATH
   ${ADDONS_PATH}/ofxDatGui/src/components
   ${ADDONS_PATH}/ofxDatGui/src/themes
   ${ADDONS_PATH}/ofxDatGui/src/libs/ofxSmartFont
-  ${ADDONS_PATH}/ofxGui/src
   ${ADDONS_PATH}/ofxGrt/src
+  ${ADDONS_PATH}/ofxGui/src
   ${ADDONS_PATH}/ofxParagraph/src
   ${ADDONS_PATH}/ofxNetwork/src
   )
@@ -83,8 +83,14 @@ set(ESP_SRC
   ${ESP_PATH}/src/user.cpp
 )
 
-set(GRT_LIBS ${CMAKE_CURRENT_SOURCE_DIR}/Xcode/ESP/libgrt.dylib)
-set(GRT_INCLUDES ${CMAKE_CURRENT_SOURCE_DIR}/third-party/grt/)
+if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+  set(GRT_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/third-party/grt/)
+  set(GRT_LIBRARY ${CMAKE_CURRENT_SOURCE_DIR}/Xcode/ESP/libgrt.dylib)
+else()
+  set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/")
+  find_package(Grt REQUIRED)
+endif()
+
 set(SYS_LIBS "-lobjc" "-L/usr/local/lib")
 
 # =============================================================
@@ -96,16 +102,22 @@ target_include_directories(${PROJECT} PUBLIC
   ${openFrameworks_INCLUDES}
   ${ADDONS_INCLUDE_PATH}
   ${ESP_PATH}/src
-  ${GRT_INCLUDES}
+  ${GRT_INCLUDE_DIR}
   )
 
 target_link_libraries(${PROJECT} PUBLIC
   ${openFrameworks_LIBRARIES}
   ${ADDONS_LIBS}
   ${ESP_LIBS}
-  ${GRT_LIBS}
+  ${GRT_LIBRARY}
   ${SYS_LIBS}
   )
+
+# =============================================================
+#   Additional Flags
+# =============================================================
+set_source_files_properties(${PROJECT} PROPERTIES COMPILE_FLAGS
+  "-Wno-deprecated-declarations")
 
 # =============================================================
 #   Package and copy dylib/assets

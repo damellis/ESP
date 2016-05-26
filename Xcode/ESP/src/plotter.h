@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
-#include "ofxGRT.h"
+#include "ofxGrt.h"
 
 using std::string;
 
