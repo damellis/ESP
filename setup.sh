@@ -54,7 +54,6 @@ set_of_url () {
 get_platform
 set_of_url
 echo "Downlading openFrameworks v0.9.3 release from $OF_RELEASE"
-exit -1
 
 curl $OF_RELEASE > third-party/of.zip
 unzip -q third-party/of.zip -d third-party
