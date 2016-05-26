@@ -1,5 +1,6 @@
 var annotated_dup =
 [
+    [ "GRT", "namespace_g_r_t.html", "namespace_g_r_t" ],
     [ "ASCIISerialStream", "class_a_s_c_i_i_serial_stream.html", "class_a_s_c_i_i_serial_stream" ],
     [ "AudioStream", "class_audio_stream.html", "class_audio_stream" ],
     [ "CalibrateProcess", "class_calibrate_process.html", "class_calibrate_process" ],
@@ -8,6 +9,7 @@ var annotated_dup =
     [ "InteractiveTimeSeriesPlot", "class_interactive_time_series_plot.html", "class_interactive_time_series_plot" ],
     [ "IOStream", "class_i_o_stream.html", null ],
     [ "IStream", "class_i_stream.html", "class_i_stream" ],
+    [ "LogEnergy", "class_log_energy.html", "class_log_energy" ],
     [ "MacOSKeyboardOStream", "class_mac_o_s_keyboard_o_stream.html", "class_mac_o_s_keyboard_o_stream" ],
     [ "MacOSMouseOStream", "class_mac_o_s_mouse_o_stream.html", "class_mac_o_s_mouse_o_stream" ],
     [ "ofApp", "classof_app.html", "classof_app" ],
@@ -15,6 +17,7 @@ var annotated_dup =
     [ "Palette", "class_palette.html", "class_palette" ],
     [ "Plotter", "class_plotter.html", "class_plotter" ],
     [ "SerialStream", "class_serial_stream.html", "class_serial_stream" ],
+    [ "SpeechDetection", "class_speech_detection.html", "class_speech_detection" ],
     [ "Stream", "class_stream.html", "class_stream" ],
     [ "TcpOStream", "class_tcp_o_stream.html", "class_tcp_o_stream" ],
     [ "TrainingSampleGuiListener", "class_training_sample_gui_listener.html", "class_training_sample_gui_listener" ],

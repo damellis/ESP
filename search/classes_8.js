@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['tcpostream',['TcpOStream',['../class_tcp_o_stream.html',1,'']]],
-  ['trainingsampleguilistener',['TrainingSampleGuiListener',['../class_training_sample_gui_listener.html',1,'']]],
-  ['tuneable',['Tuneable',['../class_tuneable.html',1,'']]]
+  ['serialstream',['SerialStream',['../class_serial_stream.html',1,'']]],
+  ['speechdetection',['SpeechDetection',['../class_speech_detection.html',1,'']]],
+  ['stream',['Stream',['../class_stream.html',1,'']]]
 ];

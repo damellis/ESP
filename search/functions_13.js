@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['_7eistream',['~IStream',['../class_i_stream.html#a78b9543926dc09be94c01842f775c28b',1,'IStream']]]
+  ['windowresized',['windowResized',['../classof_app.html#a0dc7a2bd0a10e38346a7a6e70470664c',1,'ofApp']]]
 ];

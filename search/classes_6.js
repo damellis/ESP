@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['palette',['Palette',['../class_palette.html',1,'']]],
-  ['plotter',['Plotter',['../class_plotter.html',1,'']]]
+  ['ofapp',['ofApp',['../classof_app.html',1,'']]],
+  ['ostream',['OStream',['../class_o_stream.html',1,'']]]
 ];

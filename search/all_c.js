@@ -1,17 +1,11 @@
 var searchData=
 [
-  ['o_5fstream',['o_stream',['../user__audio__beat_8cpp.html#af253c36c79b18691f49a9ecd12ae43b0',1,'user_audio_beat.cpp']]],
-  ['ofapp',['ofApp',['../classof_app.html',1,'ofApp'],['../classof_app.html#a23bbd1b428e636849c4623d3e679874e',1,'ofApp::ofApp()']]],
-  ['ofapp_2ecpp',['ofApp.cpp',['../of_app_8cpp.html',1,'']]],
-  ['ofapp_2eh',['ofApp.h',['../of_app_8h.html',1,'']]],
-  ['ofdrawcoloredbitmapstring',['ofDrawColoredBitmapString',['../of_app_8cpp.html#a1b8dca9c819270f3ff9f5e5aebd22b88',1,'ofApp.cpp']]],
-  ['ondatareadycallback',['onDataReadyCallback',['../class_i_stream.html#a66dbd2ab258482a52f442819969e6fa7',1,'IStream']]],
-  ['ondatareadyevent',['onDataReadyEvent',['../class_i_stream.html#aa88c2888539953f1b41a335af446d7ee',1,'IStream::onDataReadyEvent(onDataReadyCallback callback)'],['../class_i_stream.html#aeb04318f7ed0e01339e087fad42698e6',1,'IStream::onDataReadyEvent(T1 *owner, void(T::*listenerMethod)(arg))']]],
-  ['oneg',['oneG',['../user__accelerometer__gestures_8cpp.html#a6423f81bc2d048133f946ad3c0c22aaf',1,'oneG():&#160;user_accelerometer_gestures.cpp'],['../user__accelerometer__poses_8cpp.html#a6423f81bc2d048133f946ad3c0c22aaf',1,'oneG():&#160;user_accelerometer_poses.cpp'],['../user__sudden__motion_8cpp.html#a6423f81bc2d048133f946ad3c0c22aaf',1,'oneG():&#160;user_sudden_motion.cpp']]],
-  ['onrangeselected',['onRangeSelected',['../class_plotter.html#af1ca2b4377fdb0eec58389ade01b01c8',1,'Plotter::onRangeSelected(const onRangeSelectedCallback &amp;cb, void *data)'],['../class_plotter.html#ac3f438dc00a0a9cb8c619055f9d605de',1,'Plotter::onRangeSelected(T1 *owner, void(T::*listenerMethod)(arg), void *data)'],['../class_interactive_time_series_plot.html#a5a7eca3c1ed2e7f9ac02e28feeafd9b7',1,'InteractiveTimeSeriesPlot::onRangeSelected(const onRangeSelectedCallback &amp;cb, void *data)'],['../class_interactive_time_series_plot.html#a23b5b5ecb3f3cf0d4853e8f351e39748',1,'InteractiveTimeSeriesPlot::onRangeSelected(T1 *owner, void(T::*listenerMethod)(arg), void *data)']]],
-  ['onrangeselectedcallback',['onRangeSelectedCallback',['../class_plotter.html#a4e63ab84954d7ea8c076c974c22fda17',1,'Plotter::onRangeSelectedCallback()'],['../class_interactive_time_series_plot.html#a27769c89f845007acbe2c5b6094a1f05',1,'InteractiveTimeSeriesPlot::onRangeSelectedCallback()']]],
-  ['onreceive',['onReceive',['../class_a_s_c_i_i_serial_stream.html#a6535001006927266d223a496fd9b7a06',1,'ASCIISerialStream::onReceive()'],['../class_o_stream.html#aa7e491d3a3a005a7db63b45c9e369f1b',1,'OStream::onReceive()'],['../class_mac_o_s_keyboard_o_stream.html#afc7e6f75b0ff7d7bd6c47ba6298cc1ad',1,'MacOSKeyboardOStream::onReceive()'],['../class_mac_o_s_mouse_o_stream.html#ac7fb9eec384b40ba8f19b7cee22c6011',1,'MacOSMouseOStream::onReceive()'],['../class_tcp_o_stream.html#a876233a345be2af73054f9e7e09c7938',1,'TcpOStream::onReceive()']]],
-  ['ostream',['OStream',['../class_o_stream.html',1,'OStream'],['../user__accelerometer__gestures_8cpp.html#a03d2e0d3fbf91d8bffad36160f3d0d7a',1,'oStream():&#160;user_accelerometer_gestures.cpp'],['../user__accelerometer__poses_8cpp.html#a8145475503b7834c805848fd2a1e632b',1,'oStream():&#160;user_accelerometer_poses.cpp'],['../user__color__sensor_8cpp.html#a8145475503b7834c805848fd2a1e632b',1,'oStream():&#160;user_color_sensor.cpp']]],
-  ['ostream_2ecpp',['ostream.cpp',['../ostream_8cpp.html',1,'']]],
-  ['ostream_2eh',['ostream.h',['../ostream_8h.html',1,'']]]
+  ['normalize',['normalize',['../class_i_stream.html#a26a6814e6190d395065b2ef61aaa0065',1,'IStream::normalize()'],['../user__color__sensor_8cpp.html#aa6784a24c99da5222a904efd99f2f722',1,'normalize():&#160;user_color_sensor.cpp']]],
+  ['normalizeadxl335',['normalizeADXL335',['../user__accelerometer__poses_8cpp.html#aa49659dd7099427c1ea7f5f9307fcf35',1,'user_accelerometer_poses.cpp']]],
+  ['normalizearduino101',['normalizeArduino101',['../user__accelerometer__poses_8cpp.html#a8b3125a62bffc829c4cbc28cacd9ed92',1,'user_accelerometer_poses.cpp']]],
+  ['normalizefunc',['normalizeFunc',['../class_i_stream.html#a0139f0f1cb6424987627cadab3cb7fcf',1,'IStream']]],
+  ['normalizer_5f',['normalizer_',['../class_i_stream.html#a26c77af75042d089bb285f7193288277',1,'IStream']]],
+  ['notify',['notify',['../classof_app.html#abe5b4d26b8498e729f12918974d31a96',1,'ofApp']]],
+  ['null_5frej',['null_rej',['../user__accelerometer__gestures_8cpp.html#aba6fa4a57d62ac4dd27498a2f538ed47',1,'null_rej():&#160;user_accelerometer_gestures.cpp'],['../user__accelerometer__poses_8cpp.html#aba6fa4a57d62ac4dd27498a2f538ed47',1,'null_rej():&#160;user_accelerometer_poses.cpp'],['../user__color__sensor_8cpp.html#aba6fa4a57d62ac4dd27498a2f538ed47',1,'null_rej():&#160;user_color_sensor.cpp']]],
+  ['num_5fdim',['num_dim',['../user__sudden__motion_8cpp.html#a58737b46106674529b0323b6d04cdb99',1,'user_sudden_motion.cpp']]]
 ];

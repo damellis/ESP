@@ -48,6 +48,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li><a href="examples.html"><span>Examples</span></a></li>
@@ -139,10 +140,10 @@ Inheritance diagram for IStream:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a599578a001d17e084683286f108d2928"><td class="memItemLeft" align="right" valign="top">typedef std::function&lt; double(double)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_stream.html#a599578a001d17e084683286f108d2928">normalizeFunc</a></td></tr>
-<tr class="separator:a599578a001d17e084683286f108d2928"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9388c3740bb6c7e5f18b7c2ea4db49c2"><td class="memItemLeft" align="right" valign="top">typedef std::function&lt; vector&lt; double &gt;vector&lt; double &gt;)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_stream.html#a9388c3740bb6c7e5f18b7c2ea4db49c2">vectorNormalizeFunc</a></td></tr>
-<tr class="separator:a9388c3740bb6c7e5f18b7c2ea4db49c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0139f0f1cb6424987627cadab3cb7fcf"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_stream.html#a0139f0f1cb6424987627cadab3cb7fcf">normalizeFunc</a> = std::function&lt; double(double)&gt;</td></tr>
+<tr class="separator:a0139f0f1cb6424987627cadab3cb7fcf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7804995da26aa4cdfcff195dbc7a68ea"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_stream.html#a7804995da26aa4cdfcff195dbc7a68ea">vectorNormalizeFunc</a> = std::function&lt; vector&lt; double &gt;(vector&lt; double &gt;)&gt;</td></tr>
+<tr class="separator:a7804995da26aa4cdfcff195dbc7a68ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a66dbd2ab258482a52f442819969e6fa7"><td class="memItemLeft" align="right" valign="top">typedef std::function&lt; void(GRT::MatrixDouble)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_stream.html#a66dbd2ab258482a52f442819969e6fa7">onDataReadyCallback</a></td></tr>
 <tr class="separator:a66dbd2ab258482a52f442819969e6fa7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -156,9 +157,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a8abc256ea633733ffac5eabe3ee7f71e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acc13709a1660a1f79ffae5d10f0128d0"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_stream.html#acc13709a1660a1f79ffae5d10f0128d0">getNumOutputDimensions</a> ()</td></tr>
 <tr class="separator:acc13709a1660a1f79ffae5d10f0128d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af49e0329f543fa8165d54664e713c9c6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_stream.html#af49e0329f543fa8165d54664e713c9c6">useNormalizer</a> (<a class="el" href="class_i_stream.html#a599578a001d17e084683286f108d2928">normalizeFunc</a> f)</td></tr>
+<tr class="memitem:af49e0329f543fa8165d54664e713c9c6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_stream.html#af49e0329f543fa8165d54664e713c9c6">useNormalizer</a> (<a class="el" href="class_i_stream.html#a0139f0f1cb6424987627cadab3cb7fcf">normalizeFunc</a> f)</td></tr>
 <tr class="separator:af49e0329f543fa8165d54664e713c9c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a735f29a1bce1791514aec9c7e003df95"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_stream.html#a735f29a1bce1791514aec9c7e003df95">useNormalizer</a> (<a class="el" href="class_i_stream.html#a9388c3740bb6c7e5f18b7c2ea4db49c2">vectorNormalizeFunc</a> f)</td></tr>
+<tr class="memitem:a735f29a1bce1791514aec9c7e003df95"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_stream.html#a735f29a1bce1791514aec9c7e003df95">useNormalizer</a> (<a class="el" href="class_i_stream.html#a7804995da26aa4cdfcff195dbc7a68ea">vectorNormalizeFunc</a> f)</td></tr>
 <tr class="separator:a735f29a1bce1791514aec9c7e003df95"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa88c2888539953f1b41a335af446d7ee"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_stream.html#aa88c2888539953f1b41a335af446d7ee">onDataReadyEvent</a> (<a class="el" href="class_i_stream.html#a66dbd2ab258482a52f442819969e6fa7">onDataReadyCallback</a> callback)</td></tr>
 <tr class="separator:aa88c2888539953f1b41a335af446d7ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -194,9 +195,9 @@ Protected Attributes</h2></td></tr>
 <tr class="separator:a65a53ad77a58e34cf8c19309e1c30b84"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a37db7a4d5a94d22e19abd39a23e590b8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_i_stream.html#a66dbd2ab258482a52f442819969e6fa7">onDataReadyCallback</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_stream.html#a37db7a4d5a94d22e19abd39a23e590b8">data_ready_callback_</a></td></tr>
 <tr class="separator:a37db7a4d5a94d22e19abd39a23e590b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a26c77af75042d089bb285f7193288277"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_i_stream.html#a599578a001d17e084683286f108d2928">normalizeFunc</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_stream.html#a26c77af75042d089bb285f7193288277">normalizer_</a></td></tr>
+<tr class="memitem:a26c77af75042d089bb285f7193288277"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_i_stream.html#a0139f0f1cb6424987627cadab3cb7fcf">normalizeFunc</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_stream.html#a26c77af75042d089bb285f7193288277">normalizer_</a></td></tr>
 <tr class="separator:a26c77af75042d089bb285f7193288277"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a80fb3b9faab847ff756b00f80175f1c2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_i_stream.html#a9388c3740bb6c7e5f18b7c2ea4db49c2">vectorNormalizeFunc</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_stream.html#a80fb3b9faab847ff756b00f80175f1c2">vectorNormalizer_</a></td></tr>
+<tr class="memitem:a80fb3b9faab847ff756b00f80175f1c2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_i_stream.html#a7804995da26aa4cdfcff195dbc7a68ea">vectorNormalizeFunc</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_stream.html#a80fb3b9faab847ff756b00f80175f1c2">vectorNormalizer_</a></td></tr>
 <tr class="separator:a80fb3b9faab847ff756b00f80175f1c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_class_stream"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_class_stream')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="class_stream.html">Stream</a></td></tr>
 <tr class="memitem:ac14e5cd2f0e1165f1e2d1448a1691bef inherit pro_attribs_class_stream"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_stream.html#ac14e5cd2f0e1165f1e2d1448a1691bef">has_started_</a></td></tr>
@@ -206,12 +207,12 @@ Protected Attributes</h2></td></tr>
 <div class="textblock"><p>Base class for input streams that provide live sensor data to the ESP system. </p>
 <p>To use an <a class="el" href="class_i_stream.html" title="Base class for input streams that provide live sensor data to the ESP system. ">IStream</a> instance in your application, pass it to <a class="el" href="istream_8cpp.html#a28ecae66cc8c204679f3995fafc93ae6">useInputStream()</a> in your <a class="el" href="user__accelerometer__gestures_8cpp.html#a4fc01d736fe50cf5b977f755b675f11d">setup()</a> function. </p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
-<a class="anchor" id="a599578a001d17e084683286f108d2928"></a>
+<a class="anchor" id="a0139f0f1cb6424987627cadab3cb7fcf"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef std::function&lt;double(double)&gt; <a class="el" href="class_i_stream.html#a599578a001d17e084683286f108d2928">IStream::normalizeFunc</a></td>
+          <td class="memname">using <a class="el" href="class_i_stream.html#a0139f0f1cb6424987627cadab3cb7fcf">IStream::normalizeFunc</a> =  std::function&lt;double(double)&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -230,12 +231,12 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a9388c3740bb6c7e5f18b7c2ea4db49c2"></a>
+<a class="anchor" id="a7804995da26aa4cdfcff195dbc7a68ea"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef std::function&lt;vector&lt;double&gt;vector&lt;double&gt;)&gt; <a class="el" href="class_i_stream.html#a9388c3740bb6c7e5f18b7c2ea4db49c2">IStream::vectorNormalizeFunc</a></td>
+          <td class="memname">using <a class="el" href="class_i_stream.html#a7804995da26aa4cdfcff195dbc7a68ea">IStream::vectorNormalizeFunc</a> =  std::function&lt;vector&lt;double&gt;(vector&lt;double&gt;)&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -473,7 +474,7 @@ template&lt;typename T1 , typename arg , class T &gt; </div>
         <tr>
           <td class="memname">void IStream::useNormalizer </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="class_i_stream.html#a599578a001d17e084683286f108d2928">normalizeFunc</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="class_i_stream.html#a0139f0f1cb6424987627cadab3cb7fcf">normalizeFunc</a>&#160;</td>
           <td class="paramname"><em>f</em></td><td>)</td>
           <td></td>
         </tr>
@@ -498,7 +499,7 @@ template&lt;typename T1 , typename arg , class T &gt; </div>
         <tr>
           <td class="memname">void IStream::useNormalizer </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="class_i_stream.html#a9388c3740bb6c7e5f18b7c2ea4db49c2">vectorNormalizeFunc</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="class_i_stream.html#a7804995da26aa4cdfcff195dbc7a68ea">vectorNormalizeFunc</a>&#160;</td>
           <td class="paramname"><em>f</em></td><td>)</td>
           <td></td>
         </tr>
@@ -561,7 +562,7 @@ template&lt;typename T1 , typename arg , class T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_i_stream.html#a599578a001d17e084683286f108d2928">normalizeFunc</a> IStream::normalizer_</td>
+          <td class="memname"><a class="el" href="class_i_stream.html#a0139f0f1cb6424987627cadab3cb7fcf">normalizeFunc</a> IStream::normalizer_</td>
         </tr>
       </table>
   </td>
@@ -581,7 +582,7 @@ template&lt;typename T1 , typename arg , class T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_i_stream.html#a9388c3740bb6c7e5f18b7c2ea4db49c2">vectorNormalizeFunc</a> IStream::vectorNormalizer_</td>
+          <td class="memname"><a class="el" href="class_i_stream.html#a7804995da26aa4cdfcff195dbc7a68ea">vectorNormalizeFunc</a> IStream::vectorNormalizer_</td>
         </tr>
       </table>
   </td>

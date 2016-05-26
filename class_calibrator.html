@@ -48,6 +48,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li><a href="examples.html"><span>Examples</span></a></li>
@@ -123,33 +124,33 @@ $(document).ready(function(){initNavTree('class_calibrator.html','');});
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a6159d619bd1f30733bb8d93af296cb41"><td class="memItemLeft" align="right" valign="top">typedef std::function&lt; double(double)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_calibrator.html#a6159d619bd1f30733bb8d93af296cb41">SimpleCalibrateFunc</a></td></tr>
-<tr class="memdesc:a6159d619bd1f30733bb8d93af296cb41"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transforms each dimension of incoming samples of live sensor data.  <a href="#a6159d619bd1f30733bb8d93af296cb41">More...</a><br /></td></tr>
-<tr class="separator:a6159d619bd1f30733bb8d93af296cb41"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a753a0c65848966e966bff8b378009daf"><td class="memItemLeft" align="right" valign="top">typedef std::function&lt; vector&lt; double &gt;vector&lt; double &gt;)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_calibrator.html#a753a0c65848966e966bff8b378009daf">CalibrateFunc</a></td></tr>
-<tr class="memdesc:a753a0c65848966e966bff8b378009daf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transforms incoming samples of live sensor data.  <a href="#a753a0c65848966e966bff8b378009daf">More...</a><br /></td></tr>
-<tr class="separator:a753a0c65848966e966bff8b378009daf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa738fe86ff11539158d28bc683dfe4b9"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_calibrator.html#aa738fe86ff11539158d28bc683dfe4b9">SimpleCalibrateFunc</a> = std::function&lt; double(double)&gt;</td></tr>
+<tr class="memdesc:aa738fe86ff11539158d28bc683dfe4b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transforms each dimension of incoming samples of live sensor data.  <a href="#aa738fe86ff11539158d28bc683dfe4b9">More...</a><br /></td></tr>
+<tr class="separator:aa738fe86ff11539158d28bc683dfe4b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab206b6f730ce04fd77f7acbd6fde8104"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_calibrator.html#ab206b6f730ce04fd77f7acbd6fde8104">CalibrateFunc</a> = std::function&lt; vector&lt; double &gt;(vector&lt; double &gt;)&gt;</td></tr>
+<tr class="memdesc:ab206b6f730ce04fd77f7acbd6fde8104"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transforms incoming samples of live sensor data.  <a href="#ab206b6f730ce04fd77f7acbd6fde8104">More...</a><br /></td></tr>
+<tr class="separator:ab206b6f730ce04fd77f7acbd6fde8104"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a0cce2517647d14c7a337cc706ff16817"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_calibrator.html#a0cce2517647d14c7a337cc706ff16817">Calibrator</a> ()</td></tr>
 <tr class="separator:a0cce2517647d14c7a337cc706ff16817"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4de994adc74d4f136c021466dc291ee7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_calibrator.html#a4de994adc74d4f136c021466dc291ee7">Calibrator</a> (<a class="el" href="class_calibrator.html#a6159d619bd1f30733bb8d93af296cb41">SimpleCalibrateFunc</a> f)</td></tr>
+<tr class="memitem:a4de994adc74d4f136c021466dc291ee7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_calibrator.html#a4de994adc74d4f136c021466dc291ee7">Calibrator</a> (<a class="el" href="class_calibrator.html#aa738fe86ff11539158d28bc683dfe4b9">SimpleCalibrateFunc</a> f)</td></tr>
 <tr class="separator:a4de994adc74d4f136c021466dc291ee7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a96be6ad76cd5040b0ead47e4bd1ad38d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_calibrator.html#a96be6ad76cd5040b0ead47e4bd1ad38d">Calibrator</a> (<a class="el" href="class_calibrator.html#a753a0c65848966e966bff8b378009daf">CalibrateFunc</a> f)</td></tr>
+<tr class="memitem:a96be6ad76cd5040b0ead47e4bd1ad38d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_calibrator.html#a96be6ad76cd5040b0ead47e4bd1ad38d">Calibrator</a> (<a class="el" href="class_calibrator.html#ab206b6f730ce04fd77f7acbd6fde8104">CalibrateFunc</a> f)</td></tr>
 <tr class="separator:a96be6ad76cd5040b0ead47e4bd1ad38d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac157fec5ed6dc65618c2e13c17dc6108"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_calibrator.html">Calibrator</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_calibrator.html#ac157fec5ed6dc65618c2e13c17dc6108">setCalibrateFunction</a> (<a class="el" href="class_calibrator.html#a753a0c65848966e966bff8b378009daf">CalibrateFunc</a> f)</td></tr>
-<tr class="separator:ac157fec5ed6dc65618c2e13c17dc6108"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a155c75f06d6d6bfec320ef91ceb51291"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_calibrator.html">Calibrator</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_calibrator.html#a155c75f06d6d6bfec320ef91ceb51291">setCalibrateFunction</a> (<a class="el" href="class_calibrator.html#a6159d619bd1f30733bb8d93af296cb41">SimpleCalibrateFunc</a> f)</td></tr>
-<tr class="separator:a155c75f06d6d6bfec320ef91ceb51291"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae3f733522d3b33c467924c38d9eb8c7c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_calibrator.html">Calibrator</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_calibrator.html#ae3f733522d3b33c467924c38d9eb8c7c">addCalibrateProcess</a> (<a class="el" href="class_calibrate_process.html">CalibrateProcess</a> cp)</td></tr>
-<tr class="separator:ae3f733522d3b33c467924c38d9eb8c7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af53a2c38c70a759315594406b207b959"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_calibrator.html">Calibrator</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_calibrator.html#af53a2c38c70a759315594406b207b959">addCalibrateProcess</a> (const string &amp;name, const string &amp;description, const <a class="el" href="class_calibrate_process.html#aad963a1a778f82032674dc081c8a7dca">CalibrateProcess::CalibratorCallback</a> cb)</td></tr>
-<tr class="separator:af53a2c38c70a759315594406b207b959"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2dcb738b2c6dcd26184bbd5dba524ac9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_calibrator.html">Calibrator</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_calibrator.html#a2dcb738b2c6dcd26184bbd5dba524ac9">setCalibrateFunction</a> (<a class="el" href="class_calibrator.html#ab206b6f730ce04fd77f7acbd6fde8104">CalibrateFunc</a> f)</td></tr>
+<tr class="separator:a2dcb738b2c6dcd26184bbd5dba524ac9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e9aca090986b8e4da9cb387fb3a10a2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_calibrator.html">Calibrator</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_calibrator.html#a4e9aca090986b8e4da9cb387fb3a10a2">setCalibrateFunction</a> (<a class="el" href="class_calibrator.html#aa738fe86ff11539158d28bc683dfe4b9">SimpleCalibrateFunc</a> f)</td></tr>
+<tr class="separator:a4e9aca090986b8e4da9cb387fb3a10a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a27da214053913c9e19494773ee883ee5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_calibrator.html">Calibrator</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_calibrator.html#a27da214053913c9e19494773ee883ee5">addCalibrateProcess</a> (<a class="el" href="class_calibrate_process.html">CalibrateProcess</a> cp)</td></tr>
+<tr class="separator:a27da214053913c9e19494773ee883ee5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d4f6fb8ad51ff3fd72b558a8ff82300"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_calibrator.html">Calibrator</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_calibrator.html#a5d4f6fb8ad51ff3fd72b558a8ff82300">addCalibrateProcess</a> (const string &amp;name, const string &amp;description, const <a class="el" href="class_calibrate_process.html#aad963a1a778f82032674dc081c8a7dca">CalibrateProcess::CalibratorCallback</a> cb)</td></tr>
+<tr class="separator:a5d4f6fb8ad51ff3fd72b558a8ff82300"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a804541020228f0b93b45f12b5d33359d"><td class="memItemLeft" align="right" valign="top">vector&lt; <a class="el" href="class_calibrate_process.html">CalibrateProcess</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_calibrator.html#a804541020228f0b93b45f12b5d33359d">getCalibrateProcesses</a> ()</td></tr>
 <tr class="separator:a804541020228f0b93b45f12b5d33359d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a738b8963f0037877ad7fa91c0ee1cef8"><td class="memItemLeft" align="right" valign="top">vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_calibrator.html#a738b8963f0037877ad7fa91c0ee1cef8">calibrate</a> (vector&lt; double &gt; input)</td></tr>
-<tr class="separator:a738b8963f0037877ad7fa91c0ee1cef8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb874f0526e945abd890551f0b2941db"><td class="memItemLeft" align="right" valign="top">vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_calibrator.html#adb874f0526e945abd890551f0b2941db">calibrate</a> (vector&lt; double &gt; input)</td></tr>
+<tr class="separator:adb874f0526e945abd890551f0b2941db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af6198cc48284540594e171447ea32b14"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_calibrator.html#af6198cc48284540594e171447ea32b14">isCalibrated</a> ()</td></tr>
 <tr class="separator:af6198cc48284540594e171447ea32b14"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -161,12 +162,12 @@ Public Member Functions</h2></td></tr>
 <p>To tell the ESP system to use a <a class="el" href="class_calibrator.html" title="Specifies data samples and code used to calibrate incoming sensor data. ">Calibrator</a>, pass it to <a class="el" href="calibrator_8cpp.html#aa56b17a8db41c36d20d29c360cd4b5bd" title="Specify the Calibrator to be used by the ESP system. ">useCalibrator()</a> in your <a class="el" href="user__accelerometer__gestures_8cpp.html#a4fc01d736fe50cf5b977f755b675f11d">setup()</a> function. </p>
 <dl><dt><b>Examples: </b></dt><dd><a class="el" href="user_accelerometer_gestures_8cpp-example.html#_a3">user_accelerometer_gestures.cpp</a>, <a class="el" href="user_accelerometer_poses_8cpp-example.html#_a3">user_accelerometer_poses.cpp</a>, <a class="el" href="user_audio_beat_8cpp-example.html#_a13">user_audio_beat.cpp</a>, and <a class="el" href="user_sudden_motion_8cpp-example.html#_a3">user_sudden_motion.cpp</a>.</dd>
 </dl></div><h2 class="groupheader">Member Typedef Documentation</h2>
-<a class="anchor" id="a753a0c65848966e966bff8b378009daf"></a>
+<a class="anchor" id="ab206b6f730ce04fd77f7acbd6fde8104"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef std::function&lt;vector&lt;double&gt;vector&lt;double&gt;)&gt; <a class="el" href="class_calibrator.html#a753a0c65848966e966bff8b378009daf">Calibrator::CalibrateFunc</a></td>
+          <td class="memname">using <a class="el" href="class_calibrator.html#ab206b6f730ce04fd77f7acbd6fde8104">Calibrator::CalibrateFunc</a> =  std::function&lt;vector&lt;double&gt;(vector&lt;double&gt;)&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -176,12 +177,12 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a6159d619bd1f30733bb8d93af296cb41"></a>
+<a class="anchor" id="aa738fe86ff11539158d28bc683dfe4b9"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef std::function&lt;double(double)&gt; <a class="el" href="class_calibrator.html#a6159d619bd1f30733bb8d93af296cb41">Calibrator::SimpleCalibrateFunc</a></td>
+          <td class="memname">using <a class="el" href="class_calibrator.html#aa738fe86ff11539158d28bc683dfe4b9">Calibrator::SimpleCalibrateFunc</a> =  std::function&lt;double(double)&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -212,7 +213,7 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Create a <a class="el" href="class_calibrator.html" title="Specifies data samples and code used to calibrate incoming sensor data. ">Calibrator</a> without specifying a calibration function. If you use this constructor, you'll need to specify the calibration function with <a class="el" href="class_calibrator.html#ac157fec5ed6dc65618c2e13c17dc6108">setCalibrateFunction()</a>. </p>
+<p>Create a <a class="el" href="class_calibrator.html" title="Specifies data samples and code used to calibrate incoming sensor data. ">Calibrator</a> without specifying a calibration function. If you use this constructor, you'll need to specify the calibration function with <a class="el" href="class_calibrator.html#a2dcb738b2c6dcd26184bbd5dba524ac9">setCalibrateFunction()</a>. </p>
 
 </div>
 </div>
@@ -226,7 +227,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">Calibrator::Calibrator </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="class_calibrator.html#a6159d619bd1f30733bb8d93af296cb41">SimpleCalibrateFunc</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="class_calibrator.html#aa738fe86ff11539158d28bc683dfe4b9">SimpleCalibrateFunc</a>&#160;</td>
           <td class="paramname"><em>f</em></td><td>)</td>
           <td></td>
         </tr>
@@ -251,7 +252,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">Calibrator::Calibrator </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="class_calibrator.html#a753a0c65848966e966bff8b378009daf">CalibrateFunc</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="class_calibrator.html#ab206b6f730ce04fd77f7acbd6fde8104">CalibrateFunc</a>&#160;</td>
           <td class="paramname"><em>f</em></td><td>)</td>
           <td></td>
         </tr>
@@ -267,26 +268,18 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="ae3f733522d3b33c467924c38d9eb8c7c"></a>
+<a class="anchor" id="a27da214053913c9e19494773ee883ee5"></a>
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_calibrator.html">Calibrator</a>&amp; Calibrator::addCalibrateProcess </td>
+          <td class="memname"><a class="el" href="class_calibrator.html">Calibrator</a> &amp; Calibrator::addCalibrateProcess </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="class_calibrate_process.html">CalibrateProcess</a>&#160;</td>
           <td class="paramname"><em>cp</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 <p>Add a <a class="el" href="class_calibrate_process.html" title="A data sample to be collected by the user and callback for processing that sample. ">CalibrateProcess</a> to this <a class="el" href="class_calibrator.html" title="Specifies data samples and code used to calibrate incoming sensor data. ">Calibrator</a>. The <a class="el" href="class_calibrate_process.html" title="A data sample to be collected by the user and callback for processing that sample. ">CalibrateProcess</a> instances in the active <a class="el" href="class_calibrator.html" title="Specifies data samples and code used to calibrate incoming sensor data. ">Calibrator</a> (as set by <a class="el" href="calibrator_8cpp.html#aa56b17a8db41c36d20d29c360cd4b5bd" title="Specify the Calibrator to be used by the ESP system. ">useCalibrator()</a>) are the ones that will be shown to the user in the interface.</p>
 <dl class="section return"><dt>Returns</dt><dd>*this, to allow for chaining of <a class="el" href="class_calibrator.html" title="Specifies data samples and code used to calibrate incoming sensor data. ">Calibrator</a> methods </dd></dl>
@@ -294,15 +287,12 @@ Public Member Functions</h2></td></tr>
 </dl>
 </div>
 </div>
-<a class="anchor" id="af53a2c38c70a759315594406b207b959"></a>
+<a class="anchor" id="a5d4f6fb8ad51ff3fd72b558a8ff82300"></a>
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_calibrator.html">Calibrator</a>&amp; Calibrator::addCalibrateProcess </td>
+          <td class="memname"><a class="el" href="class_calibrator.html">Calibrator</a> &amp; Calibrator::addCalibrateProcess </td>
           <td>(</td>
           <td class="paramtype">const string &amp;&#160;</td>
           <td class="paramname"><em>name</em>, </td>
@@ -325,38 +315,33 @@ Public Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 <p>Shortcut for adding a new <a class="el" href="class_calibrate_process.html" title="A data sample to be collected by the user and callback for processing that sample. ">CalibrateProcess</a> to this <a class="el" href="class_calibrator.html" title="Specifies data samples and code used to calibrate incoming sensor data. ">Calibrator</a>. This creates a new <a class="el" href="class_calibrate_process.html" title="A data sample to be collected by the user and callback for processing that sample. ">CalibrateProcess</a> with the specified name, description, and callback and adds it to the <a class="el" href="class_calibrator.html" title="Specifies data samples and code used to calibrate incoming sensor data. ">Calibrator</a>. See CalibrateProcess::CalibrationProcess() for a description of the arguments.</p>
 <dl class="section return"><dt>Returns</dt><dd>*this, to allow for chaining of <a class="el" href="class_calibrator.html" title="Specifies data samples and code used to calibrate incoming sensor data. ">Calibrator</a> methods </dd></dl>
 
 </div>
 </div>
-<a class="anchor" id="a738b8963f0037877ad7fa91c0ee1cef8"></a>
+<a class="anchor" id="adb874f0526e945abd890551f0b2941db"></a>
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">vector&lt;double&gt; Calibrator::calibrate </td>
+          <td class="memname">vector&lt; double &gt; Calibrator::calibrate </td>
           <td>(</td>
           <td class="paramtype">vector&lt; double &gt;&#160;</td>
           <td class="paramname"><em>input</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
+<p>Calibrate the input data using functions registered. If a CalibrateFunc is provided and set, use it to calibrate the input; otherwise, SimpleCalibrateFunc must be set and will be used.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">input,an</td><td>input vector </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>output, the filtered result </dd></dl>
 
 </div>
 </div>
@@ -387,9 +372,6 @@ Public Member Functions</h2></td></tr>
 <a class="anchor" id="af6198cc48284540594e171447ea32b14"></a>
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">bool Calibrator::isCalibrated </td>
@@ -398,35 +380,23 @@ Public Member Functions</h2></td></tr>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
+<p>Returns true if all calibrate processes are calibrated. </p>
 
 </div>
 </div>
-<a class="anchor" id="ac157fec5ed6dc65618c2e13c17dc6108"></a>
+<a class="anchor" id="a2dcb738b2c6dcd26184bbd5dba524ac9"></a>
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_calibrator.html">Calibrator</a>&amp; Calibrator::setCalibrateFunction </td>
+          <td class="memname"><a class="el" href="class_calibrator.html">Calibrator</a> &amp; Calibrator::setCalibrateFunction </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="class_calibrator.html#a753a0c65848966e966bff8b378009daf">CalibrateFunc</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="class_calibrator.html#ab206b6f730ce04fd77f7acbd6fde8104">CalibrateFunc</a>&#160;</td>
           <td class="paramname"><em>f</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 <p>Set the calibration function. Replaces any currently set calibration function.</p>
 <dl class="section return"><dt>Returns</dt><dd>*this, to allow for chaining of <a class="el" href="class_calibrator.html" title="Specifies data samples and code used to calibrate incoming sensor data. ">Calibrator</a> methods </dd></dl>
@@ -434,34 +404,27 @@ Public Member Functions</h2></td></tr>
 </dl>
 </div>
 </div>
-<a class="anchor" id="a155c75f06d6d6bfec320ef91ceb51291"></a>
+<a class="anchor" id="a4e9aca090986b8e4da9cb387fb3a10a2"></a>
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_calibrator.html">Calibrator</a>&amp; Calibrator::setCalibrateFunction </td>
+          <td class="memname"><a class="el" href="class_calibrator.html">Calibrator</a> &amp; Calibrator::setCalibrateFunction </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="class_calibrator.html#a6159d619bd1f30733bb8d93af296cb41">SimpleCalibrateFunc</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="class_calibrator.html#aa738fe86ff11539158d28bc683dfe4b9">SimpleCalibrateFunc</a>&#160;</td>
           <td class="paramname"><em>f</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 <p>Set the calibration function. Replaces any currently set calibration function.</p>
 <dl class="section return"><dt>Returns</dt><dd>*this, to allow for chaining of <a class="el" href="class_calibrator.html" title="Specifies data samples and code used to calibrate incoming sensor data. ">Calibrator</a> methods </dd></dl>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following file:<ul>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>src/<a class="el" href="calibrator_8h_source.html">calibrator.h</a></li>
+<li>src/<a class="el" href="calibrator_8cpp.html">calibrator.cpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

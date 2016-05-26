@@ -16,6 +16,12 @@ var hierarchy =
     ] ],
     [ "Palette", "class_palette.html", null ],
     [ "Plotter", "class_plotter.html", null ],
+    [ "PreProcessing", null, [
+      [ "GRT::Filter", "class_g_r_t_1_1_filter.html", [
+        [ "LogEnergy", "class_log_energy.html", null ],
+        [ "SpeechDetection", "class_speech_detection.html", null ]
+      ] ]
+    ] ],
     [ "Stream", "class_stream.html", [
       [ "IStream", "class_i_stream.html", [
         [ "AudioStream", "class_audio_stream.html", null ],

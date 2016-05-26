@@ -4,6 +4,10 @@ var dir_68267d1309a1af8e8297ef4c3efbcdba =
     [ "calibrator.cpp", "calibrator_8cpp.html", "calibrator_8cpp" ],
     [ "calibrator.h", "calibrator_8h.html", "calibrator_8h" ],
     [ "ESP.h", "_e_s_p_8h.html", null ],
+    [ "Filter.cpp", "_filter_8cpp.html", null ],
+    [ "Filter.h", "_filter_8h.html", [
+      [ "Filter", "class_g_r_t_1_1_filter.html", "class_g_r_t_1_1_filter" ]
+    ] ],
     [ "iostream.cpp", "iostream_8cpp.html", "iostream_8cpp" ],
     [ "iostream.h", "iostream_8h.html", "iostream_8h" ],
     [ "istream.cpp", "istream_8cpp.html", "istream_8cpp" ],

@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['serialstream',['SerialStream',['../class_serial_stream.html',1,'']]],
-  ['stream',['Stream',['../class_stream.html',1,'']]]
+  ['palette',['Palette',['../class_palette.html',1,'']]],
+  ['plotter',['Plotter',['../class_plotter.html',1,'']]]
 ];

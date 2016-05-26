@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['istream_5flabels_5f',['istream_labels_',['../class_i_stream.html#a65a53ad77a58e34cf8c19309e1c30b84',1,'IStream']]]
+  ['has_5fstarted_5f',['has_started_',['../class_stream.html#ac14e5cd2f0e1165f1e2d1448a1691bef',1,'Stream']]]
 ];

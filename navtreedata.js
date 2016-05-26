@@ -1,6 +1,9 @@
 var NAVTREE =
 [
   [ "ESP", "index.html", [
+    [ "Namespaces", null, [
+      [ "Namespace List", "namespaces.html", "namespaces" ]
+    ] ],
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],
       [ "Class Index", "classes.html", null ],
@@ -20,7 +23,8 @@ var NAVTREE =
       [ "File Members", "globals.html", [
         [ "All", "globals.html", null ],
         [ "Functions", "globals_func.html", null ],
-        [ "Variables", "globals_vars.html", null ]
+        [ "Variables", "globals_vars.html", null ],
+        [ "Typedefs", "globals_type.html", null ]
       ] ]
     ] ],
     [ "Examples", "examples.html", "examples" ]
@@ -30,7 +34,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "_e_s_p_8h.html",
-"user_8h.html"
+"of_app_8cpp.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

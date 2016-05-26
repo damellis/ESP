@@ -1,19 +1,13 @@
 var searchData=
 [
-  ['update',['update',['../classof_app.html#a8680f78f6fa3b5ef74833027b0b80e9b',1,'ofApp']]],
-  ['useanalogpin',['useAnalogPin',['../class_firmata_stream.html#a31af414f0859a05f44aeddaa2ce40e86',1,'FirmataStream']]],
-  ['usecalibrator',['useCalibrator',['../classof_app.html#aa56b17a8db41c36d20d29c360cd4b5bd',1,'ofApp::useCalibrator()'],['../calibrator_8cpp.html#aa56b17a8db41c36d20d29c360cd4b5bd',1,'useCalibrator(Calibrator &amp;calibrator):&#160;calibrator.cpp'],['../calibrator_8h.html#aa56b17a8db41c36d20d29c360cd4b5bd',1,'useCalibrator(Calibrator &amp;calibrator):&#160;calibrator.cpp']]],
-  ['useinputstream',['useInputStream',['../classof_app.html#a28ecae66cc8c204679f3995fafc93ae6',1,'ofApp::useInputStream()'],['../istream_8cpp.html#a28ecae66cc8c204679f3995fafc93ae6',1,'useInputStream(IStream &amp;stream):&#160;istream.cpp'],['../istream_8h.html#a28ecae66cc8c204679f3995fafc93ae6',1,'useInputStream(IStream &amp;stream):&#160;istream.cpp']]],
-  ['usenormalizer',['useNormalizer',['../class_i_stream.html#af49e0329f543fa8165d54664e713c9c6',1,'IStream::useNormalizer(normalizeFunc f)'],['../class_i_stream.html#a735f29a1bce1791514aec9c7e003df95',1,'IStream::useNormalizer(vectorNormalizeFunc f)']]],
-  ['useoutputstream',['useOutputStream',['../classof_app.html#a279f55018c4c054ad565198954f8eb16',1,'ofApp::useOutputStream()'],['../ostream_8cpp.html#a279f55018c4c054ad565198954f8eb16',1,'useOutputStream(OStream &amp;stream):&#160;ostream.cpp'],['../ostream_8h.html#a279f55018c4c054ad565198954f8eb16',1,'useOutputStream(OStream &amp;stream):&#160;ostream.cpp']]],
-  ['usepipeline',['usePipeline',['../classof_app.html#a4e89d8b7f053b8e3f5855d084164b39a',1,'ofApp::usePipeline()'],['../istream_8cpp.html#a4e89d8b7f053b8e3f5855d084164b39a',1,'usePipeline(GRT::GestureRecognitionPipeline &amp;pipeline):&#160;istream.cpp'],['../istream_8h.html#a4e89d8b7f053b8e3f5855d084164b39a',1,'usePipeline(GRT::GestureRecognitionPipeline &amp;pipeline):&#160;istream.cpp']]],
-  ['user_2ecpp',['user.cpp',['../user_8cpp.html',1,'']]],
-  ['user_2eh',['user.h',['../user_8h.html',1,'']]],
-  ['user_5faccelerometer_5fgestures_2ecpp',['user_accelerometer_gestures.cpp',['../user__accelerometer__gestures_8cpp.html',1,'']]],
-  ['user_5faccelerometer_5fposes_2ecpp',['user_accelerometer_poses.cpp',['../user__accelerometer__poses_8cpp.html',1,'']]],
-  ['user_5faudio_5fbeat_2ecpp',['user_audio_beat.cpp',['../user__audio__beat_8cpp.html',1,'']]],
-  ['user_5fcapacitive_5fsensing_2ecpp',['user_capacitive_sensing.cpp',['../user__capacitive__sensing_8cpp.html',1,'']]],
-  ['user_5fcolor_5fsensor_2ecpp',['user_color_sensor.cpp',['../user__color__sensor_8cpp.html',1,'']]],
-  ['user_5fsudden_5fmotion_2ecpp',['user_sudden_motion.cpp',['../user__sudden__motion_8cpp.html',1,'']]],
-  ['usestream',['useStream',['../classof_app.html#aff979b7370726d96aac43c99e3f7af10',1,'ofApp::useStream()'],['../iostream_8cpp.html#aff979b7370726d96aac43c99e3f7af10',1,'useStream(IOStream &amp;stream):&#160;iostream.cpp'],['../iostream_8h.html#aff979b7370726d96aac43c99e3f7af10',1,'useStream(IOStream &amp;stream):&#160;iostream.cpp']]]
+  ['tcpostream',['TcpOStream',['../class_tcp_o_stream.html',1,'TcpOStream'],['../class_tcp_o_stream.html#ab533de84cc322c5c1e3bae9d8f246914',1,'TcpOStream::TcpOStream(string server, int port)'],['../class_tcp_o_stream.html#a57669c1e4e78cb7b9ca8eff0c3a40150',1,'TcpOStream::TcpOStream(string server, int port, std::map&lt; uint32_t, string &gt; tcp_stream_mapping)'],['../class_tcp_o_stream.html#a1062a9c187f255d62d1e091db19d2e26',1,'TcpOStream::TcpOStream(string server, int port, uint32_t count,...)']]],
+  ['timeout',['timeout',['../user__accelerometer__gestures_8cpp.html#a493b57f443cc38b3d3df9c1e584d9d82',1,'timeout():&#160;user_accelerometer_gestures.cpp'],['../user__accelerometer__poses_8cpp.html#a493b57f443cc38b3d3df9c1e584d9d82',1,'timeout():&#160;user_accelerometer_poses.cpp'],['../user__color__sensor_8cpp.html#a493b57f443cc38b3d3df9c1e584d9d82',1,'timeout():&#160;user_color_sensor.cpp']]],
+  ['toggle',['toggle',['../class_stream.html#a30d42badb068bfd21de779bab3e9b014',1,'Stream']]],
+  ['tostring',['toString',['../class_tuneable.html#a58beec1e00c1c09c4ea99db07a2de967',1,'Tuneable']]],
+  ['trainingsampleguilistener',['TrainingSampleGuiListener',['../class_training_sample_gui_listener.html',1,'TrainingSampleGuiListener'],['../classof_app.html#aa9076c44e77ba8045b038405efc2741d',1,'ofApp::TrainingSampleGuiListener()'],['../class_training_sample_gui_listener.html#a791d317493ce00ec5a00befc186bc870',1,'TrainingSampleGuiListener::TrainingSampleGuiListener()']]],
+  ['trimbuttonpressed',['trimButtonPressed',['../class_training_sample_gui_listener.html#a6514b03309d9d1d1cb00d756b0853b03',1,'TrainingSampleGuiListener']]],
+  ['tuneable',['Tuneable',['../class_tuneable.html',1,'Tuneable'],['../class_tuneable.html#ab093aed74a7f9918f2941b8edb0ddd27',1,'Tuneable::Tuneable(int *value, int min, int max, const string &amp;title, const string &amp;description)'],['../class_tuneable.html#a68542e1500e9cee4c2fefb4a63827f86',1,'Tuneable::Tuneable(double *value, double min, double max, const string &amp;title, const string &amp;description)'],['../class_tuneable.html#a72685a7f91eb2e00b29f6c18b59c2440',1,'Tuneable::Tuneable(bool *value, const string &amp;title, const string &amp;description)']]],
+  ['tuneable_2ecpp',['tuneable.cpp',['../tuneable_8cpp.html',1,'']]],
+  ['tuneable_2eh',['tuneable.h',['../tuneable_8h.html',1,'']]],
+  ['type',['Type',['../class_tuneable.html#a85668dc428a627c31a5b3e76c87b92e5',1,'Tuneable']]]
 ];

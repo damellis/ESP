@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['addcalibrateprocess',['addCalibrateProcess',['../class_calibrator.html#ae3f733522d3b33c467924c38d9eb8c7c',1,'Calibrator::addCalibrateProcess(CalibrateProcess cp)'],['../class_calibrator.html#af53a2c38c70a759315594406b207b959',1,'Calibrator::addCalibrateProcess(const string &amp;name, const string &amp;description, const CalibrateProcess::CalibratorCallback cb)']]],
+  ['addcalibrateprocess',['addCalibrateProcess',['../class_calibrator.html#a27da214053913c9e19494773ee883ee5',1,'Calibrator::addCalibrateProcess(CalibrateProcess cp)'],['../class_calibrator.html#a5d4f6fb8ad51ff3fd72b558a8ff82300',1,'Calibrator::addCalibrateProcess(const string &amp;name, const string &amp;description, const CalibrateProcess::CalibratorCallback cb)']]],
   ['addtogui',['addToGUI',['../class_tuneable.html#a2ab44ee0ec2007fedbc3e3158f085650',1,'Tuneable']]],
   ['analogreadtosound',['analogReadToSound',['../user__audio__beat_8cpp.html#a0d0cf20ceb93d1a9b79733449de2c122',1,'user_audio_beat.cpp']]],
   ['analogreadtovoltage',['analogReadToVoltage',['../user__accelerometer__poses_8cpp.html#aee4e0069bd1c4e48960c9b87036960fb',1,'user_accelerometer_poses.cpp']]],

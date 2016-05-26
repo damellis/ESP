@@ -1,8 +1,8 @@
 var class_i_stream =
 [
-    [ "normalizeFunc", "class_i_stream.html#a599578a001d17e084683286f108d2928", null ],
+    [ "normalizeFunc", "class_i_stream.html#a0139f0f1cb6424987627cadab3cb7fcf", null ],
     [ "onDataReadyCallback", "class_i_stream.html#a66dbd2ab258482a52f442819969e6fa7", null ],
-    [ "vectorNormalizeFunc", "class_i_stream.html#a9388c3740bb6c7e5f18b7c2ea4db49c2", null ],
+    [ "vectorNormalizeFunc", "class_i_stream.html#a7804995da26aa4cdfcff195dbc7a68ea", null ],
     [ "IStream", "class_i_stream.html#a7b60704e8dd3872a5b2d131b162ab868", null ],
     [ "~IStream", "class_i_stream.html#a78b9543926dc09be94c01842f775c28b", null ],
     [ "getLabels", "class_i_stream.html#af457fc846b2c4d05224212e6ac9d5a60", null ],
