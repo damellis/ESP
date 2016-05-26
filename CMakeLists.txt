@@ -114,6 +114,12 @@ target_link_libraries(${PROJECT} PUBLIC
   )
 
 # =============================================================
+#   Additional Flags
+# =============================================================
+set_source_files_properties(${PROJECT} PROPERTIES COMPILE_FLAGS
+  "-Wno-deprecated-declarations")
+
+# =============================================================
 #   Package and copy dylib/assets
 # =============================================================
 set_target_properties(${PROJECT} PROPERTIES
