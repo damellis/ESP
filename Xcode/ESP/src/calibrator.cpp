@@ -1,6 +1,6 @@
 #include "ofApp.h"
 
-#include "Calibrator.h"
+#include "calibrator.h"
 
 Calibrator& Calibrator::setCalibrateFunction(SimpleCalibrateFunc f) {
     simple_calibrate_func_ = f;

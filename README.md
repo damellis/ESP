@@ -17,7 +17,7 @@ To install, first clone this repository, then run the setup script:
 ```
 git clone https://github.com/damellis/ESP.git
 cd ESP
-./setup
+./setup.sh
 ```
 
 This will clone the relevant git submodules and create some symbolic links.
@@ -37,18 +37,18 @@ appropriate sketch. Example include:
   Works with either the [Adafruit TCS34725 breakout](https://www.adafruit.com/products/1334)
   (using the sketch in Arduino/ColorSensor) or the [SparkFun ISL29125 breakout](https://www.sparkfun.com/products/12829)
   (using the sketch in Arduino/ColorSensor_SparkFun_ISL29125). See
-  documentation for the sensors for hookup information. 
-  
+  documentation for the sensors for hookup information.
+
 - user_accelerometer_calibration.h: recognizes gestures using a dynamic time
   warping algorith. Works with either an [ADXL335 accelerometer](https://www.adafruit.com/products/163)
   (using the Arduino/ADXL335 sketch) or the built-in accelerometer on an
   [Arduino 101](http://www.arduino.cc/en/Main/ArduinoBoard101) (using the
   Arduino/Arduino101_Accelerometer sketch).
-  
+
 - user_accelerometer_poses.h: recognizes the orientations of an object using
   a naive Bayes classifier. Works with accelerometers as for the
   user_accelerometer_calibration.h example.
-  
+
 ## API
 
 See the [online documentation of the ESP API](http://damellis.github.io/ESP/).
