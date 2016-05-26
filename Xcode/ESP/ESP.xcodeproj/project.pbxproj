@@ -27,6 +27,7 @@
 		8164C6761CD927F900DFEF70 /* iostream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8164C6751CD927F900DFEF70 /* iostream.cpp */; };
 		817BE7751CCB063E00FE581B /* libgrt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 817BE7741CCB063E00FE581B /* libgrt.dylib */; };
 		817BE7761CCB067800FE581B /* libgrt.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 817BE7741CCB063E00FE581B /* libgrt.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		8198B90A1CF7A8C60092C7CA /* ThresholdDetection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8198B9081CF7A8C60092C7CA /* ThresholdDetection.cpp */; };
 		9E339FEC563CF250C60DBD84 /* ofxDatGui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8B699EEC2E838CB52082554A /* ofxDatGui.cpp */; };
 		A9F16933D69101A8B2D7DC24 /* ofxBaseGui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B29062C5077E0EBE48BC1E5E /* ofxBaseGui.cpp */; };
 		B5B6A3DBA86CA86AD71CDE31 /* ofxLabel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 64F25F34C1FF51D1DEB91164 /* ofxLabel.cpp */; };
@@ -126,6 +127,8 @@
 		8164C6741CD9274100DFEF70 /* iostream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iostream.h; sourceTree = "<group>"; };
 		8164C6751CD927F900DFEF70 /* iostream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = iostream.cpp; sourceTree = "<group>"; };
 		817BE7741CCB063E00FE581B /* libgrt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libgrt.dylib; sourceTree = "<group>"; };
+		8198B9081CF7A8C60092C7CA /* ThresholdDetection.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ThresholdDetection.cpp; sourceTree = "<group>"; };
+		8198B9091CF7A8C60092C7CA /* ThresholdDetection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThresholdDetection.h; sourceTree = "<group>"; };
 		879E8BE84F6F719ED42446C3 /* ofxDatGuiTextInput.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxDatGuiTextInput.h; path = "../../third-party/openFrameworks/addons/ofxDatGui/src/components/ofxDatGuiTextInput.h"; sourceTree = SOURCE_ROOT; };
 		8B699EEC2E838CB52082554A /* ofxDatGui.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxDatGui.cpp; path = "../../third-party/openFrameworks/addons/ofxDatGui/src/ofxDatGui.cpp"; sourceTree = SOURCE_ROOT; };
 		8C2208E103C17F4A39DECE6F /* ofxGrtTimeseriesPlot.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxGrtTimeseriesPlot.h; path = "../../third-party/openFrameworks/addons/ofxGrt/src/ofxGrtTimeseriesPlot.h"; sourceTree = SOURCE_ROOT; };
@@ -379,6 +382,8 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				8198B9081CF7A8C60092C7CA /* ThresholdDetection.cpp */,
+				8198B9091CF7A8C60092C7CA /* ThresholdDetection.h */,
 				811B7BF51CF51D830078CD0A /* Filter.cpp */,
 				811B7BF61CF51D830078CD0A /* Filter.h */,
 				49E70B941CF035EB0091BADC /* examples */,
@@ -529,6 +534,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */,
+				8198B90A1CF7A8C60092C7CA /* ThresholdDetection.cpp in Sources */,
 				497D66D51CC3232900D5C3DC /* ofxTCPServer.cpp in Sources */,
 				E4B69E210A3A1BDC003C02F2 /* ofApp.cpp in Sources */,
 				497D66D61CC3232900D5C3DC /* ofxUDPManager.cpp in Sources */,

@@ -1,5 +1,6 @@
 #include <ESP.h>
 #include <Filter.h>
+#include <ThresholdDetection.h>
 
 class LogEnergy : public Filter {
 public:
@@ -21,40 +22,21 @@ private:
 
 RegisterPreProcessingModule< LogEnergy > LogEnergy::registerModule("LogEnergy");
 
-class SpeechDetection : public Filter {
-public:
-    SpeechDetection() : Filter("SpeechDetection", 1, 1), inSpeech(false), noiseMean(0.0)
-    {}
-    
-    double computeFilter(const VectorDouble &buf) {
-        double val = buf[0];
-        if (!inSpeech) {
-            double delta = val - noiseMean;
-            
-            noiseMean -= 0.01 * noiseMean;
-            noiseMean += 0.01 * val;
-            
-            noiseM2 += delta * (val - noiseMean);
-            noiseSigma = sqrt(noiseM2 * 0.01);
-        }
-        
-        return noiseMean;
-    }
-
-private:
-    bool inSpeech;
-    double noiseMean, noiseM2, noiseSigma;
-    static RegisterPreProcessingModule< SpeechDetection > registerModule;
-};
-
-RegisterPreProcessingModule< SpeechDetection > SpeechDetection::registerModule("SpeechDetection");
-
 AudioStream stream(100);
 GestureRecognitionPipeline pipeline;
+
+double alpha = 4.0, beta = 1.2;
 
 void setup() {
     useInputStream(stream);
     pipeline.addPreProcessingModule(LogEnergy(5, 1));
-    pipeline.addPreProcessingModule(SpeechDetection());
+    pipeline.addFeatureExtractionModule(ThresholdDetection(100,1,alpha,beta));
     usePipeline(pipeline);
+    
+    registerTuneable(alpha, 1.0, 10.0, "Loudness Threshold",
+        "How loud (relative to background noise) a sound has to be to count "
+        "as speech / foreground audio.");
+    registerTuneable(beta, 1.0, 10.0, "Quietness Threshold",
+        "How quiest (relative to background noise) the speech / foreground "
+        "audio has to get to be considered finished.");
 }
