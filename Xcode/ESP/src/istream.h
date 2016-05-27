@@ -105,6 +105,13 @@ class AudioStream : public ofBaseApp, public IStream {
     bool setup_successful_;
 };
 
+/**
+ @brief Input stream for getting the FFT spectrum of an audio file as it plays.
+ 
+ This class plays an audio file and supplies its 1024-sample / 512-bin FFT
+ spectrum as input to the current pipeline. The spectrum is supplied every
+ ~23 milliseconds (i.e. 441000 KHz / 1024 = ~43 Hz).
+ */
 class AudioFileStream : public IStream {
   public:
     AudioFileStream(char *file, bool loop = false);
