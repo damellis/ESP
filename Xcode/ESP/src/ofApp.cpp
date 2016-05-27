@@ -765,6 +765,8 @@ void ofApp::update() {
             fragment_ = CALIBRATION;
         }
 
+        std::string title;
+
         if (pipeline_->getTrained()) {
             pipeline_->predict(data_point);
             predicted_label_ = pipeline_->getPredictedClassLabel();
@@ -775,13 +777,12 @@ void ofApp::update() {
             if (predicted_label_ != 0) {
                 for (OStream *ostream : ostreams_)
                     ostream->onReceive(predicted_label_);
+                
+                title = training_data_.getClassNameForCorrespondingClassLabel(predicted_label_);
+                if (title == "NOT_SET" || title == "CLASS_LABEL_NOT_FOUND") {
+                    title = plot_samples_[predicted_label_ - 1].getTitle();
+                }
             }
-        }
-
-        std::string title =
-                training_data_.getClassNameForCorrespondingClassLabel(predicted_label_);
-        if (title == "NOT_SET" || title == "CLASS_LABEL_NOT_FOUND") {
-            title = plot_samples_[predicted_label_ - 1].getTitle();
         }
 
         plot_inputs_.update(data_point, predicted_label_ != 0, title);
