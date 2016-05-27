@@ -91,7 +91,7 @@ void setup() {
 
     usePipeline(pipeline);
     
-    registerTuneable(C, 1.0, 10.0, "Beat Threshold",
+    registerTuneable(C, 1.0, 5.0, "Beat Threshold",
         "How many times louder than the average volume (over the last second) "
         "it needs to be to be considered a beat. Applied separately to each "
         "frequency band.");
