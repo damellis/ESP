@@ -105,6 +105,19 @@ class AudioStream : public ofBaseApp, public IStream {
     bool setup_successful_;
 };
 
+class AudioFileStream : public IStream {
+  public:
+    AudioFileStream(char *file, bool loop = false);
+    virtual bool start() final;
+    virtual void stop() final;
+    virtual int getNumInputDimensions() final;
+  private:
+    void readSpectrum();
+  
+    ofSoundPlayer player_;
+    unique_ptr<std::thread> update_thread_;
+};
+
 class SerialStream : public IStream {
   public:
     SerialStream(uint32_t usb_port_num, uint32_t baud);

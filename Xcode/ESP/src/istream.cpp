@@ -84,6 +84,43 @@ void AudioStream::audioIn(float* input, int buffer_size, int nChannel) {
     }
 }
 
+AudioFileStream::AudioFileStream(char *file, bool loop) {
+    player_.load(file);
+    player_.setLoop(loop);
+}
+
+bool AudioFileStream::start() {
+    if (!has_started_) {
+        player_.play();
+        update_thread_.reset(new std::thread(&AudioFileStream::readSpectrum, this));
+        has_started_ = true;
+    }
+    
+    return true;
+}
+
+void AudioFileStream::stop() {
+    player_.stop();
+    has_started_ = false;
+    if (update_thread_ != nullptr && update_thread_->joinable()) {
+        update_thread_->join();
+    }
+}
+
+void AudioFileStream::readSpectrum() {
+    while (has_started_) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000 / (44100 / 1024)));
+        float *spectrum = ofSoundGetSpectrum(512);
+        VectorDouble data(spectrum, spectrum + 512);
+        MatrixDouble out; out.push_back(data);
+        if (data_ready_callback_ != nullptr) data_ready_callback_(out);
+    }
+}
+
+int AudioFileStream::getNumInputDimensions() {
+    return 512;
+}
+
 SerialStream::SerialStream(uint32_t port, uint32_t baud = 115200)
         : port_(port), baud_(baud), serial_(new ofSerial()) {
     // Print all devices for convenience.
