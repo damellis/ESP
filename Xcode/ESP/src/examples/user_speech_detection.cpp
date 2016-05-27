@@ -1,3 +1,7 @@
+// Using algorithm 3 from "A Comparitive Study of Speech Detection Methods"
+// by Stefaan Van Gerven and Fei Xie
+// http://www.mirlab.org/conference_papers/International_Conference/Eurospeech%201997/pdf/tab/a0199.pdf
+
 #include <ESP.h>
 #include <Filter.h>
 #include <ThresholdDetection.h>
