@@ -1,10 +1,15 @@
 #include "ofMain.h"
 #include "ofApp.h"
 
-int main( ){
-
+int main() {
     ofSetupOpenGL(1024, 768, OF_WINDOW);
+
+#ifdef __APPLE__
     ofSetDataPathRoot("../Resources/data/");
+#else
+    ofSetDataPathRoot(".");
+#endif
+
     ofxDatGui::setAssetPath("./");
 
     // this kicks off the running of my app

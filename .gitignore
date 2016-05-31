@@ -1,4 +1,6 @@
+## Ignore third-party downloads and openFrameworks folder
 third-party/*.zip
+third-party/*.tar.gz
 third-party/openFrameworks
 build
 
