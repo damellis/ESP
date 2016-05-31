@@ -47,9 +47,10 @@ before_script:
       # Build GRT
       cd third-party/grt/build
       mkdir -p tmp && cd tmp
-      cmake ..
+      cmake .. -DBUILD_EXAMPLES=OFF
       make
       sudo make install
+      cd ../../../../
     fi
   # CMake
   - >
@@ -81,3 +82,4 @@ script:
 cache:
   directories:
     - third-party/openFrameworks/libs
+    - third-party/grt
