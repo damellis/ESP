@@ -37,31 +37,34 @@ get_platform () {
 }
 
 OF_PREFIX=http://openframeworks.cc/versions/v0.9.3
-set_of_url () {
+get_of () {
     case $PLATFORM in
         osx)
             OF_RELEASE=${OF_PREFIX}/of_v0.9.3_osx_release.zip
+            curl $OF_RELEASE > third-party/of.zip
+            unzip -q third-party/of.zip -d third-party
             ;;
         linux64)
             OF_RELEASE=${OF_PREFIX}/of_v0.9.3_linux64_release.tar.gz
+            curl $OF_RELEASE > third-party/of.tar.gz
+            tar -zxf third-party/of.tar.gz -C third-party
             ;;
         linux32)
             OF_RELEASE=${OF_PREFIX}/of_v0.9.3_linux32_release.tar.gz
+            curl $OF_RELEASE > third-party/of.tar.gz
+            tar -zxf third-party/of.tar.gz -C third-party
             ;;
     esac
 }
 
 get_platform
-set_of_url
-echo "Downlading openFrameworks v0.9.3 release from $OF_RELEASE"
 
-curl $OF_RELEASE > third-party/of.zip
-unzip -q third-party/of.zip -d third-party
+get_of
+
 cd third-party
 mkdir -p openFrameworks
 ( cd of_v0.9.3_$PLATFORM\_release && tar cf - . ) | (cd openFrameworks && tar xpf - )
 rm -rf of_v0.9.3_$PLATFORM\_release/
-rm -f of.zip
 cd ..
 
 git submodule init

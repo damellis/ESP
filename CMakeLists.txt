@@ -88,12 +88,13 @@ set(ESP_SRC
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   set(GRT_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/third-party/grt/)
   set(GRT_LIBRARY ${CMAKE_CURRENT_SOURCE_DIR}/Xcode/ESP/libgrt.dylib)
-else()
+  set(SYS_LIBS "-lobjc")
+else()  # Linux
   set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/")
   find_package(Grt REQUIRED)
+  set(SYS_LIBS "-L/usr/local/lib" )
 endif()
 
-set(SYS_LIBS "-lobjc" "-L/usr/local/lib")
 
 # =============================================================
 #   Create executables
@@ -119,7 +120,7 @@ target_link_libraries(${PROJECT} PUBLIC
 #   Additional Flags (supress warnings)
 # =============================================================
 set_target_properties(${PROJECT} PROPERTIES COMPILE_FLAGS
-  "-Wno-unused-value")
+  "-Wno-unused-value -Wno-deprecated-declarations")
 
 set_source_files_properties(
   ${ESP_PATH}/src/ostream.cpp
@@ -129,18 +130,21 @@ set_source_files_properties(
   )
 
 # =============================================================
-#   Package and copy dylib/assets
+#   Package and copy dylib/assets (OS dependent)
 # =============================================================
 set_target_properties(${PROJECT} PROPERTIES
   MACOSX_BUNDLE TRUE
   MACOSX_BUNDLE_INFO_PLIST ${ESP_PATH}/Info.plist
   )
 
-message( STATUS "" ${PROJECT}.app/Contents)
-FILE(COPY ${fmodex_LIBRARY} DESTINATION ${PROJECT}.app/Contents/MacOS)
-
 set(OFX_ASSETS ${ADDONS_PATH}/ofxDatGui/ofxbraitsch)
-FILE(COPY ${OFX_ASSETS} DESTINATION ${PROJECT}.app/Contents/Resources/data/)
+if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+  message( STATUS "" ${PROJECT}.app/Contents)
+  FILE(COPY ${fmodex_LIBRARY} DESTINATION ${PROJECT}.app/Contents/MacOS)
+  FILE(COPY ${OFX_ASSETS} DESTINATION ${PROJECT}.app/Contents/Resources/data/)
+elseif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+  FILE(COPY ${OFX_ASSETS} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+endif()
 
 # =============================================================
 #   Doxygen and documentations
