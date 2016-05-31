@@ -33,6 +33,7 @@ before_script:
 script:
   - >
     if [ "$BUILD_TOOL" = "CMake" ]; then
+      set -e
       # I am in $ROOT/build folder
       USER_CPP=../Xcode/ESP/src/user.cpp
       EXAMPLES=../Xcode/ESP/src/examples/*
