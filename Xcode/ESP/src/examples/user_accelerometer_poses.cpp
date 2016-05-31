@@ -25,6 +25,7 @@ float normalizeArduino101(float input)
 
 // accelerometer characteristics to be calculated from calibration
 double zeroG, oneG;
+double calibration_tolerance = 0.1; // 0.1 g difference
 
 vector<double> processAccelerometerData(vector<double> input)
 {
@@ -51,8 +52,9 @@ CalibrateResult restingDataCollected(const MatrixDouble& data)
         mean[j] /= data.getNumRows();
     }
 
-    // TODO: give warning if mean[0] (X acceleration) and mean[1] (Y accleration) are different.
-    if (std::abs(mean[0] - mean[1]) > ) {
+    // TODO: give warning if mean[0] (X acceleration) and mean[1] (Y
+    // accleration) are different.
+    if (std::abs(mean[0] - mean[1]) > calibration_tolerance) {
         return CalibrateResult(CalibrateResult::FAILURE,
                                "Please rest the accelerometer on a flat surface"
                                " so that x- and y-axis will be the same");
