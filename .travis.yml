@@ -40,7 +40,16 @@ before_script:
       xcodebuild -configuration Release -target emptyExample
       -project "third-party/openFrameworks/scripts/templates/osx/emptyExample.xcodeproj"
     else
+      # Linux/Ubuntu
       sudo third-party/openFrameworks/scripts/ci/linux/install.sh
+      sudo apt-get -y install doxy
+      sudo apt-get -y install cmake
+      # Build GRT
+      cd third-party/grt/build
+      mkdir -p tmp && cd tmp
+      cmake ..
+      make
+      sudo make install
     fi
   # CMake
   - >
