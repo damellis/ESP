@@ -40,10 +40,7 @@ before_script:
       xcodebuild -configuration Release -target emptyExample
       -project "third-party/openFrameworks/scripts/templates/osx/emptyExample.xcodeproj"
     else
-      cd third-party/openFrameworks/scripts/linux/ubuntu/
-      sudo ./install_dependencies.sh
-      cd ../
-      ./compileOF.sh -j3
+      sudo third-party/openFrameworks/scripts/ci/linux/install.sh
     fi
   # CMake
   - >

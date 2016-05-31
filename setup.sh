@@ -1,4 +1,4 @@
-zip#!/bin/bash
+#!/bin/bash
 
 ## Stop on any error.
 set -e
