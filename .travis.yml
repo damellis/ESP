@@ -3,13 +3,21 @@ language: cpp
 matrix:
   include:
     - os: linux
-      env: BUILD_TOOL=CMake
+      dist: trusty
+      env:
+        - BUILD_TOOL=CMake
+        - OS=Linux
+      sudo: require
     - os: osx
       osx_image: xcode7.3
-      env: BUILD_TOOL=Xcode
+      env:
+        - BUILD_TOOL=Xcode
+        - OS=OSX
     - os: osx
       osx_image: xcode7.3
-      env: BUILD_TOOL=CMake
+      env:
+        - BUILD_TOOL=CMake
+        - OS=OSX
   exclude:
     - compiler: clang
 
@@ -28,8 +36,15 @@ before_script:
   - sed -i -e 's/git@github.com:/https:\/\/github.com\//' .gitmodules
   - ./setup.sh
   - >
-    xcodebuild -configuration Release -target emptyExample
-    -project "third-party/openFrameworks/scripts/templates/osx/emptyExample.xcodeproj"
+    if [ "$OS" = "OSX" ]; then
+      xcodebuild -configuration Release -target emptyExample
+      -project "third-party/openFrameworks/scripts/templates/osx/emptyExample.xcodeproj"
+    else
+      cd third-party/openFrameworks/scripts/linux/ubuntu/
+      sudo ./install_dependencies.sh
+      cd ../
+      ./compileOF.sh -j3
+    fi
   # CMake
   - >
     if [ "$BUILD_TOOL" = "CMake" ]; then

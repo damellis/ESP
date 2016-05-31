@@ -65,7 +65,6 @@ cd third-party
 mkdir -p openFrameworks
 ( cd of_v0.9.3_$PLATFORM\_release && tar cf - . ) | (cd openFrameworks && tar xpf - )
 rm -rf of_v0.9.3_$PLATFORM\_release/
-rm -f of.zip
 cd ..
 
 git submodule init
