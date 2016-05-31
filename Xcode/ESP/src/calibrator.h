@@ -4,6 +4,25 @@
 #include <set>
 #include <string>
 
+class CalibrateResult {
+  public:
+    enum Result {
+        SUCCESS,
+        WARNING,
+        FAILURE,
+    };
+
+    CalibrateResult(Result result);
+    CalibrateResult(Result result, string message);
+  private:
+    Result result_;
+    string result_message_;
+
+    static const string kDefaultSuccessMessage;
+    static const string kDefaultWarningMessage;
+    static const string kDefaultFailureMessage;
+};
+
 /**
  @brief A data sample to be collected by the user and callback for processing
  that sample.
@@ -15,7 +34,7 @@
  */
 class CalibrateProcess {
   public:
-    typedef void (*CalibratorCallback)(const GRT::MatrixDouble&);
+    typedef CalibrateResult (*CalibratorCallback)(const GRT::MatrixDouble&);
 
     /**
     Create a CalibrateProcess.

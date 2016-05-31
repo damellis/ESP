@@ -2,6 +2,28 @@
 
 #include "calibrator.h"
 
+const string CalibrateResult::kDefaultSuccessMessage = "Success";
+const string CalibrateResult::kDefaultWarningMessage = "Warning in calibration";
+const string CalibrateResult::kDefaultFailureMessage = "Failed in calibration";
+
+CalibrateResult::CalibrateResult(Result result) : result_(result) {
+    switch (result) {
+        case SUCCESS:
+            result_message_ = kDefaultSuccessMessage;
+            break;
+        case WARNING:
+            result_message_ = kDefaultWarningMessage;
+            break;
+        case FAILURE:
+            result_message_ = kDefaultFailureMessage;
+            break;
+    }
+}
+
+CalibrateResult::CalibrateResult(Result result, string message)
+        : result_(result), result_message_(std::move(message)) {
+}
+
 Calibrator& Calibrator::setCalibrateFunction(SimpleCalibrateFunc f) {
     simple_calibrate_func_ = f;
     calibrate_func_ = nullptr;

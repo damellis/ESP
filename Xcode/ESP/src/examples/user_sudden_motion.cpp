@@ -13,10 +13,12 @@ double processAccelerometerData(double input) {
     return (input - zeroG) / (oneG - zeroG);
 }
 
-void restingDataCollected(const MatrixDouble& data) {
+CalibrateResult restingDataCollected(const MatrixDouble& data) {
     // take average of X and Y acceleration as the zero G value
     zeroG = (data.getMean()[0] + data.getMean()[1]) / 2;
     oneG = data.getMean()[2]; // use Z acceleration as one G value
+
+    return CalibrateResult::SUCCESS;
 }
 
 int num_dim = 3;
