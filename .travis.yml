@@ -42,7 +42,8 @@ before_script:
     else
       # Linux/Ubuntu
       sudo third-party/openFrameworks/scripts/ci/linux/install.sh
-      sudo apt-get -y install doxy
+      sudo third-party/openFrameworks/scripts/ci/linux/build.sh
+      sudo apt-get -y install doxygen
       sudo apt-get -y install cmake
       # Build GRT
       cd third-party/grt/build
