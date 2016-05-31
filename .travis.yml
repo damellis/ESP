@@ -1,10 +1,15 @@
 language: cpp
-os: osx
-osx_image: xcode7.3
 
-env:
-  - BUILD_TOOL=Xcode
-  - BUILD_TOOL=CMake
+matrix:
+  include:
+    - os: linux
+      env: BUILD_TOOL=CMake
+    - os: osx
+      osx_image: xcode7.3
+      env: BUILD_TOOL=Xcode
+    - os: osx
+      osx_image: xcode7.3
+      env: BUILD_TOOL=CMake
 
 git:
   submodules: false
