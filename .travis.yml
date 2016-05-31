@@ -33,7 +33,16 @@ before_script:
 script:
   - >
     if [ "$BUILD_TOOL" = "CMake" ]; then
-      make;
+      USER_CPP=Xcode/ESP/src/user.cpp
+      EXAMPLES=Xcode/ESP/src/examples/*
+      for f in $EXAMPLES
+      do
+        name=$(basename "$f")
+        echo "Compiling example: $f ..."
+        echo "#include \"user.h\"" > $USER_CPP
+        echo "#include \"examples/$name\"" >> $USER_CPP
+        make -j4;
+      done
     fi;
   - >
     if [ "$BUILD_TOOL" = "Xcode" ]; then
