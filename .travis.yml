@@ -37,8 +37,8 @@ before_script:
   - ./setup.sh
   - >
     if [ "$OS" = "OSX" ]; then
-      xcodebuild -configuration Release -target emptyExample
-      -project "third-party/openFrameworks/scripts/templates/osx/emptyExample.xcodeproj"
+      xcodebuild -configuration Release -target emptyExample \
+        -project "third-party/openFrameworks/scripts/templates/osx/emptyExample.xcodeproj"
     else
       # Linux/Ubuntu
       sudo third-party/openFrameworks/scripts/ci/linux/install.sh
