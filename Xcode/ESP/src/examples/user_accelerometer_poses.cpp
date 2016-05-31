@@ -39,7 +39,7 @@ vector<double> processAccelerometerData(vector<double> input)
     return output;
 }
 
-void restingDataCollected(const MatrixDouble& data)
+CalibrateResult restingDataCollected(const MatrixDouble& data)
 {
     std::vector<float> mean(3, 0.0);
 
@@ -52,8 +52,15 @@ void restingDataCollected(const MatrixDouble& data)
     }
 
     // TODO: give warning if mean[0] (X acceleration) and mean[1] (Y accleration) are different.
+    if (std::abs(mean[0] - mean[1]) > ) {
+        return CalibrateResult(CalibrateResult::FAILURE,
+                               "Please rest the accelerometer on a flat surface"
+                               " so that x- and y-axis will be the same");
+    }
+
     zeroG = (mean[0] + mean[1]) / 2; // take average of X and Y acceleration as the zero G value
     oneG = mean[2]; // use Z acceleration as one G value (due to gravity)
+    return CalibrateResult::SUCCESS;
 }
 
 double null_rej = 5.0;
@@ -75,7 +82,7 @@ void setup()
     // calibrator.addCalibrateProcess(cp);
     calibrator.addCalibrateProcess("Resting", "Rest accelerometer on flat surface, w/ z-axis vertical.", restingDataCollected);
     useCalibrator(calibrator);
-    
+
     pipeline.addFeatureExtractionModule(TimeDomainFeatures(10, 1, 3, false, true, true, false, false));
     pipeline.setClassifier(ANBC(false, !always_pick_something, null_rej)); // use scaling, use null rejection, null rejection parameter
     // null rejection parameter is multiplied by the standard deviation to determine
@@ -85,7 +92,7 @@ void setup()
     if (send_repeated_predictions)
         pipeline.addPostProcessingModule(ClassLabelTimeoutFilter(timeout));
     usePipeline(pipeline);
-    
+
     registerTuneable(always_pick_something, "Always Pick Something",
         "Whether to always pick (predict) one of the classes of training data, "
         "even if it's not a very good match. If selected, 'Variability' will "

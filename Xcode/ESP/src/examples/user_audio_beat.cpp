@@ -16,17 +16,19 @@ uint32_t DIM = 1;
 double bias = 0;
 double range = 0;
 
-void backgroundCollected(const MatrixDouble& data) {
+CalibrateResult backgroundCollected(const MatrixDouble& data) {
     // For audio, it's one dimension matrix
     vector<double> means = data.getMean();
     bias = means[0];
+    return CalibrateResult::SUCCESS;
 }
 
-void shoutCollected(const MatrixDouble& data) {
+CalibrateResult shoutCollected(const MatrixDouble& data) {
     // For audio, it's one dimension matrix
     double min = data.getMinValue();
     double max = data.getMaxValue();
     range = std::max(max - bias, bias - min);
+    return CalibrateResult::SUCCESS;
 }
 
 double analogReadToSound(double data) {

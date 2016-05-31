@@ -114,10 +114,17 @@ target_link_libraries(${PROJECT} PUBLIC
   )
 
 # =============================================================
-#   Additional Flags
+#   Additional Flags (supress warnings)
 # =============================================================
-set_source_files_properties(${PROJECT} PROPERTIES COMPILE_FLAGS
-  "-Wno-deprecated-declarations")
+set_target_properties(${PROJECT} PROPERTIES COMPILE_FLAGS
+  "-Wno-unused-value")
+
+set_source_files_properties(
+  ${ESP_PATH}/src/ostream.cpp
+  PROPERTIES
+  COMPILE_FLAGS
+  "-Wno-deprecated-declarations"
+  )
 
 # =============================================================
 #   Package and copy dylib/assets
