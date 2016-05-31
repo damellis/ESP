@@ -83,4 +83,4 @@ script:
 cache:
   directories:
     - third-party/openFrameworks/libs
-    - third-party/grt
+    - third-party/grt/build
