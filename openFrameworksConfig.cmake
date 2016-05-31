@@ -118,9 +118,17 @@ set(openFrameworks_INCLUDES
   /usr/include
   )
 
+if(EXISTS "${openFrameworksRoot}/libs/openFrameworksCompiled/lib/${PLATFORM}/${LIB_PREFIX}openFrameworks.a")
+  set(openFrameworks_STATIC
+    ${openFrameworksRoot}/libs/openFrameworksCompiled/lib/${PLATFORM}/${LIB_PREFIX}openFrameworks.a)
+else()
+  set(openFrameworks_STATIC
+    ${openFrameworksRoot}/libs/openFrameworksCompiled/lib/${PLATFORM}/${LIB_PREFIX}openFrameworksDebug.a)
+endif()
+
 set(openFrameworks_LIBRARIES
   # openFrameworks
-  ${openFrameworksRoot}/libs/openFrameworksCompiled/lib/${PLATFORM}/${LIB_PREFIX}openFrameworks.a
+  ${openFrameworks_STATIC}
   # oF-supplied libraries
   ${openFrameworksRoot}/libs/glfw/lib/${PLATFORM}/${LIB_PREFIX}glfw3.a
   ${openFrameworksRoot}/libs/poco/lib/${PLATFORM}/${LIB_PREFIX}PocoCrypto.a
