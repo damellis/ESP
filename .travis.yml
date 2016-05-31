@@ -25,7 +25,7 @@ compiler:
 
 before_script:
   # Take care of dependencies.
-  - sed -i '' 's/git@github.com:/https:\/\/github.com\//' .gitmodules
+  - sed -i -e 's/git@github.com:/https:\/\/github.com\//' .gitmodules
   - ./setup.sh
   - >
     xcodebuild -configuration Release -target emptyExample
