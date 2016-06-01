@@ -20,6 +20,23 @@ CalibrateResult restingDataCollected(const MatrixDouble& data)
     // take average of X and Y acceleration as the zero G value
     zeroG = (data.getMean()[0] + data.getMean()[1]) / 2;
     oneG = data.getMean()[2]; // use Z acceleration as one G value
+    
+    double range = abs(oneG - zeroG);
+    vector<double> stddev = data.getStdDev();
+    
+    if (stddev[0] / range > 0.05 ||
+        stddev[1] / range > 0.05 ||
+        stddev[2] / range > 0.05)
+        return CalibrateResult(CalibrateResult::WARNING,
+            "Accelerometer seemed to be moving; consider recollecting the "
+            "calibration sample.");
+    
+    if (abs(data.getMean()[0] - data.getMean()[1]) / range > 0.1)
+        return CalibrateResult(CalibrateResult::WARNING,
+            "X and Y axes differ by " + std::to_string(
+            abs(data.getMean()[0] - data.getMean()[1]) / range * 100) +
+            " percent. Check that accelerometer is flat.");
+
     return CalibrateResult::SUCCESS;
 }
 
