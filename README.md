@@ -34,7 +34,7 @@ Arduino Project Hub has a more comprehensive [tutorial](https://create.arduino.c
 
 Use Xcode to open the project at `Xcode/ESP/ESP.xcodeproj`. You can choose an
 example by uncommenting the corresponding line at
-`[user.cpp](https://github.com/damellis/ESP/blob/master/Xcode/ESP/src/user.cpp)`. Many
+[user.cpp](https://github.com/damellis/ESP/blob/master/Xcode/ESP/src/user.cpp). Many
 of these examples expect an Arduino board to be connected to the computer and
 running an appropriate sketch. Some of the sketches are hosted in this
 repository as well (see `Arduino` folder). Some examples are:
@@ -63,6 +63,19 @@ repository as well (see `Arduino` folder). Some examples are:
   recognizes the orientations of an object using a naive Bayes classifier. Works
   with accelerometers as for the `user_accelerometer_gesture.cpp` example.
 
+We also support using `CMake` on OS X to compile the project:
+```sh
+# Compile openFramework by compiling an emptyExample
+xcodebuild -configuration Release -target emptyExample \
+  -project "third-party/openFrameworks/scripts/templates/osx/emptyExample.xcodeproj"
+
+# Build ESP
+mkdir build
+cd build
+cmake ..
+make -j8
+```
+
 ### Linux
 
 We use `CMake` on Linux to compile the project. The compilation is a bit more
@@ -72,6 +85,7 @@ involved, but should be easy to follow:
 # Install required package
 sudo apt-get -y install doxygen
 sudo apt-get -y install cmake
+
 # Then build openFrameworks
 sudo third-party/openFrameworks/scripts/ci/linux/install.sh
 sudo third-party/openFrameworks/scripts/ci/linux/build.sh
@@ -88,7 +102,7 @@ cd ../../../../
 mkdir build
 cd build
 cmake ..
-make
+make -j4
 ```
 
 ## API
