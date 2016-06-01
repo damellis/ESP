@@ -777,7 +777,7 @@ void ofApp::update() {
             if (predicted_label_ != 0) {
                 for (OStream *ostream : ostreams_)
                     ostream->onReceive(predicted_label_);
-                
+
                 title = training_data_.getClassNameForCorrespondingClassLabel(predicted_label_);
                 if (title == "NOT_SET" || title == "CLASS_LABEL_NOT_FOUND") {
                     title = plot_samples_[predicted_label_ - 1].getTitle();
@@ -1396,9 +1396,16 @@ void ofApp::keyReleased(int key) {
             if (label_ - 1 < calibrators.size()) {
                 plot_calibrators_[label_ - 1].setData(sample_data_);
                 calibrators[label_ - 1].setData(sample_data_);
-                calibrators[label_ - 1].calibrate();
-                plot_inputs_.reset();
-                should_save_calibration_data_ = true;
+
+                CalibrateResult result = calibrators[label_ - 1].calibrate();
+                if (result.getResult() == CalibrateResult::SUCCESS) {
+                    plot_inputs_.reset();
+                    should_save_calibration_data_ = true;
+                }
+
+                status_text_ = calibrators[label_ - 1].getName() +
+                        " calibration: " +
+                        result.getMessage();
             }
         } else if (fragment_ == TRAINING) {
             training_data_.addSample(label_, sample_data_);

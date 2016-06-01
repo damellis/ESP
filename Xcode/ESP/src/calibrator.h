@@ -4,6 +4,14 @@
 #include <set>
 #include <string>
 
+/**
+ @brief CalibrateResult indicates if the calibration is successful or not.
+
+ There are three supported result: SUCCESS, WARNING, FAILURE. An optional string
+ description can be supplied to better assist user figuring out why the
+ calibration fails. This class is used as the return value for calibrate
+ function used by CalibrateProcess.
+*/
 class CalibrateResult {
   public:
     enum Result {
@@ -14,6 +22,10 @@ class CalibrateResult {
 
     CalibrateResult(Result result);
     CalibrateResult(Result result, string message);
+
+    Result getResult() const { return result_; }
+    string getMessage() const { return result_message_; }
+
   private:
     Result result_;
     string result_message_;
@@ -51,10 +63,16 @@ class CalibrateProcess {
             : name_(name), description_(description), cb_(cb),
             is_calibrated_(false) {}
 
-    // run the user callback to apply the calibration function to the
-    // calibration data.  this should only be called after setData() is called.
-    // TODO(damellis): a way for calibration to fail?
-    void calibrate() { cb_(data_); is_calibrated_ = true; }
+    CalibrateResult calibrate() {
+        CalibrateResult result = cb_(data_);
+        if (result.getResult() == CalibrateResult::FAILURE) {
+            // Only failure is considered as not calibrated.
+            is_calibrated_ = false;
+        } else {
+            is_calibrated_ = true;
+        }
+        return result;
+    }
     bool isCalibrated() const { return is_calibrated_; }
 
     std::string getName() const { return name_; }
