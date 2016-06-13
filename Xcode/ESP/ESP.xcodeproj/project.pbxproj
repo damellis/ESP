@@ -12,6 +12,7 @@
 		357D15F566DCDFCB63C78A2A /* ostream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FACCFB9E3EA79675FAB70179 /* ostream.cpp */; };
 		48F7FEF8914B64EA7053CD0A /* istream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18C4BE08EEF363F2E25EBFC4 /* istream.cpp */; };
 		49341C4F1CC9EF0200C9F7C4 /* plotter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 49341C4E1CC9EF0200C9F7C4 /* plotter.cpp */; };
+		493F1EAA1D0E3C5B00EE3A34 /* MFCC.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 493F1EA81D0E3C5B00EE3A34 /* MFCC.cpp */; };
 		497D66D31CC3232900D5C3DC /* ofxTCPClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 497D66CB1CC3232900D5C3DC /* ofxTCPClient.cpp */; };
 		497D66D41CC3232900D5C3DC /* ofxTCPManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 497D66CD1CC3232900D5C3DC /* ofxTCPManager.cpp */; };
 		497D66D51CC3232900D5C3DC /* ofxTCPServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 497D66CF1CC3232900D5C3DC /* ofxTCPServer.cpp */; };
@@ -89,6 +90,8 @@
 		3B41658326AAF509E0B38863 /* tuneable.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = tuneable.cpp; path = src/tuneable.cpp; sourceTree = SOURCE_ROOT; };
 		3C7436EA662FF05FD6BB9350 /* ofxDatGuiScrollView.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxDatGuiScrollView.h; path = "../../third-party/openFrameworks/addons/ofxDatGui/src/components/ofxDatGuiScrollView.h"; sourceTree = SOURCE_ROOT; };
 		49341C4E1CC9EF0200C9F7C4 /* plotter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = plotter.cpp; sourceTree = "<group>"; };
+		493F1EA81D0E3C5B00EE3A34 /* MFCC.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MFCC.cpp; sourceTree = "<group>"; };
+		493F1EA91D0E3C5B00EE3A34 /* MFCC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFCC.h; sourceTree = "<group>"; };
 		497D66C91CC3232900D5C3DC /* ofxNetwork.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxNetwork.h; sourceTree = "<group>"; };
 		497D66CA1CC3232900D5C3DC /* ofxNetworkUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxNetworkUtils.h; sourceTree = "<group>"; };
 		497D66CB1CC3232900D5C3DC /* ofxTCPClient.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTCPClient.cpp; sourceTree = "<group>"; };
@@ -382,6 +385,8 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				493F1EA81D0E3C5B00EE3A34 /* MFCC.cpp */,
+				493F1EA91D0E3C5B00EE3A34 /* MFCC.h */,
 				8198B9081CF7A8C60092C7CA /* ThresholdDetection.cpp */,
 				8198B9091CF7A8C60092C7CA /* ThresholdDetection.h */,
 				811B7BF51CF51D830078CD0A /* Filter.cpp */,
@@ -557,6 +562,7 @@
 				8164C6761CD927F900DFEF70 /* iostream.cpp in Sources */,
 				F21B1E9A4D08953A47D1411A /* ofxSliderGroup.cpp in Sources */,
 				53560FBFF75362D7BE463255 /* ofxToggle.cpp in Sources */,
+				493F1EAA1D0E3C5B00EE3A34 /* MFCC.cpp in Sources */,
 				49341C4F1CC9EF0200C9F7C4 /* plotter.cpp in Sources */,
 				E53A43EAD208AC6F06A451D3 /* ofxParagraph.cpp in Sources */,
 				497D66D31CC3232900D5C3DC /* ofxTCPClient.cpp in Sources */,

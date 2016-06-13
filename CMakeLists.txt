@@ -73,6 +73,7 @@ list(APPEND ADDONS_INCLUDE_PATH
 set(ESP_PATH ${CMAKE_CURRENT_SOURCE_DIR}/Xcode/ESP)
 set(ESP_SRC
   ${ESP_PATH}/src/Filter.cpp
+  ${ESP_PATH}/src/MFCC.cpp
   ${ESP_PATH}/src/ThresholdDetection.cpp
   ${ESP_PATH}/src/calibrator.cpp
   ${ESP_PATH}/src/iostream.cpp

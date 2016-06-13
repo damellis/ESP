@@ -2,6 +2,7 @@
  * Audio beat detection examples.
  */
 #include <ESP.h>
+#include <MFCC.h>
 
 // SerialStream stream(0, 115200);   // 5k sampling rate
 AudioStream stream(8);
@@ -20,7 +21,12 @@ CalibrateResult backgroundCollected(const MatrixDouble& data) {
     // For audio, it's one dimension matrix
     vector<double> means = data.getMean();
     bias = means[0];
-    return CalibrateResult::SUCCESS;
+    if (bias > 0.5) {
+        return CalibrateResult(CalibrateResult::FAILURE,
+                               "You should remain silent while collecting data");
+    } else {
+        return CalibrateResult::SUCCESS;
+    }
 }
 
 CalibrateResult shoutCollected(const MatrixDouble& data) {
@@ -38,12 +44,53 @@ double analogReadToSound(double data) {
 
 Calibrator calibrator(analogReadToSound);
 
+VectorDouble square(VectorDouble vd) {
+    VectorDouble result(vd.size());
+    for (uint32_t i = 0; i < result.size(); i++) {
+        result[i] = vd[i] * vd[i];
+    }
+    return result;
+};
+
+VectorDouble vlog(VectorDouble vd) {
+    VectorDouble result(vd.size());
+    for (uint32_t i = 0; i < result.size(); i++) {
+        result[i] = log(vd[i]);
+    }
+    return result;
+};
+
+VectorDouble dct(VectorDouble vd) {
+    uint32_t N = vd.size();
+    VectorDouble result(N);
+    for (uint32_t i = 0; i < N; i++) {
+        result[i] = 0;
+        for (uint32_t j = 0; j < N; j++) {
+            result[i] += cos(M_PI / N * (j + 0.5) * i);
+        }
+    }
+    return result;
+};
+
 void setup() {
     stream.setLabelsForAllDimensions({"audio"});
 
     pipeline.addFeatureExtractionModule(
         FFT(kFFT_WindowSize, kFFT_HopSize,
             DIM, FFT::RECTANGULAR_WINDOW, true, false));
+
+    pipeline.addFeatureExtractionModule(
+        FeatureApply(kFFT_WindowSize / 2, kFFT_WindowSize / 2, square));
+
+    uint32_t num_mel_bank = 20;
+    pipeline.addFeatureExtractionModule(
+        MelBankFeatures(num_mel_bank, 300, 8000, kFFT_WindowSize / 2, 44100 / 8));
+
+    pipeline.addFeatureExtractionModule(
+        FeatureApply(num_mel_bank, num_mel_bank, vlog));
+
+    pipeline.addFeatureExtractionModule(
+        FeatureApply(num_mel_bank, num_mel_bank, dct));
 
     pipeline.setClassifier(
         SVM(SVM::LINEAR_KERNEL, SVM::C_SVC, true, true));
