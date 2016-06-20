@@ -7,8 +7,8 @@ interactive projects through the application of machine learning.
 
 ## Pre-requisites
 
-At the moment, this project runs only on OS X. You'll need Xcode and
-git (to clone this repository and its submodules).
+At the moment, this project runs on OS X and Linux. You'll need Xcode
+and git (to clone this repository and its submodules).
 
 ## Installation
 
