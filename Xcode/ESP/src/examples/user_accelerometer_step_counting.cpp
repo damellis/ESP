@@ -39,6 +39,11 @@ CalibrateResult restingDataCollected(const MatrixDouble& data)
     return CalibrateResult::SUCCESS;
 }
 
+VectorDouble identity(VectorDouble in)
+{
+    return in;
+}
+
 VectorDouble magnitude(VectorDouble in)
 {
     VectorDouble out(1, 0);
@@ -47,6 +52,16 @@ VectorDouble magnitude(VectorDouble in)
         out[0] += in[i] * in[i];
     
     out[0] = sqrt(out[0]);
+    
+    return out;
+}
+
+VectorDouble dotProduct(VectorDouble in)
+{
+    VectorDouble out(1, 0);
+    
+    for (int i = 0; i < in.size(); i++)
+        out[0] += in[i] * in[i];
     
     return out;
 }
@@ -69,6 +84,18 @@ VectorDouble threshold(VectorDouble in) {
     return out;
 }
 
+VectorDouble merge(VectorDouble in, FeatureApply::FilterFunction one, FeatureApply::FilterFunction two) {
+    VectorDouble out = one(in), out2 = two(in);
+    out.insert(out.end(), out2.begin(), out2.end());
+    return out;
+}
+
+VectorDouble identityAndDotProduct(VectorDouble in) {
+    return merge(in, identity, dotProduct);
+}
+
+
+
 void setup()
 {
     stream.setLabelsForAllDimensions({"x", "y", "z"});
@@ -79,7 +106,8 @@ void setup()
         "Rest accelerometer on flat surface.", restingDataCollected);
     useCalibrator(calibrator);
 
-    pipeline.addFeatureExtractionModule(FeatureApply(3, 1, magnitude));
+//    pipeline.addFeatureExtractionModule(FeatureApply(3, 4, identityAndDotProduct));
+    pipeline.addFeatureExtractionModule(FeatureApply(3, 1, dotProduct));
     pipeline.addFeatureExtractionModule(TimeseriesBuffer(80, 1));
     pipeline.addFeatureExtractionModule(FeatureApply(80, 1, stddev));
     pipeline.addFeatureExtractionModule(FeatureApply(1, 1, threshold));
@@ -87,4 +115,5 @@ void setup()
     
     registerTuneable(t, 0.1, 0.9, "Walking Threshold",
         "How much the accelerometer data needs to be "
+        "changing to be considered walking.");
 }
