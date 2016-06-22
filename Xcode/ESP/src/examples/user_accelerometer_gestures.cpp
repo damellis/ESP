@@ -46,6 +46,10 @@ TrainingSampleCheckerResult checkTrainingSample(const MatrixDouble &in)
         return TrainingSampleCheckerResult(TrainingSampleCheckerResult::WARNING,
             "Warning: Sample is short. Did you hold down the key for "
             "the whole time you were making the gesture?");
+    VectorDouble stddev = in.getStdDev();
+    if (*max_element(stddev.begin(), stddev.end()) < 0.1)
+        return TrainingSampleCheckerResult(TrainingSampleCheckerResult::WARNING,
+            "Warning: Gesture contains very little movement.");
     return TrainingSampleCheckerResult::SUCCESS;
 }
 
