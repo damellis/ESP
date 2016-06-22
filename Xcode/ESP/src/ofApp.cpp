@@ -88,6 +88,10 @@ void ofApp::useOStream(OStream &stream) {
     if (!setup_finished_) ostreams_.push_back(&stream);
 }
 
+void ofApp::useTrainingSampleChecker(TrainingSampleChecker checker) {
+    training_sample_checker_ = checker;
+}
+
 // TODO(benzh): initialize other members as well.
 ofApp::ofApp() : fragment_(TRAINING),
                  num_pipeline_stages_(0),
@@ -1408,6 +1412,17 @@ void ofApp::keyReleased(int key) {
                         result.getMessage();
             }
         } else if (fragment_ == TRAINING) {
+            if (training_sample_checker_) {
+                TrainingSampleCheckerResult result =
+                    training_sample_checker_(sample_data_);
+                status_text_ = plot_samples_[label_ - 1].getTitle() +
+                    " check: " + result.getMessage();
+                
+                // Don't save sample if the checker returns failure.
+                if (result.getResult() == TrainingSampleCheckerResult::FAILURE)
+                    return;
+            }
+        
             training_data_.addSample(label_, sample_data_);
             int num_samples = training_data_.getClassTracker()
                 [training_data_.getClassLabelIndexValue(label_)].counter;

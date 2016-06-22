@@ -17,6 +17,7 @@
 #include "iostream.h"
 #include "plotter.h"
 #include "tuneable.h"
+#include "training.h"
 
 class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
   public:
@@ -61,12 +62,14 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     void usePipeline(GRT::GestureRecognitionPipeline &pipeline);
     void useIStream(IStream &stream);
     void useOStream(OStream &stream);
+    void useTrainingSampleChecker(TrainingSampleChecker checker);
 
     friend void useCalibrator(Calibrator &calibrator);
     friend void usePipeline(GRT::GestureRecognitionPipeline &pipeline);
     friend void useInputStream(IStream &stream);
     friend void useOutputStream(OStream &stream);
     friend void useStream(IOStream &stream);
+    friend void useTrainingSampleChecker(TrainingSampleChecker checker);
 
     bool setup_finished_ = false;
 
@@ -82,6 +85,8 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
 
     // The calibrator that is in use.
     Calibrator *calibrator_;
+
+    TrainingSampleChecker training_sample_checker_ = 0;
 
     // Input stream, a callback should be registered upon data arrival
     IStream *istream_;

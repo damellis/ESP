@@ -40,6 +40,15 @@ CalibrateResult restingDataCollected(const MatrixDouble& data)
     return CalibrateResult::SUCCESS;
 }
 
+TrainingSampleCheckerResult checkTrainingSample(const MatrixDouble &in)
+{
+    if (in.getNumRows() < 10)
+        return TrainingSampleCheckerResult(TrainingSampleCheckerResult::WARNING,
+            "Warning: Sample is short. Did you hold down the key for "
+            "the whole time you were making the gesture?");
+    return TrainingSampleCheckerResult(TrainingSampleCheckerResult::SUCCESS);
+}
+
 int timeout = 500; // milliseconds
 double null_rej = 0.4;
 
@@ -67,4 +76,6 @@ void setup()
         "Timeout",
         "How long (in milliseconds) to wait after recognizing a "
         "gesture before recognizing another one.");
+    
+    useTrainingSampleChecker(checkTrainingSample);
 }

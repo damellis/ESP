@@ -25,6 +25,7 @@
 		637A06C23B6F54498F35B81F /* ofxSmartFont.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00C32701B394C1DD8762AD1E /* ofxSmartFont.cpp */; };
 		798434EF9EE5EE2E41E2F0DE /* ofxGrtTimeseriesPlot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3016C29D8E0735FBAEF55DFA /* ofxGrtTimeseriesPlot.cpp */; };
 		811B7BF71CF51D830078CD0A /* Filter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 811B7BF51CF51D830078CD0A /* Filter.cpp */; };
+		814E133B1D1A072800774F7B /* training.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 814E133A1D1A072800774F7B /* training.cpp */; };
 		8164C6761CD927F900DFEF70 /* iostream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8164C6751CD927F900DFEF70 /* iostream.cpp */; };
 		817BE7751CCB063E00FE581B /* libgrt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 817BE7741CCB063E00FE581B /* libgrt.dylib */; };
 		817BE7761CCB067800FE581B /* libgrt.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 817BE7741CCB063E00FE581B /* libgrt.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -126,6 +127,8 @@
 		806F715C55B9B786D65F7B33 /* ofxDatGuiSlider.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxDatGuiSlider.h; path = "../../third-party/openFrameworks/addons/ofxDatGui/src/components/ofxDatGuiSlider.h"; sourceTree = SOURCE_ROOT; };
 		811B7BF51CF51D830078CD0A /* Filter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Filter.cpp; sourceTree = "<group>"; };
 		811B7BF61CF51D830078CD0A /* Filter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Filter.h; sourceTree = "<group>"; };
+		814E13391D1A037100774F7B /* training.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = training.h; sourceTree = "<group>"; };
+		814E133A1D1A072800774F7B /* training.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = training.cpp; sourceTree = "<group>"; };
 		8164C6731CD924EC00DFEF70 /* stream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stream.h; sourceTree = "<group>"; };
 		8164C6741CD9274100DFEF70 /* iostream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iostream.h; sourceTree = "<group>"; };
 		8164C6751CD927F900DFEF70 /* iostream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = iostream.cpp; sourceTree = "<group>"; };
@@ -411,6 +414,8 @@
 				8164C6731CD924EC00DFEF70 /* stream.h */,
 				8164C6741CD9274100DFEF70 /* iostream.h */,
 				8164C6751CD927F900DFEF70 /* iostream.cpp */,
+				814E13391D1A037100774F7B /* training.h */,
+				814E133A1D1A072800774F7B /* training.cpp */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -562,6 +567,7 @@
 				8164C6761CD927F900DFEF70 /* iostream.cpp in Sources */,
 				F21B1E9A4D08953A47D1411A /* ofxSliderGroup.cpp in Sources */,
 				53560FBFF75362D7BE463255 /* ofxToggle.cpp in Sources */,
+				814E133B1D1A072800774F7B /* training.cpp in Sources */,
 				493F1EAA1D0E3C5B00EE3A34 /* MFCC.cpp in Sources */,
 				49341C4F1CC9EF0200C9F7C4 /* plotter.cpp in Sources */,
 				E53A43EAD208AC6F06A451D3 /* ofxParagraph.cpp in Sources */,

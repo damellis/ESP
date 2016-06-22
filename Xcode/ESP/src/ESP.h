@@ -36,5 +36,6 @@
 #include "calibrator.h"
 #include "iostream.h"
 #include "tuneable.h"
+#include "training.h"
 
 using namespace GRT;
