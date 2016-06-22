@@ -44,34 +44,6 @@ double analogReadToSound(double data) {
 
 Calibrator calibrator(analogReadToSound);
 
-VectorDouble square(VectorDouble vd) {
-    VectorDouble result(vd.size());
-    for (uint32_t i = 0; i < result.size(); i++) {
-        result[i] = vd[i] * vd[i];
-    }
-    return result;
-};
-
-VectorDouble vlog(VectorDouble vd) {
-    VectorDouble result(vd.size());
-    for (uint32_t i = 0; i < result.size(); i++) {
-        result[i] = log(vd[i]);
-    }
-    return result;
-};
-
-VectorDouble dct(VectorDouble vd) {
-    uint32_t N = vd.size();
-    VectorDouble result(N);
-    for (uint32_t i = 0; i < N; i++) {
-        result[i] = 0;
-        for (uint32_t j = 0; j < N; j++) {
-            result[i] += cos(M_PI / N * (j + 0.5) * i);
-        }
-    }
-    return result;
-};
-
 void setup() {
     stream.setLabelsForAllDimensions({"audio"});
 
@@ -80,17 +52,7 @@ void setup() {
             DIM, FFT::RECTANGULAR_WINDOW, true, false));
 
     pipeline.addFeatureExtractionModule(
-        FeatureApply(kFFT_WindowSize / 2, kFFT_WindowSize / 2, square));
-
-    uint32_t num_mel_bank = 20;
-    pipeline.addFeatureExtractionModule(
-        MelBankFeatures(num_mel_bank, 300, 8000, kFFT_WindowSize / 2, 44100 / 8));
-
-    pipeline.addFeatureExtractionModule(
-        FeatureApply(num_mel_bank, num_mel_bank, vlog));
-
-    pipeline.addFeatureExtractionModule(
-        FeatureApply(num_mel_bank, num_mel_bank, dct));
+        MelBankFeatures(300, 8000, kFFT_WindowSize / 2, 44100 / 8, 26, 12));
 
     pipeline.setClassifier(
         SVM(SVM::LINEAR_KERNEL, SVM::C_SVC, true, true));
@@ -102,7 +64,7 @@ void setup() {
             .addCalibrateProcess("Range", "Shout as much as possible", shoutCollected);
 
     useInputStream(stream);
-    useCalibrator(calibrator);
+    // useCalibrator(calibrator);
     usePipeline(pipeline);
     // useOutputStream(o_stream);
 }
