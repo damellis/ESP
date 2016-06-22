@@ -20,6 +20,9 @@
  \li Zero or more tuneable parameters, which allow the user to tune the value
  of various aspects of the application. Specified by the registerTuneable()
  functions in the tuneable.h file.
+ \li Zero or one training samples checkers, to provide the user with feedback
+ on the quality of their training data. Specified by a call to 
+ useTrainingSampleChecker().
 
  When compiled against the ESP framework and run, these examples generate a
  graphical interface that allows the user to visualize live sensor data,

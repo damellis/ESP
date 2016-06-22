@@ -46,7 +46,7 @@ TrainingSampleCheckerResult checkTrainingSample(const MatrixDouble &in)
         return TrainingSampleCheckerResult(TrainingSampleCheckerResult::WARNING,
             "Warning: Sample is short. Did you hold down the key for "
             "the whole time you were making the gesture?");
-    return TrainingSampleCheckerResult(TrainingSampleCheckerResult::SUCCESS);
+    return TrainingSampleCheckerResult::SUCCESS;
 }
 
 int timeout = 500; // milliseconds
