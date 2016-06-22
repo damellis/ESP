@@ -1,14 +1,18 @@
 #include "MFCC.h"
 
-namespace GRT {
+#include <cmath>
 
+namespace GRT {
+    
 RegisterFeatureExtractionModule<MelBankFeatures>
 MelBankFeatures::registerModule("MelBankFeatures");
 
-MelBankFeatures::MelBankFeatures(uint32_t numFilterBanks,
-                                 double startFreq, double endFreq,
-                                 uint32_t FFTSize, uint32_t sampleRate)
-        : initialized_(false) {
+MelBankFeatures::MelBankFeatures(double startFreq, double endFreq,
+                                 uint32_t FFTSize, uint32_t sampleRate,
+                                 uint32_t numFilterBanks,
+                                 uint32_t numLowerFeatures,
+                                 bool withDelta)
+        : initialized_(false), num_lower_features_(numLowerFeatures), with_delta_(withDelta) {
     classType = "MelBankFeatures";
     featureExtractionType = classType;
     debugLog.setProceedingText("[INFO MelBankFeatures]");
@@ -18,12 +22,13 @@ MelBankFeatures::MelBankFeatures(uint32_t numFilterBanks,
 
     if (numFilterBanks <= 0 ||
         startFreq <= 0 || endFreq <= 0 ||
-        FFTSize <= 0 || sampleRate <= 0) {
+        FFTSize <= 0 || sampleRate <= 0 ||
+        numLowerFeatures > numFilterBanks) {
         return;
     }
 
     numInputDimensions = FFTSize;
-    numOutputDimensions = numFilterBanks;
+    numOutputDimensions = numLowerFeatures;
 
     vector<double> index(numFilterBanks + 2);
 
@@ -51,12 +56,17 @@ MelBankFeatures::MelBankFeatures(const MelBankFeatures &rhs) {
     warningLog.setProceedingText("[WARNING MelBankFeatures]");
 
     this->filters_.clear();
+    this->num_lower_features_ = rhs.num_lower_features_;
+    this->with_delta_ = rhs.with_delta_;
     *this = rhs;
 }
 
 MelBankFeatures& MelBankFeatures::operator=(const MelBankFeatures &rhs) {
     if (this != &rhs) {
         this->classType = rhs.getClassType();
+        this->filters_ = rhs.getFilters();
+        this->num_lower_features_ = rhs.num_lower_features_;
+        this->with_delta_ = rhs.with_delta_;
         this->filters_ = rhs.getFilters();
         copyBaseVariables( (FeatureExtraction*)&rhs );
     }
@@ -79,11 +89,30 @@ bool MelBankFeatures::deepCopyFrom(const FeatureExtraction *featureExtraction) {
 }
 
 bool MelBankFeatures::computeFeatures(const VectorDouble &inputVector) {
-    uint32_t size = filters_.size();
-    featureVector.resize(size);
-    for (uint32_t i = 0; i < size; i++) {
-        featureVector[i] = filters_[i].filter(inputVector);
+    // We assume the input is from a DFT (FFT) transformation.
+
+    // 1. Filter the signal with Mel filters and get logged energies.
+    uint32_t M = filters_.size();
+    VectorDouble log_energies(M);
+    for (uint32_t i = 0; i < M; i++) {
+        double energy = filters_[i].filter(inputVector);
+        if (energy == 0) {
+            // Prevent log_energy goes to -inf...
+            log_energies[i] = 0;
+        } else {
+            log_energies[i] = log(energy);
+        }
     }
+
+    // 2. Perform a DCT over logged energies (only get the lower 12 coefficients)
+    featureVector.resize(num_lower_features_);
+    for (uint32_t i = 0; i < num_lower_features_; i++) {
+        featureVector[i] = 0;
+        for (uint32_t j = 0; j < M; j++) {
+            featureVector[i] += log_energies[j] * cos(PI / M * (j + 0.5) * i);
+        }
+    }
+
     return true;
 }
 

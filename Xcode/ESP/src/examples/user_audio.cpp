@@ -1,18 +1,18 @@
-/** @example user_audio_beat.cpp
+/** @example user_audio.cpp
  * Audio beat detection examples.
  */
 #include <ESP.h>
 #include <MFCC.h>
 
-// SerialStream stream(0, 115200);   // 5k sampling rate
-AudioStream stream(8);
-GestureRecognitionPipeline pipeline;
-MacOSKeyboardOStream o_stream(3, 'j', 'd', '\0');
-
-// Audio defaults to 44.1k sampling rate. With a downsample of 10, it's 4.41k.
-uint32_t kFFT_WindowSize = 512;
+constexpr uint32_t downsample_rate = 5;
+constexpr uint32_t sample_rate = 44100 / 5;  // 8820
+constexpr uint32_t kFFT_WindowSize = 256;    // 256 samples => 30 ms, frame size
 uint32_t kFFT_HopSize = 128;
 uint32_t DIM = 1;
+
+AudioStream stream(downsample_rate);
+GestureRecognitionPipeline pipeline;
+MacOSKeyboardOStream o_stream(3, 'j', 'd', '\0');
 
 double bias = 0;
 double range = 0;
@@ -44,53 +44,15 @@ double analogReadToSound(double data) {
 
 Calibrator calibrator(analogReadToSound);
 
-VectorDouble square(VectorDouble vd) {
-    VectorDouble result(vd.size());
-    for (uint32_t i = 0; i < result.size(); i++) {
-        result[i] = vd[i] * vd[i];
-    }
-    return result;
-};
-
-VectorDouble vlog(VectorDouble vd) {
-    VectorDouble result(vd.size());
-    for (uint32_t i = 0; i < result.size(); i++) {
-        result[i] = log(vd[i]);
-    }
-    return result;
-};
-
-VectorDouble dct(VectorDouble vd) {
-    uint32_t N = vd.size();
-    VectorDouble result(N);
-    for (uint32_t i = 0; i < N; i++) {
-        result[i] = 0;
-        for (uint32_t j = 0; j < N; j++) {
-            result[i] += cos(M_PI / N * (j + 0.5) * i);
-        }
-    }
-    return result;
-};
-
 void setup() {
     stream.setLabelsForAllDimensions({"audio"});
 
     pipeline.addFeatureExtractionModule(
         FFT(kFFT_WindowSize, kFFT_HopSize,
-            DIM, FFT::RECTANGULAR_WINDOW, true, false));
+            DIM, FFT::HAMMING_WINDOW, true, false));
 
     pipeline.addFeatureExtractionModule(
-        FeatureApply(kFFT_WindowSize / 2, kFFT_WindowSize / 2, square));
-
-    uint32_t num_mel_bank = 20;
-    pipeline.addFeatureExtractionModule(
-        MelBankFeatures(num_mel_bank, 300, 8000, kFFT_WindowSize / 2, 44100 / 8));
-
-    pipeline.addFeatureExtractionModule(
-        FeatureApply(num_mel_bank, num_mel_bank, vlog));
-
-    pipeline.addFeatureExtractionModule(
-        FeatureApply(num_mel_bank, num_mel_bank, dct));
+        MelBankFeatures(300, 8000, kFFT_WindowSize / 2, sample_rate, 26, 12));
 
     pipeline.setClassifier(
         SVM(SVM::LINEAR_KERNEL, SVM::C_SVC, true, true));
@@ -102,7 +64,7 @@ void setup() {
             .addCalibrateProcess("Range", "Shout as much as possible", shoutCollected);
 
     useInputStream(stream);
-    useCalibrator(calibrator);
+    // useCalibrator(calibrator);
     usePipeline(pipeline);
     // useOutputStream(o_stream);
 }

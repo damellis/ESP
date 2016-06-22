@@ -50,11 +50,13 @@ class MelBank {
 
 class MelBankFeatures : public FeatureExtraction {
   public:
-    MelBankFeatures(uint32_t numFilterBanks = -1,
-                    double startFreq = -1,
+    MelBankFeatures(double startFreq = -1,
                     double endFreq = -1,
                     uint32_t FFTSize = -1,
-                    uint32_t sampleRate = -1);
+                    uint32_t sampleRate = -1,
+                    uint32_t numFilterBanks = 26,
+                    uint32_t numLowerFeatures = 12,
+                    bool withDelta = false);
     MelBankFeatures(const MelBankFeatures &rhs);
     MelBankFeatures& operator=(const MelBankFeatures &rhs);
     bool deepCopyFrom(const FeatureExtraction *featureExtraction) override;
@@ -73,11 +75,14 @@ class MelBankFeatures : public FeatureExtraction {
     }
   protected:
     bool initialized_;
+    uint32_t num_lower_features_;
+    bool with_delta_;
+
     vector<MelBank> filters_;
 
     static RegisterFeatureExtractionModule<MelBankFeatures> registerModule;
 };
 
-}  //End of namespace GRT
+}  // namespace GRT
 
 #endif  // ESP_MFCC_H_
