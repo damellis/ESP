@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['int_5frange',['INT_RANGE',['../class_tuneable.html#a85668dc428a627c31a5b3e76c87b92e5a863a548c3f41ff670681077d6d015a55',1,'Tuneable']]]
+  ['failure',['FAILURE',['../class_calibrate_result.html#aa473de26f2f0bc502e58b7ebdb038e4baa517b8f91ff014dcc9ced02cdab5d1d7',1,'CalibrateResult::FAILURE()'],['../class_training_sample_checker_result.html#a0cba1d0ca73cf49645dade329dba9e21a5a3212d8d91167c19dd480fa7b66eb68',1,'TrainingSampleCheckerResult::FAILURE()']]]
 ];

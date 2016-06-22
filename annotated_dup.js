@@ -2,8 +2,10 @@ var annotated_dup =
 [
     [ "GRT", "namespace_g_r_t.html", "namespace_g_r_t" ],
     [ "ASCIISerialStream", "class_a_s_c_i_i_serial_stream.html", "class_a_s_c_i_i_serial_stream" ],
+    [ "AudioFileStream", "class_audio_file_stream.html", "class_audio_file_stream" ],
     [ "AudioStream", "class_audio_stream.html", "class_audio_stream" ],
     [ "CalibrateProcess", "class_calibrate_process.html", "class_calibrate_process" ],
+    [ "CalibrateResult", "class_calibrate_result.html", "class_calibrate_result" ],
     [ "Calibrator", "class_calibrator.html", "class_calibrator" ],
     [ "FirmataStream", "class_firmata_stream.html", "class_firmata_stream" ],
     [ "InteractiveTimeSeriesPlot", "class_interactive_time_series_plot.html", "class_interactive_time_series_plot" ],
@@ -17,9 +19,9 @@ var annotated_dup =
     [ "Palette", "class_palette.html", "class_palette" ],
     [ "Plotter", "class_plotter.html", "class_plotter" ],
     [ "SerialStream", "class_serial_stream.html", "class_serial_stream" ],
-    [ "SpeechDetection", "class_speech_detection.html", "class_speech_detection" ],
     [ "Stream", "class_stream.html", "class_stream" ],
     [ "TcpOStream", "class_tcp_o_stream.html", "class_tcp_o_stream" ],
+    [ "TrainingSampleCheckerResult", "class_training_sample_checker_result.html", "class_training_sample_checker_result" ],
     [ "TrainingSampleGuiListener", "class_training_sample_gui_listener.html", "class_training_sample_gui_listener" ],
     [ "Tuneable", "class_tuneable.html", "class_tuneable" ]
 ];

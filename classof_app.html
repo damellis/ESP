@@ -184,6 +184,9 @@ Friends</h2></td></tr>
 <tr class="separator:a279f55018c4c054ad565198954f8eb16"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aff979b7370726d96aac43c99e3f7af10"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classof_app.html#aff979b7370726d96aac43c99e3f7af10">useStream</a> (<a class="el" href="class_i_o_stream.html">IOStream</a> &amp;<a class="el" href="user__sudden__motion_8cpp.html#aa0c0eb30458e60c0433f27b43a4c603e">stream</a>)</td></tr>
 <tr class="separator:aff979b7370726d96aac43c99e3f7af10"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1bf90f88fd71128f5b3e393502cd6979"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classof_app.html#a1bf90f88fd71128f5b3e393502cd6979">useTrainingSampleChecker</a> (<a class="el" href="training_8h.html#a4634022886a17cf66f18a99cc99a6e78">TrainingSampleChecker</a> checker)</td></tr>
+<tr class="memdesc:a1bf90f88fd71128f5b3e393502cd6979"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register a function for checking training samples.  <a href="#a1bf90f88fd71128f5b3e393502cd6979">More...</a><br /></td></tr>
+<tr class="separator:a1bf90f88fd71128f5b3e393502cd6979"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a23bbd1b428e636849c4623d3e679874e"></a>
@@ -873,6 +876,58 @@ Friends</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">stream</td><td>the stream to use for input and output </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a1bf90f88fd71128f5b3e393502cd6979"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void useTrainingSampleChecker </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="training_8h.html#a4634022886a17cf66f18a99cc99a6e78">TrainingSampleChecker</a>&#160;</td>
+          <td class="paramname"><em>checker</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Register a function for checking training samples. </p>
+<p>The TrainingSampleChecker specified here will be called on each new sample of training data collected by the user. The result, indicated by the <a class="el" href="class_training_sample_checker_result.html" title="TrainingSampleCheckerResult indicates the result of a check of a training sample. ...">TrainingSampleCheckerResult</a> returned, will be shown to the user.</p>
+<p>Here's an example of how you might use this function: </p><pre class="fragment">TrainingSampleCheckerResult myChecker(const MatrixDouble &amp;data) {
+    if (data.getNumRows() == 0) {
+        return TrainingSampleCheckerResult(
+            TrainingSampleCheckerResult::FAILURE,
+            "Error: Training sample doesn't contain any data.");
+    }
+    if (data.getNumRows() == 1) {
+        return TrainingSampleCheckerResult(
+            TrainingSampleCheckerResult::WARNING,
+            "Warning: Sample only contains one data point.");
+    }
+
+    return TrainingSampleCheckerResult::SUCCESS; // use default message
+}
+
+void setup() {
+    useTrainingSampleChecker(myChecker);
+}
+</pre><p>Note that only one TrainingSampleChecker can be active at any time. Subsequent calls to this function will replace the previously-registered checker.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">checker</td><td>the function to be called on the user's training samples </td></tr>
   </table>
   </dd>
 </dl>

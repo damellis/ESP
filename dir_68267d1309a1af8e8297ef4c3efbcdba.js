@@ -13,6 +13,11 @@ var dir_68267d1309a1af8e8297ef4c3efbcdba =
     [ "istream.cpp", "istream_8cpp.html", "istream_8cpp" ],
     [ "istream.h", "istream_8h.html", "istream_8h" ],
     [ "main.cpp", "main_8cpp.html", "main_8cpp" ],
+    [ "MFCC.cpp", "_m_f_c_c_8cpp.html", null ],
+    [ "MFCC.h", "_m_f_c_c_8h.html", [
+      [ "MelBank", "class_g_r_t_1_1_mel_bank.html", "class_g_r_t_1_1_mel_bank" ],
+      [ "MelBankFeatures", "class_g_r_t_1_1_mel_bank_features.html", "class_g_r_t_1_1_mel_bank_features" ]
+    ] ],
     [ "ofApp.cpp", "of_app_8cpp.html", "of_app_8cpp" ],
     [ "ofApp.h", "of_app_8h.html", [
       [ "ofApp", "classof_app.html", "classof_app" ],
@@ -30,6 +35,12 @@ var dir_68267d1309a1af8e8297ef4c3efbcdba =
     [ "stream.h", "stream_8h.html", [
       [ "Stream", "class_stream.html", "class_stream" ]
     ] ],
+    [ "ThresholdDetection.cpp", "_threshold_detection_8cpp.html", null ],
+    [ "ThresholdDetection.h", "_threshold_detection_8h.html", [
+      [ "ThresholdDetection", "class_g_r_t_1_1_threshold_detection.html", "class_g_r_t_1_1_threshold_detection" ]
+    ] ],
+    [ "training.cpp", "training_8cpp.html", "training_8cpp" ],
+    [ "training.h", "training_8h.html", "training_8h" ],
     [ "tuneable.cpp", "tuneable_8cpp.html", "tuneable_8cpp" ],
     [ "tuneable.h", "tuneable_8h.html", "tuneable_8h" ],
     [ "user.cpp", "user_8cpp.html", null ],

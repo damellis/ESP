@@ -1,7 +1,7 @@
 var user__sudden__motion_8cpp =
 [
     [ "processAccelerometerData", "user__sudden__motion_8cpp.html#add00571ce8cfd3623ea0967ad8b24b89", null ],
-    [ "restingDataCollected", "user__sudden__motion_8cpp.html#ad2f2516298c9b9f78832a45f4d97467f", null ],
+    [ "restingDataCollected", "user__sudden__motion_8cpp.html#ad5dcfc15f7ade75a4d1ee00ff9bbf4c4", null ],
     [ "setup", "user__sudden__motion_8cpp.html#a4fc01d736fe50cf5b977f755b675f11d", null ],
     [ "calibrator", "user__sudden__motion_8cpp.html#a2dfd966029091cbf3bc049ece6a957ce", null ],
     [ "num_dim", "user__sudden__motion_8cpp.html#a58737b46106674529b0323b6d04cdb99", null ],

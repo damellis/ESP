@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['vectornormalizefunc',['vectorNormalizeFunc',['../class_i_stream.html#a7804995da26aa4cdfcff195dbc7a68ea',1,'IStream']]]
+  ['trainingsamplechecker',['TrainingSampleChecker',['../training_8h.html#a4634022886a17cf66f18a99cc99a6e78',1,'training.h']]]
 ];
