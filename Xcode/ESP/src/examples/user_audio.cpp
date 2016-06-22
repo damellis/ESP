@@ -1,18 +1,18 @@
-/** @example user_audio_beat.cpp
+/** @example user_audio.cpp
  * Audio beat detection examples.
  */
 #include <ESP.h>
 #include <MFCC.h>
 
-// SerialStream stream(0, 115200);   // 5k sampling rate
-AudioStream stream(8);
-GestureRecognitionPipeline pipeline;
-MacOSKeyboardOStream o_stream(3, 'j', 'd', '\0');
-
-// Audio defaults to 44.1k sampling rate. With a downsample of 10, it's 4.41k.
-uint32_t kFFT_WindowSize = 512;
+constexpr uint32_t downsample_rate = 5;
+constexpr uint32_t sample_rate = 44100 / 5;  // 8820
+constexpr uint32_t kFFT_WindowSize = 256;    // 256 samples => 30 ms, frame size
 uint32_t kFFT_HopSize = 128;
 uint32_t DIM = 1;
+
+AudioStream stream(downsample_rate);
+GestureRecognitionPipeline pipeline;
+MacOSKeyboardOStream o_stream(3, 'j', 'd', '\0');
 
 double bias = 0;
 double range = 0;
@@ -49,10 +49,10 @@ void setup() {
 
     pipeline.addFeatureExtractionModule(
         FFT(kFFT_WindowSize, kFFT_HopSize,
-            DIM, FFT::RECTANGULAR_WINDOW, true, false));
+            DIM, FFT::HAMMING_WINDOW, true, false));
 
     pipeline.addFeatureExtractionModule(
-        MelBankFeatures(300, 8000, kFFT_WindowSize / 2, 44100 / 8, 26, 12));
+        MelBankFeatures(300, 8000, kFFT_WindowSize / 2, sample_rate, 26, 12));
 
     pipeline.setClassifier(
         SVM(SVM::LINEAR_KERNEL, SVM::C_SVC, true, true));
