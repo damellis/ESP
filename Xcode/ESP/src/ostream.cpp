@@ -9,6 +9,10 @@ void useOutputStream(OStream &stream) {
     ((ofApp *) ofGetAppPtr())->useOStream(stream);
 }
 
+void useOutputStream(OStreamVector &stream) {
+    ((ofApp *) ofGetAppPtr())->useOStream(stream);
+}
+
 void MacOSKeyboardOStream::sendKey(char c) {
 #if __APPLE__
     if (ofGetElapsedTimeMillis() < elapsed_time_ + kGracePeriod) {

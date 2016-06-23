@@ -62,13 +62,16 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     void usePipeline(GRT::GestureRecognitionPipeline &pipeline);
     void useIStream(IStream &stream);
     void useOStream(OStream &stream);
+    void useOStream(OStreamVector &stream);
     void useTrainingSampleChecker(TrainingSampleChecker checker);
 
     friend void useCalibrator(Calibrator &calibrator);
     friend void usePipeline(GRT::GestureRecognitionPipeline &pipeline);
     friend void useInputStream(IStream &stream);
     friend void useOutputStream(OStream &stream);
+    friend void useOutputStream(OStreamVector &stream);
     friend void useStream(IOStream &stream);
+    friend void useStream(IOStreamVector &stream);
     friend void useTrainingSampleChecker(TrainingSampleChecker checker);
 
     bool setup_finished_ = false;
@@ -93,8 +96,9 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     // Callback used for input data stream (istream_)
     void onDataIn(GRT::MatrixDouble in);
 
-    // Input stream, a callback should be registered upon data arrival
+    // Output streams to which to write the results of the pipeline
     vector<OStream *> ostreams_;
+    vector<OStreamVector *> ostreamvectors_;
 
     // When button 1-9 is pressed, is_recording_ will be set and data will be
     // added to sample_data_.

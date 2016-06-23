@@ -3,8 +3,8 @@
 #include "istream.h"
 #include "ostream.h"
 
-class IOStream : public IStream, public OStream {
-};
+class IOStream : public IStream, public OStream {};
+class IOStreamVector : public IStream, public OStreamVector {};
 
 /**
  @brief Input stream for reading ASCII data from a (USB) serial port.
@@ -17,7 +17,7 @@ class IOStream : public IStream, public OStream {
  To use an ASCIISerialStream in your application, pass it to useStream() in
  your setup() function.
  */
-class ASCIISerialStream : public IOStream {
+class ASCIISerialStream : public IOStreamVector {
   public:
     /**
      Create an ASCIISerialStream instance.
@@ -46,6 +46,7 @@ class ASCIISerialStream : public IOStream {
     virtual int getNumInputDimensions() final;
   
     virtual void onReceive(uint32_t label);
+    virtual void onReceive(vector<double> data);
 
     vector<string> getSerialDeviceList() {
         serial_->listDevices();
@@ -97,4 +98,4 @@ class ASCIISerialStream : public IOStream {
  @param stream: the stream to use for input and output
  */
 void useStream(IOStream &stream);
-
+void useStream(IOStreamVector &stream);

@@ -6,6 +6,8 @@
 //AudioStream stream(1);
 AudioFileStream stream("train1.wav", true);
 GestureRecognitionPipeline pipeline;
+TcpOStream oStream("localhost", 5204);
+ASCIISerialStream oStream2(0, 9600, 3);
 
 // Audio defaults to 44.1k sampling rate.
 uint32_t kFFT_WindowSize = 1024;
@@ -78,6 +80,8 @@ VectorDouble detectBeat(VectorDouble in) {
 void setup() {
     stream.setLabelsForAllDimensions({"audio"});
     useInputStream(stream);
+    useOutputStream(oStream);
+    useOutputStream(oStream2);
     
 //    pipeline.addFeatureExtractionModule(
 //        FFT(kFFT_WindowSize, kFFT_HopSize,

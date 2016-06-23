@@ -6,6 +6,11 @@ void useStream(IOStream &stream) {
     ((ofApp *) ofGetAppPtr())->useOStream(stream);
 }
 
+void useStream(IOStreamVector &stream) {
+    ((ofApp *) ofGetAppPtr())->useIStream(stream);
+    ((ofApp *) ofGetAppPtr())->useOStream(stream);
+}
+
 ASCIISerialStream::ASCIISerialStream(uint32_t port, uint32_t baud, uint32_t dim)
         : serial_(new ofSerial()), port_(port), baud_(baud), numDimensions_(dim) {
 }
@@ -39,6 +44,15 @@ void ASCIISerialStream::stop() {
 void ASCIISerialStream::onReceive(uint32_t label) {
     serial_->writeByte(label + '0');
     serial_->writeByte('\n');
+}
+
+void ASCIISerialStream::onReceive(vector<double> data) {
+    for (int i = 0; i < data.size(); i++) {
+        string s = to_string(data[i]);
+        if (i > 0) serial_->writeByte('\t');
+        for (int j = 0; j < s.size(); j++) serial_->writeByte(s[j]);
+    }
+    if (data.size() > 0) serial_->writeByte('\n');
 }
 
 int ASCIISerialStream::getNumInputDimensions() {

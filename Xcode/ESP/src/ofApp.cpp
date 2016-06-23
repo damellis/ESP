@@ -88,6 +88,12 @@ void ofApp::useOStream(OStream &stream) {
     if (!setup_finished_) ostreams_.push_back(&stream);
 }
 
+void ofApp::useOStream(OStreamVector &stream) {
+    if (!setup_finished_) {
+        ostreamvectors_.push_back(&stream);
+    }
+}
+
 void ofApp::useTrainingSampleChecker(TrainingSampleChecker checker) {
     training_sample_checker_ = checker;
 }
@@ -111,6 +117,13 @@ void ofApp::setup() {
     ::setup(); setup_finished_ = true;
 
     for (OStream *ostream : ostreams_) {
+        if (!(ostream->start())) {
+            // TODO(benzh) If failed to start, alert in the GUI.
+            ofLog(OF_LOG_ERROR) << "failed to connect to ostream";
+        }
+    }
+
+    for (OStreamVector *ostream : ostreamvectors_) {
         if (!(ostream->start())) {
             // TODO(benzh) If failed to start, alert in the GUI.
             ofLog(OF_LOG_ERROR) << "failed to connect to ostream";
@@ -781,6 +794,8 @@ void ofApp::update() {
             if (predicted_label_ != 0) {
                 for (OStream *ostream : ostreams_)
                     ostream->onReceive(predicted_label_);
+                for (OStream *ostream : ostreamvectors_)
+                    ostream->onReceive(predicted_label_);
 
                 title = training_data_.getClassNameForCorrespondingClassLabel(predicted_label_);
                 if (title == "NOT_SET" || title == "CLASS_LABEL_NOT_FOUND") {
@@ -788,30 +803,43 @@ void ofApp::update() {
                 }
             }
         }
-
+        
         plot_inputs_.update(data_point, predicted_label_ != 0, title);
 
-        if (istream_->hasStarted() && fragment_ == PIPELINE) {
+        if (istream_->hasStarted()) {
             if (!pipeline_->preProcessData(data_point)) {
                 ofLog(OF_LOG_ERROR) << "ERROR: Failed to compute features!";
             }
+            
+            vector<double> data = data_point;
 
             for (int j = 0; j < pipeline_->getNumPreProcessingModules(); j++) {
-                vector<double> data = pipeline_->getPreProcessedData(j);
+                data = pipeline_->getPreProcessedData(j);
                 plot_pre_processed_[j].update(data);
             }
 
             for (int j = 0; j < pipeline_->getNumFeatureExtractionModules(); j++) {
                 // Working on j-th stage.
-                vector<double> feature = pipeline_->getFeatureExtractionData(j);
-                if (feature.size() < kTooManyFeaturesThreshold) {
-                    for (int k = 0; k < feature.size(); k++) {
-                        vector<double> v = { feature[k] };
+                data = pipeline_->getFeatureExtractionData(j);
+                if (data.size() < kTooManyFeaturesThreshold) {
+                    for (int k = 0; k < data.size(); k++) {
+                        vector<double> v = { data[k] };
                         plot_features_[j][k].update(v);
                     }
                 } else {
                     assert(plot_features_[j].size() == 1);
-                    plot_features_[j][0].setData(feature);
+                    plot_features_[j][0].setData(data);
+                }
+            }
+            
+            // If there's no classifier set, we've got a signal processing
+            // pipeline and we should send the results of the pipeline to
+            // any OStreamVector instances that are listening for it.
+            // TODO(damellis): this logic will need updating when / if we
+            // support regression and clustering pipelines.
+            if (!pipeline_->getIsClassifierSet()) {
+                for (OStreamVector *stream : ostreamvectors_) {
+                    stream->onReceive(data);
                 }
             }
         }

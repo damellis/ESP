@@ -21,6 +21,7 @@
 ASCIISerialStream stream(9600, 3);
 GestureRecognitionPipeline pipeline;
 Calibrator calibrator;
+TcpOStream oStream("localhost", 5204);
 
 double zeroG = 0, oneG = 0;
 
@@ -86,6 +87,7 @@ void setup()
 {
     stream.setLabelsForAllDimensions({"x", "y", "z"});
     useStream(stream);
+    useOutputStream(oStream);
 
     calibrator.setCalibrateFunction(processAccelerometerData);
     calibrator.addCalibrateProcess("Resting",

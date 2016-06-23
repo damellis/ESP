@@ -34,10 +34,31 @@ class ofApp;
 
  To use an OStream instance in your application, pass it to useOutputStream()
  in your setup() function.
+ 
+ Note, this is for output streams that accept the output of classifiers
+ (label numbers). For output streams that can also accept the multi-dimensional
+ output of signal processing pipelines, implement OStreamVector.
  */
 class OStream : public virtual Stream {
   public:
     virtual void onReceive(uint32_t label) = 0;
+};
+
+/**
+ @brief Base class for output streams that forward ESP pipeline output to
+ other systems.
+ 
+ To use an OStreamVector instance in your application, pass it to
+ useOutputStream() in your setup() function.
+ 
+ Note: this is for output streams that can handle both classifier output (a
+ single label) and signal processing output (multi-dimensional floating point
+ vectors). For output streams that only accept classifier output, implement
+ OStream.
+ */
+class OStreamVector : public OStream {
+  public:
+    virtual void onReceive(vector<double>) = 0;
 };
 
 /**
@@ -184,7 +205,7 @@ private:
  To use an TcpOStream instance in your application, pass it to
  useOutputStream() in your setup() function.
  */
-class TcpOStream : public OStream {
+class TcpOStream : public OStream, public OStreamVector {
   public:
     /**
      Create a TCPOStream instance. This passes the predicted class labels
@@ -247,6 +268,16 @@ class TcpOStream : public OStream {
             }
         }
     }
+    
+    virtual void onReceive(vector<double> data) {
+        string s;
+        for (int i = 0; i < data.size(); i++) {
+            if (i > 0) s += "\t";
+            s += to_string(data[i]);
+        }
+        s += "\n";
+        if (!s.empty()) sendString(s);
+    }
 
     bool start() {
         has_started_ = client_.setup(server_, port_);
@@ -282,3 +313,4 @@ private:
  @param stream: the OStream to use
  */
 void useOutputStream(OStream &stream);
+void useOutputStream(OStreamVector &stream);
