@@ -7,6 +7,7 @@ var searchData=
   ['deletebuttonpressed',['deleteButtonPressed',['../class_training_sample_gui_listener.html#ad56cf8f104ea42a3102cd03c70142813',1,'TrainingSampleGuiListener']]],
   ['detectbeat',['detectBeat',['../user__audio__beat__detection_8cpp.html#a6fd43c8fd546ac4c773bf4f426daf65e',1,'user_audio_beat_detection.cpp']]],
   ['dim',['DIM',['../user__audio_8cpp.html#a940f19500389ec3a8318dd52e4a8a1c3',1,'DIM():&#160;user_audio.cpp'],['../user__audio__beat__detection_8cpp.html#a940f19500389ec3a8318dd52e4a8a1c3',1,'DIM():&#160;user_audio_beat_detection.cpp']]],
+  ['dotproduct',['dotProduct',['../user__accelerometer__walk__detection_8cpp.html#a1730ef96f862bdaffdadbfc620efbc4f',1,'user_accelerometer_walk_detection.cpp']]],
   ['double_5frange',['DOUBLE_RANGE',['../class_tuneable.html#a85668dc428a627c31a5b3e76c87b92e5af4da35abcdee22fff02d1c057c757eaa',1,'Tuneable']]],
   ['downsample_5frate',['downsample_rate',['../user__audio_8cpp.html#aed1120a8e3e2691b70758749fe1dcf0e',1,'user_audio.cpp']]],
   ['dragevent',['dragEvent',['../classof_app.html#a87d731d6cecb0794d286bc64d5963ec3',1,'ofApp']]],

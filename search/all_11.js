@@ -1,6 +1,8 @@
 var searchData=
 [
+  ['t',['t',['../user__accelerometer__walk__detection_8cpp.html#a87accd1af8e0aff4b818d891374f7cec',1,'user_accelerometer_walk_detection.cpp']]],
   ['tcpostream',['TcpOStream',['../class_tcp_o_stream.html',1,'TcpOStream'],['../class_tcp_o_stream.html#ab533de84cc322c5c1e3bae9d8f246914',1,'TcpOStream::TcpOStream(string server, int port)'],['../class_tcp_o_stream.html#a57669c1e4e78cb7b9ca8eff0c3a40150',1,'TcpOStream::TcpOStream(string server, int port, std::map&lt; uint32_t, string &gt; tcp_stream_mapping)'],['../class_tcp_o_stream.html#a1062a9c187f255d62d1e091db19d2e26',1,'TcpOStream::TcpOStream(string server, int port, uint32_t count,...)']]],
+  ['threshold',['threshold',['../user__accelerometer__walk__detection_8cpp.html#a89a39fb6802608a79f311f8275a04035',1,'user_accelerometer_walk_detection.cpp']]],
   ['thresholddetection',['ThresholdDetection',['../class_g_r_t_1_1_threshold_detection.html',1,'GRT']]],
   ['thresholddetection',['ThresholdDetection',['../class_g_r_t_1_1_threshold_detection.html#afdb4493e4c7bb7b321b0c9f4498107ea',1,'GRT::ThresholdDetection::ThresholdDetection(UINT bufferLength=100, UINT numDimensions=1, double alpha=4.0, double beta=1.2)'],['../class_g_r_t_1_1_threshold_detection.html#a06818587dacfee23ec09b1606dc0a1c5',1,'GRT::ThresholdDetection::ThresholdDetection(const ThresholdDetection &amp;rhs)']]],
   ['thresholddetection_2ecpp',['ThresholdDetection.cpp',['../_threshold_detection_8cpp.html',1,'']]],
