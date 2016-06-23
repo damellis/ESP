@@ -1,9 +1,9 @@
-/** @example user_accelerometer_step_counting.cpp
- * Detect walking and step counting using an accelerometer.
+/** @example user_accelerometer_walk_detection.cpp
+ * Detect walking using an accelerometer.
  */
 #include <ESP.h>
 
-ASCIISerialStream stream(0, 9600, 3);
+ASCIISerialStream stream(9600, 3);
 GestureRecognitionPipeline pipeline;
 Calibrator calibrator;
 
@@ -39,23 +39,6 @@ CalibrateResult restingDataCollected(const MatrixDouble& data)
     return CalibrateResult::SUCCESS;
 }
 
-VectorDouble identity(VectorDouble in)
-{
-    return in;
-}
-
-VectorDouble magnitude(VectorDouble in)
-{
-    VectorDouble out(1, 0);
-    
-    for (int i = 0; i < in.size(); i++)
-        out[0] += in[i] * in[i];
-    
-    out[0] = sqrt(out[0]);
-    
-    return out;
-}
-
 VectorDouble dotProduct(VectorDouble in)
 {
     VectorDouble out(1, 0);
@@ -84,18 +67,6 @@ VectorDouble threshold(VectorDouble in) {
     return out;
 }
 
-VectorDouble merge(VectorDouble in, FeatureApply::FilterFunction one, FeatureApply::FilterFunction two) {
-    VectorDouble out = one(in), out2 = two(in);
-    out.insert(out.end(), out2.begin(), out2.end());
-    return out;
-}
-
-VectorDouble identityAndDotProduct(VectorDouble in) {
-    return merge(in, identity, dotProduct);
-}
-
-
-
 void setup()
 {
     stream.setLabelsForAllDimensions({"x", "y", "z"});
@@ -106,14 +77,13 @@ void setup()
         "Rest accelerometer on flat surface.", restingDataCollected);
     useCalibrator(calibrator);
 
-//    pipeline.addFeatureExtractionModule(FeatureApply(3, 4, identityAndDotProduct));
     pipeline.addFeatureExtractionModule(FeatureApply(3, 1, dotProduct));
     pipeline.addFeatureExtractionModule(TimeseriesBuffer(80, 1));
     pipeline.addFeatureExtractionModule(FeatureApply(80, 1, stddev));
     pipeline.addFeatureExtractionModule(FeatureApply(1, 1, threshold));
     usePipeline(pipeline);
     
-    registerTuneable(t, 0.1, 0.9, "Walking Threshold",
+    registerTuneable(t, 0, 1.0, "Walking Threshold",
         "How much the accelerometer data needs to be "
         "changing to be considered walking.");
 }
