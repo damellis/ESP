@@ -87,11 +87,6 @@ void MacOSMouseOStream::doubleClick(pair<uint32_t, uint32_t> mouse, int clickCou
 }
 
 void TcpOStream::sendString(const string& tosend) {
-    if (ofGetElapsedTimeMillis() < elapsed_time_ + kGracePeriod) {
-        return;
-    }
-    elapsed_time_ = ofGetElapsedTimeMillis();
-
     if (client_.isConnected()) {
         client_.send(tosend);
     }
