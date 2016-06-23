@@ -1,5 +1,20 @@
 /** @example user_accelerometer_walk_detection.cpp
- * Detect walking using an accelerometer.
+ 
+ Simple walk detection using an accelerometer. This uses a very simple
+ algorithm: thresholding the standard deviation of energy (dot product) of the
+ acceleration vector over a history of samples. The choice of this algorithm
+ is based on the discussion in "Walk detection and step counting on
+ unconstrained smartphones" by Agata Brajdic and Robert Harle
+ http://dl.acm.org/citation.cfm?id=2493449 which suggests that this is as
+ good (or better) than more complex methods.
+ 
+ To use, upload the Arduino101_Accelerometer_100Hz to an Arduino 101. After
+ calibration, place the Arduino 101 in a front pants pocket.
+ 
+ It's certainly possible to fool this algorithm into thinking that you are
+ walking when you aren't (e.g. by jumping up and down). It also might require
+ lowering of the threshold to detect slow walking. But, in general, this should
+ be at least useful for experimenting.
  */
 #include <ESP.h>
 
