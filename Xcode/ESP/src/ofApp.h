@@ -185,6 +185,8 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     void relabelTrainingSample(int num);
     void doRelabelTrainingSample(uint32_t from, uint32_t to);
 
+    string getTrainingDataAdvice();
+
     // Rename
     bool is_in_renaming_ = false;
     int rename_target_ = -1;
