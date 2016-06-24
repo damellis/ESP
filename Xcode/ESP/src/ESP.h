@@ -23,6 +23,8 @@
  \li Zero or one training samples checkers, to provide the user with feedback
  on the quality of their training data. Specified by a call to 
  useTrainingSampleChecker().
+ \li Optional advice to the user on the collection of training data, using
+ useTrainingDataAdvice().
 
  When compiled against the ESP framework and run, these examples generate a
  graphical interface that allows the user to visualize live sensor data,

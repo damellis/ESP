@@ -98,6 +98,10 @@ void ofApp::useTrainingSampleChecker(TrainingSampleChecker checker) {
     training_sample_checker_ = checker;
 }
 
+void ofApp::useTrainingDataAdvice(string advice) {
+    training_data_advice_ = advice;
+}
+
 // TODO(benzh): initialize other members as well.
 ofApp::ofApp() : fragment_(TRAINING),
                  num_pipeline_stages_(0),
@@ -135,6 +139,9 @@ void ofApp::setup() {
     } else {
         fragment_ = PIPELINE;
     }
+    
+    if (training_data_advice_ == "")
+        training_data_advice_ = getTrainingDataAdvice();
 
     istream_->onDataReadyEvent(this, &ofApp::onDataIn);
 
@@ -1055,10 +1062,8 @@ void ofApp::drawTrainingInfo() {
     }
 
     // 2. Draw advice for training data (if any)
-    string advice = getTrainingDataAdvice();
-    
-    if (advice != "") {
-        ofxParagraph paragraph(advice, stage_width);
+    if (training_data_advice_ != "") {
+        ofxParagraph paragraph(training_data_advice_, stage_width);
         paragraph.setFont("ofxbraitsch/fonts/Verdana.ttf", 11);
         paragraph.setColor(0xffffff);
         paragraph.setIndent(0);
