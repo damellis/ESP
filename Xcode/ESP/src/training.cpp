@@ -26,3 +26,7 @@ TrainingSampleCheckerResult::TrainingSampleCheckerResult(Result result, string m
 void useTrainingSampleChecker(TrainingSampleChecker checker) {
     ((ofApp *) ofGetAppPtr())->useTrainingSampleChecker(checker);
 }
+
+void useTrainingDataAdvice(string advice) {
+    ((ofApp *) ofGetAppPtr())->useTrainingDataAdvice(advice);
+}

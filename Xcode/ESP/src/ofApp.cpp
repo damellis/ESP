@@ -98,6 +98,10 @@ void ofApp::useTrainingSampleChecker(TrainingSampleChecker checker) {
     training_sample_checker_ = checker;
 }
 
+void ofApp::useTrainingDataAdvice(string advice) {
+    training_data_advice_ = advice;
+}
+
 // TODO(benzh): initialize other members as well.
 ofApp::ofApp() : fragment_(TRAINING),
                  num_pipeline_stages_(0),
@@ -135,6 +139,9 @@ void ofApp::setup() {
     } else {
         fragment_ = PIPELINE;
     }
+    
+    if (training_data_advice_ == "")
+        training_data_advice_ = getTrainingDataAdvice();
 
     istream_->onDataReadyEvent(this, &ofApp::onDataIn);
 
@@ -766,6 +773,29 @@ void ofApp::doRelabelTrainingSample(uint32_t source, uint32_t target) {
     should_save_training_data_ = true;
 }
 
+string ofApp::getTrainingDataAdvice() {
+    if (!pipeline_->getIsClassifierSet()) return "";
+    if (dynamic_cast<DTW *>(pipeline_->getClassifier())) {
+        return "This algorithm looks for the closest training sample. "
+            "As a result, you don't need a lot of training data but any "
+            "individual bad training sample can cause problems.";
+    }
+    if (dynamic_cast<ANBC *>(pipeline_->getClassifier())) {
+        return "This algorithm uses an average of the training data. "
+            "As a result, recording additional training data can help the "
+            "performance of the algorithm. For each class, try to record "
+            "training data that represents the range of situations you want "
+            "to be recognized.";
+    }
+    if (dynamic_cast<SVM *>(pipeline_->getClassifier())) {
+        return "This algorithm looks at the boundaries between the different "
+            "classes of training data. As a result, it can help to record "
+            "additional data at the boundaries between the different classes "
+            "you want to recognize.";
+    }
+    return "";
+}
+
 //--------------------------------------------------------------
 void ofApp::update() {
     std::lock_guard<std::mutex> guard(input_data_mutex_);
@@ -1031,7 +1061,18 @@ void ofApp::drawTrainingInfo() {
         stage_top += stage_height + margin;
     }
 
-    // 2. Draw samples
+    // 2. Draw advice for training data (if any)
+    if (training_data_advice_ != "") {
+        ofxParagraph paragraph(training_data_advice_, stage_width);
+        paragraph.setFont("ofxbraitsch/fonts/Verdana.ttf", 11);
+        paragraph.setColor(0xffffff);
+        paragraph.setIndent(0);
+        paragraph.setLeading(0);
+        paragraph.draw(stage_left, stage_top);
+        stage_top += paragraph.getHeight();
+    }
+
+    // 3. Draw samples
     // Currently we support kNumMaxLabels_ labels
     uint32_t width = stage_width / kNumMaxLabels_;
     float minY = plot_inputs_.getRanges().first;
