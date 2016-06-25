@@ -3,64 +3,44 @@
 
 #include "GRT/CoreModules/FeatureExtraction.h"
 
+#include <stdint.h>
+#include <math.h>
+#include <vector>
+
 namespace GRT {
 
-class MelBank {
+class TriFilterBank {
   public:
-    MelBank(uint32_t left, uint32_t middle, uint32_t right, uint32_t size) {
-        filter_.resize(size);
-        for (uint32_t i = 0; i < size; i++) {
-            if (i <= left) {
-                filter_[i] = 0;
-            } else if (left < i && i <= middle) {
-                filter_[i] = 1.0f * (i - left) / (middle - left);
-            } else if (middle < i && i <= right) {
-                filter_[i] = 1.0f * (right - i) / (right - middle);
-            } else if (right < i) {
-                filter_[i] = 0;
-            } else {
-                assert(false && "MelBank argument wrong or implementation bug");
-            }
-        }
-    }
-
-    double filter(vector<double> input) {
-        uint32_t filter_size = filter_.size();
-        assert(input.size() == filter_size && "Dimension mismatch in MelBank filter");
-        vector<double> result(filter_size);
-
-        double sum = 0;
-        for (uint32_t i = 0; i < filter_size; i++) {
-            sum += input[i] * filter_[i];
-        }
-        return sum;
-    }
+    TriFilterBank(double left, double middle, double right, uint32_t fs, uint32_t size);
 
     static inline double toMelScale(double freq) {
-        return 1125.0f * log(1.0f + freq / 700.0f);
+        return 1127.0f * log(1.0f + freq / 700.0f);
     }
 
     static inline double fromMelScale(double mel_freq) {
-        return 700.0f * (exp(mel_freq / 1125.0f) - 1.0f);
+        return 700.0f * (exp(mel_freq / 1127.0f) - 1.0f);
     }
+
+    inline vector<double>& getFilter() { return filter_;  }
+
+    double filter(vector<double> input);
 
   private:
     vector<double> filter_;
 };
 
-class MelBankFeatures : public FeatureExtraction {
+class MFCC : public FeatureExtraction {
   public:
-    MelBankFeatures(double startFreq = -1,
-                    double endFreq = -1,
-                    uint32_t FFTSize = -1,
-                    uint32_t sampleRate = -1,
-                    uint32_t numFilterBanks = 26,
-                    uint32_t numLowerFeatures = 12,
-                    bool withDelta = false);
-    MelBankFeatures(const MelBankFeatures &rhs);
-    MelBankFeatures& operator=(const MelBankFeatures &rhs);
+    MFCC(uint32_t sampleRate = -1, uint32_t FFTSize = -1,
+         double startFreq = -1, double endFreq = -1,
+         uint32_t numFilterbankChannel = -1,
+         uint32_t numCepstralCoeff = -1,
+         uint32_t lifterParam = -1);
+
+    MFCC(const MFCC &rhs);
+    MFCC& operator=(const MFCC &rhs);
     bool deepCopyFrom(const FeatureExtraction *featureExtraction) override;
-    ~MelBankFeatures() {}
+    ~MFCC() {}
 
     virtual bool computeFeatures(const VectorDouble &inputVector) override;
     virtual bool reset() override;
@@ -70,17 +50,21 @@ class MelBankFeatures : public FeatureExtraction {
     using MLBase::predict;
     using MLBase::predict_;
 
-    vector<MelBank> getFilters() const {
+    vector<TriFilterBank> getFilters() const {
         return filters_;
     }
   protected:
+    vector<double> getLFBE(const vector<double>& fft);
+    vector<double> getCC(const vector<double>& lfbe);
+    vector<double> lifterCC(const vector<double>& cc);
+
     bool initialized_;
-    uint32_t num_lower_features_;
-    bool with_delta_;
+    uint32_t num_cc_;
+    uint32_t lifter_param_;
 
-    vector<MelBank> filters_;
+    vector<TriFilterBank> filters_;
 
-    static RegisterFeatureExtractionModule<MelBankFeatures> registerModule;
+    static RegisterFeatureExtractionModule<MFCC> registerModule;
 };
 
 }  // namespace GRT
