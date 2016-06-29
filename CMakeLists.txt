@@ -159,3 +159,24 @@ if(DOXYGEN_FOUND)
     comment "Generating API documentation with Doxygen" VERBATIM
     )
 endif(DOXYGEN_FOUND)
+
+# =============================================================
+#   GoogleTest
+#   Borrowed from github.com/dmonopoly/gtest-cmake-example
+# =============================================================
+if(test)
+  add_subdirectory(third-party/googletest/googletest)
+  enable_testing()
+
+  set(TEST_SRC
+    ${ESP_PATH}/src/training-data-manager-test.cpp
+    )
+
+  include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
+  add_executable(runUnitTests ${TEST_SRC})
+  target_link_libraries(runUnitTests gtest gtest_main)
+  ## Extra linking
+  # target_link_libraries(runUnitTests project1_lib)
+
+  add_test(esp-test runUnitTests)
+endif()
