@@ -1,0 +1,81 @@
+/** @file training-data-manager.h
+ *  @brief TrainingDataManager class that manages the training data and
+ *  abstracts out common operations on the data.
+ *
+ *  @author Ben Zhang (benzh)
+ *  @bug No known bugs.
+ */
+
+#pragma once
+
+#include <tuple>
+
+#include <GRT/GRT.h>
+
+/**
+ *  @brief TrainingDataManager class encloses GRT::TimeSeriesClassificationData
+ *  and improves upon by adding utility functions that relabel, delete or trim
+ *  some training samples.
+ *
+ *  This class will take the sole mutable ownership of the enclosed data. All
+ *  operations over the training data have to gone through this class.
+ *
+ *  Training data can be viewed as a collection of training samples, where each
+ *  sample consists of a label (which class this sample belongs to) and the data
+ *  (a time-series data).
+ *
+ *  A few key augmentation to the underlying TimeSeriesClassificationData:
+ *    1. Edit (relabel, delete or trim individual samples).
+ *    2. Name individual sample.
+ */
+class TrainingDataManager {
+  public:
+    // Constructor
+    TrainingDataManager(uint32_t num_classes);
+
+    // Set the dimension of the training data
+    bool setNumDimensions(uint32_t dim);
+
+    // Set the name of the training data
+    bool setDatasetName(const std::string name);
+
+    // Set the name of the training data
+    bool setDatasetName(const char* const name);
+
+    /// @brief Add new sample. Returns false if the label is larger than
+    /// configured number of classes.
+    bool addSample(uint32_t label, const MatrixFloat& sample);
+
+    // =================================================
+    //  Functions that enables per-sample naming
+    // =================================================
+
+    /// @brief This will modify the default name for this label, changing it
+    /// from "Label X" to `name`.
+    bool setNameForLabel(const std::string name, uint32_t label);
+    std::string& getTrainingSampleName(uint32_t label, uint32_t index);
+    bool setTrainingSampleName(uint32_t, uint32_t, const std::string);
+
+    // =================================================
+    //  Functions that simplifies editing
+    // =================================================
+    uint32_t getNumSampleForLabel(uint32_t label);
+    bool deleteSample(uint32_t label, uint32_t index);
+    bool trimSample(uint32_t label, uint32_t index, uint32_t start, uint32_t end);
+
+  private:
+    uint32_t num_classes_;
+
+    // Name simulates Option<std::string> type. If `Name.first` is true, then
+    // the name is valid; else use the default name.
+    using Name = std::pair<bool, std::string>;
+    std::vector<std::vector<Name>>> training_sample_names_;
+    std::vector<std::string>> default_label_names_;
+
+    // The underlying data store backed up by GRT's TimeSeriesClassificationData
+    GRT::TimeSeriesClassificationData data_;
+
+    // Disallow copy and assign
+    TrainingDataManager(TrainingDataManager&) = delete;
+    void operator=(TrainingDataManager) = delete;
+}
