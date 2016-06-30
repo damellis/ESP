@@ -52,7 +52,7 @@ void setup() {
             DIM, FFT::HAMMING_WINDOW, true, false));
 
     pipeline.addFeatureExtractionModule(
-        MelBankFeatures(300, 8000, kFFT_WindowSize / 2, sample_rate, 26, 12));
+        MFCC(sample_rate, kFFT_WindowSize / 2, 300, 8000, 26, 12, 22));
 
     pipeline.setClassifier(
         SVM(SVM::LINEAR_KERNEL, SVM::C_SVC, true, true));
