@@ -1,4 +1,4 @@
-#include "training-data-manager.cpp"
+#include "training-data-manager.h"
 
 #include <sstream>
 
@@ -30,7 +30,7 @@ bool TrainingDataManager::setDatasetName(const char* const name) {
     return false;
 }
 
-std::string& TrainingDataManager::getTrainingSampleName(
+std::string TrainingDataManager::getTrainingSampleName(
     uint32_t label, uint32_t index) {
     const auto& name = training_sample_names_[label][index];
     if (name.first) {
@@ -45,9 +45,10 @@ bool TrainingDataManager::setTrainingSampleName(
     auto& name = training_sample_names_[label][index];
     name.first = true;
     name.second = new_name;
+    return true;
 }
 
-bool TrainingDataManager::addSample(uint32_t label, const MatrixFloat& sample) {
+bool TrainingDataManager::addSample(uint32_t label, const GRT::MatrixDouble& sample) {
     if (label > num_classes_) {
         return false;
     }
@@ -56,6 +57,8 @@ bool TrainingDataManager::addSample(uint32_t label, const MatrixFloat& sample) {
     training_sample_names_[label].push_back(
         std::make_pair(false, std::string()));
     data_.addSample(label, sample);
+
+    return true;
 }
 
 bool TrainingDataManager::setNameForLabel(const std::string name, uint32_t label) {
@@ -64,6 +67,11 @@ bool TrainingDataManager::setNameForLabel(const std::string name, uint32_t label
     }
 
     default_label_names_[label] = name;
+    return true;
+}
+
+GRT::MatrixDouble TrainingDataManager::getSample(uint32_t label, uint32_t index) {
+    return data_.getClassData(label)[index].getData();
 }
 
 uint32_t TrainingDataManager::getNumSampleForLabel(uint32_t label) {
@@ -74,26 +82,7 @@ bool TrainingDataManager::deleteSample(uint32_t label, uint32_t index) {
     // The implementation first remove all data and then add them back. This is
     // a temporary solution because GRT::TimeSeriesClassificationData doesn't
     // allow per-sample operation.
-    TimeSeriesClassificationData data = data_.getClassData(label);
-    data_.eraseAllSamplesWithClassLabel(label);
-
-    for (uint32_t i = 0; i < data.getNumSamples(); i++) {
-        if (i != index) {
-            training_data_.addSample(label, data[i].getData());
-        }
-    }
-
-    auto& names = training_sample_names_[label];
-    names.erase(names.begin() + index);
-
-    return true;
-}
-
-bool TrainingDataManager::deleteSample(uint32_t label, uint32_t index) {
-    // The implementation first remove all data and then add them back. This is
-    // a temporary solution because GRT::TimeSeriesClassificationData doesn't
-    // allow per-sample operation.
-    TimeSeriesClassificationData data = data_.getClassData(label);
+    GRT::TimeSeriesClassificationData data = data_.getClassData(label);
     data_.eraseAllSamplesWithClassLabel(label);
 
     for (uint32_t i = 0; i < data.getNumSamples(); i++) {
@@ -102,14 +91,15 @@ bool TrainingDataManager::deleteSample(uint32_t label, uint32_t index) {
         }
     }
 
-    auto& names = training_sample_names_[label];
-    names.erase(names.begin() + index);
+    // auto& names = training_sample_names_[label];
+    // names.erase(names.begin() + index);
+
     return true;
 }
 
 bool TrainingDataManager::trimSample(
     uint32_t label, uint32_t index, uint32_t start, uint32_t end) {
-    TimeSeriesClassificationData data = data_.getClassData(label);
+    GRT::TimeSeriesClassificationData data = data_.getClassData(label);
     data_.eraseAllSamplesWithClassLabel(label);
 
     for (uint32_t i = 0; i < data.getNumSamples(); i++) {
@@ -120,7 +110,7 @@ bool TrainingDataManager::trimSample(
             for (int row = start; row < end; row++) {
                 new_sample.push_back(sample.getRowVector(row));
             }
-            training_data_.addSample(label, new_sample);
+            data_.addSample(label, new_sample);
         } else {
             data_.addSample(label, data[i].getData());
         }

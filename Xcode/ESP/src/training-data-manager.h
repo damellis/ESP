@@ -27,6 +27,9 @@
  *  A few key augmentation to the underlying TimeSeriesClassificationData:
  *    1. Edit (relabel, delete or trim individual samples).
  *    2. Name individual sample.
+ *
+ *  Each individual sample is addressable by (label, index) tuple. Both label
+ *  and index starts from 0.
  */
 class TrainingDataManager {
   public:
@@ -42,10 +45,6 @@ class TrainingDataManager {
     // Set the name of the training data
     bool setDatasetName(const char* const name);
 
-    /// @brief Add new sample. Returns false if the label is larger than
-    /// configured number of classes.
-    bool addSample(uint32_t label, const MatrixFloat& sample);
-
     // =================================================
     //  Functions that enables per-sample naming
     // =================================================
@@ -53,14 +52,24 @@ class TrainingDataManager {
     /// @brief This will modify the default name for this label, changing it
     /// from "Label X" to `name`.
     bool setNameForLabel(const std::string name, uint32_t label);
-    std::string& getTrainingSampleName(uint32_t label, uint32_t index);
+    std::string getTrainingSampleName(uint32_t label, uint32_t index);
     bool setTrainingSampleName(uint32_t, uint32_t, const std::string);
 
     // =================================================
     //  Functions that simplifies editing
     // =================================================
+    /// @brief Add new sample. Returns false if the label is larger than
+    /// configured number of classes.
+    bool addSample(uint32_t label, const GRT::MatrixDouble& sample);
+
     uint32_t getNumSampleForLabel(uint32_t label);
+
+    /// @brief Get the sample by label and index.
+    GRT::MatrixDouble getSample(uint32_t label, uint32_t index);
+
+    /// @brief Remove sample by label and the index.
     bool deleteSample(uint32_t label, uint32_t index);
+
     bool trimSample(uint32_t label, uint32_t index, uint32_t start, uint32_t end);
 
   private:
@@ -69,8 +78,8 @@ class TrainingDataManager {
     // Name simulates Option<std::string> type. If `Name.first` is true, then
     // the name is valid; else use the default name.
     using Name = std::pair<bool, std::string>;
-    std::vector<std::vector<Name>>> training_sample_names_;
-    std::vector<std::string>> default_label_names_;
+    std::vector<std::vector<Name>> training_sample_names_;
+    std::vector<std::string> default_label_names_;
 
     // The underlying data store backed up by GRT's TimeSeriesClassificationData
     GRT::TimeSeriesClassificationData data_;
@@ -78,4 +87,4 @@ class TrainingDataManager {
     // Disallow copy and assign
     TrainingDataManager(TrainingDataManager&) = delete;
     void operator=(TrainingDataManager) = delete;
-}
+};
