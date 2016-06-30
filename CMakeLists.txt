@@ -180,9 +180,7 @@ if(test)
   add_executable(runUnitTests ${ESP_TO_TEST_SRC} ${TEST_SRC})
   target_link_libraries(runUnitTests gtest gtest_main)
   ## Extra linking (mainly GRT)
-  target_link_libraries(runUnitTests
-    ${GRT_LIBRARY}
-    )
+  target_link_libraries(runUnitTests ${GRT_LIBRARY})
 
   add_test(esp-test runUnitTests)
 endif()

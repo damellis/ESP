@@ -52,8 +52,12 @@ class TrainingDataManager {
     /// @brief This will modify the default name for this label, changing it
     /// from "Label X" to `name`.
     bool setNameForLabel(const std::string name, uint32_t label);
-    std::string getTrainingSampleName(uint32_t label, uint32_t index);
-    bool setTrainingSampleName(uint32_t, uint32_t, const std::string);
+
+    /// @brief Format the sample name.
+    /// Default label name is "Label X", and the sample name is "Label X [Y]"
+    /// Default name can be changed by `setNameForLabel`.
+    std::string getSampleName(uint32_t label, uint32_t index);
+    bool setSampleName(uint32_t, uint32_t, const std::string);
 
     // =================================================
     //  Functions that simplifies editing

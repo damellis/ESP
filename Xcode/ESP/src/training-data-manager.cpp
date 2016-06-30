@@ -9,7 +9,7 @@ TrainingDataManager::TrainingDataManager(uint32_t num_classes)
     training_sample_names_.resize(num_classes);
     for (uint32_t i = 0; i < num_classes; i++) {
         default_label_names_.push_back(
-            std::string("Label") + std::to_string(i));
+            std::string("Label ") + std::to_string(i));
     }
 
     data_.setDatasetName(kDefaultTrainingDataName);
@@ -30,8 +30,7 @@ bool TrainingDataManager::setDatasetName(const char* const name) {
     return false;
 }
 
-std::string TrainingDataManager::getTrainingSampleName(
-    uint32_t label, uint32_t index) {
+std::string TrainingDataManager::getSampleName(uint32_t label, uint32_t index) {
     const auto& name = training_sample_names_[label][index];
     if (name.first) {
         return name.second;
@@ -40,7 +39,7 @@ std::string TrainingDataManager::getTrainingSampleName(
     }
 }
 
-bool TrainingDataManager::setTrainingSampleName(
+bool TrainingDataManager::setSampleName(
     uint32_t label, uint32_t index, const std::string new_name) {
     auto& name = training_sample_names_[label][index];
     name.first = true;
@@ -91,8 +90,8 @@ bool TrainingDataManager::deleteSample(uint32_t label, uint32_t index) {
         }
     }
 
-    // auto& names = training_sample_names_[label];
-    // names.erase(names.begin() + index);
+    auto& names = training_sample_names_[label];
+    names.erase(names.begin() + index);
 
     return true;
 }
