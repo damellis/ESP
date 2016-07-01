@@ -75,6 +75,9 @@ script:
         echo "#include \"examples/$name\"" >> $USER_CPP
         make
       done
+
+      # Lastly, we run unittest
+      make test
     fi;
   - >
     if [ "$BUILD_TOOL" = "Xcode" ]; then
