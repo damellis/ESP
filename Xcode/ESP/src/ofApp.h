@@ -178,6 +178,7 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     void beginTrainModel();
     void drawEventReceived(ofEventArgs& arg);
     void trainModel();
+    void scoreTrainingData();
 
     vector<ofxPanel *> training_sample_guis_;
     void renameTrainingSample(int num);

@@ -1266,6 +1266,8 @@ void ofApp::trainModel() {
            for (Plotter& plot : plot_samples_) {
                assert(true == plot.clearContentModifiedFlag());
            }
+           
+           scoreTrainingData();
 
            training_status = true;
        } else {
@@ -1286,6 +1288,23 @@ void ofApp::trainModel() {
 
        status_text_ = "Training was successful";
    }
+}
+
+void ofApp::scoreTrainingData() {
+    for (int i = 0; i < training_data_.getNumSamples(); i++) {
+        TimeSeriesClassificationSample sample = training_data_[i];
+        ofLog(OF_LOG_NOTICE) << "sample " << i << " (class " << sample.getClassLabel() << "):";
+        vector<double> likelihoods(pipeline_->getNumClasses(), 0.0);
+        for (int j = 0; j < sample.getData().getNumRows(); j++) {
+            pipeline_->predict(sample.getData().getRowVector(j));
+            auto l = pipeline_->getClassLikelihoods();
+            for (int j = 0; j < likelihoods.size(); j++) likelihoods[j] += l[j];
+        }
+        for (int j = 0; j < likelihoods.size(); j++) {
+            ofLog(OF_LOG_NOTICE) << "\t" << (j + 1) << ": " << likelihoods[j] << "%";
+        }
+        pipeline_->reset();
+    }
 }
 
 void ofApp::loadTrainingData() {
