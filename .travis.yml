@@ -58,7 +58,7 @@ before_script:
     if [ "$BUILD_TOOL" = "CMake" ]; then
       mkdir build
       cd build
-      cmake -Dtest=on ..
+      cmake ..
     fi
 script:
   - >
@@ -75,10 +75,6 @@ script:
         echo "#include \"examples/$name\"" >> $USER_CPP
         make
       done
-
-      # Lastly, we run unittest (runUnitTests will give more information)
-      # make test
-      ./runUnitTests
     fi;
   - >
     if [ "$BUILD_TOOL" = "Xcode" ]; then
