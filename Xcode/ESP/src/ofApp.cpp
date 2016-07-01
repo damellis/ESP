@@ -1242,8 +1242,9 @@ void ofApp::trainModel() {
 }
 
 void ofApp::scoreTrainingData() {
-    for (int i = 0; i < training_data_.getNumSamples(); i++) {
-        TimeSeriesClassificationSample sample = training_data_[i];
+    TimeSeriesClassificationData training_data = training_data_manager_.getAllData();
+    for (int i = 0; i < training_data.getNumSamples(); i++) {
+        TimeSeriesClassificationSample sample = training_data[i];
         ofLog(OF_LOG_NOTICE) << "sample " << i << " (class " << sample.getClassLabel() << "):";
         vector<double> likelihoods(pipeline_->getNumClasses(), 0.0);
         for (int j = 0; j < sample.getData().getNumRows(); j++) {
