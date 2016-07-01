@@ -678,39 +678,20 @@ void ofApp::deleteTrainingSample(int num) {
 }
 
 void ofApp::trimTrainingSample(int num) {
-    // TODO(benzh) Not supported yet
-    return;
+    pair<uint32_t, uint32_t> selection = plot_samples_[num].getSelection();
 
-    // pair<uint32_t, uint32_t> selection = plot_samples_[num].getSelection();
+    // Return if no selection or the range is too small (if user left clicked).
+    if (selection.second - selection.first < 10) { return; }
 
-    // // Return if no selection or the range is too small (if user left clicked).
-    // if (selection.second - selection.first < 10) { return; }
+    int label = num + 1;
 
-    // int label = num + 1;
-    // string class_name =
-    //         training_data_.getClassNameForCorrespondingClassLabel(label);
-    // TimeSeriesClassificationData data = training_data_.getClassData(label);
-    // training_data_.eraseAllSamplesWithClassLabel(label);
+    training_data_manager_.trimSample(label, plot_sample_indices_[num],
+                                      selection.first, selection.second);
+    plot_samples_[num].setData(
+        training_data_manager_.getSample(label, plot_sample_indices_[num]));
 
-    // for (int i = 0; i < data.getNumSamples(); i++) {
-    //     if (i == plot_sample_indices_[num]) {
-    //         GRT::MatrixDouble sample = data[i].getData();
-    //         GRT::MatrixDouble new_sample;
-
-    //         assert(selection.second - selection.first < sample.getNumRows());
-    //         for (int row = selection.first; row < selection.second; row++) {
-    //             new_sample.push_back(sample.getRowVector(row));
-    //         }
-    //         training_data_.addSample(label, new_sample);
-    //         plot_samples_[num].setData(new_sample);
-    //     } else {
-    //         training_data_.addSample(label, data[i].getData());
-    //     }
-    // }
-
-    // training_data_.setClassNameForCorrespondingClassLabel(class_name, label);
-    // populateSampleFeatures(num);
-    // should_save_training_data_ = true;
+    populateSampleFeatures(num);
+    should_save_training_data_ = true;
 }
 
 void ofApp::relabelTrainingSample(int num) {

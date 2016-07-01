@@ -40,9 +40,34 @@ TEST_F(TrainingDataManagerTest, BasicAddAndGet) {
 
 TEST_F(TrainingDataManagerTest, TestDeleteSample) {
     // Delete label 1 index 1 (the middle sample)
+    // We are expecting the following change
+    // [1, 0, 0], [2, 0, 0], [3, 0, 0]
+    // [1, 0, 0],          , [3, 0, 0]
     manager->deleteSample(1, 1);
     ASSERT_EQ(2, manager->getNumSampleForLabel(1));
     ASSERT_EQ(3, manager->getSample(1, 1)[0][0]);
+}
+
+TEST_F(TrainingDataManagerTest, TestTrimSample) {
+    uint32_t num_point = 10;
+    GRT::MatrixDouble sample(num_point, kSampleDim);
+    for (uint32_t i = 0; i < num_point; i++) {
+        sample[i][0] = i;
+    }
+    manager->addSample(1, sample);
+    ASSERT_EQ(4, manager->getNumSampleForLabel(1));
+
+    // Till here, we have four samples. After trimming (from 2 to 4), sample 4
+    // (index 3) is expected to have the following change:
+    // [0, 1, 2, ..., 10] -> [2, 3, 4]
+    manager->trimSample(1, 3, 2, 4);
+    ASSERT_EQ(4, manager->getNumSampleForLabel(1));
+
+    GRT::MatrixDouble new_sample = manager->getSample(1, 3);
+    ASSERT_EQ(3, new_sample.getNumRows());
+    ASSERT_EQ(2, new_sample[0][0]);
+    ASSERT_EQ(3, new_sample[1][0]);
+    ASSERT_EQ(4, new_sample[2][0]);
 }
 
 TEST_F(TrainingDataManagerTest, TestName) {

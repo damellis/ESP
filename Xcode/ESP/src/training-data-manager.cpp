@@ -122,7 +122,7 @@ bool TrainingDataManager::trimSample(
             GRT::MatrixDouble sample = data[i].getData();
             GRT::MatrixDouble new_sample;
 
-            for (int row = start; row < end; row++) {
+            for (uint32_t row = start; row <= end; row++) {
                 new_sample.push_back(sample.getRowVector(row));
             }
             data_.addSample(label, new_sample);
