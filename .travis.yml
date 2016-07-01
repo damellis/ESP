@@ -58,7 +58,7 @@ before_script:
     if [ "$BUILD_TOOL" = "CMake" ]; then
       mkdir build
       cd build
-      cmake ..
+      cmake -Dtest=on ..
     fi
 script:
   - >
