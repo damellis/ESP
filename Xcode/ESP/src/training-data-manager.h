@@ -28,8 +28,8 @@
  *    1. Edit (relabel, delete or trim individual samples).
  *    2. Name individual sample.
  *
- *  Each individual sample is addressable by (label, index) tuple. Both label
- *  and index starts from 0.
+ *  Each individual sample is addressable by (label, index) tuple. Label starts
+ *  from 1 and index starts from 0.
  */
 class TrainingDataManager {
   public:
@@ -48,6 +48,10 @@ class TrainingDataManager {
     // =================================================
     //  Functions that enables per-sample naming
     // =================================================
+
+    GRT::TimeSeriesClassificationData getAllData() {
+        return data_;
+    }
 
     /// @brief This will modify the default name for this label, changing it
     /// from "Label X" to `name`.

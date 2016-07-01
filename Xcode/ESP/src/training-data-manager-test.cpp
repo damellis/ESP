@@ -72,7 +72,7 @@ TEST_F(TrainingDataManagerTest, TestTrimSample) {
 
 TEST_F(TrainingDataManagerTest, TestName) {
     // Default name
-    ASSERT_STREQ("Label 0 [1]", manager->getSampleName(1, 1).c_str());
+    ASSERT_STREQ("Label 1 [1]", manager->getSampleName(1, 1).c_str());
     manager->setNameForLabel("MyLabel", 1);
     ASSERT_STREQ("MyLabel [1]", manager->getSampleName(1, 1).c_str());
 }

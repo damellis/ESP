@@ -1225,7 +1225,7 @@ void ofApp::trainModel() {
        // Enable logging. GRT error logs will call ofApp::notify().
        GRT::ErrorLog::enableLogging(true);
 
-       if (pipeline_->train(training_data_)) {
+       if (pipeline_->train(training_data_manager_.getAllData())) {
            ofLog() << "Training is successful";
 
            for (Plotter& plot : plot_samples_) {

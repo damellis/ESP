@@ -116,7 +116,6 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     GRT::GestureRecognitionPipeline *pipeline_;
 
     TrainingDataManager training_data_manager_;
-    GRT::TimeSeriesClassificationData training_data_;
 
     GRT::MatrixDouble test_data_;
     float training_accuracy_;
