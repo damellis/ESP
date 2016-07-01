@@ -14,13 +14,13 @@ class TrainingDataManagerTest : public ::testing::Test {
 
         GRT::MatrixDouble sample(1, kSampleDim);
         sample[0][0] = 1;
-        manager->addSample(0, sample);
+        manager->addSample(1, sample);
 
         sample[0][0] = 2;
-        manager->addSample(0, sample);
+        manager->addSample(1, sample);
 
         sample[0][0] = 3;
-        manager->addSample(0, sample);
+        manager->addSample(1, sample);
     }
 
     unique_ptr<TrainingDataManager> manager;
@@ -28,26 +28,26 @@ class TrainingDataManagerTest : public ::testing::Test {
 
 TEST_F(TrainingDataManagerTest, BasicAddAndGet) {
     // Check the populated data (see TrainingDataManagerTest::SetUp()).
-    ASSERT_EQ(1, manager->getSample(0, 0)[0][0]);
-    ASSERT_EQ(2, manager->getSample(0, 1)[0][0]);
-    ASSERT_EQ(3, manager->getSample(0, 2)[0][0]);
+    ASSERT_EQ(1, manager->getSample(1, 0)[0][0]);
+    ASSERT_EQ(2, manager->getSample(1, 1)[0][0]);
+    ASSERT_EQ(3, manager->getSample(1, 2)[0][0]);
 
     // Check the length
-    ASSERT_EQ(3, manager->getNumSampleForLabel(0));
-    ASSERT_EQ(0, manager->getNumSampleForLabel(1));
+    ASSERT_EQ(3, manager->getNumSampleForLabel(1));
     ASSERT_EQ(0, manager->getNumSampleForLabel(2));
+    ASSERT_EQ(0, manager->getNumSampleForLabel(3));
 }
 
 TEST_F(TrainingDataManagerTest, TestDeleteSample) {
     // Delete label 1 index 1 (the middle sample)
-    manager->deleteSample(0, 1);
-    ASSERT_EQ(2, manager->getNumSampleForLabel(0));
-    ASSERT_EQ(3, manager->getSample(0, 1)[0][0]);
+    manager->deleteSample(1, 1);
+    ASSERT_EQ(2, manager->getNumSampleForLabel(1));
+    ASSERT_EQ(3, manager->getSample(1, 1)[0][0]);
 }
 
 TEST_F(TrainingDataManagerTest, TestName) {
     // Default name
-    ASSERT_STREQ("Label 0 [1]", manager->getSampleName(0, 1).c_str());
-    manager->setNameForLabel("MyLabel", 0);
-    ASSERT_STREQ("MyLabel [1]", manager->getSampleName(0, 1).c_str());
+    ASSERT_STREQ("Label 0 [1]", manager->getSampleName(1, 1).c_str());
+    manager->setNameForLabel("MyLabel", 1);
+    ASSERT_STREQ("MyLabel [1]", manager->getSampleName(1, 1).c_str());
 }

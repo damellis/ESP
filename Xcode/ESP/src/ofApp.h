@@ -16,8 +16,9 @@
 #include "calibrator.h"
 #include "iostream.h"
 #include "plotter.h"
-#include "tuneable.h"
 #include "training.h"
+#include "training-data-manager.h"
+#include "tuneable.h"
 
 class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
   public:
@@ -113,7 +114,10 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
 
     // Pipeline
     GRT::GestureRecognitionPipeline *pipeline_;
+
+    TrainingDataManager training_data_manager_;
     GRT::TimeSeriesClassificationData training_data_;
+
     GRT::MatrixDouble test_data_;
     float training_accuracy_;
     int predicted_label_;

@@ -52,6 +52,7 @@ class TrainingDataManager {
     /// @brief This will modify the default name for this label, changing it
     /// from "Label X" to `name`.
     bool setNameForLabel(const std::string name, uint32_t label);
+    std::string getLabelName(uint32_t label);
 
     /// @brief Format the sample name.
     /// Default label name is "Label X", and the sample name is "Label X [Y]"
@@ -75,6 +76,17 @@ class TrainingDataManager {
     bool deleteSample(uint32_t label, uint32_t index);
 
     bool trimSample(uint32_t label, uint32_t index, uint32_t start, uint32_t end);
+
+    // =================================================
+    //  Functions for saving/loading training data
+    // =================================================
+    bool save(const std::string& filename) {
+        return data_.save(filename);
+    }
+
+    bool load(const std::string& filename) {
+        return data_.load(filename);
+    }
 
   private:
     uint32_t num_classes_;

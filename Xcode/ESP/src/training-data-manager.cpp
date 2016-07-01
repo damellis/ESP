@@ -31,6 +31,7 @@ bool TrainingDataManager::setDatasetName(const char* const name) {
 }
 
 std::string TrainingDataManager::getSampleName(uint32_t label, uint32_t index) {
+    label--;
     const auto& name = training_sample_names_[label][index];
     if (name.first) {
         return name.second;
@@ -41,6 +42,8 @@ std::string TrainingDataManager::getSampleName(uint32_t label, uint32_t index) {
 
 bool TrainingDataManager::setSampleName(
     uint32_t label, uint32_t index, const std::string new_name) {
+    label--;
+
     auto& name = training_sample_names_[label][index];
     name.first = true;
     name.second = new_name;
@@ -48,7 +51,8 @@ bool TrainingDataManager::setSampleName(
 }
 
 bool TrainingDataManager::addSample(uint32_t label, const GRT::MatrixDouble& sample) {
-    if (label > num_classes_) {
+    label--;
+    if (label >= num_classes_) {
         return false;
     }
 
@@ -60,8 +64,14 @@ bool TrainingDataManager::addSample(uint32_t label, const GRT::MatrixDouble& sam
     return true;
 }
 
+std::string TrainingDataManager::getLabelName(uint32_t label) {
+    label--;
+    return default_label_names_[label];
+}
+
 bool TrainingDataManager::setNameForLabel(const std::string name, uint32_t label) {
-    if (label > num_classes_) {
+    label--;
+    if (label >= num_classes_) {
         return false;
     }
 
@@ -70,14 +80,18 @@ bool TrainingDataManager::setNameForLabel(const std::string name, uint32_t label
 }
 
 GRT::MatrixDouble TrainingDataManager::getSample(uint32_t label, uint32_t index) {
+    label--;
     return data_.getClassData(label)[index].getData();
 }
 
 uint32_t TrainingDataManager::getNumSampleForLabel(uint32_t label) {
+    label--;
     return data_.getClassData(label).getNumSamples();
 }
 
 bool TrainingDataManager::deleteSample(uint32_t label, uint32_t index) {
+    label--;
+
     // The implementation first remove all data and then add them back. This is
     // a temporary solution because GRT::TimeSeriesClassificationData doesn't
     // allow per-sample operation.
@@ -98,6 +112,8 @@ bool TrainingDataManager::deleteSample(uint32_t label, uint32_t index) {
 
 bool TrainingDataManager::trimSample(
     uint32_t label, uint32_t index, uint32_t start, uint32_t end) {
+    label--;
+
     GRT::TimeSeriesClassificationData data = data_.getClassData(label);
     data_.eraseAllSamplesWithClassLabel(label);
 
