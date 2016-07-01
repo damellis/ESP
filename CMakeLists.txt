@@ -176,7 +176,12 @@ if(test)
     ${ESP_PATH}/src/training-data-manager-test.cpp
     )
 
-  include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
+  include_directories(
+    ${gtest_SOURCE_DIR}/include
+    ${gtest_SOURCE_DIR}
+    ${GRT_INCLUDE_DIR}
+    )
+
   add_executable(runUnitTests ${ESP_TO_TEST_SRC} ${TEST_SRC})
   target_link_libraries(runUnitTests gtest gtest_main)
   ## Extra linking (mainly GRT)
