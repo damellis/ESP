@@ -76,8 +76,9 @@ script:
         make
       done
 
-      # Lastly, we run unittest
-      make test
+      # Lastly, we run unittest (runUnitTests will give more information)
+      # make test
+      ./runUnitTests
     fi;
   - >
     if [ "$BUILD_TOOL" = "Xcode" ]; then
