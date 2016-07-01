@@ -14,7 +14,7 @@
 find_package(PkgConfig)
 pkg_check_modules(PC_GRT QUIET libgrt)
 
-find_library(GRT_LIBRARIES
+find_library(GRT_LIBRARY
   NAMES grt
   HINTS ${PC_GRT_LIBDIR} ${PC_GRT_LIBRARY_DIRS}
   )
@@ -27,14 +27,14 @@ find_path(GRT_INCLUDE_DIR
   )
 
 find_library(
-  GRT_LIBRARIES NAMES grt
+  GRT_LIBRARY NAMES grt
   HINTS ${PC_GRT_LIBDIR} ${PC_GRT_LIBRARY_DIRS}
   )
 
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(
   grt
-  REQUIRED_VARS GRT_LIBRARIES GRT_INCLUDE_DIR
+  REQUIRED_VARS GRT_LIBRARY GRT_INCLUDE_DIR
   )
 
-mark_as_advanced(GRT_INCLUDE_DIR GRT_LIBRARIES)
+mark_as_advanced(GRT_INCLUDE_DIR GRT_LIBRARY)
