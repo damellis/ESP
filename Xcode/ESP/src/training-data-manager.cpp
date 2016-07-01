@@ -103,16 +103,10 @@ bool TrainingDataManager::deleteSample(uint32_t label, uint32_t index) {
 
 bool TrainingDataManager::relabelSample(
     uint32_t label, uint32_t index, uint32_t new_label) {
-    GRT::TimeSeriesClassificationData data = data_.getClassData(label);
-    data_.eraseAllSamplesWithClassLabel(label);
+    GRT::MatrixDouble data = getSample(label, index);
+    deleteSample(label, index);
+    addSample(new_label, data);
 
-    for (int i = 0; i < data.getNumSamples(); i++) {
-        if (i != index) {
-            data_.addSample(label, data[i].getData());
-        } else {
-            data_.addSample(new_label, data[i].getData());
-        }
-    }
     return true;
 }
 
