@@ -3,7 +3,8 @@
  *  abstracts out common operations on the data.
  *
  *  @author Ben Zhang (benzh)
- *  @bug No known bugs.
+ *  @bug Currently we are not doing bound-checking. Operations over invalid
+ *       label/index will cause crashing
  */
 
 #pragma once
@@ -45,13 +46,13 @@ class TrainingDataManager {
     // Set the name of the training data
     bool setDatasetName(const char* const name);
 
-    // =================================================
-    //  Functions that enables per-sample naming
-    // =================================================
-
     GRT::TimeSeriesClassificationData getAllData() {
         return data_;
     }
+
+    // =================================================
+    //  Functions that enables per-sample naming
+    // =================================================
 
     /// @brief This will modify the default name for this label, changing it
     /// from "Label X" to `name`.
@@ -67,6 +68,7 @@ class TrainingDataManager {
     // =================================================
     //  Functions that simplifies editing
     // =================================================
+
     /// @brief Add new sample. Returns false if the label is larger than
     /// configured number of classes.
     bool addSample(uint32_t label, const GRT::MatrixDouble& sample);
@@ -88,11 +90,12 @@ class TrainingDataManager {
     // =================================================
     //  Functions for saving/loading training data
     // =================================================
-    bool save(const std::string& filename) {
+
+    inline bool save(const std::string& filename) {
         return data_.save(filename);
     }
 
-    bool load(const std::string& filename) {
+    inline bool load(const std::string& filename) {
         return data_.load(filename);
     }
 
