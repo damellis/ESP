@@ -101,6 +101,21 @@ bool TrainingDataManager::deleteSample(uint32_t label, uint32_t index) {
     return true;
 }
 
+bool TrainingDataManager::relabelSample(
+    uint32_t label, uint32_t index, uint32_t new_label) {
+    GRT::TimeSeriesClassificationData data = data_.getClassData(label);
+    data_.eraseAllSamplesWithClassLabel(label);
+
+    for (int i = 0; i < data.getNumSamples(); i++) {
+        if (i != index) {
+            data_.addSample(label, data[i].getData());
+        } else {
+            data_.addSample(new_label, data[i].getData());
+        }
+    }
+    return true;
+}
+
 bool TrainingDataManager::trimSample(
     uint32_t label, uint32_t index, uint32_t start, uint32_t end) {
 

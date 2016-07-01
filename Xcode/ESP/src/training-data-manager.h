@@ -79,6 +79,10 @@ class TrainingDataManager {
     /// @brief Remove sample by label and the index.
     bool deleteSample(uint32_t label, uint32_t index);
 
+    /// @brief Relabel a sample from `label` to `new_label`.
+    bool relabelSample(uint32_t label, uint32_t index, uint32_t new_label);
+
+    /// @brief Trim sample. What's left will be [start, end], closed interval.
     bool trimSample(uint32_t label, uint32_t index, uint32_t start, uint32_t end);
 
     // =================================================

@@ -70,7 +70,22 @@ TEST_F(TrainingDataManagerTest, TestTrimSample) {
     ASSERT_EQ(4, new_sample[2][0]);
 }
 
-TEST_F(TrainingDataManagerTest, TestName) {
+TEST_F(TrainingDataManagerTest, TestRelabelSample) {
+    // Relabel label 1 index 1 (the middle sample) to 2
+    // We are expecting the following change
+    // label 1 before: [1, 0, 0], [2, 0, 0], [3, 0, 0]
+    // label 1 after : [1, 0, 0],          , [3, 0, 0]
+    // label 2 before:
+    // label 2 after : [2, 0, 0]
+    manager->relabelSample(1, 1, 2);
+    ASSERT_EQ(2, manager->getNumSampleForLabel(1));
+    ASSERT_EQ(3, manager->getSample(1, 1)[0][0]);
+
+    ASSERT_EQ(1, manager->getNumSampleForLabel(2));
+    ASSERT_EQ(2, manager->getSample(2, 0)[0][0]);
+}
+
+TEST_F(TrainingDataManagerTest, TestAssignName) {
     // Default name
     ASSERT_STREQ("Label 1 [1]", manager->getSampleName(1, 1).c_str());
     manager->setNameForLabel("MyLabel", 1);

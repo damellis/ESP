@@ -671,6 +671,7 @@ void ofApp::deleteTrainingSample(int num) {
             training_data_manager_.getSample(label, plot_sample_indices_[num]));
     } else {
         plot_samples_[num].reset();
+        plot_sample_indices_[num] = -1;
     }
 
     populateSampleFeatures(num);
@@ -706,46 +707,31 @@ void ofApp::doRelabelTrainingSample(uint32_t source, uint32_t target) {
     }
 
     // // plot_samples_ (num) is 0-based, labels (source and target) are 1-based.
-    // uint32_t num = source - 1;
-    // MatrixDouble target_data;
+    uint32_t num = source - 1;
+    uint32_t label = source;
+    training_data_manager_.relabelSample(source, plot_sample_indices_[num], target);
 
-    // // Below is adapted from deleteTrainingSample. We delete sample first (need
-    // // to store it, that's why we can't just call deleteTrainingSample) and then
-    // // add it back with a different label.
-    // int label = num + 1;
+    // Update the source plot
+    uint32_t num_source_sample_left = training_data_manager_.getNumSampleForLabel(source);
+    if (plot_sample_indices_[num] == num_source_sample_left) {
+        plot_sample_indices_[num]--;
+    }
+    if (plot_sample_indices_[num] >= 0) {
+        plot_samples_[num].setData(
+            training_data_manager_.getSample(source, plot_sample_indices_[num]));
+    } else {
+        plot_samples_[num].reset();
+        plot_sample_indices_[num] = -1;
+    }
+    populateSampleFeatures(num);
 
-    // TimeSeriesClassificationData data = training_data_.getClassData(label);
-    // training_data_.eraseAllSamplesWithClassLabel(label);
-    // for (int i = 0; i < data.getNumSamples(); i++) {
-    //     if (i != plot_sample_indices_[num]) {
-    //         training_data_.addSample(label, data[i].getData());
-    //     } else {
-    //         target_data = data[i].getData();
-    //         training_data_.addSample(target, target_data);
-    //     }
-    // }
+    // Update the target plot
+    plot_sample_indices_[target - 1]++;
+    plot_samples_[target - 1].setData(
+        training_data_manager_.getSample(target, plot_sample_indices_[target - 1]));
+    populateSampleFeatures(target - 1);
 
-    // if (data.getNumSamples() > 1) {
-    //     // if we were showing the last sample, need to show previous one
-    //     if (plot_sample_indices_[num] + 1 == data.getNumSamples()) {
-    //         plot_sample_indices_[num]--;
-    //         plot_samples_[num].setData(data[plot_sample_indices_[num]].getData());
-    //     } else {
-    //         plot_samples_[num].setData(data[plot_sample_indices_[num] + 1].getData());
-    //     }
-    // } else {
-    //     plot_samples_[num].reset();
-    //     plot_sample_indices_[num] = -1;
-    // }
-
-    // populateSampleFeatures(num);
-
-    // // For the target label, update the plot.
-    // plot_sample_indices_[target - 1]++;
-    // plot_samples_[target - 1].setData(target_data);
-    // populateSampleFeatures(target - 1);
-
-    // should_save_training_data_ = true;
+    should_save_training_data_ = true;
 }
 
 string ofApp::getTrainingDataAdvice() {
