@@ -11,6 +11,7 @@
 		306E281E881AEFC343501AF8 /* ofxDatGuiComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 711F7111DF40061A3DC49469 /* ofxDatGuiComponent.cpp */; };
 		357D15F566DCDFCB63C78A2A /* ostream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FACCFB9E3EA79675FAB70179 /* ostream.cpp */; };
 		48F7FEF8914B64EA7053CD0A /* istream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18C4BE08EEF363F2E25EBFC4 /* istream.cpp */; };
+		490BA2AF1D26E408005B6543 /* training-data-manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 490BA2AE1D26E408005B6543 /* training-data-manager.cpp */; };
 		49341C4F1CC9EF0200C9F7C4 /* plotter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 49341C4E1CC9EF0200C9F7C4 /* plotter.cpp */; };
 		493F1EAA1D0E3C5B00EE3A34 /* MFCC.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 493F1EA81D0E3C5B00EE3A34 /* MFCC.cpp */; };
 		497D66D31CC3232900D5C3DC /* ofxTCPClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 497D66CB1CC3232900D5C3DC /* ofxTCPClient.cpp */; };
@@ -90,6 +91,8 @@
 		39DCD28624E94A4ECBBCA522 /* ofxDatGuiLabel.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxDatGuiLabel.h; path = "../../third-party/openFrameworks/addons/ofxDatGui/src/components/ofxDatGuiLabel.h"; sourceTree = SOURCE_ROOT; };
 		3B41658326AAF509E0B38863 /* tuneable.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = tuneable.cpp; path = src/tuneable.cpp; sourceTree = SOURCE_ROOT; };
 		3C7436EA662FF05FD6BB9350 /* ofxDatGuiScrollView.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxDatGuiScrollView.h; path = "../../third-party/openFrameworks/addons/ofxDatGui/src/components/ofxDatGuiScrollView.h"; sourceTree = SOURCE_ROOT; };
+		490BA2AE1D26E408005B6543 /* training-data-manager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "training-data-manager.cpp"; sourceTree = "<group>"; };
+		490BA2B01D26E41E005B6543 /* training-data-manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "training-data-manager.h"; sourceTree = "<group>"; };
 		49341C4E1CC9EF0200C9F7C4 /* plotter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = plotter.cpp; sourceTree = "<group>"; };
 		493F1EA81D0E3C5B00EE3A34 /* MFCC.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MFCC.cpp; sourceTree = "<group>"; };
 		493F1EA91D0E3C5B00EE3A34 /* MFCC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MFCC.h; sourceTree = "<group>"; };
@@ -407,6 +410,8 @@
 				9F470C57CD92526D67F7E4B8 /* plotter.h */,
 				49341C4E1CC9EF0200C9F7C4 /* plotter.cpp */,
 				2FF4BD20EA806510FB8490D2 /* ESP.h */,
+				490BA2B01D26E41E005B6543 /* training-data-manager.h */,
+				490BA2AE1D26E408005B6543 /* training-data-manager.cpp */,
 				3B41658326AAF509E0B38863 /* tuneable.cpp */,
 				E53D01ADA7297C38566E691F /* tuneable.h */,
 				49B9D96A1CF0340A008AA943 /* user.cpp */,
@@ -564,6 +569,7 @@
 				811B7BF71CF51D830078CD0A /* Filter.cpp in Sources */,
 				4C01A7D4BC8BE15DE60CCB82 /* ofxPanel.cpp in Sources */,
 				DD956AF23DA8C97565D245E4 /* ofxSlider.cpp in Sources */,
+				490BA2AF1D26E408005B6543 /* training-data-manager.cpp in Sources */,
 				8164C6761CD927F900DFEF70 /* iostream.cpp in Sources */,
 				F21B1E9A4D08953A47D1411A /* ofxSliderGroup.cpp in Sources */,
 				53560FBFF75362D7BE463255 /* ofxToggle.cpp in Sources */,

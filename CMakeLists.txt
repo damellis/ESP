@@ -83,6 +83,7 @@ set(ESP_SRC
   ${ESP_PATH}/src/ostream.cpp
   ${ESP_PATH}/src/plotter.cpp
   ${ESP_PATH}/src/training.cpp
+  ${ESP_PATH}/src/training-data-manager.cpp
   ${ESP_PATH}/src/tuneable.cpp
   ${ESP_PATH}/src/user.cpp
 )
@@ -99,7 +100,7 @@ endif()
 
 
 # =============================================================
-#   Create executables
+#   Create library and executables
 # =============================================================
 add_executable(${PROJECT} ${ADDONS_SRC} ${ESP_SRC})
 
@@ -113,7 +114,6 @@ target_include_directories(${PROJECT} PUBLIC
 target_link_libraries(${PROJECT} PUBLIC
   ${openFrameworks_LIBRARIES}
   ${ADDONS_LIBS}
-  ${ESP_LIBS}
   ${GRT_LIBRARY}
   ${SYS_LIBS}
   )
@@ -159,3 +159,33 @@ if(DOXYGEN_FOUND)
     comment "Generating API documentation with Doxygen" VERBATIM
     )
 endif(DOXYGEN_FOUND)
+
+# =============================================================
+#   GoogleTest
+#   Borrowed from github.com/dmonopoly/gtest-cmake-example
+# =============================================================
+if(test)
+  add_subdirectory(third-party/googletest/googletest)
+  enable_testing()
+
+  set(ESP_TO_TEST_SRC
+    ${ESP_PATH}/src/training-data-manager.cpp
+    )
+
+  set(TEST_SRC
+    ${ESP_PATH}/src/training-data-manager-test.cpp
+    )
+
+  include_directories(
+    ${gtest_SOURCE_DIR}/include
+    ${gtest_SOURCE_DIR}
+    ${GRT_INCLUDE_DIR}
+    )
+
+  add_executable(runUnitTests ${ESP_TO_TEST_SRC} ${TEST_SRC})
+  target_link_libraries(runUnitTests gtest gtest_main)
+  ## Extra linking (mainly GRT)
+  target_link_libraries(runUnitTests ${GRT_LIBRARY})
+
+  add_test(esp-test runUnitTests)
+endif()

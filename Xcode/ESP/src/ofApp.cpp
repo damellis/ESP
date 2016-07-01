@@ -106,6 +106,7 @@ void ofApp::useTrainingDataAdvice(string advice) {
 ofApp::ofApp() : fragment_(TRAINING),
                  num_pipeline_stages_(0),
                  calibrator_(nullptr),
+                 training_data_manager_(kNumMaxLabels_),
                  should_save_calibration_data_(false),
                  should_save_training_data_(false),
                  should_save_test_data_(false),
@@ -139,7 +140,7 @@ void ofApp::setup() {
     } else {
         fragment_ = PIPELINE;
     }
-    
+
     if (training_data_advice_ == "")
         training_data_advice_ = getTrainingDataAdvice();
 
@@ -301,7 +302,7 @@ void ofApp::setup() {
                                          reinterpret_cast<void*>(i + 1));
     }
 
-    training_data_.setNumDimensions(istream_->getNumOutputDimensions());
+    training_data_manager_.setNumDimensions(istream_->getNumOutputDimensions());
     predicted_label_ = 0;
 
     gui_.addHeader(":: Configuration ::");
@@ -456,9 +457,7 @@ void ofApp::updateTestWindowPlot() {
         for (int i = start; i < end; i++) {
             if (pipeline_->getTrained()) {
                 int predicted_label = test_data_predicted_class_labels_[i];
-                std::string title = training_data_.getClassNameForCorrespondingClassLabel(predicted_label);
-                if (title == "NOT_SET") title = std::string("Label") + std::to_string(predicted_label);
-
+                std::string title = training_data_manager_.getLabelName(predicted_label);
                 plot_testdata_window_.update(test_data_.getRowVector(i), predicted_label != 0, title);
             } else {
                 plot_testdata_window_.update(test_data_.getRowVector(i));
@@ -611,7 +610,10 @@ void ofApp::renameTrainingSample(int num) {
     }
 
     int label = num + 1;
-    rename_title_ = training_data_.getClassNameForCorrespondingClassLabel(label);
+    // TODO(benzh) This should be renaming each sample, instead of each label.
+    // Currently, we are in the transition from managing everything in ofApp to
+    // individual components (such as TrainingDataManager).
+    rename_title_ = training_data_manager_.getLabelName(label);
 
     // Hide internal names
     if (rename_title_ == "CLASS_LABEL_NOT_FOUND" ||
@@ -628,8 +630,8 @@ void ofApp::renameTrainingSample(int num) {
 }
 
 void ofApp::renameTrainingSampleDone() {
-    training_data_.setClassNameForCorrespondingClassLabel(rename_title_,
-                                                          rename_target_);
+    training_data_manager_.setNameForLabel(rename_title_, rename_target_);
+
     is_in_renaming_ = false;
     plot_samples_[rename_target_ - 1].setTitle(rename_title_);
     plot_samples_[rename_target_ - 1].renameTitleDone();
@@ -655,28 +657,18 @@ void ofApp::updateEventReceived(ofEventArgs& arg) {
 
 void ofApp::deleteTrainingSample(int num) {
     int label = num + 1;
-    string class_name =
-            training_data_.getClassNameForCorrespondingClassLabel(label);
 
-    // AFAICT, there's no way to delete an individual sample (except the
-    // last one. Instead, remove all samples with the corresponding label
-    // and add back all the ones except the one we want to delete.
-    TimeSeriesClassificationData data = training_data_.getClassData(label);
-    training_data_.eraseAllSamplesWithClassLabel(label);
-    for (int i = 0; i < data.getNumSamples(); i++)
-        if (i != plot_sample_indices_[num])
-            training_data_.addSample(label, data[i].getData());
+    training_data_manager_.deleteSample(label, plot_sample_indices_[num]);
 
-    if (data.getNumSamples() > 1) {
-        // if we were showing the last sample, need to show previous one
-        if (plot_sample_indices_[num] + 1 == data.getNumSamples()) {
-            plot_sample_indices_[num]--;
-            plot_samples_[num].setData(data[plot_sample_indices_[num]].getData());
-        } else {
-            plot_samples_[num].setData(data[plot_sample_indices_[num] + 1].getData());
-        }
+    uint32_t num_sample_left = training_data_manager_.getNumSampleForLabel(label);
 
-        training_data_.setClassNameForCorrespondingClassLabel(class_name, label);
+    // Before, we might be showing the last one; adjust the sample down by one
+    if (plot_sample_indices_[num] == num_sample_left) {
+        plot_sample_indices_[num]--;
+    }
+    if (plot_sample_indices_[num] >= 0) {
+        plot_samples_[num].setData(
+            training_data_manager_.getSample(label, plot_sample_indices_[num]));
     } else {
         plot_samples_[num].reset();
         plot_sample_indices_[num] = -1;
@@ -693,28 +685,12 @@ void ofApp::trimTrainingSample(int num) {
     if (selection.second - selection.first < 10) { return; }
 
     int label = num + 1;
-    string class_name =
-            training_data_.getClassNameForCorrespondingClassLabel(label);
-    TimeSeriesClassificationData data = training_data_.getClassData(label);
-    training_data_.eraseAllSamplesWithClassLabel(label);
 
-    for (int i = 0; i < data.getNumSamples(); i++) {
-        if (i == plot_sample_indices_[num]) {
-            GRT::MatrixDouble sample = data[i].getData();
-            GRT::MatrixDouble new_sample;
+    training_data_manager_.trimSample(label, plot_sample_indices_[num],
+                                      selection.first, selection.second);
+    plot_samples_[num].setData(
+        training_data_manager_.getSample(label, plot_sample_indices_[num]));
 
-            assert(selection.second - selection.first < sample.getNumRows());
-            for (int row = selection.first; row < selection.second; row++) {
-                new_sample.push_back(sample.getRowVector(row));
-            }
-            training_data_.addSample(label, new_sample);
-            plot_samples_[num].setData(new_sample);
-        } else {
-            training_data_.addSample(label, data[i].getData());
-        }
-    }
-
-    training_data_.setClassNameForCorrespondingClassLabel(class_name, label);
     populateSampleFeatures(num);
     should_save_training_data_ = true;
 }
@@ -730,44 +706,29 @@ void ofApp::doRelabelTrainingSample(uint32_t source, uint32_t target) {
         return;
     }
 
-    // plot_samples_ (num) is 0-based, labels (source and target) are 1-based.
+    // // plot_samples_ (num) is 0-based, labels (source and target) are 1-based.
     uint32_t num = source - 1;
-    MatrixDouble target_data;
+    uint32_t label = source;
+    training_data_manager_.relabelSample(source, plot_sample_indices_[num], target);
 
-    // Below is adapted from deleteTrainingSample. We delete sample first (need
-    // to store it, that's why we can't just call deleteTrainingSample) and then
-    // add it back with a different label.
-    int label = num + 1;
-
-    TimeSeriesClassificationData data = training_data_.getClassData(label);
-    training_data_.eraseAllSamplesWithClassLabel(label);
-    for (int i = 0; i < data.getNumSamples(); i++) {
-        if (i != plot_sample_indices_[num]) {
-            training_data_.addSample(label, data[i].getData());
-        } else {
-            target_data = data[i].getData();
-            training_data_.addSample(target, target_data);
-        }
+    // Update the source plot
+    uint32_t num_source_sample_left = training_data_manager_.getNumSampleForLabel(source);
+    if (plot_sample_indices_[num] == num_source_sample_left) {
+        plot_sample_indices_[num]--;
     }
-
-    if (data.getNumSamples() > 1) {
-        // if we were showing the last sample, need to show previous one
-        if (plot_sample_indices_[num] + 1 == data.getNumSamples()) {
-            plot_sample_indices_[num]--;
-            plot_samples_[num].setData(data[plot_sample_indices_[num]].getData());
-        } else {
-            plot_samples_[num].setData(data[plot_sample_indices_[num] + 1].getData());
-        }
+    if (plot_sample_indices_[num] >= 0) {
+        plot_samples_[num].setData(
+            training_data_manager_.getSample(source, plot_sample_indices_[num]));
     } else {
         plot_samples_[num].reset();
         plot_sample_indices_[num] = -1;
     }
-
     populateSampleFeatures(num);
 
-    // For the target label, update the plot.
+    // Update the target plot
     plot_sample_indices_[target - 1]++;
-    plot_samples_[target - 1].setData(target_data);
+    plot_samples_[target - 1].setData(
+        training_data_manager_.getSample(target, plot_sample_indices_[target - 1]));
     populateSampleFeatures(target - 1);
 
     should_save_training_data_ = true;
@@ -827,20 +788,17 @@ void ofApp::update() {
                 for (OStream *ostream : ostreamvectors_)
                     ostream->onReceive(predicted_label_);
 
-                title = training_data_.getClassNameForCorrespondingClassLabel(predicted_label_);
-                if (title == "NOT_SET" || title == "CLASS_LABEL_NOT_FOUND") {
-                    title = plot_samples_[predicted_label_ - 1].getTitle();
-                }
+                title = training_data_manager_.getLabelName(predicted_label_);
             }
         }
-        
+
         plot_inputs_.update(data_point, predicted_label_ != 0, title);
 
         if (istream_->hasStarted()) {
             if (!pipeline_->preProcessData(data_point)) {
                 ofLog(OF_LOG_ERROR) << "ERROR: Failed to compute features!";
             }
-            
+
             vector<double> data = data_point;
 
             for (int j = 0; j < pipeline_->getNumPreProcessingModules(); j++) {
@@ -861,7 +819,7 @@ void ofApp::update() {
                     plot_features_[j][0].setData(data);
                 }
             }
-            
+
             // If there's no classifier set, we've got a signal processing
             // pipeline and we should send the results of the pipeline to
             // any OStreamVector instances that are listening for it.
@@ -1077,28 +1035,27 @@ void ofApp::drawTrainingInfo() {
     uint32_t width = stage_width / kNumMaxLabels_;
     float minY = plot_inputs_.getRanges().first;
     float maxY = plot_inputs_.getRanges().second;
-    auto class_tracker = training_data_.getClassTracker();
 
-    for (int i = 0; i < kNumMaxLabels_; i++) {
-        int label = i + 1;
-        int x = stage_left + i * width;
+    for (uint32_t i = 0; i < kNumMaxLabels_; i++) {
+        uint32_t label = i + 1;
+        uint32_t x = stage_left + i * width;
         plot_samples_[i].setRanges(minY, maxY, true);
         plot_samples_[i].draw(x, stage_top, width, stage_height);
 
-        for (int j = 0; j < class_tracker.size(); j++) {
-            if (class_tracker[j].classLabel == label) {
-                ofDrawBitmapString(
-                    std::to_string(plot_sample_indices_[i] + 1) + " / " +
-                    std::to_string(class_tracker[j].counter), x + width / 2 - 20,
-                    stage_top + stage_height + 20);
-                if (plot_sample_indices_[i] > 0)
-                    ofDrawBitmapString("<-", x, stage_top + stage_height + 20);
-                if (plot_sample_indices_[i] + 1 < class_tracker[j].counter)
-                    ofDrawBitmapString("->", x + width - 20, stage_top + stage_height + 20);
-                plot_sample_button_locations_[i].first.set(x, stage_top + stage_height, 20, 20);
-                plot_sample_button_locations_[i].second.set(x + width - 20, stage_top + stage_height, 20, 20);
-            }
+        uint32_t num_samples = training_data_manager_.getNumSampleForLabel(label);
+        ofDrawBitmapString(
+            std::to_string(plot_sample_indices_[i] + 1) + " / " +
+            std::to_string(training_data_manager_.getNumSampleForLabel(label)),
+            x + width / 2 - 20,
+            stage_top + stage_height + 20);
+        if (plot_sample_indices_[i] > 0) {
+            ofDrawBitmapString("<-", x, stage_top + stage_height + 20);
         }
+        if (plot_sample_indices_[i] + 1 < num_samples) {
+            ofDrawBitmapString("->", x + width - 20, stage_top + stage_height + 20);
+        }
+        plot_sample_button_locations_[i].first.set(x, stage_top + stage_height, 20, 20);
+        plot_sample_button_locations_[i].second.set(x + width - 20, stage_top + stage_height, 20, 20);
 
         // TODO(dmellis): only update these values when the screen size changes.
         training_sample_guis_[i]->setPosition(x + margin / 8, stage_top + stage_height + 30);
@@ -1194,16 +1151,10 @@ void ofApp::exit() {
 }
 
 void ofApp::saveTrainingData() {
-    // Apply all the class names before save.
-    for (uint32_t i = 0; i < kNumMaxLabels_; i++) {
-        const string& name = plot_samples_[i].getTitle();
-        training_data_.setClassNameForCorrespondingClassLabel(name, i + 1);
-    }
-
     ofFileDialogResult result = ofSystemSaveDialog("TrainingData.grt",
                                                    "Save your training data?");
     if (result.bSuccess) {
-        training_data_.save(result.getPath());
+        training_data_manager_.save(result.getPath());
     }
 
     should_save_training_data_ = false;
@@ -1260,7 +1211,7 @@ void ofApp::trainModel() {
        // Enable logging. GRT error logs will call ofApp::notify().
        GRT::ErrorLog::enableLogging(true);
 
-       if (pipeline_->train(training_data_)) {
+       if (pipeline_->train(training_data_manager_.getAllData())) {
            ofLog() << "Training is successful";
 
            for (Plotter& plot : plot_samples_) {
@@ -1313,27 +1264,18 @@ void ofApp::loadTrainingData() {
 
     if (!result.bSuccess) return;
 
-    if (!training_data.load(result.getPath()) ){
+    if (!training_data_manager_.load(result.getPath())) {
         ofLog(OF_LOG_ERROR) << "Failed to load the training data!"
                             << " path: " << result.getPath();
     }
 
-    training_data_ = training_data;
-    auto trackers = training_data_.getClassTracker();
-    for (auto tracker : trackers) {
-        plot_sample_indices_[tracker.classLabel - 1] = tracker.counter - 1;
-    }
+    for (uint32_t i = 0; i < kNumMaxLabels_; i++) {
+        uint32_t num = training_data_manager_.getNumSampleForLabel(i);
+        plot_sample_indices_[i] = num;
 
-    for (int i = 0; i < training_data_.getNumSamples(); i++) {
-        int label = training_data_[i].getClassLabel();
-        plot_samples_[label - 1].setData(training_data_[i].getData());
-
-        string title = training_data_.getClassNameForCorrespondingClassLabel(label);
-        if (title == "NOT_SET") {
-            title = std::string("Label") + std::to_string(label);
-        }
-
-        plot_samples_[label - 1].setTitle(title);
+        plot_samples_[i].setData(training_data_manager_.getSample(i, num - 1));
+        std::string title = training_data_manager_.getLabelName(i);
+        plot_samples_[i].setTitle(title);
     }
 
     // After we load the training data,
@@ -1453,13 +1395,8 @@ void ofApp::keyReleased(int key) {
         // Pressing 1-9 will turn the samples into training data
         if (key >= '1' && key <= '9') {
             label_ = key - '0';
-            training_data_.addSample(key - '0', sample_data_);
-            int num_samples = training_data_.getClassTracker()
-                    [training_data_.getClassLabelIndexValue(label_)].counter;
-
-            if (num_samples == 1)
-                training_data_.setClassNameForCorrespondingClassLabel(
-                    plot_samples_[label_ - 1].getTitle(), label_);
+            training_data_manager_.addSample(key - '0', sample_data_);
+            int num_samples = training_data_manager_.getNumSampleForLabel(label_);
 
             plot_samples_[label_ - 1].setData(sample_data_);
             plot_sample_indices_[label_ - 1] = num_samples - 1;
@@ -1505,19 +1442,14 @@ void ofApp::keyReleased(int key) {
                     training_sample_checker_(sample_data_);
                 status_text_ = plot_samples_[label_ - 1].getTitle() +
                     " check: " + result.getMessage();
-                
+
                 // Don't save sample if the checker returns failure.
                 if (result.getResult() == TrainingSampleCheckerResult::FAILURE)
                     return;
             }
-        
-            training_data_.addSample(label_, sample_data_);
-            int num_samples = training_data_.getClassTracker()
-                [training_data_.getClassLabelIndexValue(label_)].counter;
 
-            if (num_samples == 1)
-                training_data_.setClassNameForCorrespondingClassLabel(
-                    plot_samples_[label_ - 1].getTitle(), label_);
+            training_data_manager_.addSample(label_, sample_data_);
+            int num_samples = training_data_manager_.getNumSampleForLabel(label_);
 
             plot_samples_[label_ - 1].setData(sample_data_);
             plot_sample_indices_[label_ - 1] = num_samples - 1;
@@ -1555,19 +1487,20 @@ void ofApp::mouseReleased(int x, int y, int button) {
     // Navigating between samples (samples themselves are not changed).
     for (int i = 0; i < kNumMaxLabels_; i++) {
         int label = i + 1;
-        TimeSeriesClassificationData data = training_data_.getClassData(label);
         if (plot_sample_button_locations_[i].first.inside(x, y)) {
             if (plot_sample_indices_[i] > 0) {
                 plot_sample_indices_[i]--;
-                plot_samples_[i].setData(data[plot_sample_indices_[i]].getData());
+                plot_samples_[i].setData(
+                    training_data_manager_.getSample(label, plot_sample_indices_[i]));
                 assert(true == plot_samples_[i].clearContentModifiedFlag());
                 populateSampleFeatures(i);
             }
         }
         if (plot_sample_button_locations_[i].second.inside(x, y)) {
-            if (plot_sample_indices_[i] + 1 < data.getNumSamples()) {
+            if (plot_sample_indices_[i] + 1 < training_data_manager_.getNumSampleForLabel(label)) {
                 plot_sample_indices_[i]++;
-                plot_samples_[i].setData(data[plot_sample_indices_[i]].getData());
+                plot_samples_[i].setData(
+                    training_data_manager_.getSample(label, plot_sample_indices_[i]));
                 assert(true == plot_samples_[i].clearContentModifiedFlag());
                 populateSampleFeatures(i);
             }

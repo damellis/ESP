@@ -17,3 +17,6 @@
 [submodule "third-party/ofxParagraph"]
 	path = third-party/ofxParagraph
 	url = https://github.com/braitsch/ofxParagraph.git
+[submodule "third-party/googletest"]
+	path = third-party/googletest
+	url = https://github.com/google/googletest.git
