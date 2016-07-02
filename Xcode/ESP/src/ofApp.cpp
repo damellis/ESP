@@ -240,7 +240,7 @@ void ofApp::setup() {
     for (uint32_t i = 0; i < kNumMaxLabels_; i++) {
         uint32_t label_dim = istream_->getNumOutputDimensions();
         Plotter plot;
-        plot.setup(label_dim, "Label" + std::to_string(i + 1));
+        plot.setup(label_dim, training_data_manager_.getLabelName(i + 1));
         plot.setColorPalette(color_palette.generate(label_dim));
         plot_samples_.push_back(plot);
 
@@ -614,12 +614,6 @@ void ofApp::renameTrainingSample(int num) {
     // Currently, we are in the transition from managing everything in ofApp to
     // individual components (such as TrainingDataManager).
     rename_title_ = training_data_manager_.getLabelName(label);
-
-    // Hide internal names
-    if (rename_title_ == "CLASS_LABEL_NOT_FOUND" ||
-        rename_title_ == "NOT_SET") {
-        rename_title_ = "";
-    }
 
     is_in_renaming_ = true;
     rename_target_ = label;
