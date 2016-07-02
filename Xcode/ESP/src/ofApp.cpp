@@ -33,6 +33,7 @@ static const char* kAnalysisInstruction =
         "press `s` to save test data and `l` to load test data.";
 
 const double kPipelineHeightWeight = 0.3;
+const ofColor kSerialSelectionColor = ofColor::fromHex(0x00FF00);
 
 class Palette {
   public:
@@ -115,7 +116,6 @@ ofApp::ofApp() : fragment_(TRAINING),
 
 //--------------------------------------------------------------
 void ofApp::setup() {
-
     is_recording_ = false;
 
     // setup() is a user-defined function.
@@ -264,11 +264,13 @@ void ofApp::setup() {
         }
         plot_sample_features_.push_back(feature_plots);
 
-
         plot_sample_indices_.push_back(-1);
         plot_sample_button_locations_.push_back(
             pair<ofRectangle, ofRectangle>(ofRectangle(), ofRectangle()));
 
+        // =====================================================
+        //  Add controls for each individual training classes
+        // =====================================================
         TrainingSampleGuiListener *listener =
                 new TrainingSampleGuiListener(this, i);
 
@@ -322,6 +324,13 @@ void ofApp::setup() {
                     gui_.addDropdown("Select A Serial Port", serials);
             serial_selection_dropdown_->onDropdownEvent(
                 this, &ofApp::onSerialSelectionDropdownEvent);
+
+            // Fine tune the theme (the default has a red color; we use
+            // kSerialSelectionColor)
+            ofxDatGuiTheme myTheme(true);
+            myTheme.stripe.dropdown = kSerialSelectionColor;
+            serial_selection_dropdown_->setTheme(&myTheme);
+
             gui_.addBreak()->setHeight(5.0f);
 
             status_text_ = "Please select a serial port from the dropdown menu";
