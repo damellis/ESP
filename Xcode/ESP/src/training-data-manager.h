@@ -81,6 +81,12 @@ class TrainingDataManager {
     /// @brief Remove sample by label and the index.
     bool deleteSample(uint32_t label, uint32_t index);
 
+    /// @brief Remove all samples
+    bool deleteAllSamples();
+
+    /// @brief Remove all samples
+    bool deleteAllSamplesWithLabel(uint32_t label);
+
     /// @brief Relabel a sample from `label` to `new_label`.
     bool relabelSample(uint32_t label, uint32_t index, uint32_t new_label);
 

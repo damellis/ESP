@@ -101,6 +101,18 @@ bool TrainingDataManager::deleteSample(uint32_t label, uint32_t index) {
     return true;
 }
 
+bool TrainingDataManager::deleteAllSamples() {
+    for (uint32_t i = 0; i < num_classes_; i++) {
+        data_.eraseAllSamplesWithClassLabel(i + 1);
+    }
+    return true;
+}
+
+bool TrainingDataManager::deleteAllSamplesWithLabel(uint32_t label) {
+    data_.eraseAllSamplesWithClassLabel(label);
+    return true;
+}
+
 bool TrainingDataManager::relabelSample(
     uint32_t label, uint32_t index, uint32_t new_label) {
     GRT::MatrixDouble data = getSample(label, index);
