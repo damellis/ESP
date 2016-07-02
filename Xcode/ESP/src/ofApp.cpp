@@ -266,33 +266,34 @@ void ofApp::setup() {
 
 
         plot_sample_indices_.push_back(-1);
-        plot_sample_button_locations_.push_back(pair<ofRectangle, ofRectangle>(ofRectangle(), ofRectangle()));
+        plot_sample_button_locations_.push_back(
+            pair<ofRectangle, ofRectangle>(ofRectangle(), ofRectangle()));
 
-        TrainingSampleGuiListener *listener = new TrainingSampleGuiListener(this, i);
-        ofxPanel *gui = new ofxPanel();
-        gui->setup("Edit");
-        gui->setSize(80, 0);
+        TrainingSampleGuiListener *listener =
+                new TrainingSampleGuiListener(this, i);
 
-        ofxButton *rename_button = new ofxButton();
-        gui->add(rename_button->setup("rename", 80, 16));
-        rename_button->addListener(
+        ofxDatGui *gui = new ofxDatGui();
+        gui->setWidth(80);
+        gui->setAutoDraw(false);
+        ofxDatGuiButton* rename_button = gui->addButton("rename");
+        rename_button->onButtonEvent(
             listener, &TrainingSampleGuiListener::renameButtonPressed);
+        rename_button->setStripeVisible(false);
 
-        ofxButton *delete_button = new ofxButton();
-        gui->add(delete_button->setup("delete", 80, 16));
-        delete_button->addListener(
+        ofxDatGuiButton* delete_button = gui->addButton("delete");
+        delete_button->onButtonEvent(
             listener, &TrainingSampleGuiListener::deleteButtonPressed);
+        delete_button->setStripeVisible(false);
 
-
-        ofxButton *trim_button = new ofxButton();
-        gui->add(trim_button->setup("trim", 80, 16));
-        trim_button->addListener(
+        ofxDatGuiButton* trim_button = gui->addButton("trim");
+        trim_button->onButtonEvent(
             listener, &TrainingSampleGuiListener::trimButtonPressed);
+        trim_button->setStripeVisible(false);
 
-        ofxButton *relable_button = new ofxButton();
-        gui->add(relable_button->setup("re-label", 80, 16));
-        relable_button->addListener(
+        ofxDatGuiButton* relabel_button = gui->addButton("relabel");
+        relabel_button->onButtonEvent(
             listener, &TrainingSampleGuiListener::relabelButtonPressed);
+        relabel_button->setStripeVisible(false);
 
         training_sample_guis_.push_back(gui);
     }
@@ -351,8 +352,6 @@ void ofApp::setup() {
     } else {
         gui_.collapse();
     }
-
-    gui_hide_ = false;
 
     ofBackground(54, 54, 54);
 
@@ -540,27 +539,6 @@ void ofApp::loadCalibrationData() {
 
     plot_inputs_.reset();
     should_save_calibration_data_ = false;
-}
-
-void ofApp::savePipeline() {
-    if (!pipeline_->save("pipeline.grt")) {
-        ofLog(OF_LOG_ERROR) << "Failed to save the pipeline";
-    }
-
-    if (!pipeline_->getClassifier()->save("classifier.grt")) {
-        ofLog(OF_LOG_ERROR) << "Failed to save the classifier";
-    }
-}
-
-void ofApp::loadPipeline() {
-    GRT::GestureRecognitionPipeline pipeline;
-    if (!pipeline.load("pipeline.grt")) {
-        ofLog(OF_LOG_ERROR) << "Failed to load the pipeline";
-    }
-
-    // TODO(benzh) Compare the two pipelines and warn the user if the
-    // loaded one is different from his.
-    (*pipeline_) = pipeline;
 }
 
 void ofApp::saveTuneables(ofxDatGuiButtonEvent e) {
@@ -921,9 +899,7 @@ void ofApp::draw() {
     // Status text at the bottom
     ofDrawBitmapString(status_text_, left_margin, ofGetHeight() - 20);
 
-    if (!gui_hide_) {
-        gui_.draw();
-    }
+    gui_.draw();
 }
 
 void ofApp::drawCalibration() {
@@ -1052,9 +1028,9 @@ void ofApp::drawTrainingInfo() {
         plot_sample_button_locations_[i].second.set(x + width - 20, stage_top + stage_height, 20, 20);
 
         // TODO(dmellis): only update these values when the screen size changes.
-        training_sample_guis_[i]->setPosition(x + margin / 8, stage_top + stage_height + 30);
-        training_sample_guis_[i]->setSize(width - margin / 4, training_sample_guis_[i]->getHeight());
-        training_sample_guis_[i]->setWidthElements(width - margin / 4);
+        training_sample_guis_[i]->setPosition(x + margin / 8,
+                                              stage_top + stage_height + 30);
+        training_sample_guis_[i]->setWidth(width - margin / 4);
         training_sample_guis_[i]->draw();
     }
 
@@ -1138,10 +1114,6 @@ void ofApp::exit() {
     if (should_save_calibration_data_) { saveCalibrationData(); }
     if (should_save_training_data_) { saveTrainingData(); }
     if (should_save_test_data_) { saveTestData(); }
-
-    // Clear all listeners.
-    save_pipeline_button_.removeListener(this, &ofApp::savePipeline);
-    load_pipeline_button_.removeListener(this, &ofApp::loadPipeline);
 }
 
 void ofApp::saveTrainingData() {
@@ -1332,7 +1304,6 @@ void ofApp::keyPressed(int key){
             }
             break;
         case 'f': toggleFeatureView(); break;
-        case 'h': gui_hide_ = !gui_hide_; break;
         case 'l':
             if (fragment_ == CALIBRATION) loadCalibrationData();
             else if (fragment_ == TRAINING) loadTrainingData();
