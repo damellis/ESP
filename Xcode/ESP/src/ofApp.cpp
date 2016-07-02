@@ -343,8 +343,8 @@ void ofApp::setup() {
     load_button->onButtonEvent(this, &ofApp::loadTuneables);
 
     gui_.addFooter();
-    gui_.getFooter()->setLabelWhenExpanded("Click to Hide");
-    gui_.getFooter()->setLabelWhenCollapsed("Click to Open Configuration");
+    gui_.getFooter()->setLabelWhenExpanded("Click to apply and hide");
+    gui_.getFooter()->setLabelWhenCollapsed("Click to open configuration");
 
     if (should_expand_gui) {
         gui_.expand();
