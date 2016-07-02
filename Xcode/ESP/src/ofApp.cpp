@@ -630,6 +630,7 @@ void ofApp::updateEventReceived(ofEventArgs& arg) {
 void ofApp::deleteTrainingSample(int num) {
     int label = num + 1;
 
+    if (plot_sample_indices_[num] < 0) { return; }
     training_data_manager_.deleteSample(label, plot_sample_indices_[num]);
 
     uint32_t num_sample_left = training_data_manager_.getNumSampleForLabel(label);
@@ -681,6 +682,7 @@ void ofApp::doRelabelTrainingSample(uint32_t source, uint32_t target) {
     // // plot_samples_ (num) is 0-based, labels (source and target) are 1-based.
     uint32_t num = source - 1;
     uint32_t label = source;
+    if (plot_sample_indices_[num] < 0) { return; }
     training_data_manager_.relabelSample(source, plot_sample_indices_[num], target);
 
     // Update the source plot

@@ -114,6 +114,14 @@ class TrainingDataManager {
     std::vector<std::vector<Name>> training_sample_names_;
     std::vector<std::string> default_label_names_;
 
+    // This variable tracks the number of samples for each label. Although We
+    // can get the number with TimeSeriesClassificationData::getClassData and
+    // then getNumSamples. Caching the information here helps with bound checks!
+    //
+    // The use of this class requires index not beyond the
+    // num_samples_per_label_.
+    std::vector<uint32_t> num_samples_per_label_;
+
     // The underlying data store backed up by GRT's TimeSeriesClassificationData
     GRT::TimeSeriesClassificationData data_;
 
