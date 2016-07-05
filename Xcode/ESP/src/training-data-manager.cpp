@@ -183,8 +183,8 @@ bool TrainingDataManager::trimSample(
 }
 
 bool TrainingDataManager::hasSampleScore(uint32_t label, uint32_t index) {
-    CHECK_LABEL(label);
-    CHECK_INDEX(label, index);
+    if (!(label > 0 && label <= num_classes_)) return false;
+    if (!(index < num_samples_per_label_[label])) return false;
     
     const auto& score = training_sample_scores_[label][index];
     return score.first;
