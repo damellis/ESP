@@ -49,6 +49,8 @@ class TrainingDataManager {
     GRT::TimeSeriesClassificationData getAllData() {
         return data_;
     }
+    
+    uint32_t getNumLabels() { return num_classes_; }
 
     // =================================================
     //  Functions that enables per-sample naming
