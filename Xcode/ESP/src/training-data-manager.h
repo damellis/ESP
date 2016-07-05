@@ -81,6 +81,12 @@ class TrainingDataManager {
     /// @brief Remove sample by label and the index.
     bool deleteSample(uint32_t label, uint32_t index);
 
+    /// @brief Remove all samples
+    bool deleteAllSamples();
+
+    /// @brief Remove all samples
+    bool deleteAllSamplesWithLabel(uint32_t label);
+
     /// @brief Relabel a sample from `label` to `new_label`.
     bool relabelSample(uint32_t label, uint32_t index, uint32_t new_label);
 
@@ -107,6 +113,14 @@ class TrainingDataManager {
     using Name = std::pair<bool, std::string>;
     std::vector<std::vector<Name>> training_sample_names_;
     std::vector<std::string> default_label_names_;
+
+    // This variable tracks the number of samples for each label. Although We
+    // can get the number with TimeSeriesClassificationData::getClassData and
+    // then getNumSamples. Caching the information here helps with bound checks!
+    //
+    // The use of this class requires index not beyond the
+    // num_samples_per_label_.
+    std::vector<uint32_t> num_samples_per_label_;
 
     // The underlying data store backed up by GRT's TimeSeriesClassificationData
     GRT::TimeSeriesClassificationData data_;

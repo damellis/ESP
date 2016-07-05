@@ -160,14 +160,7 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
 
     // Panel for storing and loading pipeline.
     ofxDatGui gui_;
-    bool gui_hide_;
-    ofxButton save_pipeline_button_;
-    void savePipeline();
-    ofxButton load_pipeline_button_;
-    void loadPipeline();
-    ofxButton save_training_data_button_;
 
-    ofxButton load_training_data_button_;
     void loadTrainingData();
     void saveTrainingData();
 
@@ -183,7 +176,7 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     void trainModel();
     void scoreTrainingData();
 
-    vector<ofxPanel *> training_sample_guis_;
+    vector<ofxDatGui *> training_sample_guis_;
     void renameTrainingSample(int num);
     void renameTrainingSampleDone();
     void deleteTrainingSample(int num);
@@ -238,10 +231,18 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
 class TrainingSampleGuiListener {
   public:
     TrainingSampleGuiListener(ofApp *app, int num) : app(app), num(num) {}
-    void renameButtonPressed() { app->renameTrainingSample(num); }
-    void deleteButtonPressed() { app->deleteTrainingSample(num); }
-    void trimButtonPressed() { app->trimTrainingSample(num); }
-    void relabelButtonPressed() { app->relabelTrainingSample(num); }
+    void renameButtonPressed(ofxDatGuiButtonEvent e) {
+        app->renameTrainingSample(num);
+    }
+    void deleteButtonPressed(ofxDatGuiButtonEvent e) {
+        app->deleteTrainingSample(num);
+    }
+    void trimButtonPressed(ofxDatGuiButtonEvent e) {
+        app->trimTrainingSample(num);
+    }
+    void relabelButtonPressed(ofxDatGuiButtonEvent e) {
+        app->relabelTrainingSample(num);
+    }
   private:
     ofApp *app;
     int num;

@@ -33,6 +33,7 @@ static const char* kAnalysisInstruction =
         "press `s` to save test data and `l` to load test data.";
 
 const double kPipelineHeightWeight = 0.3;
+const ofColor kSerialSelectionColor = ofColor::fromHex(0x00FF00);
 
 class Palette {
   public:
@@ -115,7 +116,6 @@ ofApp::ofApp() : fragment_(TRAINING),
 
 //--------------------------------------------------------------
 void ofApp::setup() {
-
     is_recording_ = false;
 
     // setup() is a user-defined function.
@@ -240,7 +240,7 @@ void ofApp::setup() {
     for (uint32_t i = 0; i < kNumMaxLabels_; i++) {
         uint32_t label_dim = istream_->getNumOutputDimensions();
         Plotter plot;
-        plot.setup(label_dim, "Label" + std::to_string(i + 1));
+        plot.setup(label_dim, training_data_manager_.getLabelName(i + 1));
         plot.setColorPalette(color_palette.generate(label_dim));
         plot_samples_.push_back(plot);
 
@@ -264,35 +264,38 @@ void ofApp::setup() {
         }
         plot_sample_features_.push_back(feature_plots);
 
-
         plot_sample_indices_.push_back(-1);
-        plot_sample_button_locations_.push_back(pair<ofRectangle, ofRectangle>(ofRectangle(), ofRectangle()));
+        plot_sample_button_locations_.push_back(
+            pair<ofRectangle, ofRectangle>(ofRectangle(), ofRectangle()));
 
-        TrainingSampleGuiListener *listener = new TrainingSampleGuiListener(this, i);
-        ofxPanel *gui = new ofxPanel();
-        gui->setup("Edit");
-        gui->setSize(80, 0);
+        // =====================================================
+        //  Add controls for each individual training classes
+        // =====================================================
+        TrainingSampleGuiListener *listener =
+                new TrainingSampleGuiListener(this, i);
 
-        ofxButton *rename_button = new ofxButton();
-        gui->add(rename_button->setup("rename", 80, 16));
-        rename_button->addListener(
+        ofxDatGui *gui = new ofxDatGui();
+        gui->setWidth(80);
+        gui->setAutoDraw(false);
+        ofxDatGuiButton* rename_button = gui->addButton("rename");
+        rename_button->onButtonEvent(
             listener, &TrainingSampleGuiListener::renameButtonPressed);
+        rename_button->setStripeVisible(false);
 
-        ofxButton *delete_button = new ofxButton();
-        gui->add(delete_button->setup("delete", 80, 16));
-        delete_button->addListener(
+        ofxDatGuiButton* delete_button = gui->addButton("delete");
+        delete_button->onButtonEvent(
             listener, &TrainingSampleGuiListener::deleteButtonPressed);
+        delete_button->setStripeVisible(false);
 
-
-        ofxButton *trim_button = new ofxButton();
-        gui->add(trim_button->setup("trim", 80, 16));
-        trim_button->addListener(
+        ofxDatGuiButton* trim_button = gui->addButton("trim");
+        trim_button->onButtonEvent(
             listener, &TrainingSampleGuiListener::trimButtonPressed);
+        trim_button->setStripeVisible(false);
 
-        ofxButton *relable_button = new ofxButton();
-        gui->add(relable_button->setup("re-label", 80, 16));
-        relable_button->addListener(
+        ofxDatGuiButton* relabel_button = gui->addButton("relabel");
+        relabel_button->onButtonEvent(
             listener, &TrainingSampleGuiListener::relabelButtonPressed);
+        relabel_button->setStripeVisible(false);
 
         training_sample_guis_.push_back(gui);
     }
@@ -321,6 +324,13 @@ void ofApp::setup() {
                     gui_.addDropdown("Select A Serial Port", serials);
             serial_selection_dropdown_->onDropdownEvent(
                 this, &ofApp::onSerialSelectionDropdownEvent);
+
+            // Fine tune the theme (the default has a red color; we use
+            // kSerialSelectionColor)
+            ofxDatGuiTheme myTheme(true);
+            myTheme.stripe.dropdown = kSerialSelectionColor;
+            serial_selection_dropdown_->setTheme(&myTheme);
+
             gui_.addBreak()->setHeight(5.0f);
 
             status_text_ = "Please select a serial port from the dropdown menu";
@@ -343,16 +353,14 @@ void ofApp::setup() {
     load_button->onButtonEvent(this, &ofApp::loadTuneables);
 
     gui_.addFooter();
-    gui_.getFooter()->setLabelWhenExpanded("Click to Hide");
-    gui_.getFooter()->setLabelWhenCollapsed("Click to Open Configuration");
+    gui_.getFooter()->setLabelWhenExpanded("Click to apply and hide");
+    gui_.getFooter()->setLabelWhenCollapsed("Click to open configuration");
 
     if (should_expand_gui) {
         gui_.expand();
     } else {
         gui_.collapse();
     }
-
-    gui_hide_ = false;
 
     ofBackground(54, 54, 54);
 
@@ -542,27 +550,6 @@ void ofApp::loadCalibrationData() {
     should_save_calibration_data_ = false;
 }
 
-void ofApp::savePipeline() {
-    if (!pipeline_->save("pipeline.grt")) {
-        ofLog(OF_LOG_ERROR) << "Failed to save the pipeline";
-    }
-
-    if (!pipeline_->getClassifier()->save("classifier.grt")) {
-        ofLog(OF_LOG_ERROR) << "Failed to save the classifier";
-    }
-}
-
-void ofApp::loadPipeline() {
-    GRT::GestureRecognitionPipeline pipeline;
-    if (!pipeline.load("pipeline.grt")) {
-        ofLog(OF_LOG_ERROR) << "Failed to load the pipeline";
-    }
-
-    // TODO(benzh) Compare the two pipelines and warn the user if the
-    // loaded one is different from his.
-    (*pipeline_) = pipeline;
-}
-
 void ofApp::saveTuneables(ofxDatGuiButtonEvent e) {
     ofFileDialogResult result = ofSystemSaveDialog("TuneableParameters.grt",
                                                    "Save your tuneable parameters?");
@@ -615,12 +602,6 @@ void ofApp::renameTrainingSample(int num) {
     // individual components (such as TrainingDataManager).
     rename_title_ = training_data_manager_.getLabelName(label);
 
-    // Hide internal names
-    if (rename_title_ == "CLASS_LABEL_NOT_FOUND" ||
-        rename_title_ == "NOT_SET") {
-        rename_title_ = "";
-    }
-
     is_in_renaming_ = true;
     rename_target_ = label;
     display_title_ = rename_title_;
@@ -658,6 +639,7 @@ void ofApp::updateEventReceived(ofEventArgs& arg) {
 void ofApp::deleteTrainingSample(int num) {
     int label = num + 1;
 
+    if (plot_sample_indices_[num] < 0) { return; }
     training_data_manager_.deleteSample(label, plot_sample_indices_[num]);
 
     uint32_t num_sample_left = training_data_manager_.getNumSampleForLabel(label);
@@ -709,6 +691,7 @@ void ofApp::doRelabelTrainingSample(uint32_t source, uint32_t target) {
     // // plot_samples_ (num) is 0-based, labels (source and target) are 1-based.
     uint32_t num = source - 1;
     uint32_t label = source;
+    if (plot_sample_indices_[num] < 0) { return; }
     training_data_manager_.relabelSample(source, plot_sample_indices_[num], target);
 
     // Update the source plot
@@ -927,9 +910,7 @@ void ofApp::draw() {
     // Status text at the bottom
     ofDrawBitmapString(status_text_, left_margin, ofGetHeight() - 20);
 
-    if (!gui_hide_) {
-        gui_.draw();
-    }
+    gui_.draw();
 }
 
 void ofApp::drawCalibration() {
@@ -1058,9 +1039,9 @@ void ofApp::drawTrainingInfo() {
         plot_sample_button_locations_[i].second.set(x + width - 20, stage_top + stage_height, 20, 20);
 
         // TODO(dmellis): only update these values when the screen size changes.
-        training_sample_guis_[i]->setPosition(x + margin / 8, stage_top + stage_height + 30);
-        training_sample_guis_[i]->setSize(width - margin / 4, training_sample_guis_[i]->getHeight());
-        training_sample_guis_[i]->setWidthElements(width - margin / 4);
+        training_sample_guis_[i]->setPosition(x + margin / 8,
+                                              stage_top + stage_height + 30);
+        training_sample_guis_[i]->setWidth(width - margin / 4);
         training_sample_guis_[i]->draw();
     }
 
@@ -1144,10 +1125,6 @@ void ofApp::exit() {
     if (should_save_calibration_data_) { saveCalibrationData(); }
     if (should_save_training_data_) { saveTrainingData(); }
     if (should_save_test_data_) { saveTestData(); }
-
-    // Clear all listeners.
-    save_pipeline_button_.removeListener(this, &ofApp::savePipeline);
-    load_pipeline_button_.removeListener(this, &ofApp::loadPipeline);
 }
 
 void ofApp::saveTrainingData() {
@@ -1358,7 +1335,6 @@ void ofApp::keyPressed(int key){
             }
             break;
         case 'f': toggleFeatureView(); break;
-        case 'h': gui_hide_ = !gui_hide_; break;
         case 'l':
             if (fragment_ == CALIBRATION) loadCalibrationData();
             else if (fragment_ == TRAINING) loadTrainingData();

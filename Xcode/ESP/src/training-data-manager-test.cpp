@@ -13,6 +13,8 @@ class TrainingDataManagerTest : public ::testing::Test {
         manager->setNumDimensions(kSampleDim);
 
         GRT::MatrixDouble sample(1, kSampleDim);
+
+        // Label 1: three samples
         sample[0][0] = 1;
         manager->addSample(1, sample);
 
@@ -21,6 +23,10 @@ class TrainingDataManagerTest : public ::testing::Test {
 
         sample[0][0] = 3;
         manager->addSample(1, sample);
+
+        // Label 2: one sample
+        sample[0][0] = 4;
+        manager->addSample(2, sample);
     }
 
     unique_ptr<TrainingDataManager> manager;
@@ -34,7 +40,7 @@ TEST_F(TrainingDataManagerTest, BasicAddAndGet) {
 
     // Check the length
     ASSERT_EQ(3, manager->getNumSampleForLabel(1));
-    ASSERT_EQ(0, manager->getNumSampleForLabel(2));
+    ASSERT_EQ(1, manager->getNumSampleForLabel(2));
     ASSERT_EQ(0, manager->getNumSampleForLabel(3));
 }
 
@@ -46,6 +52,20 @@ TEST_F(TrainingDataManagerTest, TestDeleteSample) {
     manager->deleteSample(1, 1);
     ASSERT_EQ(2, manager->getNumSampleForLabel(1));
     ASSERT_EQ(3, manager->getSample(1, 1)[0][0]);
+}
+
+TEST_F(TrainingDataManagerTest, TestDeleteAllSamples) {
+    // Delete all samples
+    manager->deleteAllSamples();
+    ASSERT_EQ(0, manager->getNumSampleForLabel(1));
+    ASSERT_EQ(0, manager->getNumSampleForLabel(2));
+}
+
+TEST_F(TrainingDataManagerTest, TestDeleteAllSamplesWithLabel) {
+    // Delete all samples with label 1
+    manager->deleteAllSamplesWithLabel(1);
+    ASSERT_EQ(0, manager->getNumSampleForLabel(1));
+    ASSERT_EQ(1, manager->getNumSampleForLabel(2));
 }
 
 TEST_F(TrainingDataManagerTest, TestTrimSample) {
@@ -75,14 +95,14 @@ TEST_F(TrainingDataManagerTest, TestRelabelSample) {
     // We are expecting the following change
     // label 1 before: [1, 0, 0], [2, 0, 0], [3, 0, 0]
     // label 1 after : [1, 0, 0],          , [3, 0, 0]
-    // label 2 before:
-    // label 2 after : [2, 0, 0]
+    // label 2 before: [4, 0, 0]
+    // label 2 after : [4, 0, 0], [2, 0, 0]
     manager->relabelSample(1, 1, 2);
     ASSERT_EQ(2, manager->getNumSampleForLabel(1));
     ASSERT_EQ(3, manager->getSample(1, 1)[0][0]);
 
-    ASSERT_EQ(1, manager->getNumSampleForLabel(2));
-    ASSERT_EQ(2, manager->getSample(2, 0)[0][0]);
+    ASSERT_EQ(2, manager->getNumSampleForLabel(2));
+    ASSERT_EQ(2, manager->getSample(2, 1)[0][0]);
 }
 
 TEST_F(TrainingDataManagerTest, TestAssignName) {
