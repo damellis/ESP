@@ -187,5 +187,14 @@ if(test)
   ## Extra linking (mainly GRT)
   target_link_libraries(runUnitTests ${GRT_LIBRARY})
 
+  add_custom_command(
+    TARGET runUnitTests
+    POST_BUILD COMMAND
+    ${CMAKE_INSTALL_NAME_TOOL} -change
+    "@executable_path/../Frameworks/libgrt.dylib"
+    "@executable_path/../Xcode/ESP/libgrt.dylib"
+    $<TARGET_FILE:runUnitTests>
+    )
+
   add_test(esp-test runUnitTests)
 endif()
