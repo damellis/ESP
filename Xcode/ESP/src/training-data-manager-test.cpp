@@ -111,3 +111,53 @@ TEST_F(TrainingDataManagerTest, TestAssignName) {
     manager->setNameForLabel("MyLabel", 1);
     ASSERT_STREQ("MyLabel [1]", manager->getSampleName(1, 1).c_str());
 }
+
+TEST_F(TrainingDataManagerTest, TestScores) {
+    ASSERT_FALSE(manager->hasSampleScore(1, 0));
+    ASSERT_FALSE(manager->hasSampleScore(1, 1));
+    ASSERT_FALSE(manager->hasSampleScore(1, 2));
+    ASSERT_FALSE(manager->hasSampleScore(2, 0));
+
+    manager->setSampleScore(1, 0, 1.0);
+    manager->setSampleScore(1, 1, 1.1);
+    manager->setSampleScore(1, 2, 1.2);
+    manager->setSampleScore(2, 0, 2.0);
+    
+    ASSERT_TRUE(manager->hasSampleScore(1, 0));
+    ASSERT_TRUE(manager->hasSampleScore(1, 1));
+    ASSERT_TRUE(manager->hasSampleScore(1, 2));
+    ASSERT_TRUE(manager->hasSampleScore(2, 0));
+
+    ASSERT_EQ(1.0, manager->getSampleScore(1, 0));
+    ASSERT_EQ(1.1, manager->getSampleScore(1, 1));
+    ASSERT_EQ(1.2, manager->getSampleScore(1, 2));
+    ASSERT_EQ(2.0, manager->getSampleScore(2, 0));
+    
+    manager->setSampleScore(1, 0, 10.0);
+
+    ASSERT_EQ(10.0, manager->getSampleScore(1, 0));
+    
+    manager->deleteSample(1, 0);
+    
+    ASSERT_EQ(1.1, manager->getSampleScore(1, 0));
+    ASSERT_EQ(1.2, manager->getSampleScore(1, 1));
+    ASSERT_EQ(2.0, manager->getSampleScore(2, 0));
+    
+    GRT::MatrixDouble sample(1, kSampleDim); sample[0][0] = 3.0;
+    
+    manager->addSample(2, sample);
+
+    ASSERT_FALSE(manager->hasSampleScore(2, 1));
+    
+    manager->setSampleScore(2, 1, 2.1);
+    
+    ASSERT_TRUE(manager->hasSampleScore(1, 0));
+    ASSERT_TRUE(manager->hasSampleScore(1, 1));
+    ASSERT_TRUE(manager->hasSampleScore(2, 0));
+    ASSERT_TRUE(manager->hasSampleScore(2, 1));
+
+    ASSERT_EQ(1.1, manager->getSampleScore(1, 0));
+    ASSERT_EQ(1.2, manager->getSampleScore(1, 1));
+    ASSERT_EQ(2.0, manager->getSampleScore(2, 0));
+    ASSERT_EQ(2.1, manager->getSampleScore(2, 1));
+}

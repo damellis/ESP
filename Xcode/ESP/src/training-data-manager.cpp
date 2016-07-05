@@ -17,6 +17,7 @@ const char kDefaultTrainingDataName[] = "Default";
 TrainingDataManager::TrainingDataManager(uint32_t num_classes)
         : num_classes_(num_classes) {
     training_sample_names_.resize(num_classes + 1);
+    training_sample_scores_.resize(num_classes + 1);
     num_samples_per_label_.resize(num_classes + 1, 0);
 
     for (uint32_t i = 0; i <= num_classes; i++) {
@@ -71,6 +72,7 @@ bool TrainingDataManager::addSample(
     // By default, set the name be <false, ""> so we will use the default name.
     training_sample_names_[label].push_back(
         std::make_pair(false, std::string()));
+    training_sample_scores_[label].push_back(std::make_pair(false, 0.0));
     data_.addSample(label, sample);
     num_samples_per_label_[label]++;
 
@@ -119,6 +121,9 @@ bool TrainingDataManager::deleteSample(uint32_t label, uint32_t index) {
 
     auto& names = training_sample_names_[label];
     names.erase(names.begin() + index);
+    
+    auto& scores = training_sample_scores_[label];
+    scores.erase(scores.begin() + index);
 
     num_samples_per_label_[label]--;
 
@@ -174,5 +179,35 @@ bool TrainingDataManager::trimSample(
             data_.addSample(label, data[i].getData());
         }
     }
+    return true;
+}
+
+bool TrainingDataManager::hasSampleScore(uint32_t label, uint32_t index) {
+    CHECK_LABEL(label);
+    CHECK_INDEX(label, index);
+    
+    const auto& score = training_sample_scores_[label][index];
+    return score.first;
+}
+
+double TrainingDataManager::getSampleScore(uint32_t label, uint32_t index) {
+    CHECK_LABEL(label);
+    CHECK_INDEX(label, index);
+    
+    const auto& score = training_sample_scores_[label][index];
+    if (score.first) {
+        return score.second;
+    } else {
+        return 0.0; // is there something better we can do here?
+    }
+}
+
+bool TrainingDataManager::setSampleScore(
+    uint32_t label, uint32_t index, double new_score) {
+    CHECK_LABEL(label);
+    
+    auto& score = training_sample_scores_[label][index];
+    score.first = true;
+    score.second = new_score;
     return true;
 }

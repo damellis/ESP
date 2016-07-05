@@ -94,6 +94,14 @@ class TrainingDataManager {
     bool trimSample(uint32_t label, uint32_t index, uint32_t start, uint32_t end);
 
     // =================================================
+    //  Functions that manage per-sample scores
+    // =================================================
+
+    bool hasSampleScore(uint32_t label, uint32_t index);
+    double getSampleScore(uint32_t label, uint32_t index);
+    bool setSampleScore(uint32_t label, uint32_t index, double score);
+
+    // =================================================
     //  Functions for saving/loading training data
     // =================================================
 
@@ -113,6 +121,11 @@ class TrainingDataManager {
     using Name = std::pair<bool, std::string>;
     std::vector<std::vector<Name>> training_sample_names_;
     std::vector<std::string> default_label_names_;
+    
+    // Score simulates Option<double> type. If `Score.first` is true, then
+    // the score is valid; else use the default score.
+    using Score = std::pair<bool, double>;
+    std::vector<std::vector<Score>> training_sample_scores_;
 
     // This variable tracks the number of samples for each label. Although We
     // can get the number with TimeSeriesClassificationData::getClassData and
