@@ -3,7 +3,7 @@
 int ax, ay, az;
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
   while (!Serial);
 
   CurieIMU.begin();
@@ -23,4 +23,5 @@ void loop() {
   Serial.print("\t");
   Serial.print(az);
   Serial.println();
+  delay(10);
 }

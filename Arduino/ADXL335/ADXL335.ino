@@ -10,7 +10,7 @@ int voutpin = A1;
 int gndpin = A2;
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
 
   // Uncomment the following lines if you're using an ADXL335 on an
   // Adafruit breakout board (https://www.adafruit.com/products/163)
@@ -29,4 +29,5 @@ void loop() {
   Serial.print(analogRead(xpin)); Serial.print("\t");
   Serial.print(analogRead(ypin)); Serial.print("\t");
   Serial.print(analogRead(zpin)); Serial.println();
+  delay(10);
 }

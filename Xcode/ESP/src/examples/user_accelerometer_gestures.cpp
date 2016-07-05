@@ -3,7 +3,7 @@
  */
 #include <ESP.h>
 
-ASCIISerialStream stream(9600, 3);
+ASCIISerialStream stream(115200, 3);
 GestureRecognitionPipeline pipeline;
 Calibrator calibrator;
 TcpOStream oStream("localhost", 5204);
