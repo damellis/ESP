@@ -1037,15 +1037,20 @@ void ofApp::drawTrainingInfo() {
         }
         plot_sample_button_locations_[i].first.set(x, stage_top + stage_height, 20, 20);
         plot_sample_button_locations_[i].second.set(x + width - 20, stage_top + stage_height, 20, 20);
+        
+        if (training_data_manager_.hasSampleScore(label, plot_sample_indices_[i])) {
+            double score = training_data_manager_.getSampleScore(label, plot_sample_indices_[i]);
+            ofDrawBitmapString(std::to_string(score), x, stage_top + stage_height + 30);
+        }
 
         // TODO(dmellis): only update these values when the screen size changes.
         training_sample_guis_[i]->setPosition(x + margin / 8,
-                                              stage_top + stage_height + 30);
+                                              stage_top + stage_height + 40);
         training_sample_guis_[i]->setWidth(width - margin / 4);
         training_sample_guis_[i]->draw();
     }
 
-    stage_top += stage_height + 30 + training_sample_guis_[0]->getHeight();
+    stage_top += stage_height + 40 + training_sample_guis_[0]->getHeight();
     for (int i = 0; i < predicted_class_distances_.size() &&
                  i < predicted_class_likelihoods_.size(); i++) {
         ofColor backgroundColor, textColor;
@@ -1219,20 +1224,30 @@ void ofApp::trainModel() {
 }
 
 void ofApp::scoreTrainingData() {
-    TimeSeriesClassificationData training_data = training_data_manager_.getAllData();
-    for (int i = 0; i < training_data.getNumSamples(); i++) {
-        TimeSeriesClassificationSample sample = training_data[i];
-        ofLog(OF_LOG_NOTICE) << "sample " << i << " (class " << sample.getClassLabel() << "):";
-        vector<double> likelihoods(pipeline_->getNumClasses(), 0.0);
-        for (int j = 0; j < sample.getData().getNumRows(); j++) {
-            pipeline_->predict(sample.getData().getRowVector(j));
-            auto l = pipeline_->getClassLikelihoods();
-            for (int j = 0; j < likelihoods.size(); j++) likelihoods[j] += l[j];
+    for (int label = 1; label <= training_data_manager_.getNumLabels(); label++) {
+        for (int i = 0; i < training_data_manager_.getNumSampleForLabel(label); i++) {
+            GRT::MatrixDouble sample = training_data_manager_.getSample(label, i);
+            //ofLog(OF_LOG_NOTICE) << "sample " << i << " (class " << label << "):";
+            vector<double> likelihoods(training_data_manager_.getNumLabels(), 0.0);
+            for (int j = 0; j < sample.getNumRows(); j++) {
+                pipeline_->predict(sample.getRowVector(j));
+                auto l = pipeline_->getClassLikelihoods();
+                for (int j = 0; j < l.size(); j++) likelihoods[j] += l[j];
+            }
+            double sum = 0.0;
+            for (int j = 0; j < likelihoods.size(); j++) {
+                //ofLog(OF_LOG_NOTICE) << "\t" << (j + 1) << ": " << likelihoods[j] << "%";
+                sum += likelihoods[j];
+            }
+            for (int j = 0; j < likelihoods.size(); j++) {
+                likelihoods[j] /= (sum == 0.0 ? 1e-9 : sum);
+                //ofLog(OF_LOG_NOTICE) << "\t" << (j + 1) << ": " << likelihoods[j] << "%";
+            }
+            for (int c = 0; c < pipeline_->getClassLabels().size(); c++)
+                if (pipeline_->getClassLabels()[c] == label)
+                    training_data_manager_.setSampleScore(label, i, likelihoods[c]);
+            pipeline_->reset();
         }
-        for (int j = 0; j < likelihoods.size(); j++) {
-            ofLog(OF_LOG_NOTICE) << "\t" << (j + 1) << ": " << likelihoods[j] << "%";
-        }
-        pipeline_->reset();
     }
 }
 
@@ -1247,7 +1262,7 @@ void ofApp::loadTrainingData() {
                             << " path: " << result.getPath();
     }
 
-    for (uint32_t i = 0; i < kNumMaxLabels_; i++) {
+    for (uint32_t i = 1; i < kNumMaxLabels_; i++) {
         uint32_t num = training_data_manager_.getNumSampleForLabel(i);
         plot_sample_indices_[i] = num;
 
