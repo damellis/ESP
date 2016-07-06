@@ -49,7 +49,7 @@ class TrainingDataManager {
     GRT::TimeSeriesClassificationData getAllData() {
         return data_;
     }
-    
+
     uint32_t getNumLabels() { return num_classes_; }
 
     // =================================================
@@ -111,9 +111,7 @@ class TrainingDataManager {
         return data_.save(filename);
     }
 
-    inline bool load(const std::string& filename) {
-        return data_.load(filename);
-    }
+    bool load(const std::string& filename);
 
   private:
     uint32_t num_classes_;
@@ -123,7 +121,7 @@ class TrainingDataManager {
     using Name = std::pair<bool, std::string>;
     std::vector<std::vector<Name>> training_sample_names_;
     std::vector<std::string> default_label_names_;
-    
+
     // Score simulates Option<double> type. If `Score.first` is true, then
     // the score is valid; else use the default score.
     using Score = std::pair<bool, double>;

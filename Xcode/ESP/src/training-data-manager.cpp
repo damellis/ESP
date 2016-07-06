@@ -121,7 +121,7 @@ bool TrainingDataManager::deleteSample(uint32_t label, uint32_t index) {
 
     auto& names = training_sample_names_[label];
     names.erase(names.begin() + index);
-    
+
     auto& scores = training_sample_scores_[label];
     scores.erase(scores.begin() + index);
 
@@ -185,7 +185,7 @@ bool TrainingDataManager::trimSample(
 bool TrainingDataManager::hasSampleScore(uint32_t label, uint32_t index) {
     if (!(label > 0 && label <= num_classes_)) return false;
     if (!(index < num_samples_per_label_[label])) return false;
-    
+
     const auto& score = training_sample_scores_[label][index];
     return score.first;
 }
@@ -193,7 +193,7 @@ bool TrainingDataManager::hasSampleScore(uint32_t label, uint32_t index) {
 double TrainingDataManager::getSampleScore(uint32_t label, uint32_t index) {
     CHECK_LABEL(label);
     CHECK_INDEX(label, index);
-    
+
     const auto& score = training_sample_scores_[label][index];
     if (score.first) {
         return score.second;
@@ -205,9 +205,40 @@ double TrainingDataManager::getSampleScore(uint32_t label, uint32_t index) {
 bool TrainingDataManager::setSampleScore(
     uint32_t label, uint32_t index, double new_score) {
     CHECK_LABEL(label);
-    
+
     auto& score = training_sample_scores_[label][index];
     score.first = true;
     score.second = new_score;
+    return true;
+}
+
+bool TrainingDataManager::load(const std::string& filename) {
+    if (!data_.load(filename)) {
+        return false;
+    }
+
+    // Populate the internals of the manager from data_. Most importantly, need
+    // to resize all vectors to hold the data.
+    num_classes_ = data_.getNumClasses();
+    training_sample_names_.resize(num_classes_ + 1);
+    default_label_names_.resize(num_classes_ + 1);
+    num_samples_per_label_.resize(num_classes_ + 1);
+    training_sample_scores_.resize(num_classes_ + 1);
+
+    for (uint32_t i = 1; i <= num_classes_; i++) {
+        default_label_names_[i] =
+                data_.getClassNameForCorrespondingClassLabel(i);
+        uint32_t num_samples = data_.getClassData(i).getNumSamples();
+        num_samples_per_label_[i] = num_samples;
+
+        training_sample_names_[i].clear();
+        for (uint32_t j = 0; j < num_samples; j++) {
+            // Since we don't yet have per-sample name saved, we will use
+            // default names (marking the pair as <false, "">).
+            training_sample_names_[i].push_back(
+                std::make_pair(false, std::string()));
+        }
+    }
+
     return true;
 }
