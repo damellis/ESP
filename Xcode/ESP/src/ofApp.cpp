@@ -1259,13 +1259,18 @@ void ofApp::loadTrainingData() {
                             << " path: " << result.getPath();
     }
 
-    for (uint32_t i = 1; i < kNumMaxLabels_; i++) {
+    for (uint32_t i = 1; i <= kNumMaxLabels_; i++) {
         uint32_t num = training_data_manager_.getNumSampleForLabel(i);
-        plot_sample_indices_[i] = num;
+        plot_sample_indices_[i - 1] = num - 1;
 
-        plot_samples_[i].setData(training_data_manager_.getSample(i, num - 1));
+        if (num > 0) {
+            plot_samples_[i - 1].setData(training_data_manager_.getSample(i, num - 1));
+        } else {
+            plot_samples_[i - 1].reset();
+        }
+
         std::string title = training_data_manager_.getLabelName(i);
-        plot_samples_[i].setTitle(title);
+        plot_samples_[i - 1].setTitle(title);
     }
 
     // After we load the training data,
