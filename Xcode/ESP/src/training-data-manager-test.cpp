@@ -165,10 +165,16 @@ TEST_F(TrainingDataManagerTest, TestScores) {
 TEST_F(TrainingDataManagerTest, TestSaveLoad) {
     // TODO(benzh) Save and load should also test the names
     manager->save("tmp.grt");
+    manager->setNameForLabel("Special 2", 2);
+
     TrainingDataManager new_manager(0);
 
     new_manager.load("tmp.grt");
     ASSERT_EQ(1, new_manager.getSample(1, 0)[0][0]);
     ASSERT_EQ(2, new_manager.getSample(1, 1)[0][0]);
     ASSERT_EQ(3, new_manager.getSample(1, 2)[0][0]);
+
+    // Label 1 should use the default name while label 2 should be special.
+    ASSERT_STREQ("Label 1 [1]", manager->getSampleName(1, 1).c_str());
+    ASSERT_STREQ("Special 2 [0]", manager->getSampleName(2, 0).c_str());
 }

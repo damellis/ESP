@@ -226,8 +226,13 @@ bool TrainingDataManager::load(const std::string& filename) {
     training_sample_scores_.resize(num_classes_ + 1);
 
     for (uint32_t i = 1; i <= num_classes_; i++) {
-        default_label_names_[i] =
-                data_.getClassNameForCorrespondingClassLabel(i);
+        const string class_name = data_.getClassNameForCorrespondingClassLabel(i);
+        if (class_name == "NOT_SET") {
+            default_label_names_[i] = std::string("Label ") + std::to_string(i);
+        } else {
+            default_label_names_[i] = class_name;
+        }
+
         uint32_t num_samples = data_.getClassData(i).getNumSamples();
         num_samples_per_label_[i] = num_samples;
 
