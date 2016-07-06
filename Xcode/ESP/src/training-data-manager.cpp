@@ -232,11 +232,13 @@ bool TrainingDataManager::load(const std::string& filename) {
         num_samples_per_label_[i] = num_samples;
 
         training_sample_names_[i].clear();
+        training_sample_scores_[i].clear();
         for (uint32_t j = 0; j < num_samples; j++) {
             // Since we don't yet have per-sample name saved, we will use
             // default names (marking the pair as <false, "">).
             training_sample_names_[i].push_back(
                 std::make_pair(false, std::string()));
+            training_sample_scores_[i].push_back(std::make_pair(false, 0.0));
         }
     }
 
