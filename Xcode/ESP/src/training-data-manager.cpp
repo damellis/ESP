@@ -217,9 +217,13 @@ bool TrainingDataManager::load(const std::string& filename) {
         return false;
     }
 
+    // Use the larger of the current value of num_classes_ and
+    // data_.getNumClasses(). See discussion at
+    // https://github.com/damellis/ESP/issues/252.
+    num_classes_ = std::max(data_.getNumClasses(), num_classes_);
+
     // Populate the internals of the manager from data_. Most importantly, need
     // to resize all vectors to hold the data.
-    num_classes_ = data_.getNumClasses();
     training_sample_names_.resize(num_classes_ + 1);
     default_label_names_.resize(num_classes_ + 1);
     num_samples_per_label_.resize(num_classes_ + 1);
