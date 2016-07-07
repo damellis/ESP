@@ -125,6 +125,28 @@ class AudioFileStream : public IStream {
     unique_ptr<std::thread> update_thread_;
 };
 
+class BaseSerialStream : public IStream {
+  public:
+    BaseSerialStream(uint32_t usb_port_num, uint32_t baud, int numDimensions);
+    virtual bool start() final;
+    virtual void stop() final;
+    virtual int getNumInputDimensions() final;
+  protected:
+    virtual void parseSerial(vector<unsigned char> &buffer) = 0;
+  private:
+    uint32_t port_ = -1;
+    uint32_t baud_;
+    int dimensions_;
+
+    vector<unsigned char> buffer_;
+
+    unique_ptr<ofSerial> serial_;
+
+    // A separate reading thread to read data from Serial.
+    unique_ptr<std::thread> reading_thread_;
+    void readSerial();
+};
+
 class SerialStream : public IStream {
   public:
     SerialStream(uint32_t usb_port_num, uint32_t baud);
@@ -142,6 +164,13 @@ class SerialStream : public IStream {
     // A separate reading thread to read data from Serial.
     unique_ptr<std::thread> reading_thread_;
     void readSerial();
+};
+
+class BinaryIntArraySerialStream : public BaseSerialStream {
+  public:
+    using BaseSerialStream::BaseSerialStream; // inherit constructors
+  private:
+    virtual void parseSerial(vector<unsigned char> &buffer);
 };
 
 /**

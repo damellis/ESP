@@ -121,6 +121,106 @@ int AudioFileStream::getNumInputDimensions() {
     return 512;
 }
 
+BaseSerialStream::BaseSerialStream(uint32_t port, uint32_t baud, int dimensions)
+        : port_(port), baud_(baud), dimensions_(dimensions), serial_(new ofSerial()) {
+    // Print all devices for convenience.
+    // serial_->listDevices();
+}
+
+bool BaseSerialStream::start() {
+    if (port_ == -1) {
+        ofLog(OF_LOG_ERROR) << "USB Port has not been properly set";
+        return false;
+    }
+
+    if (!has_started_) {
+        if (!serial_->setup(port_, baud_)) return false;
+        reading_thread_.reset(new std::thread(&BaseSerialStream::readSerial, this));
+        has_started_ = true;
+    }
+
+    return true;
+}
+
+void BaseSerialStream::stop() {
+    has_started_ = false;
+    if (reading_thread_ != nullptr && reading_thread_->joinable()) {
+        reading_thread_->join();
+    }
+}
+
+int BaseSerialStream::getNumInputDimensions() {
+    return dimensions_;
+}
+
+void BaseSerialStream::readSerial() {
+    // TODO(benzh) This readSerial is running in a different thread
+    // and performing a busy polling (100% CPU usage). Should be
+    // optimized.
+    int sleep_time = 1000 / (baud_ / 10); // sleep about long enough to receive a byte
+    ofLog() << "Serial port will be read every " << sleep_time << " ms";
+    while (has_started_) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(sleep_time));
+        const int kBufSize = 32;
+        unsigned char buf[kBufSize];
+        while (serial_->available() > 0) {
+            int result = serial_->readBytes(buf, kBufSize);
+            
+            if ( result == OF_SERIAL_ERROR ) {
+                ofLog( OF_LOG_ERROR, "unrecoverable error reading from serial" );
+                break;
+            } else if ( result != OF_SERIAL_NO_DATA ) {
+                buffer_.insert(buffer_.end(), buf, buf + result);
+            }
+        }
+        
+        parseSerial(buffer_);
+    }
+}
+
+void BinaryIntArraySerialStream::parseSerial(vector<unsigned char> &buffer) {
+    auto start = std::find(buffer.begin(), buffer.end(), 0); // look for packet start
+    if (start != buffer.end()) {
+        buffer.erase(buffer.begin(), start); // advance to start of packet
+        if (buffer.size() >= 3) { // 0, LSB(n), MSB(n)
+            unsigned char checksum = 0;
+            int LSB = buffer[1]; checksum += LSB;
+            int MSB = buffer[2]; checksum += MSB;
+            int n = ((MSB & 0x7F) << 7) | (LSB & 0x7F);
+            if (buffer.size() >= 4 + 2 * n) {
+                vector<double> vals;
+                //std::cout << "Got array of " << n << " bytes: " << buffer.size();
+                for (int j = 3; j < (3 + 2 * n);) {
+                    LSB = buffer[j++]; checksum += LSB;
+                    MSB = buffer[j++]; checksum += MSB;
+                    int val = ((MSB & 0x7F) << 7) | (LSB & 0x7F);
+                    //std::cout << val << " ";
+                    vals.push_back(val);
+                }
+                //std::cout << "(" << (checksum | 0x80) << " <> " << buffer[3 + 2 * n] << ")" << std::endl;
+                if ((checksum | 0x80) != buffer[3 + 2 * n]) {
+                    ofLog(OF_LOG_WARNING) << "Invalid checksum, discarding serial packet.";
+                } else if (n != getNumInputDimensions()) {
+                    ofLog(OF_LOG_WARNING) << "Serial packet contains " << n <<
+                        " dimensions. Expected " << getNumInputDimensions();
+                } else {
+                    GRT::MatrixDouble data(1, n);
+                    for (int i = 0; i < getNumInputDimensions(); i++) {
+                        int b = vals[i];
+                        data[0][i] = (normalizer_ != nullptr) ? normalizer_(b) : b;
+                    }
+                    if (data_ready_callback_ != nullptr) {
+                        data_ready_callback_(data);
+                    }
+                    
+                }
+                
+                buffer.erase(buffer.begin(), buffer.begin() + (4 + 2 * n));
+            }
+        }
+    }
+}
+
 SerialStream::SerialStream(uint32_t port, uint32_t baud = 115200)
         : port_(port), baud_(baud), serial_(new ofSerial()) {
     // Print all devices for convenience.

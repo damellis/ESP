@@ -11,3 +11,4 @@
 //#include "examples/user_capacitive_sensing.cpp"
 //#include "examples/user_speech_detection.cpp"
 //#include "examples/user_sudden_motion.cpp"
+//#include "examples/user_touche.cpp"

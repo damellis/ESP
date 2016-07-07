@@ -31,9 +31,7 @@
 
 #define N 160  //How many frequencies
 
-float results[N];            //-Filtered result buffer
-float freq[N];            //-Filtered result buffer
-int sizeOfArray = N;
+int results[N];
 
 
 
@@ -70,24 +68,29 @@ void loop()
     ICR1 = d;               // |
     OCR1A = d / 2;          //-+
     SET(TCCR1B, 0);         //-Restart generator
-
-    results[d] = results[d] * 0.5 + (float)(v) * 0.5; //Filter results
-
-    freq[d] = d;
-
-    //   plot(v,0);              //-Display
-    //   plot(results[d],1);
-    // delayMicroseconds(1);
+    results[d] = v;
   }
 
 
-  PlottArray(1, freq, results);
+  SendData(results, N);
 
 
   TOG(PORTB, 0);           //-Toggle pin 8 after each sweep (good for scope)
 }
 
-
-
-
+void SendData(int data[], int n) {
+  byte checksum, LSB, MSB;
+  Serial.write(byte(0)); checksum = 0;
+  LSB = lowByte(n) | 0x80; // send low seven bits, with one in high bit to ensure a non-zero byte
+  MSB = highByte(n << 1) | 0x80; // send bits 8 to 14, with one in high bit to ensure a non-zero byte
+  Serial.write(LSB); checksum += LSB;
+  Serial.write(MSB); checksum += MSB;
+  for (int i = 0; i < n; i++) {
+    LSB = lowByte(data[i]) | 0x80; // send low seven bits, with one in high bit to ensure a non-zero byte
+    MSB = highByte(data[i] << 1) | 0x80; // send bits 8 to 14, with one in high bit to ensure a non-zero byte
+    Serial.write(LSB); checksum += LSB;
+    Serial.write(MSB); checksum += MSB;
+  }
+  Serial.write(checksum | 0x80); // seven bit checksum, with one in the high bit to ensure a non-zero byte
+}
 
