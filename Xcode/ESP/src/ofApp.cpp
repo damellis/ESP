@@ -1051,28 +1051,28 @@ void ofApp::drawTrainingInfo() {
     }
 
     stage_top += stage_height + 40 + training_sample_guis_[0]->getHeight();
-    for (int i = 0; i < predicted_class_distances_.size() &&
-                 i < predicted_class_likelihoods_.size(); i++) {
-        ofColor backgroundColor, textColor;
-        UINT label = predicted_class_labels_[i];
-        if (predicted_label_ == label) {
-            backgroundColor = ofColor(255);
-            textColor = ofColor(0);
-        } else {
-            backgroundColor = ofGetBackgroundColor();
-            textColor = ofColor(255);
-        }
-        ofDrawBitmapStringHighlight(
-            std::to_string(predicted_class_distances_[i]).substr(0, 6),
-            stage_left + (label - 1) * width,
-            stage_top + margin,
-            backgroundColor, textColor);
-        ofDrawBitmapStringHighlight(
-            std::to_string(predicted_class_likelihoods_[i]).substr(0, 6),
-            stage_left + (label - 1) * width,
-            stage_top + margin * 3 / 2,
-            backgroundColor, textColor);
-    }
+//    for (int i = 0; i < predicted_class_distances_.size() &&
+//                 i < predicted_class_likelihoods_.size(); i++) {
+//        ofColor backgroundColor, textColor;
+//        UINT label = predicted_class_labels_[i];
+//        if (predicted_label_ == label) {
+//            backgroundColor = ofColor(255);
+//            textColor = ofColor(0);
+//        } else {
+//            backgroundColor = ofGetBackgroundColor();
+//            textColor = ofColor(255);
+//        }
+//        ofDrawBitmapStringHighlight(
+//            std::to_string(predicted_class_distances_[i]).substr(0, 6),
+//            stage_left + (label - 1) * width,
+//            stage_top + margin,
+//            backgroundColor, textColor);
+//        ofDrawBitmapStringHighlight(
+//            std::to_string(predicted_class_likelihoods_[i]).substr(0, 6),
+//            stage_left + (label - 1) * width,
+//            stage_top + margin * 3 / 2,
+//            backgroundColor, textColor);
+//    }
 
     if (!is_in_feature_view_) { return; }
     if (pipeline_->getNumFeatureExtractionModules() == 0) { return; }
