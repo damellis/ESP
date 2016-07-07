@@ -156,6 +156,10 @@ void ofApp::setup() {
     plot_inputs_.setDrawInfoText(true);
     plot_inputs_.setChannelNames(istream_labels);
     plot_inputs_.onRangeSelected(this, &ofApp::onInputPlotSelection, NULL);
+    if (istream_->getNumOutputDimensions() >= kTooManyFeaturesThreshold) {
+        plot_inputs_snapshot_.setup(istream_->getNumOutputDimensions(), 1, "Snapshot");
+        plot_inputs_.setDrawInfoText(false); // this will be too long to show
+    }
 
     plot_testdata_window_.setup(kBufferSize_, istream_->getNumOutputDimensions(), "Test Data");
     plot_testdata_window_.setDrawGrid(true);
@@ -777,6 +781,8 @@ void ofApp::update() {
         }
 
         plot_inputs_.update(data_point, predicted_label_ != 0, title);
+        if (istream_->getNumOutputDimensions() >= kTooManyFeaturesThreshold)
+            plot_inputs_snapshot_.setData(data_point);
 
         if (istream_->hasStarted()) {
             if (!pipeline_->preProcessData(data_point)) {
@@ -914,6 +920,16 @@ void ofApp::draw() {
     gui_.draw();
 }
 
+void ofApp::drawInputs(uint32_t stage_left, uint32_t stage_top,
+                      uint32_t stage_width, uint32_t stage_height) {
+    if (istream_->getNumOutputDimensions() >= kTooManyFeaturesThreshold) {
+        plot_inputs_snapshot_.draw(stage_left, stage_top, stage_width, stage_height * 0.75);
+        plot_inputs_.draw(stage_left, stage_top + stage_height * 0.75, stage_width, stage_height * 0.25);
+    } else {
+        plot_inputs_.draw(stage_left, stage_top, stage_width, stage_height);
+    }
+}
+
 void ofApp::drawCalibration() {
     uint32_t margin = 30;
     uint32_t stage_left = 10;
@@ -955,7 +971,7 @@ void ofApp::drawLivePipeline() {
 
     // 1. Draw Input.
     ofPushStyle();
-    plot_inputs_.draw(stage_left, stage_top, stage_width, stage_height);
+    drawInputs(stage_left, stage_top, stage_width, stage_height);
     ofPopStyle();
     stage_top += stage_height + margin;
 
@@ -996,7 +1012,7 @@ void ofApp::drawTrainingInfo() {
     // 1. Draw Input
     if (!is_in_feature_view_) {
         ofPushStyle();
-        plot_inputs_.draw(stage_left, stage_top, stage_width, stage_height);
+        drawInputs(stage_left, stage_top, stage_width, stage_height);
         ofPopStyle();
         stage_top += stage_height + margin;
     }
@@ -1107,7 +1123,7 @@ void ofApp::drawAnalysis() {
 
     // 1. Draw Input
     ofPushStyle();
-    plot_inputs_.draw(stage_left, stage_top, stage_width, stage_height);
+    drawInputs(stage_left, stage_top, stage_width, stage_height);
     ofPopStyle();
     stage_top += stage_height + margin;
 

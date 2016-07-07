@@ -54,6 +54,8 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
   private:
     enum Fragment { CALIBRATION, PIPELINE, TRAINING, ANALYSIS };
     Fragment fragment_;
+
+    void drawInputs(uint32_t, uint32_t, uint32_t, uint32_t);
     void drawCalibration();
     void drawLivePipeline();
     void drawTrainingInfo();
@@ -128,6 +130,11 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     // Visuals
     ofxGrtTimeseriesPlot plot_raw_;
     InteractiveTimeSeriesPlot plot_inputs_;
+    ofxGrtTimeseriesPlot plot_inputs_snapshot_; // a spectrum of the most
+                                                // recent input vector, shown
+                                                // only if the number of input
+                                                // dimensions is greater than
+                                                // kTooManyFeaturesThreshold
     void onInputPlotSelection(InteractiveTimeSeriesPlot::CallbackArgs arg);
     bool enable_history_recording_ = false;
     bool is_in_history_recording_ = false;
