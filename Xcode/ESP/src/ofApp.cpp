@@ -465,7 +465,8 @@ void ofApp::updateTestWindowPlot() {
         for (int i = start; i < end; i++) {
             if (pipeline_->getTrained()) {
                 int predicted_label = test_data_predicted_class_labels_[i];
-                std::string title = training_data_manager_.getLabelName(predicted_label);
+                std::string title = "";
+                if (predicted_label != 0) title = training_data_manager_.getLabelName(predicted_label);
                 plot_testdata_window_.update(test_data_.getRowVector(i), predicted_label != 0, title);
             } else {
                 plot_testdata_window_.update(test_data_.getRowVector(i));
