@@ -189,6 +189,7 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     void deleteTrainingSample(int num);
     void trimTrainingSample(int num);
     void relabelTrainingSample(int num);
+    void deleteAllTrainingSamples(int num);
     void doRelabelTrainingSample(uint32_t from, uint32_t to);
 
     string getTrainingDataAdvice();
@@ -249,6 +250,9 @@ class TrainingSampleGuiListener {
     }
     void relabelButtonPressed(ofxDatGuiButtonEvent e) {
         app->relabelTrainingSample(num);
+    }
+    void deleteAllButtonPressed(ofxDatGuiButtonEvent e) {
+        app->deleteAllTrainingSamples(num);
     }
   private:
     ofApp *app;

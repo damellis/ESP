@@ -301,6 +301,11 @@ void ofApp::setup() {
             listener, &TrainingSampleGuiListener::relabelButtonPressed);
         relabel_button->setStripeVisible(false);
 
+        ofxDatGuiButton* delete_all_button = gui->addButton("delete all");
+        delete_all_button->onButtonEvent(
+            listener, &TrainingSampleGuiListener::deleteAllButtonPressed);
+        delete_all_button->setStripeVisible(false);
+
         training_sample_guis_.push_back(gui);
     }
 
@@ -665,6 +670,20 @@ void ofApp::deleteTrainingSample(int num) {
     should_save_training_data_ = true;
 }
 
+void ofApp::deleteAllTrainingSamples(int num) {
+    int label = num + 1;
+
+    training_data_manager_.deleteAllSamplesWithLabel(label);
+
+    uint32_t num_sample_left = training_data_manager_.getNumSampleForLabel(label);
+
+    plot_samples_[num].reset();
+    plot_sample_indices_[num] = -1;
+
+    populateSampleFeatures(num);
+    should_save_training_data_ = true;
+}
+
 void ofApp::trimTrainingSample(int num) {
     pair<uint32_t, uint32_t> selection = plot_samples_[num].getSelection();
 
@@ -1007,7 +1026,24 @@ void ofApp::drawTrainingInfo() {
     uint32_t stage_left = margin_left;
     uint32_t stage_top = margin_top;
     uint32_t stage_width = ofGetWidth() - margin;
-    uint32_t stage_height = (ofGetHeight() - 200 - 4 * margin) / 2;
+    uint32_t stage_height =
+        (ofGetHeight() - margin_top
+         - margin // between the two plots
+         - 40 // indices (1 / 3) and scores for training samples
+         - 35 // bottom margin and status message
+         - training_sample_guis_[0]->getHeight()) / 2;
+
+    // need to create the paragraph and calculate its height to determine the
+    // height of the stages (input and training sample plots).
+    ofxParagraph paragraph(training_data_advice_, stage_width);
+    paragraph.setFont("ofxbraitsch/fonts/Verdana.ttf", 11);
+    paragraph.setColor(0xffffff);
+    paragraph.setIndent(0);
+    paragraph.setLeading(0);
+    
+    if (training_data_advice_ != "") {
+        stage_height -= paragraph.getHeight() / 2;
+    }
 
     // 1. Draw Input
     if (!is_in_feature_view_) {
@@ -1019,11 +1055,6 @@ void ofApp::drawTrainingInfo() {
 
     // 2. Draw advice for training data (if any)
     if (training_data_advice_ != "") {
-        ofxParagraph paragraph(training_data_advice_, stage_width);
-        paragraph.setFont("ofxbraitsch/fonts/Verdana.ttf", 11);
-        paragraph.setColor(0xffffff);
-        paragraph.setIndent(0);
-        paragraph.setLeading(0);
         paragraph.draw(stage_left, stage_top);
         stage_top += paragraph.getHeight();
     }
