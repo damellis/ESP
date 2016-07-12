@@ -134,6 +134,8 @@ bool TrainingDataManager::deleteAllSamples() {
     for (uint32_t i = 0; i < num_classes_; i++) {
         data_.eraseAllSamplesWithClassLabel(i + 1);
         num_samples_per_label_[i + 1] = 0;
+        auto& scores = training_sample_scores_[i + 1];
+        scores.erase(scores.begin(), scores.end());
     }
     return true;
 }
@@ -142,6 +144,8 @@ bool TrainingDataManager::deleteAllSamplesWithLabel(uint32_t label) {
     CHECK_LABEL(label);
     data_.eraseAllSamplesWithClassLabel(label);
     num_samples_per_label_[label] = 0;
+    auto& scores = training_sample_scores_[label];
+    scores.erase(scores.begin(), scores.end());
     return true;
 }
 
