@@ -1282,10 +1282,10 @@ void ofApp::scoreTrainingData() {
                 pipeline_->predict(sample.getRowVector(j));
                 auto l = pipeline_->getClassLikelihoods();
                 bool non_zero = false;
-                for (int j = 0; j < l.size(); j++) {
-                    if (l[j] > 1e-9) non_zero = true;
-                    if (pipeline_->getClassLabels()[j] == label) score += l[j];
-                    else score -= l[j];
+                for (int k = 0; k < l.size(); k++) {
+                    if (l[k] > 1e-9) non_zero = true;
+                    if (pipeline_->getClassLabels()[k] == label) score += l[k];
+                    else score -= l[k];
                 }
                 if (non_zero) num_non_zero++;
             }
