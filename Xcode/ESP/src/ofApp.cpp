@@ -1276,21 +1276,24 @@ void ofApp::scoreTrainingData() {
         for (int i = 0; i < training_data_manager_.getNumSampleForLabel(label); i++) {
             GRT::MatrixDouble sample = training_data_manager_.getSample(label, i);
             //ofLog(OF_LOG_NOTICE) << "sample " << i << " (class " << label << "):";
-            double score = 0.0;
-            int num_non_zero = 0;
+            vector<double> likelihoods(training_data_manager_.getNumLabels(), 0.0);
             for (int j = 0; j < sample.getNumRows(); j++) {
                 pipeline_->predict(sample.getRowVector(j));
                 auto l = pipeline_->getClassLikelihoods();
-                bool non_zero = false;
-                for (int k = 0; k < l.size(); k++) {
-                    if (l[k] > 1e-9) non_zero = true;
-                    if (pipeline_->getClassLabels()[k] == label) score += l[k];
-                    else score -= l[k];
-                }
-                if (non_zero) num_non_zero++;
+                for (int k = 0; k < l.size(); k++) likelihoods[k] += l[k];
             }
-            score /= num_non_zero;
-            training_data_manager_.setSampleScore(label, i, score);
+            double sum = 0.0;
+            for (int j = 0; j < likelihoods.size(); j++) {
+                //ofLog(OF_LOG_NOTICE) << "\t" << (j + 1) << ": " << likelihoods[j] << "%";
+                sum += likelihoods[j];
+            }
+            for (int j = 0; j < likelihoods.size(); j++) {
+                likelihoods[j] /= (sum == 0.0 ? 1e-9 : sum);
+                //ofLog(OF_LOG_NOTICE) << "\t" << (j + 1) << ": " << likelihoods[j] << "%";
+            }
+            for (int c = 0; c < pipeline_->getClassLabels().size(); c++)
+                if (pipeline_->getClassLabels()[c] == label)
+                    training_data_manager_.setSampleScore(label, i, likelihoods[c]);
             pipeline_->reset();
         }
     }
