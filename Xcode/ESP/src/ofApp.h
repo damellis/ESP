@@ -183,6 +183,8 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     void trainModel();
     void scoreTrainingData();
 
+    double impact_score_ = 0.0;
+
     vector<ofxDatGui *> training_sample_guis_;
     void renameTrainingSample(int num);
     void renameTrainingSampleDone();
