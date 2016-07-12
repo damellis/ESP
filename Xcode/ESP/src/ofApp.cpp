@@ -1296,6 +1296,34 @@ void ofApp::scoreTrainingData() {
     }
 }
 
+void ofApp::scoreImpactOfTrainingSample(int label, const MatrixDouble &sample) {
+    if (!pipeline_->getTrained()) return; // can't calculate a score
+    
+    GestureRecognitionPipeline p(*pipeline_);
+
+    p.reset();
+    //std::cout << "Scoring sample impact: " << std::endl;
+    double score = 0.0;
+    int num_non_zero = 0;
+    for (int j = 0; j < sample.getNumRows(); j++) {
+        pipeline_->predict(sample.getRowVector(j));
+        auto l = pipeline_->getClassLikelihoods();
+        bool non_zero = false;
+        for (int k = 0; k < l.size(); k++) {
+            if (l[k] > 1e-9) non_zero = true;
+            if (pipeline_->getClassLabels()[k] == label) {
+                //std::cout << l[k] << " ";
+                score += l[k];
+            }
+        }
+        if (non_zero) num_non_zero++;
+        //std::cout << non_zero << std::endl;
+    }
+    //std::cout << std::to_string(score / num_non_zero);
+    status_text_ = "Information gain of sample: " +
+        std::to_string((int) (100 * -log(score / num_non_zero))) + "%";
+}
+
 void ofApp::loadTrainingData() {
     GRT::TimeSeriesClassificationData training_data;
     ofFileDialogResult result = ofSystemLoadDialog("Load existing data", true);
@@ -1489,6 +1517,8 @@ void ofApp::keyReleased(int key) {
                 if (result.getResult() == TrainingSampleCheckerResult::FAILURE)
                     return;
             }
+            
+            scoreImpactOfTrainingSample(label_, sample_data_);
 
             training_data_manager_.addSample(label_, sample_data_);
             int num_samples = training_data_manager_.getNumSampleForLabel(label_);
