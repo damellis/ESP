@@ -1088,7 +1088,7 @@ void ofApp::drawTrainingInfo() {
         
         if (training_data_manager_.hasSampleScore(label, plot_sample_indices_[i])) {
             double score = training_data_manager_.getSampleScore(label, plot_sample_indices_[i]);
-            ofDrawBitmapString(std::to_string(score * 100), x, stage_top + stage_height + 30);
+            ofDrawBitmapString(std::to_string(score), x, stage_top + stage_height + 30);
         }
 
         // TODO(dmellis): only update these values when the screen size changes.
@@ -1233,7 +1233,7 @@ void ofApp::trainModel() {
    if (training_thread_.joinable()) {
        training_thread_.join();
    }
-  
+
    auto training_func = [this]() -> bool {
        ofLog() << "Training started";
        bool training_status = false;
@@ -1267,14 +1267,11 @@ void ofApp::trainModel() {
        updateTestWindowPlot();
        pipeline_->reset();
 
-       status_text_ = "Training was successful. Impact was " +
-           std::to_string(impact_score_ * 100) + ".";
+       status_text_ = "Training was successful";
    }
 }
 
 void ofApp::scoreTrainingData() {
-    double impact = 0.0;
-    int num_scored_samples = 0;
     for (int label = 1; label <= training_data_manager_.getNumLabels(); label++) {
         for (int i = 0; i < training_data_manager_.getNumSampleForLabel(label); i++) {
             GRT::MatrixDouble sample = training_data_manager_.getSample(label, i);
@@ -1293,16 +1290,10 @@ void ofApp::scoreTrainingData() {
                 if (non_zero) num_non_zero++;
             }
             score /= num_non_zero;
-            if (training_data_manager_.hasSampleScore(label, i)) {
-                num_scored_samples++;
-                impact += abs(score - training_data_manager_.getSampleScore(label, i));
-            }
             training_data_manager_.setSampleScore(label, i, score);
             pipeline_->reset();
         }
     }
-  
-    impact_score_ = (num_scored_samples == 0 ? 1.0 : impact / num_scored_samples);
 }
 
 void ofApp::loadTrainingData() {
