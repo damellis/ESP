@@ -1299,6 +1299,40 @@ void ofApp::scoreTrainingData() {
     }
 }
 
+void ofApp::scoreTrainingDataLeaveOneOut() {
+    for (int label = 1; label <= training_data_manager_.getNumLabels(); label++) {
+        for (int i = 0; i < training_data_manager_.getNumSampleForLabel(label); i++) {
+            GRT::MatrixDouble sample = training_data_manager_.getSample(label, 0);
+            training_data_manager_.deleteSample(label, 0);
+            
+            pipeline_->train(training_data_manager_.getAllData());
+            pipeline_->reset();
+            
+            //ofLog(OF_LOG_NOTICE) << "sample " << i << " (class " << label << "):";
+            vector<double> likelihoods(training_data_manager_.getNumLabels() + 1, 0.0);
+            for (int j = 0; j < sample.getNumRows(); j++) {
+                pipeline_->predict(sample.getRowVector(j));
+                auto l = pipeline_->getClassLikelihoods();
+                for (int k = 0; k < l.size(); k++) {
+                    likelihoods[pipeline_->getClassLabels()[k]] += l[k];
+                }
+            }
+            double sum = 0.0;
+            for (int j = 0; j < likelihoods.size(); j++) {
+                //ofLog(OF_LOG_NOTICE) << "\t" << (j + 1) << ": " << likelihoods[j] << "%";
+                sum += likelihoods[j];
+            }
+            for (int j = 0; j < likelihoods.size(); j++) {
+                likelihoods[j] /= (sum == 0.0 ? 1e-9 : sum);
+                //ofLog(OF_LOG_NOTICE) << "\t" << (j + 1) << ": " << likelihoods[j] << "%";
+            }
+            
+            training_data_manager_.addSample(label, sample);
+            training_data_manager_.setSampleScore(label, training_data_manager_.getNumSampleForLabel(label) - 1, likelihoods[label]);
+        }
+    }
+}
+
 void ofApp::scoreImpactOfTrainingSample(int label, const MatrixDouble &sample) {
     if (!pipeline_->getTrained()) return; // can't calculate a score
     
