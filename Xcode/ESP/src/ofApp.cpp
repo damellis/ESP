@@ -1271,7 +1271,7 @@ void ofApp::trainModel() {
                assert(true == plot.clearContentModifiedFlag());
            }
            
-           scoreTrainingDataLeaveOneOut();
+           scoreTrainingData(false);
 
            training_status = true;
        } else {
@@ -1294,42 +1294,16 @@ void ofApp::trainModel() {
    }
 }
 
-void ofApp::scoreTrainingData() {
+void ofApp::scoreTrainingData(bool leaveOneOut) {
     for (int label = 1; label <= training_data_manager_.getNumLabels(); label++) {
         for (int i = 0; i < training_data_manager_.getNumSampleForLabel(label); i++) {
-            GRT::MatrixDouble sample = training_data_manager_.getSample(label, i);
-            //ofLog(OF_LOG_NOTICE) << "sample " << i << " (class " << label << "):";
-            vector<double> likelihoods(training_data_manager_.getNumLabels(), 0.0);
-            for (int j = 0; j < sample.getNumRows(); j++) {
-                pipeline_->predict(sample.getRowVector(j));
-                auto l = pipeline_->getClassLikelihoods();
-                for (int k = 0; k < l.size(); k++) likelihoods[k] += l[k];
-            }
-            double sum = 0.0;
-            for (int j = 0; j < likelihoods.size(); j++) {
-                //ofLog(OF_LOG_NOTICE) << "\t" << (j + 1) << ": " << likelihoods[j] << "%";
-                sum += likelihoods[j];
-            }
-            for (int j = 0; j < likelihoods.size(); j++) {
-                likelihoods[j] /= (sum == 0.0 ? 1e-9 : sum);
-                //ofLog(OF_LOG_NOTICE) << "\t" << (j + 1) << ": " << likelihoods[j] << "%";
-            }
-            for (int c = 0; c < pipeline_->getClassLabels().size(); c++)
-                if (pipeline_->getClassLabels()[c] == label)
-                    training_data_manager_.setSampleScore(label, i, likelihoods[c]);
-            pipeline_->reset();
-        }
-    }
-}
-
-void ofApp::scoreTrainingDataLeaveOneOut() {
-    for (int label = 1; label <= training_data_manager_.getNumLabels(); label++) {
-        for (int i = 0; i < training_data_manager_.getNumSampleForLabel(label); i++) {
-            GRT::MatrixDouble sample = training_data_manager_.getSample(label, 0);
-            training_data_manager_.deleteSample(label, 0);
+            GRT::MatrixDouble sample =
+                training_data_manager_.getSample(label, (leaveOneOut ? 0 : i));
             
-            pipeline_->train(training_data_manager_.getAllData());
-            pipeline_->reset();
+            if (leaveOneOut) {
+                training_data_manager_.deleteSample(label, 0);
+                pipeline_->train(training_data_manager_.getAllData());
+            }
             
             //ofLog(OF_LOG_NOTICE) << "sample " << i << " (class " << label << "):";
             vector<double> likelihoods(training_data_manager_.getNumLabels() + 1, 0.0);
@@ -1350,15 +1324,17 @@ void ofApp::scoreTrainingDataLeaveOneOut() {
                 //ofLog(OF_LOG_NOTICE) << "\t" << (j + 1) << ": " << likelihoods[j] << "%";
             }
             
-            training_data_manager_.addSample(label, sample);
-            //training_data_manager_.setSampleScore(label,
-                //training_data_manager_.getNumSampleForLabel(label) - 1,
-                //likelihoods[label]);
+            if (leaveOneOut) training_data_manager_.addSample(label, sample);
+            
             training_data_manager_.setSampleClassLikelihoods(label,
-                training_data_manager_.getNumSampleForLabel(label) - 1,
+                (leaveOneOut ? training_data_manager_.getNumSampleForLabel(label) - 1 : i),
                 likelihoods);
+            
+            pipeline_->reset();
         }
     }
+    
+    if (leaveOneOut) pipeline_->train(training_data_manager_.getAllData());
 }
 
 void ofApp::scoreImpactOfTrainingSample(int label, const MatrixDouble &sample) {

@@ -182,8 +182,7 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     void drawEventReceived(ofEventArgs& arg);
     void trainModel();
 
-    void scoreTrainingData();
-    void scoreTrainingDataLeaveOneOut();
+    void scoreTrainingData(bool leaveOneOut);
     void scoreImpactOfTrainingSample(int label, const MatrixDouble &sample);
 
     vector<ofxDatGui *> training_sample_guis_;
