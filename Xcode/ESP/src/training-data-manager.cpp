@@ -18,6 +18,7 @@ TrainingDataManager::TrainingDataManager(uint32_t num_classes)
         : num_classes_(num_classes) {
     training_sample_names_.resize(num_classes + 1);
     training_sample_scores_.resize(num_classes + 1);
+    training_sample_class_likelihoods_.resize(num_classes + 1);
     num_samples_per_label_.resize(num_classes + 1, 0);
 
     for (uint32_t i = 0; i <= num_classes; i++) {
@@ -73,6 +74,7 @@ bool TrainingDataManager::addSample(
     training_sample_names_[label].push_back(
         std::make_pair(false, std::string()));
     training_sample_scores_[label].push_back(std::make_pair(false, 0.0));
+    training_sample_class_likelihoods_[label].push_back(std::make_pair(false, std::vector<double>()));
     data_.addSample(label, sample);
     num_samples_per_label_[label]++;
 
@@ -124,6 +126,9 @@ bool TrainingDataManager::deleteSample(uint32_t label, uint32_t index) {
 
     auto& scores = training_sample_scores_[label];
     scores.erase(scores.begin() + index);
+    
+    auto& likelihoods = training_sample_class_likelihoods_[label];
+    likelihoods.erase(likelihoods.begin() + index);
 
     num_samples_per_label_[label]--;
 
@@ -136,6 +141,8 @@ bool TrainingDataManager::deleteAllSamples() {
         num_samples_per_label_[i + 1] = 0;
         auto& scores = training_sample_scores_[i + 1];
         scores.erase(scores.begin(), scores.end());
+        auto& likelihoods = training_sample_class_likelihoods_[i + 1];
+        likelihoods.erase(likelihoods.begin(), likelihoods.end());
     }
     return true;
 }
@@ -146,6 +153,8 @@ bool TrainingDataManager::deleteAllSamplesWithLabel(uint32_t label) {
     num_samples_per_label_[label] = 0;
     auto& scores = training_sample_scores_[label];
     scores.erase(scores.begin(), scores.end());
+    auto& likelihoods = training_sample_class_likelihoods_[label];
+    likelihoods.erase(likelihoods.begin(), likelihoods.end());
     return true;
 }
 
@@ -216,6 +225,36 @@ bool TrainingDataManager::setSampleScore(
     return true;
 }
 
+bool TrainingDataManager::hasSampleClassLikelihoods(uint32_t label, uint32_t index) {
+    if (!(label > 0 && label <= num_classes_)) return false;
+    if (!(index < num_samples_per_label_[label])) return false;
+
+    const auto& likelihood = training_sample_class_likelihoods_[label][index];
+    return likelihood.first;
+}
+
+std::vector<double> TrainingDataManager::getSampleClassLikelihoods(uint32_t label, uint32_t index) {
+    CHECK_LABEL(label);
+    CHECK_INDEX(label, index);
+
+    const auto& likelihood = training_sample_class_likelihoods_[label][index];
+    if (likelihood.first) {
+        return likelihood.second;
+    } else {
+        return std::vector<double>(); // is there something better we can do here?
+    }
+}
+
+bool TrainingDataManager::setSampleClassLikelihoods(
+    uint32_t label, uint32_t index, vector<double> new_likelihoods) {
+    CHECK_LABEL(label);
+
+    auto& likelihood = training_sample_class_likelihoods_[label][index];
+    likelihood.first = true;
+    likelihood.second = new_likelihoods;
+    return true;
+}
+
 bool TrainingDataManager::load(const std::string& filename) {
     if (!data_.load(filename)) {
         return false;
@@ -232,6 +271,7 @@ bool TrainingDataManager::load(const std::string& filename) {
     default_label_names_.resize(num_classes_ + 1);
     num_samples_per_label_.resize(num_classes_ + 1);
     training_sample_scores_.resize(num_classes_ + 1);
+    training_sample_class_likelihoods_.resize(num_classes_ + 1);
 
     for (uint32_t i = 1; i <= num_classes_; i++) {
         const string class_name = data_.getClassNameForCorrespondingClassLabel(i);
@@ -246,12 +286,15 @@ bool TrainingDataManager::load(const std::string& filename) {
 
         training_sample_names_[i].clear();
         training_sample_scores_[i].clear();
+        training_sample_class_likelihoods_[i].clear();
         for (uint32_t j = 0; j < num_samples; j++) {
             // Since we don't yet have per-sample name saved, we will use
             // default names (marking the pair as <false, "">).
             training_sample_names_[i].push_back(
                 std::make_pair(false, std::string()));
             training_sample_scores_[i].push_back(std::make_pair(false, 0.0));
+            training_sample_class_likelihoods_[i].push_back(
+                std::make_pair(false, vector<double>()));
         }
     }
 

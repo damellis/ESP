@@ -1029,7 +1029,7 @@ void ofApp::drawTrainingInfo() {
     uint32_t stage_height =
         (ofGetHeight() - margin_top
          - margin // between the two plots
-         - 40 // indices (1 / 3) and scores for training samples
+         - 60 // indices (1 / 3) and scores for training samples
          - 35 // bottom margin and status message
          - training_sample_guis_[0]->getHeight()) / 2;
 
@@ -1086,19 +1086,41 @@ void ofApp::drawTrainingInfo() {
         plot_sample_button_locations_[i].first.set(x, stage_top + stage_height, 20, 20);
         plot_sample_button_locations_[i].second.set(x + width - 20, stage_top + stage_height, 20, 20);
         
-        if (training_data_manager_.hasSampleScore(label, plot_sample_indices_[i])) {
-            double score = training_data_manager_.getSampleScore(label, plot_sample_indices_[i]);
-            ofDrawBitmapString(std::to_string(score), x, stage_top + stage_height + 30);
+        ofDrawBitmapString("Closeness To:", x, stage_top + stage_height + 32);
+        
+        for (int j = 0; j < kNumMaxLabels_; j++) {
+            ofDrawBitmapString(std::to_string(j + 1), x + j * width / kNumMaxLabels_, stage_top + stage_height + 44);
+            if (training_data_manager_.hasSampleClassLikelihoods(label, plot_sample_indices_[i])) {
+                double score = training_data_manager_.getSampleClassLikelihoods(
+                    label, plot_sample_indices_[i])[j + 1];
+                if (i == j)
+                    // the lower the score => the less likely it is to be
+                    // classified correctly => the more red we want to draw =>
+                    // the less green and blue it should have
+                    ofSetColor(255, 255 * score, 255 * score);
+                else
+                    // the higher the score => the more confused it is with
+                    // another class => the more red we want to draw => the
+                    // less green and blue it should have
+                    ofSetColor(255, 255 * (1.0 - score), 255 * (1.0 - score));
+                ofDrawBitmapString(std::to_string((int) (score * 100)),
+                    x + j * width / kNumMaxLabels_,
+                    stage_top + stage_height + 56);
+                ofSetColor(255);
+            } else {
+                ofDrawBitmapString("-", x + j * width / kNumMaxLabels_,
+                    stage_top + stage_height + 56);
+            }
         }
 
         // TODO(dmellis): only update these values when the screen size changes.
         training_sample_guis_[i]->setPosition(x + margin / 8,
-                                              stage_top + stage_height + 40);
+                                              stage_top + stage_height + 60);
         training_sample_guis_[i]->setWidth(width - margin / 4);
         training_sample_guis_[i]->draw();
     }
 
-    stage_top += stage_height + 40 + training_sample_guis_[0]->getHeight();
+    stage_top += stage_height + 60 + training_sample_guis_[0]->getHeight();
 //    for (int i = 0; i < predicted_class_distances_.size() &&
 //                 i < predicted_class_likelihoods_.size(); i++) {
 //        ofColor backgroundColor, textColor;
@@ -1248,7 +1270,7 @@ void ofApp::trainModel() {
                assert(true == plot.clearContentModifiedFlag());
            }
            
-           scoreTrainingData();
+           scoreTrainingDataLeaveOneOut();
 
            training_status = true;
        } else {
@@ -1328,7 +1350,12 @@ void ofApp::scoreTrainingDataLeaveOneOut() {
             }
             
             training_data_manager_.addSample(label, sample);
-            training_data_manager_.setSampleScore(label, training_data_manager_.getNumSampleForLabel(label) - 1, likelihoods[label]);
+            //training_data_manager_.setSampleScore(label,
+                //training_data_manager_.getNumSampleForLabel(label) - 1,
+                //likelihoods[label]);
+            training_data_manager_.setSampleClassLikelihoods(label,
+                training_data_manager_.getNumSampleForLabel(label) - 1,
+                likelihoods);
         }
     }
 }

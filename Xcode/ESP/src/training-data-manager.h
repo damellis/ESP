@@ -102,6 +102,10 @@ class TrainingDataManager {
     bool hasSampleScore(uint32_t label, uint32_t index);
     double getSampleScore(uint32_t label, uint32_t index);
     bool setSampleScore(uint32_t label, uint32_t index, double score);
+    
+    bool hasSampleClassLikelihoods(uint32_t label, uint32_t index);
+    std::vector<double> getSampleClassLikelihoods(uint32_t label, uint32_t index);
+    bool setSampleClassLikelihoods(uint32_t label, uint32_t index, vector<double> likelihoods);
 
     // =================================================
     //  Functions for saving/loading training data
@@ -126,6 +130,12 @@ class TrainingDataManager {
     // the score is valid; else use the default score.
     using Score = std::pair<bool, double>;
     std::vector<std::vector<Score>> training_sample_scores_;
+    
+    // Probability that the sample belongs to each class (e.g. when the model
+    // is trained on all other samples). If ClassLikelihoods.first is true,
+    // then vector is valid.
+    using ClassLikelihoods = std::pair<bool, std::vector<double>>;
+    std::vector<std::vector<ClassLikelihoods>> training_sample_class_likelihoods_;
 
     // This variable tracks the number of samples for each label. Although We
     // can get the number with TimeSeriesClassificationData::getClassData and
