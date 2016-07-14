@@ -744,9 +744,10 @@ void ofApp::doRelabelTrainingSample(uint32_t source, uint32_t target) {
 string ofApp::getTrainingDataAdvice() {
     if (!pipeline_->getIsClassifierSet()) return "";
     if (dynamic_cast<DTW *>(pipeline_->getClassifier())) {
-        return "This algorithm looks for the closest training sample. "
-            "As a result, you don't need a lot of training data but any "
-            "individual bad training sample can cause problems.";
+        return "This algorithm picks a representative sample for each class "
+            "and looks for the class with the closest representative sample. "
+            "As a result, you don't need a lot of training data but bad "
+            "training samples can cause problems.";
     }
     if (dynamic_cast<ANBC *>(pipeline_->getClassifier())) {
         return "This algorithm uses an average of the training data. "
