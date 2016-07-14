@@ -22,8 +22,7 @@ TrainingDataManager::TrainingDataManager(uint32_t num_classes)
     num_samples_per_label_.resize(num_classes + 1, 0);
 
     for (uint32_t i = 0; i <= num_classes; i++) {
-        default_label_names_.push_back(
-            std::string("Label ") + std::to_string(i));
+        default_label_names_.push_back(std::to_string(i));
     }
 
     data_.setDatasetName(kDefaultTrainingDataName);
@@ -276,7 +275,7 @@ bool TrainingDataManager::load(const std::string& filename) {
     for (uint32_t i = 1; i <= num_classes_; i++) {
         const string class_name = data_.getClassNameForCorrespondingClassLabel(i);
         if (class_name == "NOT_SET" || class_name == "CLASS_LABEL_NOT_FOUND") {
-            default_label_names_[i] = std::string("Label ") + std::to_string(i);
+            default_label_names_[i] = std::to_string(i);
         } else {
             default_label_names_[i] = class_name;
         }
