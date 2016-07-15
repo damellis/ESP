@@ -68,7 +68,10 @@ void setup()
         "Rest accelerometer on flat surface.", restingDataCollected);
     useCalibrator(calibrator);
 
-    pipeline.setClassifier(DTW(false, true, null_rej));
+    DTW dtw(false, true, null_rej);
+    dtw.enableTrimTrainingData(true, 0.1, 75);
+    
+    pipeline.setClassifier(dtw);
     pipeline.addPostProcessingModule(ClassLabelTimeoutFilter(timeout));
     usePipeline(pipeline);
 
