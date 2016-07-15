@@ -45,7 +45,7 @@ CalibrateResult calibrate(const MatrixDouble& data) {
     if (stddev[0] / r > 0.05 ||
         stddev[1] / r > 0.05 ||
         stddev[2] / r > 0.05)
-        result = CalibrateResult(CalibrateResult::FAILURE,
+        result = CalibrateResult(CalibrateResult::WARNING,
             "Accelerometer seemed to be moving; consider recollecting the "
             "calibration sample.");
     
@@ -105,7 +105,7 @@ void setup()
     calibrator.setCalibrateFunction(processAccelerometerData);
     calibrator.addCalibrateProcess("Upright",
         "Rest accelerometer upright on flat surface.", uprightDataCollected);
-    calibrator.addCalibrateProcess("Upside Down",
+    calibrator.addCalibrateProcess("Upside_Down",
         "Rest accelerometer upside down on flat surface.", upsideDownDataCollected);
     useCalibrator(calibrator);
 

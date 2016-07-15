@@ -552,6 +552,7 @@ void ofApp::loadCalibrationData() {
                                   << calibrators[i].getName() << "')";
         }
         calibrators[i].clear();
+        plot_calibrators_[i].reset();
         if (calibrators[i].calibrate(data[i].getData()).getResult() ==
             CalibrateResult::FAILURE) {
             ofLog(OF_LOG_WARNING) << "Failed to calibrate saved "
