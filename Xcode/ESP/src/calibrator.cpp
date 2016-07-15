@@ -2,6 +2,8 @@
 
 #include "calibrator.h"
 
+const char *CalibrateResult::result_strings_[3] = { "Success", "Warning", "Failure" };
+
 const string CalibrateResult::kDefaultSuccessMessage = "Success";
 const string CalibrateResult::kDefaultWarningMessage = "Warning in calibration";
 const string CalibrateResult::kDefaultFailureMessage = "Failed in calibration";

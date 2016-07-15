@@ -19,14 +19,17 @@ class CalibrateResult {
         WARNING,
         FAILURE,
     };
-
+    
     CalibrateResult(Result result);
     CalibrateResult(Result result, string message);
 
     Result getResult() const { return result_; }
+    string getResultString() const { return result_strings_[result_]; }
     string getMessage() const { return result_message_; }
 
   private:
+    static const char *result_strings_[3];
+
     Result result_;
     string result_message_;
 
@@ -63,16 +66,16 @@ class CalibrateProcess {
             : name_(name), description_(description), cb_(cb),
             is_calibrated_(false) {}
 
-    CalibrateResult calibrate() {
-        CalibrateResult result = cb_(data_);
-        if (result.getResult() == CalibrateResult::FAILURE) {
+    CalibrateResult calibrate(GRT::MatrixDouble data) {
+        CalibrateResult result = cb_(data);
+        if (result.getResult() != CalibrateResult::FAILURE) {
             // Only failure is considered as not calibrated.
-            is_calibrated_ = false;
-        } else {
             is_calibrated_ = true;
+            setData(data);
         }
         return result;
     }
+    void clear() { data_.clear(); is_calibrated_ = false; }
     bool isCalibrated() const { return is_calibrated_; }
 
     std::string getName() const { return name_; }

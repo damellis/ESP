@@ -551,9 +551,16 @@ void ofApp::loadCalibrationData() {
                                   << "') differs from current calibration sample name ('"
                                   << calibrators[i].getName() << "')";
         }
-        plot_calibrators_[i].setData(data[i].getData());
-        calibrators[i].setData(data[i].getData());
-        calibrators[i].calibrate();
+        calibrators[i].clear();
+        plot_calibrators_[i].reset();
+        if (calibrators[i].calibrate(data[i].getData()).getResult() ==
+            CalibrateResult::FAILURE) {
+            ofLog(OF_LOG_WARNING) << "Failed to calibrate saved "
+                                  << "calibration sample " << (i + 1) << ": "
+                                  << calibrators[i].getName();
+        } else {
+            plot_calibrators_[i].setData(data[i].getData());
+        }
     }
 
     plot_inputs_.reset();
@@ -1534,17 +1541,17 @@ void ofApp::keyReleased(int key) {
 
             vector<CalibrateProcess>& calibrators = calibrator_->getCalibrateProcesses();
             if (label_ - 1 < calibrators.size()) {
-                plot_calibrators_[label_ - 1].setData(sample_data_);
-                calibrators[label_ - 1].setData(sample_data_);
+                CalibrateResult result =
+                    calibrators[label_ - 1].calibrate(sample_data_);
 
-                CalibrateResult result = calibrators[label_ - 1].calibrate();
-                if (result.getResult() == CalibrateResult::SUCCESS) {
+                if (result.getResult() != CalibrateResult::FAILURE) {
+                    plot_calibrators_[label_ - 1].setData(sample_data_);
                     plot_inputs_.reset();
                     should_save_calibration_data_ = true;
                 }
 
                 status_text_ = calibrators[label_ - 1].getName() +
-                        " calibration: " +
+                        " calibration: " + result.getResultString() + ": " +
                         result.getMessage();
             }
         } else if (fragment_ == TRAINING) {
