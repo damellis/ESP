@@ -36,18 +36,18 @@ CalibrateResult calibrate(const MatrixDouble& data) {
     double r = abs(oG - zG);
     vector<double> stddev = data.getStdDev();
     
-    if (stddev[0] / r > 0.05 ||
-        stddev[1] / r > 0.05 ||
-        stddev[2] / r > 0.05)
-        result = CalibrateResult(CalibrateResult::WARNING,
-            "Accelerometer seemed to be moving; consider recollecting the "
-            "calibration sample.");
-    
     if (abs(data.getMean()[0] - data.getMean()[1]) / r > 0.1)
         result = CalibrateResult(CalibrateResult::WARNING,
             "X and Y axes differ by " + std::to_string(
             abs(data.getMean()[0] - data.getMean()[1]) / r * 100) +
             " percent. Check that accelerometer is flat.");
+    
+    if (stddev[0] / r > 0.05 ||
+        stddev[1] / r > 0.05 ||
+        stddev[2] / r > 0.05)
+        result = CalibrateResult(CalibrateResult::FAILURE,
+            "Accelerometer seemed to be moving; consider recollecting the "
+            "calibration sample.");
     
     // If we have both samples, do the actual calibration.
 
