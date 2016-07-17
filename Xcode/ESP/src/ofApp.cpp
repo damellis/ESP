@@ -109,6 +109,7 @@ ofApp::ofApp() : fragment_(TRAINING),
                  calibrator_(nullptr),
                  training_data_manager_(kNumMaxLabels_),
                  should_save_calibration_data_(false),
+                 should_save_pipeline_(false),
                  should_save_training_data_(false),
                  should_save_test_data_(false),
                  is_training_scheduled_(false) {
@@ -497,51 +498,102 @@ void ofApp::runPredictionOnTestData() {
             test_data_predicted_class_labels_[i] = 0;
         }
     }
-
 }
 
-void ofApp::saveCalibrationData() {
-    ofFileDialogResult result = ofSystemSaveDialog("CalibrationData.grt",
-                                                   "Save your calibration data?");
-    if (result.bSuccess) {
-        // Pack calibration samples into a TimeSeriesClassificationData so they
-        // can all be saved in a single file.
-        GRT::TimeSeriesClassificationData data(istream_->getNumOutputDimensions(),
-                                               "CalibrationData");
-        auto calibrators = calibrator_->getCalibrateProcesses();
-        for (int i = 0; i < calibrators.size(); i++) {
-            data.addSample(i, calibrators[i].getData());
-            data.setClassNameForCorrespondingClassLabel(calibrators[i].getName(), i);
-        }
-        data.save(result.getPath());
+bool ofApp::savePipelineWithPrompt() {
+    ofFileDialogResult result = ofSystemSaveDialog(
+        kPipelineFilename, "Save pipeline?");
+    if (!result.bSuccess) { return false; }
+    return savePipeline(result.getPath());
+}
+
+bool ofApp::savePipeline(const string& filename) {
+    if (pipeline_->save(filename)) {
+        setStatus("Pipeline is saved to " + filename);
+        should_save_pipeline_ = false;
+        return true;
+    } else {
+        setStatus("Failed to save pipeline to " + filename);
+        return false;
+    }
+}
+
+bool ofApp::loadPipelineWithPrompt() {
+    ofFileDialogResult result = ofSystemLoadDialog(
+        "Load existing pipeline", false);
+    if (!result.bSuccess) { return false; }
+    return loadPipeline(result.getPath());
+}
+
+bool ofApp::loadPipeline(const string& filename) {
+    if (pipeline_->load(filename)) {
+        setStatus("Pipeline is loaded from " + filename);
+        should_save_pipeline_ = false;
+        return true;
+    } else {
+        setStatus("Failed to load pipeline from " + filename);
+        return false;
+    }
+}
+
+bool ofApp::saveCalibrationDataWithPrompt() {
+    ofFileDialogResult result = ofSystemSaveDialog(
+        kCalibrationDataFilename, "Save your calibration data?");
+    if (!result.bSuccess) { return false; }
+    return saveCalibrationData(result.getPath());
+}
+
+bool ofApp::saveCalibrationData(const string& filename) {
+    // Pack calibration samples into a TimeSeriesClassificationData so they can
+    // all be saved in a single file.
+    GRT::TimeSeriesClassificationData data(istream_->getNumOutputDimensions(),
+                                           "CalibrationData");
+    auto calibrators = calibrator_->getCalibrateProcesses();
+    for (int i = 0; i < calibrators.size(); i++) {
+        data.addSample(i, calibrators[i].getData());
+
+        // TODO(benzh) Avoid spaces in the name.
+        data.setClassNameForCorrespondingClassLabel(calibrators[i].getName(), i);
     }
 
-    should_save_calibration_data_ = false;
+    if (data.save(filename)) {
+        setStatus("Calibration data is saved to " + filename);
+        should_save_calibration_data_ = false;
+        return true;
+    } else {
+        setStatus("Failed to save calibration data to " + filename);
+        return false;
+    }
 }
 
-void ofApp::loadCalibrationData() {
+bool ofApp::loadCalibrationDataWithPrompt() {
+    ofFileDialogResult result = ofSystemLoadDialog(
+        "Load existing calibration data", false);
+    if (!result.bSuccess) { return false; }
+    return loadCalibrationData(result.getPath());
+}
+
+bool ofApp::loadCalibrationData(const string& filename) {
     vector<CalibrateProcess>& calibrators = calibrator_->getCalibrateProcesses();
     GRT::TimeSeriesClassificationData data;
-    ofFileDialogResult result = ofSystemLoadDialog("Load existing calibration data", true);
 
-    if (!result.bSuccess) return;
-
-    if (!data.load(result.getPath()) ){
-        ofLog(OF_LOG_ERROR) << "Failed to load the calibration data!"
-                            << " path: " << result.getPath();
-        return;
+    if (data.load(filename)) {
+        setStatus("Calibration data is loaded from " + filename);
+    } else {
+        setStatus("Failed to load calibration data from " + filename);
+        return false;
     }
 
     if (data.getNumSamples() != calibrators.size()) {
-        ofLog(OF_LOG_ERROR) << "Number of samples in file differs from the "
-                            << "number of calibration samples.";
-        return;
+        setStatus("Number of samples in file differs from the "
+                  "number of calibration samples.");
+        return false;
     }
 
     if (data.getNumDimensions() != istream_->getNumOutputDimensions()) {
-        ofLog(OF_LOG_ERROR) << "Number of dimensions of data in file differs "
-                            << "from the number of dimensions expected.";
-        return;
+        setStatus("Number of dimensions of data in file differs "
+                  "from the number of dimensions expected.");
+        return false;
     }
 
     for (int i = 0; i < data.getNumSamples(); i++) {
@@ -565,6 +617,104 @@ void ofApp::loadCalibrationData() {
 
     plot_inputs_.reset();
     should_save_calibration_data_ = false;
+    return true;
+}
+
+bool ofApp::saveTrainingDataWithPrompt() {
+    ofFileDialogResult result = ofSystemSaveDialog(
+        kTrainingDataFilename, "Save your training data?");
+    if (!result.bSuccess) { return false; }
+    return saveTrainingData(result.getPath());
+}
+
+bool ofApp::saveTrainingData(const string& filename) {
+    if (training_data_manager_.save(filename)) {
+        setStatus("Training data is saved to " + filename);
+        should_save_training_data_ = false;
+        return true;
+    } else {
+        setStatus("Failed to save training data to " + filename);
+        return false;
+    }
+}
+
+bool ofApp::loadTrainingDataWithPrompt() {
+    ofFileDialogResult result = ofSystemLoadDialog(
+        "Load existing training data", false);
+    if (!result.bSuccess) { return false; }
+    return loadTrainingData(result.getPath());
+}
+
+bool ofApp::loadTrainingData(const string& filename) {
+    GRT::TimeSeriesClassificationData training_data;
+
+    if (training_data_manager_.load(filename)) {
+        setStatus("Training data is loaded from " + filename);
+        should_save_training_data_ = false;
+    } else {
+        setStatus("Failed to load training data from " + filename);
+        return false;
+    }
+
+    // Update the plotting
+    for (uint32_t i = 1; i <= kNumMaxLabels_; i++) {
+        uint32_t num = training_data_manager_.getNumSampleForLabel(i);
+        plot_sample_indices_[i - 1] = num - 1;
+
+        if (num > 0) {
+            plot_samples_[i - 1].setData(training_data_manager_.getSample(i, num - 1));
+        } else {
+            plot_samples_[i - 1].reset();
+        }
+
+        std::string title = training_data_manager_.getLabelName(i);
+        plot_samples_[i - 1].setTitle(title);
+    }
+
+    return true;
+}
+
+bool ofApp::saveTestDataWithPrompt() {
+    ofFileDialogResult result = ofSystemSaveDialog(
+        kTestDataFilename, "Save your test data?");
+    if (!result.bSuccess) { return false; }
+    return saveTestData(result.getPath());
+}
+
+bool ofApp::saveTestData(const string& filename) {
+    if (test_data_.save(filename)) {
+        setStatus("Test data is saved to " + filename);
+        should_save_test_data_ = false;
+        return true;
+    } else {
+        setStatus("Failed to save test data to " + filename);
+        return false;
+    }
+}
+
+bool ofApp::loadTestDataWithPrompt() {
+    ofFileDialogResult result = ofSystemLoadDialog(
+        "Load existing test data", false);
+    if (!result.bSuccess) { return false; }
+    return loadTestData(result.getPath());
+}
+
+bool ofApp::loadTestData(const string& filename) {
+    GRT::MatrixDouble test_data;
+    if (test_data.load(filename) ){
+        setStatus("Test data is loaded from " + filename);
+        should_save_test_data_ = false;
+    } else {
+        setStatus("Failed to load test data from " + filename);
+        return false;
+    }
+
+    test_data_ = test_data;
+    plot_testdata_overview_.setData(test_data_);
+    runPredictionOnTestData();
+    updateTestWindowPlot();
+
+    return true;
 }
 
 void ofApp::saveTuneables(ofxDatGuiButtonEvent e) {
@@ -590,6 +740,46 @@ void ofApp::loadTuneables(ofxDatGuiButtonEvent e) {
         t->fromString(line);
     }
     file.close();
+}
+
+void ofApp::loadAll() {
+    ofFileDialogResult result = ofSystemLoadDialog(
+        "Load an exising ESP session", true);
+    if (!result.bSuccess) { return; }
+
+    const string dir = result.getPath() + "/";
+
+    if (loadCalibrationData(dir + kCalibrationDataFilename) &&
+        loadPipeline(dir + kPipelineFilename) &&
+        loadTrainingData(dir + kTrainingDataFilename) &&
+        loadTestData(dir + kTestDataFilename)) {
+
+        setStatus("ESP session is loaded from " + dir);
+    } else {
+        setStatus("Failed to load ESP from " + dir);
+    }
+
+}
+
+void ofApp::saveAll() {
+    ofFileDialogResult result = ofSystemSaveDialog(
+        "ESP", "Save this session");
+    if (!result.bSuccess) { return; }
+
+    // Create a directory with result.path as the absolute path.
+    const string dir = result.getPath() + "/";
+    if (ofDirectory::createDirectory(dir, false, false)
+        && saveCalibrationData(dir + kCalibrationDataFilename)
+        && savePipeline(dir + kPipelineFilename)
+        && saveTrainingData(dir + kTrainingDataFilename)
+        && saveTestData(dir + kTestDataFilename)) {
+
+        setStatus("ESP session is saved to " + dir);
+        should_save_test_data_ = false;
+    } else {
+        setStatus("Failed to save ESP session to " + dir);
+    }
+
 }
 
 void ofApp::onSerialSelectionDropdownEvent(ofxDatGuiDropdownEvent e) {
@@ -1048,7 +1238,7 @@ void ofApp::drawTrainingInfo() {
     paragraph.setColor(0xffffff);
     paragraph.setIndent(0);
     paragraph.setLeading(0);
-    
+
     if (training_data_advice_ != "") {
         stage_height -= paragraph.getHeight() / 2;
     }
@@ -1093,9 +1283,9 @@ void ofApp::drawTrainingInfo() {
         }
         plot_sample_button_locations_[i].first.set(x, stage_top + stage_height, 20, 20);
         plot_sample_button_locations_[i].second.set(x + width - 20, stage_top + stage_height, 20, 20);
-        
+
         ofDrawBitmapString("Closeness To:", x, stage_top + stage_height + 32);
-        
+
         for (int j = 0; j < kNumMaxLabels_; j++) {
             ofDrawBitmapString(std::to_string(j + 1), x + j * width / kNumMaxLabels_, stage_top + stage_height + 44);
             if (training_data_manager_.hasSampleClassLikelihoods(label, plot_sample_indices_[i])) {
@@ -1205,29 +1395,9 @@ void ofApp::exit() {
     istream_->stop();
 
     // Save data here!
-    if (should_save_calibration_data_) { saveCalibrationData(); }
-    if (should_save_training_data_) { saveTrainingData(); }
-    if (should_save_test_data_) { saveTestData(); }
-}
-
-void ofApp::saveTrainingData() {
-    ofFileDialogResult result = ofSystemSaveDialog("TrainingData.grt",
-                                                   "Save your training data?");
-    if (result.bSuccess) {
-        training_data_manager_.save(result.getPath());
-    }
-
-    should_save_training_data_ = false;
-}
-
-void ofApp::saveTestData() {
-    ofFileDialogResult result = ofSystemSaveDialog("TestData.csv",
-                                                   "Save your test data?");
-    if (result.bSuccess) {
-        test_data_.save(result.getPath());
-    }
-
-    should_save_test_data_ = false;
+    if (should_save_calibration_data_) { saveCalibrationDataWithPrompt(); }
+    if (should_save_training_data_) { saveTrainingDataWithPrompt(); }
+    if (should_save_test_data_) { saveTestDataWithPrompt(); }
 }
 
 void ofApp::onDataIn(GRT::MatrixDouble input) {
@@ -1277,7 +1447,7 @@ void ofApp::trainModel() {
            for (Plotter& plot : plot_samples_) {
                assert(true == plot.clearContentModifiedFlag());
            }
-           
+
            scoreTrainingData(false);
 
            training_status = true;
@@ -1306,12 +1476,12 @@ void ofApp::scoreTrainingData(bool leaveOneOut) {
         for (int i = 0; i < training_data_manager_.getNumSampleForLabel(label); i++) {
             GRT::MatrixDouble sample =
                 training_data_manager_.getSample(label, (leaveOneOut ? 0 : i));
-            
+
             if (leaveOneOut) {
                 training_data_manager_.deleteSample(label, 0);
                 pipeline_->train(training_data_manager_.getAllData());
             }
-            
+
             //ofLog(OF_LOG_NOTICE) << "sample " << i << " (class " << label << "):";
             vector<double> likelihoods(training_data_manager_.getNumLabels() + 1, 0.0);
             for (int j = 0; j < sample.getNumRows(); j++) {
@@ -1330,23 +1500,23 @@ void ofApp::scoreTrainingData(bool leaveOneOut) {
                 likelihoods[j] /= (sum == 0.0 ? 1e-9 : sum);
                 //ofLog(OF_LOG_NOTICE) << "\t" << (j + 1) << ": " << likelihoods[j] << "%";
             }
-            
+
             if (leaveOneOut) training_data_manager_.addSample(label, sample);
-            
+
             training_data_manager_.setSampleClassLikelihoods(label,
                 (leaveOneOut ? training_data_manager_.getNumSampleForLabel(label) - 1 : i),
                 likelihoods);
-            
+
             pipeline_->reset();
         }
     }
-    
+
     if (leaveOneOut) pipeline_->train(training_data_manager_.getAllData());
 }
 
 void ofApp::scoreImpactOfTrainingSample(int label, const MatrixDouble &sample) {
     if (!pipeline_->getTrained()) return; // can't calculate a score
-    
+
     GestureRecognitionPipeline p(*pipeline_);
 
     p.reset();
@@ -1370,55 +1540,6 @@ void ofApp::scoreImpactOfTrainingSample(int label, const MatrixDouble &sample) {
     //std::cout << std::to_string(score / num_non_zero);
     status_text_ = "Information gain of sample: " +
         std::to_string((int) (100 * -log(score / num_non_zero))) + "%";
-}
-
-void ofApp::loadTrainingData() {
-    GRT::TimeSeriesClassificationData training_data;
-    ofFileDialogResult result = ofSystemLoadDialog("Load existing data", true);
-
-    if (!result.bSuccess) return;
-
-    if (!training_data_manager_.load(result.getPath())) {
-        ofLog(OF_LOG_ERROR) << "Failed to load the training data!"
-                            << " path: " << result.getPath();
-    }
-
-    for (uint32_t i = 1; i <= kNumMaxLabels_; i++) {
-        uint32_t num = training_data_manager_.getNumSampleForLabel(i);
-        plot_sample_indices_[i - 1] = num - 1;
-
-        if (num > 0) {
-            plot_samples_[i - 1].setData(training_data_manager_.getSample(i, num - 1));
-        } else {
-            plot_samples_[i - 1].reset();
-        }
-
-        std::string title = training_data_manager_.getLabelName(i);
-        plot_samples_[i - 1].setTitle(title);
-    }
-
-    // After we load the training data,
-    should_save_training_data_ = false;
-
-    beginTrainModel();
-}
-
-void ofApp::loadTestData() {
-    GRT::MatrixDouble test_data;
-    ofFileDialogResult result = ofSystemLoadDialog("Load existing test data", true);
-
-    if (!result.bSuccess) return;
-
-    if (!test_data.load(result.getPath()) ){
-        ofLog(OF_LOG_ERROR) << "Failed to load the test data!"
-                            << " path: " << result.getPath();
-    }
-
-    test_data_ = test_data;
-    should_save_test_data_ = false;
-    plot_testdata_overview_.setData(test_data_);
-    runPredictionOnTestData();
-    updateTestWindowPlot();
 }
 
 void ofApp::reloadPipelineModules() {
@@ -1476,10 +1597,11 @@ void ofApp::keyPressed(int key){
             }
             break;
         case 'f': toggleFeatureView(); break;
+        case 'L': loadAll(); break;
         case 'l':
-            if (fragment_ == CALIBRATION) loadCalibrationData();
-            else if (fragment_ == TRAINING) loadTrainingData();
-            else if (fragment_ == ANALYSIS) loadTestData();
+            if (fragment_ == CALIBRATION) loadCalibrationDataWithPrompt();
+            else if (fragment_ == TRAINING) loadTrainingDataWithPrompt();
+            else if (fragment_ == ANALYSIS) loadTestDataWithPrompt();
             break;
         case 'p': {
             istream_->toggle();
@@ -1487,10 +1609,11 @@ void ofApp::keyPressed(int key){
             input_data_.clear();
             break;
         }
+        case 'S': saveAll(); break;
         case 's':
-            if (fragment_ == CALIBRATION) saveCalibrationData();
-            else if (fragment_ == TRAINING) saveTrainingData();
-            else if (fragment_ == ANALYSIS) saveTestData();
+            if (fragment_ == CALIBRATION) saveCalibrationDataWithPrompt();
+            else if (fragment_ == TRAINING) saveTrainingDataWithPrompt();
+            else if (fragment_ == ANALYSIS) saveTestDataWithPrompt();
             break;
         case 't': beginTrainModel(); break;
 
@@ -1565,7 +1688,7 @@ void ofApp::keyReleased(int key) {
                 if (result.getResult() == TrainingSampleCheckerResult::FAILURE)
                     return;
             }
-            
+
             scoreImpactOfTrainingSample(label_, sample_data_);
 
             training_data_manager_.addSample(label_, sample_data_);

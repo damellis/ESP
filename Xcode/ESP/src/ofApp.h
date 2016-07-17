@@ -168,12 +168,52 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     // Panel for storing and loading pipeline.
     ofxDatGui gui_;
 
-    void loadTrainingData();
-    void saveTrainingData();
-
+    /// ====================================================
+    ///  Save and load functionalities
+    /// ====================================================
     // Tuneable parameters
     void saveTuneables(ofxDatGuiButtonEvent e);
     void loadTuneables(ofxDatGuiButtonEvent e);
+
+    // Pipeline (including trained model)
+    bool savePipelineWithPrompt();
+    bool savePipeline(const string& filename);
+    bool loadPipelineWithPrompt();
+    bool loadPipeline(const string& filename);
+    bool should_save_pipeline_;
+
+    // Calibration data
+    bool saveCalibrationDataWithPrompt();
+    bool saveCalibrationData(const string& filename);
+    bool loadCalibrationDataWithPrompt();
+    bool loadCalibrationData(const string& filename);
+    // Prompts to ask the user to save the calibration data if changed.
+    bool should_save_calibration_data_;
+
+    bool saveTrainingDataWithPrompt();
+    bool saveTrainingData(const string& filename);
+    bool loadTrainingDataWithPrompt();
+    bool loadTrainingData(const string& filename);
+    // Prompts to ask the user to save the training data if changed.
+    bool should_save_training_data_;
+
+    bool saveTestDataWithPrompt();
+    bool saveTestData(const string& filename);
+    bool loadTestDataWithPrompt();
+    bool loadTestData(const string& filename);
+    // Prompts to ask the user to save the test data if changed.
+    bool should_save_test_data_;
+
+    // Convenient functions that save and load everything from a directory. This
+    // assumes the structure of the directory follows our naming convention (see
+    // the following few const string definitions). If the naming convention is
+    // not satisfied, the load will fail.
+    const string kPipelineFilename        = "Pipeline.grt";
+    const string kCalibrationDataFilename = "CalibrationData.grt";
+    const string kTrainingDataFilename    = "TrainingData.grt";
+    const string kTestDataFilename        = "TestData.grt";
+    void loadAll();
+    void saveAll();
 
     ofxDatGuiDropdown *serial_selection_dropdown_;
     void onSerialSelectionDropdownEvent(ofxDatGuiDropdownEvent e);
@@ -207,19 +247,6 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     // Multithreading to avoid GUI blocked.
     std::thread training_thread_;
 
-    void loadCalibrationData();
-    void saveCalibrationData();
-
-    void loadTestData();
-    void saveTestData();
-
-    // Prompts to ask the user to save the calibration data if changed.
-    bool should_save_calibration_data_;
-    // Prompts to ask the user to save the training data if changed.
-    bool should_save_training_data_;
-    // Prompts to ask the user to save the test data if changed.
-    bool should_save_test_data_;
-
     friend class TrainingSampleGuiListener;
 
     void updateEventReceived(ofEventArgs& arg);
@@ -232,8 +259,12 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     // tuneable parameters
     vector<Tuneable*> tuneable_parameters_;
 
-    // Status for user
+    // Status for user notification
     string status_text_;
+    void setStatus(const string& msg) {
+        status_text_ = msg;
+    }
+
     bool is_training_scheduled_;
     uint64_t schedule_time_;
 };
