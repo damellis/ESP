@@ -51,11 +51,20 @@ void setup() {
         FFT(kFFT_WindowSize, kFFT_HopSize,
             DIM, FFT::HAMMING_WINDOW, true, false));
 
-    pipeline.addFeatureExtractionModule(
-        MFCC(sample_rate, kFFT_WindowSize / 2, 300, 8000, 26, 12, 22));
+    MFCC::Options options;
+    options.sample_rate = sample_rate;
+    options.fft_size = kFFT_WindowSize / 2;
+    options.start_freq = 300;
+    options.end_freq = 8000;
+    options.num_tri_filter = 26;
+    options.num_cepstral_coeff = 12;
+    options.lifter_param = 22;
+    options.use_vad = true;
+    options.noise_level = 30;
 
-    pipeline.setClassifier(
-        SVM(SVM::LINEAR_KERNEL, SVM::C_SVC, true, true));
+    pipeline.addFeatureExtractionModule(MFCC(options));
+
+    pipeline.setClassifier(GMM(16, true, false, 1, 100, 0.001));
 
     pipeline.addPostProcessingModule(ClassLabelFilter(25, 40));
 
@@ -64,7 +73,7 @@ void setup() {
             .addCalibrateProcess("Range", "Shout as much as possible", shoutCollected);
 
     useInputStream(stream);
-    // useCalibrator(calibrator);
+    useCalibrator(calibrator);
     usePipeline(pipeline);
     // useOutputStream(o_stream);
 }

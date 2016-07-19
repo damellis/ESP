@@ -13,11 +13,6 @@ matrix:
       env:
         - BUILD_TOOL=Xcode
         - OS=OSX
-    - os: osx
-      osx_image: xcode7.3
-      env:
-        - BUILD_TOOL=CMake
-        - OS=OSX
   exclude:
     - compiler: clang
 
@@ -45,6 +40,7 @@ before_script:
       sudo third-party/openFrameworks/scripts/ci/linux/build.sh
       sudo apt-get -y install doxygen
       sudo apt-get -y install cmake
+      sudo apt-get -y install libblas-dev
       # Build GRT
       cd third-party/grt/build
       mkdir -p tmp && cd tmp
