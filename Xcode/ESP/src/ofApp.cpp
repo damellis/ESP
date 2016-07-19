@@ -574,6 +574,8 @@ bool ofApp::loadPipeline(const string& filename) {
 }
 
 bool ofApp::saveCalibrationDataWithPrompt() {
+    if (calibrator_ == NULL) return false;
+
     ofFileDialogResult result = ofSystemSaveDialog(
         kCalibrationDataFilename, "Save your calibration data?");
     if (!result.bSuccess) { return false; }
@@ -581,6 +583,8 @@ bool ofApp::saveCalibrationDataWithPrompt() {
 }
 
 bool ofApp::saveCalibrationData(const string& filename) {
+    if (calibrator_ == NULL) return true;
+
     // Pack calibration samples into a TimeSeriesClassificationData so they can
     // all be saved in a single file.
     GRT::TimeSeriesClassificationData data(istream_->getNumOutputDimensions(),
@@ -604,6 +608,8 @@ bool ofApp::saveCalibrationData(const string& filename) {
 }
 
 bool ofApp::loadCalibrationDataWithPrompt() {
+    if (calibrator_ == NULL) return false;
+    
     ofFileDialogResult result = ofSystemLoadDialog(
         "Load existing calibration data", false);
     if (!result.bSuccess) { return false; }
@@ -611,6 +617,15 @@ bool ofApp::loadCalibrationDataWithPrompt() {
 }
 
 bool ofApp::loadCalibrationData(const string& filename) {
+    if (calibrator_ == NULL) {
+        if (ofFile::doesFileExist(filename)) {
+            setStatus("Calibration file exists but there's no calibrator.");
+            return false;
+        }
+        
+        return true; // nothing to do, so declare victory and go home
+    }
+
     vector<CalibrateProcess>& calibrators = calibrator_->getCalibrateProcesses();
     GRT::TimeSeriesClassificationData data;
 
