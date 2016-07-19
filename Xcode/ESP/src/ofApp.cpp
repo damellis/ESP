@@ -179,6 +179,9 @@ void ofApp::setup() {
     plot_testdata_overview_.setup(istream_->getNumOutputDimensions(), "Overview");
     plot_testdata_overview_.onRangeSelected(this, &ofApp::onTestOverviewPlotSelection, NULL);
     
+    plot_class_likelihoods_.setup(kBufferSize_, kNumMaxLabels_, "Class Likelihoods");
+    plot_class_likelihoods_.setDrawInfoText(true);
+    
     for (int i = 0; i < kNumMaxLabels_; i++) {
         ofxGrtTimeseriesPlot plot;
         plot.setup(kBufferSize_, 2, std::to_string(i + 1));
@@ -1042,6 +1045,15 @@ void ofApp::update() {
             predicted_class_likelihoods_ = pipeline_->getClassLikelihoods();
             predicted_class_likelihoods_buffer_.push_back(predicted_class_likelihoods_);
             
+            vector<double> likelihoods(kNumMaxLabels_);
+            for (int i = 0; i < predicted_class_likelihoods_.size() &&
+                            i < predicted_class_labels_.size(); i++)
+            {
+                likelihoods[predicted_class_labels_[i] - 1] =
+                    predicted_class_likelihoods_[i];
+            }
+            plot_class_likelihoods_.update(likelihoods);
+            
             if (predicted_label_ != 0) {
                 for (OStream *ostream : ostreams_)
                     ostream->onReceive(predicted_label_);
@@ -1460,7 +1472,7 @@ void ofApp::drawPrediction() {
     uint32_t stage_left = margin_left;
     uint32_t stage_top = margin_top;
     uint32_t stage_width = ofGetWidth() - margin;
-    uint32_t stage_height = (ofGetHeight() - 2 * margin - margin_top) / 2;
+    uint32_t stage_height = (ofGetHeight() - 3 * margin - margin_top) / 3;
 
     // 1. Draw Input
     ofPushStyle();
@@ -1468,7 +1480,13 @@ void ofApp::drawPrediction() {
     ofPopStyle();
     stage_top += stage_height + margin;
 
-    // 2. Draw Class Distances
+    // 2. Draw Class Likelihoods
+    ofPushStyle();
+    plot_class_likelihoods_.draw(stage_left, stage_top, stage_width, stage_height);
+    ofPopStyle();
+    stage_top += stage_height + margin;
+
+    // 3. Draw Class Distances
     uint32_t height = stage_height / kNumMaxLabels_;
     double minDistance = 0.0, maxDistance = 1.0;
     for (int i = 0; i < kNumMaxLabels_; i++) {

@@ -166,6 +166,7 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     void updateTestWindowPlot();
     void runPredictionOnTestData();
 
+    ofxGrtTimeseriesPlot plot_class_likelihoods_;
     vector<ofxGrtTimeseriesPlot> plot_class_distances_;
 
     // Panel for storing and loading pipeline.
