@@ -95,7 +95,7 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 else()  # Linux
   set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/")
   find_package(Grt REQUIRED)
-  set(SYS_LIBS "-L/usr/local/lib" )
+  set(SYS_LIBS "-L/usr/local/lib -lblas" )
 endif()
 
 
