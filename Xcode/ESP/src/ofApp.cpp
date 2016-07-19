@@ -727,6 +727,8 @@ bool ofApp::loadTrainingData(const string& filename) {
 }
 
 bool ofApp::saveTestDataWithPrompt() {
+    if (test_data_.getNumRows() == 0) return false;
+
     ofFileDialogResult result = ofSystemSaveDialog(
         kTestDataFilename, "Save your test data?");
     if (!result.bSuccess) { return false; }
@@ -734,6 +736,10 @@ bool ofApp::saveTestDataWithPrompt() {
 }
 
 bool ofApp::saveTestData(const string& filename) {
+    // if there's no data, don't write a file. otherwise, we'll get an empty
+    // file, which we won't be able to load.
+    if (test_data_.getNumRows() == 0) return true;
+
     if (test_data_.save(filename)) {
         setStatus("Test data is saved to " + filename);
         should_save_test_data_ = false;
@@ -753,13 +759,16 @@ bool ofApp::loadTestDataWithPrompt() {
 
 bool ofApp::loadTestData(const string& filename) {
     GRT::MatrixDouble test_data;
-    if (test_data.load(filename) ){
-        setStatus("Test data is loaded from " + filename);
-        should_save_test_data_ = false;
-    } else {
-        setStatus("Failed to load test data from " + filename);
-        return false;
-    }
+    
+    if (ofFile::doesFileExist(filename)) {
+        if (test_data.load(filename) ){
+            setStatus("Test data is loaded from " + filename);
+            should_save_test_data_ = false;
+        } else {
+            setStatus("Failed to load test data from " + filename);
+            return false;
+        }
+    } else should_save_test_data_ = false;
 
     test_data_ = test_data;
     plot_testdata_overview_.setData(test_data_);
