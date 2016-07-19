@@ -19,18 +19,22 @@ static const char* kCalibrateInstruction =
         "Press `l` to load calibration data, `s` to save.";
 
 static const char* kPipelineInstruction =
-        "Press capital C/P/T/A to change tabs, `p` to pause or resume.\n";
+        "Press capital C/P/A/T/R to change tabs, `p` to pause or resume.\n";
 
 static const char* kTrainingInstruction =
-        "Press capital C/P/T/A to change tabs. "
+        "Press capital C/P/A/T/R to change tabs. "
         "`p` to pause or resume, 1-9 to record samples \n"
         "`r` to record test data, `f` to show features, `s` to save data"
         "`l` to load training data, and `t` to train a model.";
 
 static const char* kAnalysisInstruction =
-        "Press capital C/P/T/A to change tabs. \n"
+        "Press capital C/P/A/T/R to change tabs. \n"
         "Press `p` to pause or resume; hold `r` to record test data; "
         "press `s` to save test data and `l` to load test data.";
+
+static const char* kPredictionInstruction =
+        "Press capital C/P/A/T/R to change tabs. \n"
+        "Press `p` to pause or resume.";
 
 const double kPipelineHeightWeight = 0.3;
 const ofColor kSerialSelectionColor = ofColor::fromHex(0x00FF00);
@@ -174,6 +178,13 @@ void ofApp::setup() {
 
     plot_testdata_overview_.setup(istream_->getNumOutputDimensions(), "Overview");
     plot_testdata_overview_.onRangeSelected(this, &ofApp::onTestOverviewPlotSelection, NULL);
+    
+    for (int i = 0; i < kNumMaxLabels_; i++) {
+        ofxGrtTimeseriesPlot plot;
+        plot.setup(kBufferSize_, 2, std::to_string(i + 1));
+        plot.setChannelNames({ "Threshold", "Actual" });
+        plot_class_distances_.push_back(plot);
+    }
 
     Palette color_palette;
 
@@ -1019,6 +1030,15 @@ void ofApp::update() {
             }
             predicted_class_distances_buffer_.push_back(predicted_class_distances_);
             
+            for (int i = 0; i < predicted_class_distances_.size() &&
+                            i < predicted_class_labels_.size(); i++) {
+                plot_class_distances_[predicted_class_labels_[i] - 1].update(
+                    vector<double>{
+                        pipeline_->getClassifier()->getNullRejectionCoeff(),
+                        predicted_class_distances_[i]
+                    });
+            }
+            
             predicted_class_likelihoods_ = pipeline_->getClassLikelihoods();
             predicted_class_likelihoods_buffer_.push_back(predicted_class_likelihoods_);
             
@@ -1106,7 +1126,7 @@ void ofApp::draw() {
     const uint32_t margin = 20;
 
     if (pipeline_->getClassifier() != nullptr) {
-        ofDrawBitmapString("[C]alibration\t[P]ipeline\t[A]nalysis\t[T]raining",
+        ofDrawBitmapString("[C]alibration\t[P]ipeline\t[A]nalysis\t[T]raining\tP[R]ediction",
                            left_margin, top_margin);
     } else {
         ofDrawBitmapString("[C]alibration\t[P]ipeline\t[A]nalysis",
@@ -1150,6 +1170,16 @@ void ofApp::draw() {
             drawTrainingInfo();
             tab_start += 3 * kTabWidth;
             break;
+        case PREDICTION:
+            if (pipeline_->getClassifier() == nullptr) { break; }
+            ofDrawColoredBitmapString(red, "\t\t\t\t\t\t\t\tP[R]ediction",
+                                      left_margin, top_margin);
+            ofDrawBitmapString(kPredictionInstruction,
+                               left_margin, top_margin + margin);
+            drawPrediction();
+            tab_start += 4 * kTabWidth;
+            break;
+            
         default:
             ofLog(OF_LOG_ERROR) << "Unknown tag!";
             break;
@@ -1423,6 +1453,37 @@ void ofApp::drawAnalysis() {
     ofPopStyle();
 }
 
+void ofApp::drawPrediction() {
+    uint32_t margin_left = 10;
+    uint32_t margin_top = 70;
+    uint32_t margin = 30;
+    uint32_t stage_left = margin_left;
+    uint32_t stage_top = margin_top;
+    uint32_t stage_width = ofGetWidth() - margin;
+    uint32_t stage_height = (ofGetHeight() - 2 * margin - margin_top) / 2;
+
+    // 1. Draw Input
+    ofPushStyle();
+    drawInputs(stage_left, stage_top, stage_width, stage_height);
+    ofPopStyle();
+    stage_top += stage_height + margin;
+
+    // 2. Draw Class Distances
+    uint32_t height = stage_height / kNumMaxLabels_;
+    double minDistance = 0.0, maxDistance = 1.0;
+    for (int i = 0; i < kNumMaxLabels_; i++) {
+        auto range = plot_class_distances_[i].getRanges();
+        if (range.first < minDistance) minDistance = range.first;
+        if (range.second > maxDistance) maxDistance = range.second;
+    }
+
+    for (int i = 0; i < kNumMaxLabels_; i++) {
+        plot_class_distances_[i].setRanges(minDistance, maxDistance, true);
+        plot_class_distances_[i].draw(stage_left, stage_top, stage_width, height);
+        stage_top += height;
+    }
+}
+
 void ofApp::exit() {
     if (training_thread_.joinable()) {
         training_thread_.join();
@@ -1501,6 +1562,8 @@ void ofApp::trainModel() {
        runPredictionOnTestData();
        updateTestWindowPlot();
        pipeline_->reset();
+       for (int i = 0; i < plot_class_distances_.size(); i++)
+           plot_class_distances_[i].reset();
 
        status_text_ = "Training was successful";
    }
@@ -1661,6 +1724,12 @@ void ofApp::keyPressed(int key){
             }
             break;
         }
+        case 'R': {
+            if (pipeline_->getClassifier() != nullptr) {
+                fragment_ = PREDICTION;
+            }
+            break;
+        }
         case 'A': fragment_ = ANALYSIS; break;
     }
 }
@@ -1799,6 +1868,9 @@ void ofApp::mouseReleased(int x, int y, int button) {
         } else if (x < left_margin + 4 * tab_width
                    && pipeline_->getClassifier() != nullptr) {
             fragment_ = TRAINING;
+        } else if (x < left_margin + 5 * tab_width
+                   && pipeline_->getClassifier() != nullptr) {
+            fragment_ = PREDICTION;
         }
     }
 }
