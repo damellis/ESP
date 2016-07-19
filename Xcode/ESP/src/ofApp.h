@@ -121,10 +121,10 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
 
     GRT::MatrixDouble test_data_;
     float training_accuracy_;
-    int predicted_label_;
-    vector<double> predicted_class_distances_;
-    vector<double> predicted_class_likelihoods_;
-    vector<UINT> predicted_class_labels_;
+    int predicted_label_; CircularBuffer<int> predicted_label_buffer_;
+    vector<double> predicted_class_distances_; CircularBuffer<vector<double>> predicted_class_distances_buffer_;
+    vector<double> predicted_class_likelihoods_; CircularBuffer<vector<double>> predicted_class_likelihoods_buffer_;
+    vector<UINT> predicted_class_labels_; CircularBuffer<vector<UINT>> predicted_class_labels_buffer_;
     vector<UINT> test_data_predicted_class_labels_;
 
     // Visuals
@@ -135,7 +135,8 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
                                                 // only if the number of input
                                                 // dimensions is greater than
                                                 // kTooManyFeaturesThreshold
-    void onInputPlotSelection(InteractiveTimeSeriesPlot::CallbackArgs arg);
+    void onInputPlotRangeSelection(InteractiveTimeSeriesPlot::RangeCallbackArgs arg);
+    void onInputPlotValueSelection(InteractiveTimeSeriesPlot::ValueCallbackArgs arg);
     bool enable_history_recording_ = false;
     bool is_in_history_recording_ = false;
 

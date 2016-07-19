@@ -146,6 +146,11 @@ void ofApp::setup() {
         training_data_advice_ = getTrainingDataAdvice();
 
     istream_->onDataReadyEvent(this, &ofApp::onDataIn);
+    
+    predicted_label_buffer_.resize(kBufferSize_);
+    predicted_class_labels_buffer_.resize(kBufferSize_);
+    predicted_class_distances_buffer_.resize(kBufferSize_);
+    predicted_class_likelihoods_buffer_.resize(kBufferSize_);
 
     const vector<string>& istream_labels = istream_->getLabels();
     plot_raw_.setup(kBufferSize_, istream_->getNumOutputDimensions(), "Raw Data");
@@ -156,7 +161,8 @@ void ofApp::setup() {
     plot_inputs_.setDrawGrid(true);
     plot_inputs_.setDrawInfoText(true);
     plot_inputs_.setChannelNames(istream_labels);
-    plot_inputs_.onRangeSelected(this, &ofApp::onInputPlotSelection, NULL);
+    plot_inputs_.onRangeSelected(this, &ofApp::onInputPlotRangeSelection, NULL);
+    plot_inputs_.onValueSelected(this, &ofApp::onInputPlotValueSelection, NULL);
     if (istream_->getNumOutputDimensions() >= kTooManyFeaturesThreshold) {
         plot_inputs_snapshot_.setup(istream_->getNumOutputDimensions(), 1, "Snapshot");
         plot_inputs_.setDrawInfoText(false); // this will be too long to show
@@ -316,7 +322,6 @@ void ofApp::setup() {
     }
 
     training_data_manager_.setNumDimensions(istream_->getNumOutputDimensions());
-    predicted_label_ = 0;
 
     gui_.addHeader(":: Configuration ::");
     gui_.setAutoDraw(false);
@@ -445,7 +450,7 @@ void ofApp::populateSampleFeatures(uint32_t sample_index) {
     }
 }
 
-void ofApp::onInputPlotSelection(InteractiveTimeSeriesPlot::CallbackArgs arg) {
+void ofApp::onInputPlotRangeSelection(InteractiveTimeSeriesPlot::RangeCallbackArgs arg) {
     if (!enable_history_recording_) {
         plot_inputs_.clearSelection();
         return;
@@ -455,6 +460,16 @@ void ofApp::onInputPlotSelection(InteractiveTimeSeriesPlot::CallbackArgs arg) {
     is_in_history_recording_ = true;
     sample_data_.clear();
     sample_data_ = plot_inputs_.getSelectedData();
+}
+
+void ofApp::onInputPlotValueSelection(InteractiveTimeSeriesPlot::ValueCallbackArgs arg) {
+    if (enable_history_recording_) {
+        int i = plot_inputs_.getSelectedIndex();
+        predicted_label_ = predicted_label_buffer_[i];
+        predicted_class_distances_ = predicted_class_distances_buffer_[i];
+        predicted_class_likelihoods_ = predicted_class_likelihoods_buffer_[i];
+        predicted_class_labels_ = predicted_class_labels_buffer_[i];
+    }
 }
 
 void ofApp::onTestOverviewPlotSelection(Plotter::CallbackArgs arg) {
@@ -982,11 +997,31 @@ void ofApp::update() {
 
         if (pipeline_->getTrained()) {
             pipeline_->predict(data_point);
+            
             predicted_label_ = pipeline_->getPredictedClassLabel();
-            predicted_class_distances_ = pipeline_->getClassDistances();
-            predicted_class_likelihoods_ = pipeline_->getClassLikelihoods();
-            predicted_class_labels_ = pipeline_->getClassifier()->getClassLabels();
+            predicted_label_buffer_.push_back(predicted_label_);
+            
+            predicted_class_labels_ = pipeline_->getClassLabels();
+            predicted_class_labels_buffer_.push_back(predicted_class_labels_);
 
+            predicted_class_distances_ = pipeline_->getClassDistances();
+            // TODO(damellis): this shouldn't be classifier-specific but should
+            // instead be based on a virtual function in Classifier or similar.
+            DTW *dtw = dynamic_cast<DTW *>(pipeline_->getClassifier());
+            if (dtw != NULL) {
+                for (int k = 0; k < predicted_class_distances_.size() &&
+                                k < predicted_class_labels_.size(); k++) {
+                    predicted_class_distances_[k] =
+                        dtw->classDistanceToNullRejectionCoefficient(
+                            predicted_class_labels_[k],
+                            predicted_class_distances_[k]);
+                }
+            }
+            predicted_class_distances_buffer_.push_back(predicted_class_distances_);
+            
+            predicted_class_likelihoods_ = pipeline_->getClassLikelihoods();
+            predicted_class_likelihoods_buffer_.push_back(predicted_class_likelihoods_);
+            
             if (predicted_label_ != 0) {
                 for (OStream *ostream : ostreams_)
                     ostream->onReceive(predicted_label_);
@@ -1227,7 +1262,7 @@ void ofApp::drawTrainingInfo() {
     uint32_t stage_height =
         (ofGetHeight() - margin_top
          - margin // between the two plots
-         - 60 // indices (1 / 3) and scores for training samples
+         - 72 // indices (1 / 3) and scores for training samples
          - 35 // bottom margin and status message
          - training_sample_guis_[0]->getHeight()) / 2;
 
@@ -1262,6 +1297,28 @@ void ofApp::drawTrainingInfo() {
     uint32_t width = stage_width / kNumMaxLabels_;
     float minY = plot_inputs_.getRanges().first;
     float maxY = plot_inputs_.getRanges().second;
+
+    for (int i = 0; i < predicted_class_distances_.size() &&
+                    i < predicted_class_likelihoods_.size(); i++) {
+        ofColor backgroundColor, textColor;
+        UINT label = predicted_class_labels_[i];
+        uint32_t x = stage_left + (label - 1) * width;
+        if (predicted_label_ == label) {
+            backgroundColor = ofColor(255);
+            textColor = ofColor(0);
+        } else {
+            backgroundColor = ofGetBackgroundColor();
+            textColor = ofColor(255);
+        }
+        double likelihood = predicted_class_likelihoods_[i];
+        double distance = predicted_class_distances_[i];
+        ofDrawBitmapString(
+            std::to_string((int) (likelihood * 100)) + "% (" +
+            std::to_string(distance).substr(0,4) + ")",
+            x, stage_top);
+    }
+
+    stage_top += 12;
 
     for (uint32_t i = 0; i < kNumMaxLabels_; i++) {
         uint32_t label = i + 1;
@@ -1319,28 +1376,6 @@ void ofApp::drawTrainingInfo() {
     }
 
     stage_top += stage_height + 60 + training_sample_guis_[0]->getHeight();
-//    for (int i = 0; i < predicted_class_distances_.size() &&
-//                 i < predicted_class_likelihoods_.size(); i++) {
-//        ofColor backgroundColor, textColor;
-//        UINT label = predicted_class_labels_[i];
-//        if (predicted_label_ == label) {
-//            backgroundColor = ofColor(255);
-//            textColor = ofColor(0);
-//        } else {
-//            backgroundColor = ofGetBackgroundColor();
-//            textColor = ofColor(255);
-//        }
-//        ofDrawBitmapStringHighlight(
-//            std::to_string(predicted_class_distances_[i]).substr(0, 6),
-//            stage_left + (label - 1) * width,
-//            stage_top + margin,
-//            backgroundColor, textColor);
-//        ofDrawBitmapStringHighlight(
-//            std::to_string(predicted_class_likelihoods_[i]).substr(0, 6),
-//            stage_left + (label - 1) * width,
-//            stage_top + margin * 3 / 2,
-//            backgroundColor, textColor);
-//    }
 
     if (!is_in_feature_view_) { return; }
     if (pipeline_->getNumFeatureExtractionModules() == 0) { return; }

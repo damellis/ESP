@@ -99,9 +99,14 @@ class Plotter {
 
 class InteractiveTimeSeriesPlot : public ofxGrtTimeseriesPlot {
   public:
-    struct CallbackArgs {
+    struct RangeCallbackArgs {
         uint32_t start;
         uint32_t end;
+        void* data;
+    };
+
+    struct ValueCallbackArgs {
+        uint32_t value;
         void* data;
     };
 
@@ -111,8 +116,8 @@ class InteractiveTimeSeriesPlot : public ofxGrtTimeseriesPlot {
             is_tracking_mouse_(false) {
     }
 
-    typedef std::function<void(CallbackArgs)> onRangeSelectedCallback;
-
+    typedef std::function<void(RangeCallbackArgs)> onRangeSelectedCallback;
+    typedef std::function<void(ValueCallbackArgs)> onValueSelectedCallback;
 
     bool draw(uint32_t x, uint32_t y, uint32_t w, uint32_t h) {
         x_ = x;
@@ -138,7 +143,7 @@ class InteractiveTimeSeriesPlot : public ofxGrtTimeseriesPlot {
 
     void onRangeSelected(const onRangeSelectedCallback& cb, void* data) {
         range_selected_callback_ = cb;
-        callback_data_ = data;
+        range_callback_data_ = data;
         ofAddListener(ofEvents().mousePressed,
                       this, &InteractiveTimeSeriesPlot::startSelection);
         ofAddListener(ofEvents().mouseDragged,
@@ -151,6 +156,19 @@ class InteractiveTimeSeriesPlot : public ofxGrtTimeseriesPlot {
     void onRangeSelected(T1* owner, void (T::*listenerMethod)(arg), void* data) {
         using namespace std::placeholders;
         onRangeSelected(std::bind(listenerMethod, owner, _1), data);
+    }
+
+    void onValueSelected(const onValueSelectedCallback& cb, void* data) {
+        value_selected_callback_ = cb;
+        value_callback_data_ = data;
+        ofAddListener(ofEvents().mouseMoved,
+                      this, &InteractiveTimeSeriesPlot::valueSelected);
+    }
+
+    template<typename T1, typename arg, class T>
+    void onValueSelected(T1* owner, void (T::*listenerMethod)(arg), void* data) {
+        using namespace std::placeholders;
+        onValueSelected(std::bind(listenerMethod, owner, _1), data);
     }
 
     MatrixDouble getSelectedData() {
@@ -168,6 +186,11 @@ class InteractiveTimeSeriesPlot : public ofxGrtTimeseriesPlot {
         }
         return selected_data;
     }
+    
+    uint32_t getSelectedIndex() {
+        float x_step = w_ * 1.0 / timeseriesLength;
+        return x_move_ / x_step;
+    }
 
     void clearSelection() {
         x_start_ = 0;
@@ -178,6 +201,20 @@ class InteractiveTimeSeriesPlot : public ofxGrtTimeseriesPlot {
     bool contains(uint32_t x, uint32_t y) {
         return (x_ <= x && x <= x_ + w_ && y_ <= y && y <= y_ + h_) ?
                 true : false;
+    }
+    
+    void valueSelected(ofMouseEventArgs& arg) {
+        // Only tracks if point is inside
+        if (contains(arg.x, arg.y)) {
+            x_move_ = arg.x - x_;
+            if (value_selected_callback_ != nullptr) {
+                ValueCallbackArgs args {
+                    .value = x_move_,
+                    .data = range_callback_data_,
+                };
+                value_selected_callback_(args);
+            }
+        }
     }
 
     void startSelection(ofMouseEventArgs& arg) {
@@ -211,10 +248,10 @@ class InteractiveTimeSeriesPlot : public ofxGrtTimeseriesPlot {
             }
 
             if (range_selected_callback_ != nullptr) {
-                CallbackArgs args {
+                RangeCallbackArgs args {
                     .start = x_start_,
                     .end = x_end_,
-                    .data = callback_data_,
+                    .data = range_callback_data_,
                 };
                 range_selected_callback_(args);
             }
@@ -226,6 +263,8 @@ class InteractiveTimeSeriesPlot : public ofxGrtTimeseriesPlot {
     uint32_t y_;
     uint32_t w_;
     uint32_t h_;
+    
+    uint32_t x_move_;
 
     // x_click_ and x_release_ keeps track of where the mouse is clicked and
     // releasesd. Their values are normalized by subtracting x_.
@@ -242,5 +281,8 @@ class InteractiveTimeSeriesPlot : public ofxGrtTimeseriesPlot {
     bool is_tracking_mouse_;
 
     onRangeSelectedCallback range_selected_callback_;
-    void* callback_data_;
+    void* range_callback_data_;
+
+    onValueSelectedCallback value_selected_callback_;
+    void* value_callback_data_;
 };
