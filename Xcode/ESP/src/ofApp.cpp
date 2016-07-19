@@ -65,8 +65,15 @@ class Palette {
         if( numDimensions >= 1 ) colors[0] = ofColor(255,0,0); //red
         if( numDimensions >= 2 ) colors[1] = ofColor(0,255,0); //green
         if( numDimensions >= 3 ) colors[2] = ofColor(0,0,255); //blue
+        if( numDimensions >= 4 ) colors[3] = ofColor::orange;
+        if( numDimensions >= 5 ) colors[4] = ofColor::purple;
+        if( numDimensions >= 6 ) colors[5] = ofColor::brown;
+        if( numDimensions >= 7 ) colors[6] = ofColor::pink;
+        if( numDimensions >= 8 ) colors[7] = ofColor::grey;
+        if( numDimensions >= 9 ) colors[8] = ofColor::cyan;
+        
         //Randomize the remaining colors
-        for(unsigned int n=3; n<numDimensions; n++){
+        for(unsigned int n=9; n<numDimensions; n++){
             colors[n][0] = ofRandom(50,255);
             colors[n][1] = ofRandom(50,255);
             colors[n][2] = ofRandom(50,255);
@@ -151,6 +158,8 @@ void ofApp::setup() {
 
     istream_->onDataReadyEvent(this, &ofApp::onDataIn);
     
+    Palette color_palette;
+
     predicted_label_buffer_.resize(kBufferSize_);
     predicted_class_labels_buffer_.resize(kBufferSize_);
     predicted_class_distances_buffer_.resize(kBufferSize_);
@@ -181,6 +190,7 @@ void ofApp::setup() {
     
     plot_class_likelihoods_.setup(kBufferSize_, kNumMaxLabels_, "Class Likelihoods");
     plot_class_likelihoods_.setDrawInfoText(true);
+    plot_class_likelihoods_.setColorPalette(color_palette.generate(kNumMaxLabels_));
     
     for (int i = 0; i < kNumMaxLabels_; i++) {
         ofxGrtTimeseriesPlot plot;
@@ -188,8 +198,6 @@ void ofApp::setup() {
         plot.setChannelNames({ "Threshold", "Actual" });
         plot_class_distances_.push_back(plot);
     }
-
-    Palette color_palette;
 
     // Parse the user supplied pipeline and extract information:
     //  o num_pipeline_stages_
