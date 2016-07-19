@@ -10,8 +10,11 @@
 #pragma once
 
 #include <tuple>
+#include <vector>
 
 #include <GRT/GRT.h>
+
+using std::vector;
 
 /**
  *  @brief TrainingDataManager class encloses GRT::TimeSeriesClassificationData
@@ -46,9 +49,7 @@ class TrainingDataManager {
     // Set the name of the training data
     bool setDatasetName(const char* const name);
 
-    GRT::TimeSeriesClassificationData getAllData() {
-        return data_;
-    }
+    GRT::TimeSeriesClassificationData getAllData() { return data_; }
 
     uint32_t getNumLabels() { return num_classes_; }
 
@@ -93,7 +94,8 @@ class TrainingDataManager {
     bool relabelSample(uint32_t label, uint32_t index, uint32_t new_label);
 
     /// @brief Trim sample. What's left will be [start, end], closed interval.
-    bool trimSample(uint32_t label, uint32_t index, uint32_t start, uint32_t end);
+    bool trimSample(uint32_t label, uint32_t index, uint32_t start,
+                    uint32_t end);
 
     // =================================================
     //  Functions that manage per-sample scores
@@ -102,10 +104,11 @@ class TrainingDataManager {
     bool hasSampleScore(uint32_t label, uint32_t index);
     double getSampleScore(uint32_t label, uint32_t index);
     bool setSampleScore(uint32_t label, uint32_t index, double score);
-    
+
     bool hasSampleClassLikelihoods(uint32_t label, uint32_t index);
-    std::vector<double> getSampleClassLikelihoods(uint32_t label, uint32_t index);
-    bool setSampleClassLikelihoods(uint32_t label, uint32_t index, vector<double> likelihoods);
+    vector<double> getSampleClassLikelihoods(uint32_t label, uint32_t index);
+    bool setSampleClassLikelihoods(uint32_t label, uint32_t index,
+                                   vector<double> likelihoods);
 
     // =================================================
     //  Functions for saving/loading training data
@@ -123,19 +126,19 @@ class TrainingDataManager {
     // Name simulates Option<std::string> type. If `Name.first` is true, then
     // the name is valid; else use the default name.
     using Name = std::pair<bool, std::string>;
-    std::vector<std::vector<Name>> training_sample_names_;
-    std::vector<std::string> default_label_names_;
+    vector<vector<Name>> training_sample_names_;
+    vector<std::string> default_label_names_;
 
     // Score simulates Option<double> type. If `Score.first` is true, then
     // the score is valid; else use the default score.
     using Score = std::pair<bool, double>;
-    std::vector<std::vector<Score>> training_sample_scores_;
-    
+    vector<vector<Score>> training_sample_scores_;
+
     // Probability that the sample belongs to each class (e.g. when the model
     // is trained on all other samples). If ClassLikelihoods.first is true,
     // then vector is valid.
-    using ClassLikelihoods = std::pair<bool, std::vector<double>>;
-    std::vector<std::vector<ClassLikelihoods>> training_sample_class_likelihoods_;
+    using ClassLikelihoods = std::pair<bool, vector<double>>;
+    vector<vector<ClassLikelihoods>> training_sample_class_likelihoods_;
 
     // This variable tracks the number of samples for each label. Although We
     // can get the number with TimeSeriesClassificationData::getClassData and
@@ -143,7 +146,7 @@ class TrainingDataManager {
     //
     // The use of this class requires index not beyond the
     // num_samples_per_label_.
-    std::vector<uint32_t> num_samples_per_label_;
+    vector<uint32_t> num_samples_per_label_;
 
     // The underlying data store backed up by GRT's TimeSeriesClassificationData
     GRT::TimeSeriesClassificationData data_;
