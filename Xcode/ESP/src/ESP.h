@@ -25,6 +25,8 @@
  useTrainingSampleChecker().
  \li Optional advice to the user on the collection of training data, using
  useTrainingDataAdvice().
+ \li Whether or not to use leave-one-out scoring of training samples,
+ specified using useLeaveOneOutScoring().
 
  When compiled against the ESP framework and run, these examples generate a
  graphical interface that allows the user to visualize live sensor data,

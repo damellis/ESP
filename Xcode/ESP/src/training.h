@@ -113,3 +113,25 @@ void useTrainingSampleChecker(TrainingSampleChecker checker);
  @param advice the advice to show to the user
  */
 void useTrainingDataAdvice(string advice);
+
+/**
+ @brief Whether or not to do leave-one-out scoring of training data.
+ 
+ If enabled, to score each training sample, the model will be trained on all
+ other samples. Otherwise, the model will be trained once on all samples and
+ then each sample will be scored using this one model.
+ 
+  Leave-one-out training is generally more useful, as it's typically more
+  informative to evaluate models using data that wasn't used to train them.
+  On the other hand, leave-one-out scoring can be much slower because it
+  requires retraining the model once for each training sample.
+  
+  Note that "training sample" refers to one sample collected by the user,
+  which may consist of multiple individual data-points.
+   
+  Leave-one-out scoring is enabled by default and will be used unless disabled
+  by a call to this function in the setup() of the active example.
+  
+  @param enable whether or not to enable leave-one-out scoring
+  */
+void useLeaveOneOutScoring(bool enable = true);

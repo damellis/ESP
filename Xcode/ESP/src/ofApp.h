@@ -69,6 +69,7 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     void useOStream(OStreamVector &stream);
     void useTrainingSampleChecker(TrainingSampleChecker checker);
     void useTrainingDataAdvice(string advice);
+    void useLeaveOneOutScoring(bool enable) { use_leave_one_out_scoring_ = enable; }
 
     friend void useCalibrator(Calibrator &calibrator);
     friend void usePipeline(GRT::GestureRecognitionPipeline &pipeline);
@@ -79,6 +80,7 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     friend void useStream(IOStreamVector &stream);
     friend void useTrainingSampleChecker(TrainingSampleChecker checker);
     friend void useTrainingDataAdvice(string advice);
+    friend void useLeaveOneOutScoring(bool enable);
 
     bool setup_finished_ = false;
 
@@ -228,6 +230,8 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
 
     void scoreTrainingData(bool leaveOneOut);
     void scoreImpactOfTrainingSample(int label, const MatrixDouble &sample);
+
+    bool use_leave_one_out_scoring_ = true;
 
     vector<ofxDatGui *> training_sample_guis_;
     void renameTrainingSample(int num);

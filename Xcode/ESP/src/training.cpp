@@ -30,3 +30,7 @@ void useTrainingSampleChecker(TrainingSampleChecker checker) {
 void useTrainingDataAdvice(string advice) {
     ((ofApp *) ofGetAppPtr())->useTrainingDataAdvice(advice);
 }
+
+void useLeaveOneOutScoring(bool enable) {
+    ((ofApp *) ofGetAppPtr())->useLeaveOneOutScoring(enable);
+}

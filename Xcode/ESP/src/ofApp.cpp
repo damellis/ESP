@@ -1594,7 +1594,7 @@ void ofApp::trainModel() {
                assert(true == plot.clearContentModifiedFlag());
            }
 
-           scoreTrainingData(false);
+           scoreTrainingData(use_leave_one_out_scoring_);
 
            training_status = true;
        } else {
@@ -1621,6 +1621,10 @@ void ofApp::trainModel() {
 
 void ofApp::scoreTrainingData(bool leaveOneOut) {
     for (int label = 1; label <= training_data_manager_.getNumLabels(); label++) {
+        // No point in doing leave-one-out scoring for labels w/ one sample.
+        if (leaveOneOut && training_data_manager_.getNumSampleForLabel(label) == 1)
+            continue;
+    
         for (int i = 0; i < training_data_manager_.getNumSampleForLabel(label); i++) {
             GRT::MatrixDouble sample =
                 training_data_manager_.getSample(label, (leaveOneOut ? 0 : i));
