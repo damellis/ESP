@@ -258,7 +258,7 @@ bool MFCC::saveModelToFile(fstream &file) const {
     }
 
     // Write the file header
-    file << "GRT_FFT_FEATURES_FILE_V1.0" << endl;
+    file << "GRT_MFCC_FEATURES_FILE_V1.0" << endl;
 
     // Save the base settings to the file
     if (!saveFeatureExtractionSettingsToFile(file)) {
@@ -292,7 +292,7 @@ bool MFCC::loadModelFromFile(fstream &file) {
 
     // Load the header
     file >> word;
-    if (word != "GRT_FFT_FEATURES_FILE_V1.0") {
+    if (word != "GRT_MFCC_FEATURES_FILE_V1.0") {
         errorLog << "loadModelFromFile(fstream &file) - Invalid file format!"
                  << std::endl;
         return false;
