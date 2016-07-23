@@ -375,7 +375,7 @@ bool MFCC::loadModelFromFile(fstream &file) {
                  << "- Failed to read NoiseLevel header!" << std::endl;
         return false;
     }
-    file >> options_.use_vad;
+    file >> options_.noise_level;
 
     initialize();
     return true;
