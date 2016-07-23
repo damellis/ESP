@@ -175,7 +175,7 @@ void ofApp::setup() {
     plot_inputs_.setDrawInfoText(true);
     plot_inputs_.setChannelNames(istream_labels);
     plot_inputs_.onRangeSelected(this, &ofApp::onInputPlotRangeSelection, NULL);
-    plot_inputs_.onValueSelected(this, &ofApp::onInputPlotValueSelection, NULL);
+    plot_inputs_.onValueHighlighted(this, &ofApp::onInputPlotValueSelection, NULL);
     if (istream_->getNumOutputDimensions() >= kTooManyFeaturesThreshold) {
         plot_inputs_snapshot_.setup(istream_->getNumOutputDimensions(), 1, "Snapshot");
         plot_inputs_.setDrawInfoText(false); // this will be too long to show
@@ -192,11 +192,12 @@ void ofApp::setup() {
     plot_class_likelihoods_.setDrawInfoText(true);
     plot_class_likelihoods_.setColorPalette(color_palette.generate(kNumMaxLabels_));
     
+    plot_class_distances_.resize(kNumMaxLabels_);
     for (int i = 0; i < kNumMaxLabels_; i++) {
-        ofxGrtTimeseriesPlot plot;
+        InteractiveTimeSeriesPlot &plot = plot_class_distances_[i];
         plot.setup(kBufferSize_, 2, std::to_string(i + 1));
         plot.setChannelNames({ "Threshold", "Actual" });
-        plot_class_distances_.push_back(plot);
+        plot.onValueHighlighted(this, &ofApp::onClassDistancePlotValueHighlight, NULL);
     }
 
     // Parse the user supplied pipeline and extract information:
@@ -472,7 +473,7 @@ void ofApp::populateSampleFeatures(uint32_t sample_index) {
     }
 }
 
-void ofApp::onInputPlotRangeSelection(InteractiveTimeSeriesPlot::RangeCallbackArgs arg) {
+void ofApp::onInputPlotRangeSelection(InteractiveTimeSeriesPlot::RangeSelectedCallbackArgs arg) {
     if (!enable_history_recording_) {
         plot_inputs_.clearSelection();
         return;
@@ -481,16 +482,22 @@ void ofApp::onInputPlotRangeSelection(InteractiveTimeSeriesPlot::RangeCallbackAr
     status_text_ = "Press 1-9 to extract from live data to training data.";
     is_in_history_recording_ = true;
     sample_data_.clear();
-    sample_data_ = plot_inputs_.getSelectedData();
+    sample_data_ = plot_inputs_.getData(arg.start, arg.end);
 }
 
-void ofApp::onInputPlotValueSelection(InteractiveTimeSeriesPlot::ValueCallbackArgs arg) {
+void ofApp::onInputPlotValueSelection(InteractiveTimeSeriesPlot::ValueHighlightedCallbackArgs arg) {
     if (enable_history_recording_) {
-        int i = plot_inputs_.getSelectedIndex();
+        int i = arg.index;
         predicted_label_ = predicted_label_buffer_[i];
         predicted_class_distances_ = predicted_class_distances_buffer_[i];
         predicted_class_likelihoods_ = predicted_class_likelihoods_buffer_[i];
         predicted_class_labels_ = predicted_class_labels_buffer_[i];
+    }
+}
+
+void ofApp::onClassDistancePlotValueHighlight(InteractiveTimeSeriesPlot::ValueHighlightedCallbackArgs arg) {
+    if (enable_history_recording_) {
+        class_distance_values_ = arg.source->getData(arg.index);
     }
 }
 
@@ -1517,6 +1524,13 @@ void ofApp::drawPrediction() {
     plot_class_likelihoods_.draw(stage_left, stage_top, stage_width, stage_height);
     ofPopStyle();
     stage_top += stage_height + margin;
+    
+    if (class_distance_values_.size() == 2) {
+        ofDrawBitmapString(
+            "Class Distance: " + std::to_string(class_distance_values_[1]) +
+            " vs. Threshold: " + std::to_string(class_distance_values_[0]),
+            stage_left, stage_top - margin / 2);
+    }
 
     // 3. Draw Class Distances
     uint32_t height = stage_height / kNumMaxLabels_;
@@ -1758,6 +1772,7 @@ void ofApp::keyPressed(int key){
         case 'p': {
             istream_->toggle();
             enable_history_recording_ = !enable_history_recording_;
+            if (!enable_history_recording_) class_distance_values_.resize(0);
             input_data_.clear();
             break;
         }

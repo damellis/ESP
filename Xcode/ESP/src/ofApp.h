@@ -130,7 +130,11 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     vector<UINT> predicted_class_labels_; CircularBuffer<vector<UINT>> predicted_class_labels_buffer_;
     vector<UINT> test_data_predicted_class_labels_;
 
-    // Visuals
+    vector<double> class_distance_values_;
+
+    /// ====================================================
+    ///  Visuals
+    /// ====================================================
     ofxGrtTimeseriesPlot plot_raw_;
     InteractiveTimeSeriesPlot plot_inputs_;
     ofxGrtTimeseriesPlot plot_inputs_snapshot_; // a spectrum of the most
@@ -138,8 +142,8 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
                                                 // only if the number of input
                                                 // dimensions is greater than
                                                 // kTooManyFeaturesThreshold
-    void onInputPlotRangeSelection(InteractiveTimeSeriesPlot::RangeCallbackArgs arg);
-    void onInputPlotValueSelection(InteractiveTimeSeriesPlot::ValueCallbackArgs arg);
+    void onInputPlotRangeSelection(InteractiveTimeSeriesPlot::RangeSelectedCallbackArgs arg);
+    void onInputPlotValueSelection(InteractiveTimeSeriesPlot::ValueHighlightedCallbackArgs arg);
     bool enable_history_recording_ = false;
     bool is_in_history_recording_ = false;
 
@@ -169,7 +173,9 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     void runPredictionOnTestData();
 
     ofxGrtTimeseriesPlot plot_class_likelihoods_;
-    vector<ofxGrtTimeseriesPlot> plot_class_distances_;
+    vector<InteractiveTimeSeriesPlot> plot_class_distances_;
+
+    void onClassDistancePlotValueHighlight(InteractiveTimeSeriesPlot::ValueHighlightedCallbackArgs arg);
 
     // Panel for storing and loading pipeline.
     ofxDatGui gui_;

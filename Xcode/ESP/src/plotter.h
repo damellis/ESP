@@ -99,14 +99,21 @@ class Plotter {
 
 class InteractiveTimeSeriesPlot : public ofxGrtTimeseriesPlot {
   public:
-    struct RangeCallbackArgs {
+    struct RangeSelectedCallbackArgs {
+        InteractiveTimeSeriesPlot *source;
         uint32_t start;
         uint32_t end;
         void* data;
     };
 
-    struct ValueCallbackArgs {
-        uint32_t value;
+    struct ValueHighlightedCallbackArgs {
+        InteractiveTimeSeriesPlot *source;
+        uint32_t index;
+        void* data;
+    };
+
+    struct NoValueHighlightedCallbackArgs {
+        InteractiveTimeSeriesPlot *source;
         void* data;
     };
 
@@ -116,8 +123,9 @@ class InteractiveTimeSeriesPlot : public ofxGrtTimeseriesPlot {
             is_tracking_mouse_(false) {
     }
 
-    typedef std::function<void(RangeCallbackArgs)> onRangeSelectedCallback;
-    typedef std::function<void(ValueCallbackArgs)> onValueSelectedCallback;
+    typedef std::function<void(RangeSelectedCallbackArgs)> onRangeSelectedCallback;
+    typedef std::function<void(ValueHighlightedCallbackArgs)> onValueHighlightedCallback;
+    typedef std::function<void(NoValueHighlightedCallbackArgs)> onNoValueHighlightedCallback;
 
     bool draw(uint32_t x, uint32_t y, uint32_t w, uint32_t h) {
         x_ = x;
@@ -143,7 +151,7 @@ class InteractiveTimeSeriesPlot : public ofxGrtTimeseriesPlot {
 
     void onRangeSelected(const onRangeSelectedCallback& cb, void* data) {
         range_selected_callback_ = cb;
-        range_callback_data_ = data;
+        range_selected_callback_data_ = data;
         ofAddListener(ofEvents().mousePressed,
                       this, &InteractiveTimeSeriesPlot::startSelection);
         ofAddListener(ofEvents().mouseDragged,
@@ -158,38 +166,45 @@ class InteractiveTimeSeriesPlot : public ofxGrtTimeseriesPlot {
         onRangeSelected(std::bind(listenerMethod, owner, _1), data);
     }
 
-    void onValueSelected(const onValueSelectedCallback& cb, void* data) {
-        value_selected_callback_ = cb;
-        value_callback_data_ = data;
+    void onValueHighlighted(const onValueHighlightedCallback& cb, void* data) {
+        value_highlighted_callback_ = cb;
+        value_highlighted_callback_data_ = data;
         ofAddListener(ofEvents().mouseMoved,
-                      this, &InteractiveTimeSeriesPlot::valueSelected);
+                      this, &InteractiveTimeSeriesPlot::mouseMoved);
     }
 
     template<typename T1, typename arg, class T>
-    void onValueSelected(T1* owner, void (T::*listenerMethod)(arg), void* data) {
+    void onValueHighlighted(T1* owner, void (T::*listenerMethod)(arg), void* data) {
         using namespace std::placeholders;
-        onValueSelected(std::bind(listenerMethod, owner, _1), data);
+        onValueHighlighted(std::bind(listenerMethod, owner, _1), data);
     }
 
-    MatrixDouble getSelectedData() {
+    void onNoValueHighlighted(const onNoValueHighlightedCallback& cb, void* data) {
+        no_value_highlighted_callback_ = cb;
+        no_value_highlighted_callback_data_ = data;
+        ofAddListener(ofEvents().mouseMoved,
+                      this, &InteractiveTimeSeriesPlot::mouseMoved);
+    }
+
+    template<typename T1, typename arg, class T>
+    void onNoValueHighlighted(T1* owner, void (T::*listenerMethod)(arg), void* data) {
+        using namespace std::placeholders;
+        onNoValueHighlighted(std::bind(listenerMethod, owner, _1), data);
+    }
+
+    MatrixDouble getData(uint32_t x_start_idx, uint32_t x_end_idx) {
         // dataBuffer is a "CircularBuffer< vector<float> >" inside
         // ofxGrtTimeseriesPlot.
         MatrixDouble selected_data;
-        float x_step = w_ * 1.0 / timeseriesLength;
-        uint32_t x_start_idx = x_start_ / x_step;
-        uint32_t x_end_idx = x_end_ / x_step;
-        if (x_end_idx > dataBuffer.getSize()) { return selected_data; }
-
-        for (uint32_t i = x_start_idx; i < x_end_idx; i++) {
+        for (uint32_t i = x_start_idx; i < x_end_idx && i < dataBuffer.getSize(); i++) {
             vector<double> v_double(dataBuffer[i].begin(), dataBuffer[i].end());
             selected_data.push_back(v_double);
         }
         return selected_data;
     }
     
-    uint32_t getSelectedIndex() {
-        float x_step = w_ * 1.0 / timeseriesLength;
-        return x_move_ / x_step;
+    vector<double> getData(uint32_t x_idx) {
+        return vector<double>(dataBuffer[x_idx].begin(), dataBuffer[x_idx].end());
     }
 
     void clearSelection() {
@@ -198,21 +213,35 @@ class InteractiveTimeSeriesPlot : public ofxGrtTimeseriesPlot {
     }
 
   private:
+    uint32_t mouseCoordinateToIndex(uint32_t x) {
+        float x_step = w_ * 1.0 / timeseriesLength;
+        return x / x_step;
+    }
+  
     bool contains(uint32_t x, uint32_t y) {
         return (x_ <= x && x <= x_ + w_ && y_ <= y && y <= y_ + h_) ?
                 true : false;
     }
     
-    void valueSelected(ofMouseEventArgs& arg) {
+    void mouseMoved(ofMouseEventArgs& arg) {
         // Only tracks if point is inside
         if (contains(arg.x, arg.y)) {
             x_move_ = arg.x - x_;
-            if (value_selected_callback_ != nullptr) {
-                ValueCallbackArgs args {
-                    .value = x_move_,
-                    .data = range_callback_data_,
+            if (value_highlighted_callback_ != nullptr) {
+                ValueHighlightedCallbackArgs args {
+                    .source = this,
+                    .index = mouseCoordinateToIndex(x_move_),
+                    .data = value_highlighted_callback_data_,
                 };
-                value_selected_callback_(args);
+                value_highlighted_callback_(args);
+            }
+        } else {
+            if (no_value_highlighted_callback_ != nullptr) {
+                NoValueHighlightedCallbackArgs args {
+                    .source = this,
+                    .data = no_value_highlighted_callback_data_,
+                };
+                no_value_highlighted_callback_(args);
             }
         }
     }
@@ -248,10 +277,11 @@ class InteractiveTimeSeriesPlot : public ofxGrtTimeseriesPlot {
             }
 
             if (range_selected_callback_ != nullptr) {
-                RangeCallbackArgs args {
-                    .start = x_start_,
-                    .end = x_end_,
-                    .data = range_callback_data_,
+                RangeSelectedCallbackArgs args {
+                    .source = this,
+                    .start = mouseCoordinateToIndex(x_start_),
+                    .end = mouseCoordinateToIndex(x_end_),
+                    .data = range_selected_callback_data_,
                 };
                 range_selected_callback_(args);
             }
@@ -281,8 +311,11 @@ class InteractiveTimeSeriesPlot : public ofxGrtTimeseriesPlot {
     bool is_tracking_mouse_;
 
     onRangeSelectedCallback range_selected_callback_;
-    void* range_callback_data_;
+    void* range_selected_callback_data_;
 
-    onValueSelectedCallback value_selected_callback_;
-    void* value_callback_data_;
+    onValueHighlightedCallback value_highlighted_callback_;
+    void* value_highlighted_callback_data_;
+    
+    onNoValueHighlightedCallback no_value_highlighted_callback_;
+    void *no_value_highlighted_callback_data_;
 };
