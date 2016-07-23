@@ -1,7 +1,11 @@
 #include "ofApp.h"
 
 #include <algorithm>
+#include <cctype>
+#include <iomanip>
 #include <math.h>
+#include <sstream>
+#include <string>
 
 #include "user.h"
 
@@ -38,6 +42,10 @@ static const char* kPredictionInstruction =
 
 const double kPipelineHeightWeight = 0.3;
 const ofColor kSerialSelectionColor = ofColor::fromHex(0x00FF00);
+
+// Utility functions forward declaration
+string encodeName(const string &name);
+string decodeName(const string &name);
 
 class Palette {
   public:
@@ -599,9 +607,8 @@ bool ofApp::saveCalibrationData(const string& filename) {
     auto calibrators = calibrator_->getCalibrateProcesses();
     for (int i = 0; i < calibrators.size(); i++) {
         data.addSample(i, calibrators[i].getData());
-
-        // TODO(benzh) Avoid spaces in the name.
-        data.setClassNameForCorrespondingClassLabel(calibrators[i].getName(), i);
+        data.setClassNameForCorrespondingClassLabel(
+            encodeName(calibrators[i].getName()), i);
     }
 
     if (data.save(filename)) {
@@ -656,7 +663,8 @@ bool ofApp::loadCalibrationData(const string& filename) {
     }
 
     for (int i = 0; i < data.getNumSamples(); i++) {
-        if (data.getClassNameForCorrespondingClassLabel(i) != calibrators[i].getName()) {
+        string name = decodeName(data.getClassNameForCorrespondingClassLabel(i));
+        if (name != calibrators[i].getName()) {
             ofLog(OF_LOG_WARNING) << "Name of saved calibration sample " << (i + 1) << " ('"
                                   << data.getClassNameForCorrespondingClassLabel(i)
                                   << "') differs from current calibration sample name ('"
@@ -1966,4 +1974,52 @@ void ofApp::gotMessage(ofMessage msg) {
 //--------------------------------------------------------------
 void ofApp::dragEvent(ofDragInfo dragInfo) {
 
+}
+
+string encodeName(const string &name) {
+    std::ostringstream escaped;
+    escaped.fill('0');
+    escaped << std::hex;
+
+    for (auto i = name.begin(); i != name.end(); ++i) {
+        string::value_type c = (*i);
+
+        // Keep alphanumeric and other accepted characters intact
+        if (isalnum(c) || c == '-' || c == '_' || c == '.' || c == '~') {
+            escaped << c;
+        } else {
+            escaped << std::uppercase;
+            escaped << '%' << setw(2) << int((unsigned char) c);
+            escaped << std::nouppercase;
+        }
+    }
+
+    return escaped.str();
+}
+
+string decodeName(const string &from) {
+    ostringstream escaped;
+    escaped.fill('0');
+
+    // Convert from hex to decimal
+    auto from_hex = [](char ch) {
+        return isdigit(ch) ? ch - '0' : tolower(ch) - 'a' + 10;
+    };
+
+    for (auto i = from.begin(), n = from.end(); i != n; ++i) {
+        string::value_type c = (*i);
+        if (c == '%') {
+            if (i[1] && i[2]) {
+                char h = from_hex(i[1]) << 4 | from_hex(i[2]);
+                escaped << h;
+                i += 2;
+            }
+        } else if (c == '+') {
+            escaped << ' ';
+        } else {
+            escaped << c;
+        }
+    }
+
+    return escaped.str();
 }
