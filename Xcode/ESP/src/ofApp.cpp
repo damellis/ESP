@@ -71,7 +71,7 @@ class Palette {
         if( numDimensions >= 7 ) colors[6] = ofColor::pink;
         if( numDimensions >= 8 ) colors[7] = ofColor::grey;
         if( numDimensions >= 9 ) colors[8] = ofColor::cyan;
-        
+
         //Randomize the remaining colors
         for(unsigned int n=9; n<numDimensions; n++){
             colors[n][0] = ofRandom(50,255);
@@ -157,7 +157,7 @@ void ofApp::setup() {
         training_data_advice_ = getTrainingDataAdvice();
 
     istream_->onDataReadyEvent(this, &ofApp::onDataIn);
-    
+
     Palette color_palette;
 
     predicted_label_buffer_.resize(kBufferSize_);
@@ -187,11 +187,11 @@ void ofApp::setup() {
 
     plot_testdata_overview_.setup(istream_->getNumOutputDimensions(), "Overview");
     plot_testdata_overview_.onRangeSelected(this, &ofApp::onTestOverviewPlotSelection, NULL);
-    
+
     plot_class_likelihoods_.setup(kBufferSize_, kNumMaxLabels_, "Class Likelihoods");
     plot_class_likelihoods_.setDrawInfoText(true);
     plot_class_likelihoods_.setColorPalette(color_palette.generate(kNumMaxLabels_));
-    
+
     plot_class_distances_.resize(kNumMaxLabels_);
     for (int i = 0; i < kNumMaxLabels_; i++) {
         InteractiveTimeSeriesPlot &plot = plot_class_distances_[i];
@@ -616,7 +616,7 @@ bool ofApp::saveCalibrationData(const string& filename) {
 
 bool ofApp::loadCalibrationDataWithPrompt() {
     if (calibrator_ == NULL) return false;
-    
+
     ofFileDialogResult result = ofSystemLoadDialog(
         "Load existing calibration data", false);
     if (!result.bSuccess) { return false; }
@@ -629,7 +629,7 @@ bool ofApp::loadCalibrationData(const string& filename) {
             setStatus("Calibration file exists but there's no calibrator.");
             return false;
         }
-        
+
         return true; // nothing to do, so declare victory and go home
     }
 
@@ -766,7 +766,7 @@ bool ofApp::loadTestDataWithPrompt() {
 
 bool ofApp::loadTestData(const string& filename) {
     GRT::MatrixDouble test_data;
-    
+
     if (ofFile::doesFileExist(filename)) {
         if (test_data.load(filename) ){
             setStatus("Test data is loaded from " + filename);
@@ -1050,10 +1050,10 @@ void ofApp::update() {
 
         if (pipeline_->getTrained()) {
             pipeline_->predict(data_point);
-            
+
             predicted_label_ = pipeline_->getPredictedClassLabel();
             predicted_label_buffer_.push_back(predicted_label_);
-            
+
             predicted_class_labels_ = pipeline_->getClassLabels();
             predicted_class_labels_buffer_.push_back(predicted_class_labels_);
 
@@ -1071,7 +1071,7 @@ void ofApp::update() {
                 }
             }
             predicted_class_distances_buffer_.push_back(predicted_class_distances_);
-            
+
             for (int i = 0; i < predicted_class_distances_.size() &&
                             i < predicted_class_labels_.size(); i++) {
                 plot_class_distances_[predicted_class_labels_[i] - 1].update(
@@ -1080,10 +1080,10 @@ void ofApp::update() {
                         predicted_class_distances_[i]
                     });
             }
-            
+
             predicted_class_likelihoods_ = pipeline_->getClassLikelihoods();
             predicted_class_likelihoods_buffer_.push_back(predicted_class_likelihoods_);
-            
+
             vector<double> likelihoods(kNumMaxLabels_);
             for (int i = 0; i < predicted_class_likelihoods_.size() &&
                             i < predicted_class_labels_.size(); i++)
@@ -1092,7 +1092,7 @@ void ofApp::update() {
                     predicted_class_likelihoods_[i];
             }
             plot_class_likelihoods_.update(likelihoods);
-            
+
             if (predicted_label_ != 0) {
                 for (OStream *ostream : ostreams_)
                     ostream->onReceive(predicted_label_);
@@ -1230,7 +1230,7 @@ void ofApp::draw() {
             drawPrediction();
             tab_start += 4 * kTabWidth;
             break;
-            
+
         default:
             ofLog(OF_LOG_ERROR) << "Unknown tag!";
             break;
@@ -1524,7 +1524,7 @@ void ofApp::drawPrediction() {
     plot_class_likelihoods_.draw(stage_left, stage_top, stage_width, stage_height);
     ofPopStyle();
     stage_top += stage_height + margin;
-    
+
     if (class_distance_values_.size() == 2) {
         ofDrawBitmapString(
             "Class Distance: " + std::to_string(class_distance_values_[1]) +
@@ -1638,7 +1638,7 @@ void ofApp::scoreTrainingData(bool leaveOneOut) {
         // No point in doing leave-one-out scoring for labels w/ one sample.
         if (leaveOneOut && training_data_manager_.getNumSampleForLabel(label) == 1)
             continue;
-    
+
         for (int i = 0; i < training_data_manager_.getNumSampleForLabel(label); i++) {
             GRT::MatrixDouble sample =
                 training_data_manager_.getSample(label, (leaveOneOut ? 0 : i));
@@ -1763,8 +1763,8 @@ void ofApp::keyPressed(int key){
             }
             break;
         case 'f': toggleFeatureView(); break;
-        case 'L': loadAll(); break;
-        case 'l':
+        case 'l': loadAll(); break;
+        case 'L':
             if (fragment_ == CALIBRATION) loadCalibrationDataWithPrompt();
             else if (fragment_ == TRAINING) loadTrainingDataWithPrompt();
             else if (fragment_ == ANALYSIS) loadTestDataWithPrompt();
@@ -1776,8 +1776,8 @@ void ofApp::keyPressed(int key){
             input_data_.clear();
             break;
         }
-        case 'S': saveAll(); break;
-        case 's':
+        case 's': saveAll(); break;
+        case 'S':
             if (fragment_ == CALIBRATION) saveCalibrationDataWithPrompt();
             else if (fragment_ == TRAINING) saveTrainingDataWithPrompt();
             else if (fragment_ == ANALYSIS) saveTestDataWithPrompt();
