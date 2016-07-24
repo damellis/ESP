@@ -832,7 +832,9 @@ void ofApp::loadAll() {
 
         setStatus("ESP session is loaded from " + dir);
     } else {
-        setStatus("Failed to load ESP from " + dir);
+        // TODO(benzh) Temporarily disable this message so that each individual
+        // load will reveal which one failed.
+        // setStatus("Failed to load ESP from " + dir);
     }
 
 }
@@ -853,7 +855,9 @@ void ofApp::saveAll() {
         setStatus("ESP session is saved to " + dir);
         should_save_test_data_ = false;
     } else {
-        setStatus("Failed to save ESP session to " + dir);
+        // TODO(benzh) Temporarily disable this message so that each individual
+        // save will reveal which one failed.
+        // setStatus("Failed to save ESP session to " + dir);
     }
 
 }
