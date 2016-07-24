@@ -1115,7 +1115,7 @@ void ofApp::update() {
         if (istream_->getNumOutputDimensions() >= kTooManyFeaturesThreshold)
             plot_inputs_snapshot_.setData(data_point);
 
-        if (istream_->hasStarted()) {
+        if (istream_->hasStarted() && calibrator_->isCalibrated()) {
             if (!pipeline_->preProcessData(data_point)) {
                 ofLog(OF_LOG_ERROR) << "ERROR: Failed to compute features!";
             }
