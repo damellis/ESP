@@ -18,27 +18,26 @@ const uint32_t kDelayBeforeTraining = 50;  // milliseconds
 
 // Instructions for each tab.
 static const char* kCalibrateInstruction =
-        "You must collect calibration samples before you can start training.\n"
-        "Use key 1-9 to record calibration samples. "
-        "Press `l` to load calibration data, `s` to save.";
+    "Press `s` to save session, `l` to load session. (`S` and `L` to save/load calibration data only.)\n"
+    "Use key 1-9 to record calibration samples (required before you can start training).";
 
 static const char* kPipelineInstruction =
-        "Press capital C/P/A/T/R to change tabs, `p` to pause or resume.\n";
+    "Press capital C/P/A/T/R to change tabs, `p` to pause or resume.\n"
+    "Press `s` to save session, `l` to load session.";
 
 static const char* kTrainingInstruction =
-        "Press capital C/P/A/T/R to change tabs. "
-        "`p` to pause or resume, 1-9 to record samples \n"
-        "`r` to record test data, `f` to show features, `s` to save data"
-        "`l` to load training data, and `t` to train a model.";
+    "Press capital C/P/A/T/R to change tabs, `p` to pause or resume.\n"
+    "Press `s` to save session, `l` to load session. (`S` and `L` to save/load training data only.)\n"
+    "Hold 1-9 to record samples. Press `t` to train model, `f` to show features.";
 
 static const char* kAnalysisInstruction =
-        "Press capital C/P/A/T/R to change tabs. \n"
-        "Press `p` to pause or resume; hold `r` to record test data; "
-        "press `s` to save test data and `l` to load test data.";
+    "Press capital C/P/A/T/R to change tabs, `p` to pause or resume.\n"
+    "Press `s` to save session, `l` to load session. (`S` and `L` to save/load test data only.)\n"
+    "Hold `r` to record test data.";
 
 static const char* kPredictionInstruction =
-        "Press capital C/P/A/T/R to change tabs. \n"
-        "Press `p` to pause or resume.";
+    "Press capital C/P/A/T/R to change tabs, `p` to pause or resume.\n"
+    "Press `s` to save session, `l` to load session.";
 
 const double kPipelineHeightWeight = 0.3;
 const ofColor kSerialSelectionColor = ofColor::fromHex(0x00FF00);
