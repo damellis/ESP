@@ -188,6 +188,11 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     // Tuneable parameters
     void saveTuneables(ofxDatGuiButtonEvent e);
     void loadTuneables(ofxDatGuiButtonEvent e);
+    bool saveTuneablesWithPrompt();
+    bool saveTuneables(const string& filename);
+    bool loadTuneablesWithPrompt();
+    bool loadTuneables(const string& filename);
+    bool should_save_tuneables_;
 
     // Pipeline (including trained model)
     bool savePipelineWithPrompt();
@@ -226,6 +231,7 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     const string kCalibrationDataFilename = "CalibrationData.grt";
     const string kTrainingDataFilename    = "TrainingData.grt";
     const string kTestDataFilename        = "TestData.grt";
+    const string kTuneablesFilename       = "TuneableParameters.grt";
     void loadAll();
     void saveAll();
 

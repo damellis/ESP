@@ -799,30 +799,41 @@ bool ofApp::loadTestData(const string& filename) {
     return true;
 }
 
-void ofApp::saveTuneables(ofxDatGuiButtonEvent e) {
+bool ofApp::saveTuneablesWithPrompt() {
     ofFileDialogResult result = ofSystemSaveDialog("TuneableParameters.grt",
                                                    "Save your tuneable parameters?");
-    if (!result.bSuccess) { return; }
+    if (!result.bSuccess) { return false; }
+    return saveTuneables(result.getPath());
+}
 
-    std::ofstream file(result.getPath());
+bool ofApp::saveTuneables(const string& filename) {
+    std::ofstream file(filename);
     for (Tuneable* t : tuneable_parameters_) {
         file << t->toString() << std::endl;
     }
     file.close();
+    return true; // TODO: check for failure
 }
 
-void ofApp::loadTuneables(ofxDatGuiButtonEvent e) {
-    ofFileDialogResult result = ofSystemLoadDialog("Save tuneable parameters", true);
-    if (!result.bSuccess) { return; }
+bool ofApp::loadTuneablesWithPrompt() {
+    ofFileDialogResult result = ofSystemLoadDialog("Load tuneable parameters", true);
+    if (!result.bSuccess) { return false; }
+    return loadTuneables(result.getPath());
+}
 
+bool ofApp::loadTuneables(const string& filename) {
     std::string line;
-    std::ifstream file(result.getPath());
+    std::ifstream file(filename);
     for (Tuneable* t : tuneable_parameters_) {
         std::getline(file, line);
         t->fromString(line);
     }
     file.close();
+    return true; // TODO: check for failure
 }
+
+void ofApp::saveTuneables(ofxDatGuiButtonEvent e) { saveTuneablesWithPrompt(); }
+void ofApp::loadTuneables(ofxDatGuiButtonEvent e) { loadTuneablesWithPrompt(); }
 
 void ofApp::loadAll() {
     ofFileDialogResult result = ofSystemLoadDialog(
@@ -834,7 +845,8 @@ void ofApp::loadAll() {
     if (loadCalibrationData(dir + kCalibrationDataFilename) &&
         loadPipeline(dir + kPipelineFilename) &&
         loadTrainingData(dir + kTrainingDataFilename) &&
-        loadTestData(dir + kTestDataFilename)) {
+        loadTestData(dir + kTestDataFilename) &&
+        loadTuneables(dir + kTuneablesFilename)) {
 
         setStatus("ESP session is loaded from " + dir);
     } else {
@@ -856,7 +868,8 @@ void ofApp::saveAll() {
         && saveCalibrationData(dir + kCalibrationDataFilename)
         && savePipeline(dir + kPipelineFilename)
         && saveTrainingData(dir + kTrainingDataFilename)
-        && saveTestData(dir + kTestDataFilename)) {
+        && saveTestData(dir + kTestDataFilename)
+        && saveTuneables(dir + kTuneablesFilename)) {
 
         setStatus("ESP session is saved to " + dir);
         should_save_test_data_ = false;
