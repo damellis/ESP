@@ -1121,7 +1121,7 @@ void ofApp::update() {
                        pipeline_->getClassifier()->getNullRejectionThresholds()[i],
                     "");
             }
-        }
+        } else predicted_label_ = 0;
 
         plot_inputs_.update(data_point, predicted_label_ != 0, title);
         if (istream_->getNumOutputDimensions() >= kTooManyFeaturesThreshold)
