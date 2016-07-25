@@ -1584,9 +1584,8 @@ void ofApp::exit() {
     istream_->stop();
 
     // Save data here!
-    if (should_save_calibration_data_) { saveCalibrationDataWithPrompt(); }
-    if (should_save_training_data_) { saveTrainingDataWithPrompt(); }
-    if (should_save_test_data_) { saveTestDataWithPrompt(); }
+    if (should_save_calibration_data_ || should_save_training_data_ ||
+        should_save_pipeline_ || should_save_test_data_) saveAll();
 }
 
 void ofApp::onDataIn(GRT::MatrixDouble input) {
@@ -1638,7 +1637,7 @@ void ofApp::trainModel() {
            }
 
            scoreTrainingData(use_leave_one_out_scoring_);
-
+           should_save_pipeline_ = true;
            training_status = true;
        } else {
            ofLog(OF_LOG_ERROR) << "Failed to train the model";
