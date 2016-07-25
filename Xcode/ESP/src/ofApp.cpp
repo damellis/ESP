@@ -1072,32 +1072,17 @@ void ofApp::update() {
             predicted_label_ = pipeline_->getPredictedClassLabel();
             predicted_label_buffer_.push_back(predicted_label_);
 
+            if (predicted_label_ != 0) {
+                for (OStream *ostream : ostreams_)
+                    ostream->onReceive(predicted_label_);
+                for (OStream *ostream : ostreamvectors_)
+                    ostream->onReceive(predicted_label_);
+
+                title = training_data_manager_.getLabelName(predicted_label_);
+            }
+            
             predicted_class_labels_ = pipeline_->getClassLabels();
             predicted_class_labels_buffer_.push_back(predicted_class_labels_);
-
-            predicted_class_distances_ = pipeline_->getClassDistances();
-            // TODO(damellis): this shouldn't be classifier-specific but should
-            // instead be based on a virtual function in Classifier or similar.
-            DTW *dtw = dynamic_cast<DTW *>(pipeline_->getClassifier());
-            if (dtw != NULL) {
-                for (int k = 0; k < predicted_class_distances_.size() &&
-                                k < predicted_class_labels_.size(); k++) {
-                    predicted_class_distances_[k] =
-                        dtw->classDistanceToNullRejectionCoefficient(
-                            predicted_class_labels_[k],
-                            predicted_class_distances_[k]);
-                }
-            }
-            predicted_class_distances_buffer_.push_back(predicted_class_distances_);
-
-            for (int i = 0; i < predicted_class_distances_.size() &&
-                            i < predicted_class_labels_.size(); i++) {
-                plot_class_distances_[predicted_class_labels_[i] - 1].update(
-                    vector<double>{
-                        pipeline_->getClassifier()->getNullRejectionCoeff(),
-                        predicted_class_distances_[i]
-                    });
-            }
 
             predicted_class_likelihoods_ = pipeline_->getClassLikelihoods();
             predicted_class_likelihoods_buffer_.push_back(predicted_class_likelihoods_);
@@ -1109,15 +1094,32 @@ void ofApp::update() {
                 likelihoods[predicted_class_labels_[i] - 1] =
                     predicted_class_likelihoods_[i];
             }
-            plot_class_likelihoods_.update(likelihoods);
+            plot_class_likelihoods_.update(likelihoods, predicted_label_ != 0, title);
 
-            if (predicted_label_ != 0) {
-                for (OStream *ostream : ostreams_)
-                    ostream->onReceive(predicted_label_);
-                for (OStream *ostream : ostreamvectors_)
-                    ostream->onReceive(predicted_label_);
+            predicted_class_distances_ = pipeline_->getClassDistances();
+//            // TODO(damellis): this shouldn't be classifier-specific but should
+//            // instead be based on a virtual function in Classifier or similar.
+//            DTW *dtw = dynamic_cast<DTW *>(pipeline_->getClassifier());
+//            if (dtw != NULL) {
+//                for (int k = 0; k < predicted_class_distances_.size() &&
+//                                k < predicted_class_labels_.size(); k++) {
+//                    predicted_class_distances_[k] =
+//                        dtw->classDistanceToNullRejectionCoefficient(
+//                            predicted_class_labels_[k],
+//                            predicted_class_distances_[k]);
+//                }
+//            }
+            predicted_class_distances_buffer_.push_back(predicted_class_distances_);
 
-                title = training_data_manager_.getLabelName(predicted_label_);
+            for (int i = 0; i < predicted_class_distances_.size() &&
+                            i < predicted_class_labels_.size(); i++) {
+                plot_class_distances_[predicted_class_labels_[i] - 1].update(
+                    vector<double>{
+                        pipeline_->getClassifier()->getNullRejectionThresholds()[i],
+                        predicted_class_distances_[i]
+                    }, predicted_class_distances_[i] <
+                       pipeline_->getClassifier()->getNullRejectionThresholds()[i],
+                    "");
             }
         }
 
