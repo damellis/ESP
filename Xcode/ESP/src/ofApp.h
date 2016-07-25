@@ -131,6 +131,7 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     vector<UINT> test_data_predicted_class_labels_;
 
     vector<double> class_distance_values_;
+    vector<double> class_likelihood_values_;
 
     /// ====================================================
     ///  Visuals
@@ -172,9 +173,10 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     void updateTestWindowPlot();
     void runPredictionOnTestData();
 
-    ofxGrtTimeseriesPlot plot_class_likelihoods_;
+    InteractiveTimeSeriesPlot plot_class_likelihoods_;
     vector<InteractiveTimeSeriesPlot> plot_class_distances_;
 
+    void onClassLikelihoodsPlotValueHighlight(InteractiveTimeSeriesPlot::ValueHighlightedCallbackArgs arg);
     void onClassDistancePlotValueHighlight(InteractiveTimeSeriesPlot::ValueHighlightedCallbackArgs arg);
 
     // Panel for storing and loading pipeline.

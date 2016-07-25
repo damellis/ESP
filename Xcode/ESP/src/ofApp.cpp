@@ -198,6 +198,7 @@ void ofApp::setup() {
     plot_class_likelihoods_.setup(kBufferSize_, kNumMaxLabels_, "Class Likelihoods");
     plot_class_likelihoods_.setDrawInfoText(true);
     plot_class_likelihoods_.setColorPalette(color_palette.generate(kNumMaxLabels_));
+    plot_class_likelihoods_.onValueHighlighted(this, &ofApp::onClassLikelihoodsPlotValueHighlight, NULL);
 
     plot_class_distances_.resize(kNumMaxLabels_);
     for (int i = 0; i < kNumMaxLabels_; i++) {
@@ -499,6 +500,12 @@ void ofApp::onInputPlotValueSelection(InteractiveTimeSeriesPlot::ValueHighlighte
         predicted_class_distances_ = predicted_class_distances_buffer_[i];
         predicted_class_likelihoods_ = predicted_class_likelihoods_buffer_[i];
         predicted_class_labels_ = predicted_class_labels_buffer_[i];
+    }
+}
+
+void ofApp::onClassLikelihoodsPlotValueHighlight(InteractiveTimeSeriesPlot::ValueHighlightedCallbackArgs arg) {
+    if (enable_history_recording_) {
+        class_likelihood_values_ = arg.source->getData(arg.index);
     }
 }
 
@@ -1531,19 +1538,28 @@ void ofApp::drawPrediction() {
     stage_top += stage_height + margin;
 
     // 2. Draw Class Likelihoods
+    if (class_likelihood_values_.size() > 0) {
+        string s = "Class Likelihoods: ";
+        for (int i = 0; i < class_likelihood_values_.size(); i++) {
+            s += "[" + std::to_string(i + 1) + "]: " +
+                 std::to_string((int) (class_likelihood_values_[i] * 100)) + "% ";
+        }
+        ofDrawBitmapString(s, stage_left, stage_top - margin / 3);
+    }
+    
     ofPushStyle();
     plot_class_likelihoods_.draw(stage_left, stage_top, stage_width, stage_height);
     ofPopStyle();
     stage_top += stage_height + margin;
 
+    // 3. Draw Class Distances
     if (class_distance_values_.size() == 2) {
         ofDrawBitmapString(
             "Class Distance: " + std::to_string(class_distance_values_[1]) +
             " vs. Threshold: " + std::to_string(class_distance_values_[0]),
-            stage_left, stage_top - margin / 2);
+            stage_left, stage_top - margin / 3);
     }
-
-    // 3. Draw Class Distances
+    
     uint32_t height = stage_height / kNumMaxLabels_;
     double minDistance = 0.0, maxDistance = 1.0;
     for (int i = 0; i < kNumMaxLabels_; i++) {
@@ -1783,7 +1799,10 @@ void ofApp::keyPressed(int key){
         case 'p': {
             istream_->toggle();
             enable_history_recording_ = !enable_history_recording_;
-            if (!enable_history_recording_) class_distance_values_.resize(0);
+            if (!enable_history_recording_) {
+                class_likelihood_values_.resize(0);
+                class_distance_values_.resize(0);
+            }
             input_data_.clear();
             break;
         }
