@@ -421,7 +421,7 @@ void ofApp::setup() {
     GRT::ErrorLog::registerObserver(*this);
 }
 
-void ofApp::onPlotRangeSelected(Plotter::CallbackArgs arg) {
+void ofApp::onPlotRangeSelected(InteractivePlot::RangeSelectedCallbackArgs arg) {
     if (is_in_feature_view_) {
         uint32_t sample_index = reinterpret_cast<uint64_t>(arg.data) - 1;
         populateSampleFeatures(sample_index);
@@ -535,7 +535,7 @@ void ofApp::onClassDistancePlotValueHighlight(InteractiveTimeSeriesPlot::ValueHi
     }
 }
 
-void ofApp::onTestOverviewPlotSelection(Plotter::CallbackArgs arg) {
+void ofApp::onTestOverviewPlotSelection(InteractivePlot::RangeSelectedCallbackArgs arg) {
     updateTestWindowPlot();
 }
 
