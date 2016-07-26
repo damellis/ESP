@@ -829,6 +829,7 @@ bool ofApp::loadTuneables(const string& filename) {
         t->fromString(line);
     }
     file.close();
+    reloadPipelineModules();
     return true; // TODO: check for failure
 }
 
@@ -842,11 +843,13 @@ void ofApp::loadAll() {
 
     const string dir = result.getPath() + "/";
 
+    // Need to load tuneable before pipeline because loading the tuneables
+    // resets the pipeline.
     if (loadCalibrationData(dir + kCalibrationDataFilename) &&
+        loadTuneables(dir + kTuneablesFilename) &&
         loadPipeline(dir + kPipelineFilename) &&
         loadTrainingData(dir + kTrainingDataFilename) &&
-        loadTestData(dir + kTestDataFilename) &&
-        loadTuneables(dir + kTuneablesFilename)) {
+        loadTestData(dir + kTestDataFilename)) {
 
         setStatus("ESP session is loaded from " + dir);
     } else {
