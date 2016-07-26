@@ -232,8 +232,9 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     const string kTrainingDataFilename    = "TrainingData.grt";
     const string kTestDataFilename        = "TestData.grt";
     const string kTuneablesFilename       = "TuneableParameters.grt";
+    string save_path_ = "";
     void loadAll();
-    void saveAll();
+    void saveAll(bool saveAs = false);
 
     ofxDatGuiDropdown *serial_selection_dropdown_;
     void onSerialSelectionDropdownEvent(ofxDatGuiDropdownEvent e);

@@ -18,26 +18,26 @@ const uint32_t kDelayBeforeTraining = 50;  // milliseconds
 
 // Instructions for each tab.
 static const char* kCalibrateInstruction =
-    "Press `s` to save session, `l` to load session. (`S` and `L` to save/load calibration data only.)\n"
+    "Press `s` to save session, `a` to save as, `l` to load session. (`S` and `L` to save/load calibration data only.)\n"
     "Use key 1-9 to record calibration samples (required before you can start training).";
 
 static const char* kPipelineInstruction =
     "Press capital C/P/A/T/R to change tabs, `p` to pause or resume.\n"
-    "Press `s` to save session, `l` to load session.";
+    "Press `s` to save session, `a` to save as, `l` to load session.";
 
 static const char* kTrainingInstruction =
     "Press capital C/P/A/T/R to change tabs, `p` to pause or resume.\n"
-    "Press `s` to save session, `l` to load session. (`S` and `L` to save/load training data only.)\n"
+    "Press `s` to save session, `a` to save as, `l` to load session. (`S` and `L` to save/load training data only.)\n"
     "Hold 1-9 to record samples. Press `t` to train model, `f` to show features.";
 
 static const char* kAnalysisInstruction =
     "Press capital C/P/A/T/R to change tabs, `p` to pause or resume.\n"
-    "Press `s` to save session, `l` to load session. (`S` and `L` to save/load test data only.)\n"
+    "Press `s` to save session, `a` to save as, `l` to load session. (`S` and `L` to save/load test data only.)\n"
     "Hold `r` to record test data.";
 
 static const char* kPredictionInstruction =
     "Press capital C/P/A/T/R to change tabs, `p` to pause or resume.\n"
-    "Press `s` to save session, `l` to load session.";
+    "Press `s` to save session, `a` to save as, `l` to load session.";
 
 const double kPipelineHeightWeight = 0.3;
 const ofColor kSerialSelectionColor = ofColor::fromHex(0x00FF00);
@@ -842,7 +842,8 @@ void ofApp::loadAll() {
         "Load an exising ESP session", true);
     if (!result.bSuccess) { return; }
 
-    const string dir = result.getPath() + "/";
+    save_path_ = result.getPath();
+    const string dir = save_path_ + "/";
 
     // Need to load tuneable before pipeline because loading the tuneables
     // resets the pipeline. Also, need to load pipeline after training and
@@ -863,13 +864,16 @@ void ofApp::loadAll() {
 
 }
 
-void ofApp::saveAll() {
-    ofFileDialogResult result = ofSystemSaveDialog(
-        "ESP", "Save this session");
-    if (!result.bSuccess) { return; }
+void ofApp::saveAll(bool saveAs) {
+    if (save_path_.empty() || saveAs) {
+        ofFileDialogResult result = ofSystemSaveDialog(
+            "ESP", "Save this session");
+        if (!result.bSuccess) { return; }
+        save_path_ = result.getPath();
+    }
 
     // Create a directory with result.path as the absolute path.
-    const string dir = result.getPath() + "/";
+    const string dir = save_path_ + "/";
     if (ofDirectory::createDirectory(dir, false, false)
         && saveCalibrationData(dir + kCalibrationDataFilename)
         && savePipeline(dir + kPipelineFilename)
@@ -1829,6 +1833,7 @@ void ofApp::keyPressed(int key){
             input_data_.clear();
             break;
         }
+        case 'a': saveAll(true); break;
         case 's': saveAll(); break;
         case 'S':
             if (fragment_ == CALIBRATION) saveCalibrationDataWithPrompt();
