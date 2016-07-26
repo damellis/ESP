@@ -1171,12 +1171,12 @@ void ofApp::update() {
 
             for (int i = 0; i < predicted_class_distances_.size() &&
                             i < predicted_class_labels_.size(); i++) {
+                vector<double> thresholds = pipeline_->getClassifier()->getNullRejectionThresholds();
                 plot_class_distances_[predicted_class_labels_[i] - 1].update(
                     vector<double>{
-                        pipeline_->getClassifier()->getNullRejectionThresholds()[i],
+                        (thresholds.size() > i ? thresholds[i] : 0.0),
                         predicted_class_distances_[i]
-                    }, predicted_class_distances_[i] <
-                       pipeline_->getClassifier()->getNullRejectionThresholds()[i],
+                    }, thresholds.size() > i && predicted_class_distances_[i] < thresholds[i],
                     "");
             }
         } else predicted_label_ = 0;
