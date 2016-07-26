@@ -153,7 +153,9 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     vector<ofxGrtTimeseriesPlot> plot_pre_processed_;
     vector<vector<ofxGrtTimeseriesPlot>> plot_features_;
     vector<Plotter> plot_samples_;
+    vector<Plotter> plot_samples_snapshots_;
     vector<std::string> plot_samples_info_;
+    void updatePlotSamplesSnapshot(int num, int row = -1);
     // Features associated with each sample.
     vector<vector<Plotter>> plot_sample_features_;
     void toggleFeatureView();

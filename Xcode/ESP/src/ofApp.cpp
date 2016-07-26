@@ -285,6 +285,12 @@ void ofApp::setup() {
         plot.setup(label_dim, training_data_manager_.getLabelName(i + 1));
         plot.setColorPalette(color_palette.generate(label_dim));
         plot_samples_.push_back(plot);
+        
+        if (istream_->getNumOutputDimensions() >= kTooManyFeaturesThreshold) {
+            Plotter plot;
+            plot.setup(1, "");
+            plot_samples_snapshots_.push_back(plot);
+        }
 
         vector<Plotter> feature_plots;
         if (num_final_features < kTooManyFeaturesThreshold) {
@@ -419,6 +425,20 @@ void ofApp::onPlotRangeSelected(Plotter::CallbackArgs arg) {
     if (is_in_feature_view_) {
         uint32_t sample_index = reinterpret_cast<uint64_t>(arg.data) - 1;
         populateSampleFeatures(sample_index);
+    }
+}
+
+void ofApp::updatePlotSamplesSnapshot(int num, int row) {
+    // Nothing to do if we're not showing the snapshots.
+    if (istream_->getNumOutputDimensions() < kTooManyFeaturesThreshold) return;
+    
+    plot_samples_snapshots_[num].clearData();
+    
+    if (row == -1) row = plot_samples_[num].getData().getNumRows() - 1;
+    for (int i = 0; i < plot_samples_[num].getData().getNumCols(); i++) {
+        plot_samples_snapshots_[num].push_back({
+            plot_samples_[num].getData().getRowVector(row)[i]
+        });
     }
 }
 
@@ -743,6 +763,8 @@ bool ofApp::loadTrainingData(const string& filename) {
 
         std::string title = training_data_manager_.getLabelName(i);
         plot_samples_[i - 1].setTitle(title);
+        
+        updatePlotSamplesSnapshot(i - 1);
     }
 
     return true;
@@ -972,6 +994,7 @@ void ofApp::deleteTrainingSample(int num) {
         plot_sample_indices_[num] = -1;
     }
 
+    updatePlotSamplesSnapshot(num);
     populateSampleFeatures(num);
     should_save_training_data_ = true;
 }
@@ -986,6 +1009,7 @@ void ofApp::deleteAllTrainingSamples(int num) {
     plot_samples_[num].reset();
     plot_sample_indices_[num] = -1;
 
+    updatePlotSamplesSnapshot(num);
     populateSampleFeatures(num);
     should_save_training_data_ = true;
 }
@@ -1003,6 +1027,7 @@ void ofApp::trimTrainingSample(int num) {
     plot_samples_[num].setData(
         training_data_manager_.getSample(label, plot_sample_indices_[num]));
 
+    updatePlotSamplesSnapshot(num);
     populateSampleFeatures(num);
     should_save_training_data_ = true;
 }
@@ -1036,12 +1061,14 @@ void ofApp::doRelabelTrainingSample(uint32_t source, uint32_t target) {
         plot_samples_[num].reset();
         plot_sample_indices_[num] = -1;
     }
+    updatePlotSamplesSnapshot(num);
     populateSampleFeatures(num);
 
     // Update the target plot
     plot_sample_indices_[target - 1]++;
     plot_samples_[target - 1].setData(
         training_data_manager_.getSample(target, plot_sample_indices_[target - 1]));
+    updatePlotSamplesSnapshot(target - 1);
     populateSampleFeatures(target - 1);
 
     should_save_training_data_ = true;
@@ -1449,7 +1476,13 @@ void ofApp::drawTrainingInfo() {
         uint32_t label = i + 1;
         uint32_t x = stage_left + i * width;
         plot_samples_[i].setRanges(minY, maxY, true);
-        plot_samples_[i].draw(x, stage_top, width, stage_height);
+        
+        if (istream_->getNumOutputDimensions() >= kTooManyFeaturesThreshold) {
+            plot_samples_snapshots_[i].draw(x, stage_top, width, 2 * stage_height / 3);
+            plot_samples_[i].draw(x, stage_top + 2 * stage_height / 3, width, stage_height / 3);
+        } else {
+            plot_samples_[i].draw(x, stage_top, width, stage_height);
+        }
 
         uint32_t num_samples = training_data_manager_.getNumSampleForLabel(label);
         ofDrawBitmapString(
@@ -1873,6 +1906,8 @@ void ofApp::keyReleased(int key) {
 
             plot_samples_[label_ - 1].setData(sample_data_);
             plot_sample_indices_[label_ - 1] = num_samples - 1;
+            
+            updatePlotSamplesSnapshot(label_ - 1);
 
             should_save_training_data_ = true;
         }
@@ -1928,6 +1963,8 @@ void ofApp::keyReleased(int key) {
 
             plot_samples_[label_ - 1].setData(sample_data_);
             plot_sample_indices_[label_ - 1] = num_samples - 1;
+            
+            updatePlotSamplesSnapshot(label_ - 1);
 
             should_save_training_data_ = true;
         }
@@ -1968,6 +2005,7 @@ void ofApp::mouseReleased(int x, int y, int button) {
                 plot_samples_[i].setData(
                     training_data_manager_.getSample(label, plot_sample_indices_[i]));
                 assert(true == plot_samples_[i].clearContentModifiedFlag());
+                updatePlotSamplesSnapshot(i);
                 populateSampleFeatures(i);
             }
         }
@@ -1977,6 +2015,7 @@ void ofApp::mouseReleased(int x, int y, int button) {
                 plot_samples_[i].setData(
                     training_data_manager_.getSample(label, plot_sample_indices_[i]));
                 assert(true == plot_samples_[i].clearContentModifiedFlag());
+                updatePlotSamplesSnapshot(i);
                 populateSampleFeatures(i);
             }
         }
