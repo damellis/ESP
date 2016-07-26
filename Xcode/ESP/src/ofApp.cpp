@@ -587,6 +587,7 @@ bool ofApp::loadPipeline(const string& filename) {
     if (pipeline_->load(filename)) {
         setStatus("Pipeline is loaded from " + filename);
         should_save_pipeline_ = false;
+        if (pipeline_->getTrained()) afterTrainModel();
         return true;
     } else {
         setStatus("Failed to load pipeline from " + filename);
@@ -844,12 +845,14 @@ void ofApp::loadAll() {
     const string dir = result.getPath() + "/";
 
     // Need to load tuneable before pipeline because loading the tuneables
-    // resets the pipeline.
+    // resets the pipeline. Also, need to load pipeline after training and
+    // test data so we can use the loaded pipeline to score training data and
+    // evaluate test data.
     if (loadCalibrationData(dir + kCalibrationDataFilename) &&
         loadTuneables(dir + kTuneablesFilename) &&
-        loadPipeline(dir + kPipelineFilename) &&
         loadTrainingData(dir + kTrainingDataFilename) &&
-        loadTestData(dir + kTestDataFilename)) {
+        loadTestData(dir + kTestDataFilename) &&
+        loadPipeline(dir + kPipelineFilename)) {
 
         setStatus("ESP session is loaded from " + dir);
     } else {
@@ -1652,7 +1655,6 @@ void ofApp::trainModel() {
                assert(true == plot.clearContentModifiedFlag());
            }
 
-           scoreTrainingData(use_leave_one_out_scoring_);
            should_save_pipeline_ = true;
            training_status = true;
        } else {
@@ -1666,15 +1668,19 @@ void ofApp::trainModel() {
 
    // TODO(benzh) Fix data race issue later.
    if (training_func()) {
-       fragment_ = TRAINING;
-       runPredictionOnTestData();
-       updateTestWindowPlot();
-       pipeline_->reset();
-       for (int i = 0; i < plot_class_distances_.size(); i++)
-           plot_class_distances_[i].reset();
-
+       afterTrainModel();
        status_text_ = "Training was successful";
    }
+}
+
+void ofApp::afterTrainModel() {
+    scoreTrainingData(use_leave_one_out_scoring_);
+    fragment_ = TRAINING;
+    runPredictionOnTestData();
+    updateTestWindowPlot();
+    pipeline_->reset();
+    for (int i = 0; i < plot_class_distances_.size(); i++)
+        plot_class_distances_[i].reset();
 }
 
 void ofApp::scoreTrainingData(bool leaveOneOut) {

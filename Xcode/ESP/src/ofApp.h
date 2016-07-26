@@ -241,6 +241,7 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     void beginTrainModel();
     void drawEventReceived(ofEventArgs& arg);
     void trainModel();
+    void afterTrainModel();
 
     void scoreTrainingData(bool leaveOneOut);
     void scoreImpactOfTrainingSample(int label, const MatrixDouble &sample);
