@@ -356,6 +356,8 @@ void ofApp::setup() {
     for (uint32_t i = 0; i < plot_samples_.size(); i++) {
         plot_samples_[i].onRangeSelected(this, &ofApp::onPlotRangeSelected,
                                          reinterpret_cast<void*>(i + 1));
+        plot_samples_[i].onValueHighlighted(this, &ofApp::onPlotSamplesValueHighlight,
+                                         reinterpret_cast<void*>(i + 1));
     }
 
     training_data_manager_.setNumDimensions(istream_->getNumOutputDimensions());
@@ -426,6 +428,11 @@ void ofApp::onPlotRangeSelected(InteractivePlot::RangeSelectedCallbackArgs arg) 
         uint32_t sample_index = reinterpret_cast<uint64_t>(arg.data) - 1;
         populateSampleFeatures(sample_index);
     }
+}
+
+void ofApp::onPlotSamplesValueHighlight(InteractivePlot::ValueHighlightedCallbackArgs arg) {
+    uint32_t sample_index = reinterpret_cast<uint64_t>(arg.data) - 1;
+    updatePlotSamplesSnapshot(sample_index, arg.index);
 }
 
 void ofApp::updatePlotSamplesSnapshot(int num, int row) {
@@ -520,6 +527,7 @@ void ofApp::onInputPlotValueSelection(InteractiveTimeSeriesPlot::ValueHighlighte
         predicted_class_distances_ = predicted_class_distances_buffer_[i];
         predicted_class_likelihoods_ = predicted_class_likelihoods_buffer_[i];
         predicted_class_labels_ = predicted_class_labels_buffer_[i];
+        plot_inputs_snapshot_.setData(plot_inputs_.getData(arg.index));
     }
 }
 

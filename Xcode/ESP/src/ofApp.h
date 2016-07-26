@@ -156,6 +156,7 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     vector<Plotter> plot_samples_snapshots_;
     vector<std::string> plot_samples_info_;
     void updatePlotSamplesSnapshot(int num, int row = -1);
+    void onPlotSamplesValueHighlight(InteractivePlot::ValueHighlightedCallbackArgs arg);
     // Features associated with each sample.
     vector<vector<Plotter>> plot_sample_features_;
     void toggleFeatureView();

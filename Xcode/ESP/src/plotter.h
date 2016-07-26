@@ -55,6 +55,8 @@ class InteractivePlot {
     void onValueHighlighted(const onValueHighlightedCallback& cb, void* data) {
         value_highlighted_callback_ = cb;
         value_highlighted_callback_data_ = data;
+        ofAddListener(ofEvents().mouseDragged,
+                      this, &InteractivePlot::mouseMoved);
         ofAddListener(ofEvents().mouseMoved,
                       this, &InteractivePlot::mouseMoved);
     }
@@ -251,7 +253,7 @@ class Plotter : public InteractivePlot {
   protected:
     virtual uint32_t mouseCoordinateToIndex(uint32_t x) {
         float x_step = w_ * 1.0 / data_.getNumRows();
-        return x / x_step;
+        return std::min(std::max((uint32_t) 0, (uint32_t) (x / x_step)), data_.getNumRows() - 1);
     }
   
   private:
@@ -310,6 +312,6 @@ class InteractiveTimeSeriesPlot : public ofxGrtTimeseriesPlot, public Interactiv
   protected:
     virtual uint32_t mouseCoordinateToIndex(uint32_t x) {
         float x_step = w_ * 1.0 / timeseriesLength;
-        return x / x_step;
+        return std::min(std::max((uint32_t) 0, (uint32_t) (x / x_step)), timeseriesLength - 1);
     }
 };
