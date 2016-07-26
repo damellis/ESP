@@ -239,10 +239,10 @@ void Plotter::endSelection(ofMouseEventArgs& arg) {
         }
 
         if (range_selected_callback_ != nullptr) {
-			CallbackArgs args;
-			args.start = x_start_;
-			args.end = x_end_;
-			args.data = callback_data_;
+            CallbackArgs args;
+            args.start = x_start_;
+            args.end = x_end_;
+            args.data = callback_data_;
             range_selected_callback_(args);
         }
     }

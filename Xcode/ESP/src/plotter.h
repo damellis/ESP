@@ -228,17 +228,17 @@ class InteractiveTimeSeriesPlot : public ofxGrtTimeseriesPlot {
         if (contains(arg.x, arg.y)) {
             x_move_ = arg.x - x_;
             if (value_highlighted_callback_ != nullptr) {
-				ValueHighlightedCallbackArgs args;
-				args.source = this;
-				args.index = mouseCoordinateToIndex(x_move_);
-				args.data = value_highlighted_callback_data_;
+                ValueHighlightedCallbackArgs args;
+                args.source = this;
+                args.index = mouseCoordinateToIndex(x_move_);
+                args.data = value_highlighted_callback_data_;
                 value_highlighted_callback_(args);
             }
         } else {
             if (no_value_highlighted_callback_ != nullptr) {
-				NoValueHighlightedCallbackArgs args;
-				args.source = this;
-				args.data = no_value_highlighted_callback_data_;
+                NoValueHighlightedCallbackArgs args;
+                args.source = this;
+                args.data = no_value_highlighted_callback_data_;
                 no_value_highlighted_callback_(args);
             }
         }
@@ -275,12 +275,12 @@ class InteractiveTimeSeriesPlot : public ofxGrtTimeseriesPlot {
             }
 
             if (range_selected_callback_ != nullptr) {
-				RangeSelectedCallbackArgs args;
-				args.source = this;
-				args.start = mouseCoordinateToIndex(x_start_);
-				args.end = mouseCoordinateToIndex(x_end_);
-				args.data = range_selected_callback_data_;
-				range_selected_callback_(args);
+                RangeSelectedCallbackArgs args;
+                args.source = this;
+                args.start = mouseCoordinateToIndex(x_start_);
+                args.end = mouseCoordinateToIndex(x_end_);
+                args.data = range_selected_callback_data_;
+                range_selected_callback_(args);
             }
         }
         is_tracking_mouse_ = false;
