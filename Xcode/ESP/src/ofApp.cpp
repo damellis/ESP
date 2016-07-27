@@ -168,17 +168,17 @@ void ofApp::setup() {
 
     Palette color_palette;
 
-    predicted_label_buffer_.resize(kBufferSize_);
-    predicted_class_labels_buffer_.resize(kBufferSize_);
-    predicted_class_distances_buffer_.resize(kBufferSize_);
-    predicted_class_likelihoods_buffer_.resize(kBufferSize_);
+    predicted_label_buffer_.resize(buffer_size_);
+    predicted_class_labels_buffer_.resize(buffer_size_);
+    predicted_class_distances_buffer_.resize(buffer_size_);
+    predicted_class_likelihoods_buffer_.resize(buffer_size_);
 
     const vector<string>& istream_labels = istream_->getLabels();
-    plot_raw_.setup(kBufferSize_, istream_->getNumOutputDimensions(), "Raw Data");
+    plot_raw_.setup(buffer_size_, istream_->getNumOutputDimensions(), "Raw Data");
     plot_raw_.setDrawGrid(true);
     plot_raw_.setDrawInfoText(true);
     plot_raw_.setChannelNames(istream_labels);
-    plot_inputs_.setup(kBufferSize_, istream_->getNumOutputDimensions(), "Input");
+    plot_inputs_.setup(buffer_size_, istream_->getNumOutputDimensions(), "Input");
     plot_inputs_.setDrawGrid(true);
     plot_inputs_.setDrawInfoText(true);
     plot_inputs_.setChannelNames(istream_labels);
@@ -189,14 +189,14 @@ void ofApp::setup() {
         plot_inputs_.setDrawInfoText(false); // this will be too long to show
     }
 
-    plot_testdata_window_.setup(kBufferSize_, istream_->getNumOutputDimensions(), "Test Data");
+    plot_testdata_window_.setup(buffer_size_, istream_->getNumOutputDimensions(), "Test Data");
     plot_testdata_window_.setDrawGrid(true);
     plot_testdata_window_.setDrawInfoText(true);
 
     plot_testdata_overview_.setup(istream_->getNumOutputDimensions(), "Overview");
     plot_testdata_overview_.onRangeSelected(this, &ofApp::onTestOverviewPlotSelection, NULL);
 
-    plot_class_likelihoods_.setup(kBufferSize_, kNumMaxLabels_, "Class Likelihoods");
+    plot_class_likelihoods_.setup(buffer_size_, kNumMaxLabels_, "Class Likelihoods");
     plot_class_likelihoods_.setDrawInfoText(true);
     // plot_class_likelihoods_.setColorPalette(color_palette.generate(kNumMaxLabels_));
     plot_class_likelihoods_.onValueHighlighted(this, &ofApp::onClassLikelihoodsPlotValueHighlight, NULL);
@@ -204,7 +204,7 @@ void ofApp::setup() {
     plot_class_distances_.resize(kNumMaxLabels_);
     for (int i = 0; i < kNumMaxLabels_; i++) {
         InteractiveTimeSeriesPlot &plot = plot_class_distances_[i];
-        plot.setup(kBufferSize_, 2, std::to_string(i + 1));
+        plot.setup(buffer_size_, 2, std::to_string(i + 1));
         plot.setChannelNames({ "Threshold", "Actual" });
         plot.onValueHighlighted(this, &ofApp::onClassDistancePlotValueHighlight, NULL);
     }
@@ -219,7 +219,7 @@ void ofApp::setup() {
         PreProcessing* pp = pipeline_->getPreProcessingModule(i);
         uint32_t dim = pp->getNumOutputDimensions();
         ofxGrtTimeseriesPlot plot;
-        plot.setup(kBufferSize_, dim, "PreProcessing Stage " + std::to_string(i));
+        plot.setup(buffer_size_, dim, "PreProcessing Stage " + std::to_string(i));
         plot.setDrawGrid(true);
         plot.setDrawInfoText(true);
         // plot.setColorPalette(color_palette.generate(dim));
@@ -238,7 +238,7 @@ void ofApp::setup() {
         if (feature_dim < kTooManyFeaturesThreshold) {
             for (int i = 0; i < feature_dim; i++) {
                 ofxGrtTimeseriesPlot plot;
-                plot.setup(kBufferSize_, 1, "Feature " + std::to_string(i));
+                plot.setup(buffer_size_, 1, "Feature " + std::to_string(i));
                 plot.setDrawInfoText(true);
                 // plot.setColorPalette(color_palette.generate(feature_dim));
                 feature_at_stage_i.push_back(plot);
@@ -2125,4 +2125,8 @@ string decodeName(const string &from) {
 
 void useCalibrator(Calibrator &calibrator) {
     ((ofApp *) ofGetAppPtr())->useCalibrator(calibrator);
+}
+
+void setGUIBufferSize(uint32_t buffer_size) {
+    ((ofApp *) ofGetAppPtr())->setBufferSize(buffer_size);
 }

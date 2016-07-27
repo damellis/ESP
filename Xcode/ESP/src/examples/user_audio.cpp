@@ -60,7 +60,7 @@ void setup() {
     options.num_cepstral_coeff = 12;
     options.lifter_param = 22;
     options.use_vad = true;
-    options.noise_level = 30;
+    options.noise_level = 5;
 
     pipeline.addFeatureExtractionModule(MFCC(options));
 
@@ -68,12 +68,14 @@ void setup() {
 
     pipeline.addPostProcessingModule(ClassLabelFilter(25, 40));
 
-    calibrator
-            .addCalibrateProcess("Bias", "Remain silent", backgroundCollected)
+    calibrator.addCalibrateProcess("Bias", "Remain silent", backgroundCollected)
             .addCalibrateProcess("Range", "Shout as much as possible", shoutCollected);
 
     useInputStream(stream);
-    useCalibrator(calibrator);
+    // useCalibrator(calibrator);
     usePipeline(pipeline);
     // useOutputStream(o_stream);
+
+    useLeaveOneOutScoring(false);
+    setGUIBufferSize(sample_rate);
 }

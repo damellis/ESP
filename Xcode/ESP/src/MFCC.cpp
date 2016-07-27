@@ -211,6 +211,8 @@ vector<double> MFCC::lifterCC(const vector<double>& cc) {
 }
 
 bool MFCC::computeFeatures(const VectorDouble& inputVector) {
+    featureVector.resize(options_.num_cepstral_coeff);
+
     // The assumed input data is FFT value. We check VAD, if too small (somewhat
     // meaning it's background noise), we return true (data has been processed)
     // but set `featureDataReady` as false. Here it's a super naive VAD: the
@@ -274,6 +276,7 @@ bool MFCC::saveModelToFile(fstream &file) const {
     file << "StartFrequency: " << options_.start_freq << std::endl;
     file << "EndFrequency: " << options_.end_freq << std::endl;
     file << "NumTriFilter: " << options_.num_tri_filter << std::endl;
+    file << "NumCepstralCoeff: " << options_.num_cepstral_coeff << std::endl;
     file << "LifterParam: " << options_.lifter_param << std::endl;
     file << "UseVad: " << options_.use_vad << std::endl;
     file << "NoiseLevel: " << options_.noise_level << std::endl;
@@ -349,6 +352,15 @@ bool MFCC::loadModelFromFile(fstream &file) {
         return false;
     }
     file >> options_.num_tri_filter;
+
+    // Load the Num Cepstral Coefficient
+    file >> word;
+    if( word != "NumCepstralCoeff:" ){
+        errorLog << "loadModelFromFile(fstream &file) "
+                 << "- Failed to read NumCepstralCoeff header!" << std::endl;
+        return false;
+    }
+    file >> options_.num_cepstral_coeff;
 
     // Load the Lifter Param
     file >> word;
