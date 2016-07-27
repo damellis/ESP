@@ -55,8 +55,6 @@ class InteractivePlot {
     void onValueHighlighted(const onValueHighlightedCallback& cb, void* data) {
         value_highlighted_callback_ = cb;
         value_highlighted_callback_data_ = data;
-        ofAddListener(ofEvents().mouseDragged,
-                      this, &InteractivePlot::mouseMoved);
         ofAddListener(ofEvents().mouseMoved,
                       this, &InteractivePlot::mouseMoved);
     }
@@ -82,12 +80,12 @@ class InteractivePlot {
 
     virtual MatrixDouble getData(uint32_t x_start_idx, uint32_t x_end_idx) = 0;
     virtual vector<double> getData(uint32_t x_idx) = 0;
-    
+
      std::pair<uint32_t, uint32_t> getSelection() {
         return std::make_pair(mouseCoordinateToIndex(x_start_),
                               mouseCoordinateToIndex(x_end_));
     }
-    
+
     void clearSelection() {
         x_start_ = 0;
         x_end_ = 0;
@@ -95,12 +93,12 @@ class InteractivePlot {
 
   protected:
     virtual uint32_t mouseCoordinateToIndex(uint32_t x) = 0;
-  
+
     bool contains(uint32_t x, uint32_t y) {
         return (x_ <= x && x <= x_ + w_ && y_ <= y && y <= y_ + h_) ?
                 true : false;
     }
-    
+
     void mouseMoved(ofMouseEventArgs& arg) {
         // Only tracks if point is inside
         if (contains(arg.x, arg.y)) {
@@ -174,7 +172,7 @@ class InteractivePlot {
     uint32_t y_;
     uint32_t w_;
     uint32_t h_;
-    
+
     uint32_t x_move_;
 
     // x_click_ and x_release_ keeps track of where the mouse is clicked and
@@ -196,7 +194,7 @@ class InteractivePlot {
 
     onValueHighlightedCallback value_highlighted_callback_;
     void* value_highlighted_callback_data_;
-    
+
     onNoValueHighlightedCallback no_value_highlighted_callback_;
     void *no_value_highlighted_callback_data_;
 };
@@ -215,7 +213,7 @@ class Plotter : public InteractivePlot {
     bool push_back(const vector<double>& data_point);
 
     virtual GRT::MatrixDouble& getData() { return data_; }
-    
+
     virtual MatrixDouble getData(uint32_t x_start_idx, uint32_t x_end_idx) {
         // dataBuffer is a "CircularBuffer< vector<float> >" inside
         // ofxGrtTimeseriesPlot.
@@ -227,15 +225,15 @@ class Plotter : public InteractivePlot {
         }
         return selected_data;
     }
-    
+
     virtual vector<double> getData(uint32_t x_idx) {
         return vector<double>(data_.getRowVector(x_idx).begin(),
                               data_.getRowVector(x_idx).end());
     }
-    
+
     bool setRanges(float minY, float maxY, bool lockRanges = false);
     std::pair<float, float> getRanges();
-    
+
     bool setColorPalette(const vector<ofColor>& colors);
 
     bool setTitle(const string& title);
@@ -253,9 +251,9 @@ class Plotter : public InteractivePlot {
   protected:
     virtual uint32_t mouseCoordinateToIndex(uint32_t x) {
         float x_step = w_ * 1.0 / data_.getNumRows();
-        return std::min(std::max((uint32_t) 0, (uint32_t) (x / x_step)), data_.getNumRows() - 1);
+        return x / x_step;
     }
-  
+
   private:
     bool initialized_;
     bool is_content_modified_;
@@ -304,14 +302,14 @@ class InteractiveTimeSeriesPlot : public ofxGrtTimeseriesPlot, public Interactiv
         }
         return selected_data;
     }
-    
+
     virtual vector<double> getData(uint32_t x_idx) {
         return vector<double>(dataBuffer[x_idx].begin(), dataBuffer[x_idx].end());
     }
-    
+
   protected:
     virtual uint32_t mouseCoordinateToIndex(uint32_t x) {
         float x_step = w_ * 1.0 / timeseriesLength;
-        return std::min(std::max((uint32_t) 0, (uint32_t) (x / x_step)), timeseriesLength - 1);
+        return x / x_step;
     }
 };
