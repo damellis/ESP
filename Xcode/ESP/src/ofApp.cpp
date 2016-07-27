@@ -19,26 +19,26 @@ const uint32_t kDelayBeforeTraining = 50;  // milliseconds
 
 // Instructions for each tab.
 static const char* kCalibrateInstruction =
-    "Press `s` to save session, `l` to load session. (`S` and `L` to save/load calibration data only.)\n"
+    "Press `s` to save session, `a` to save as, `l` to load session. (`S` and `L` to save/load calibration data only.)\n"
     "Use key 1-9 to record calibration samples (required before you can start training).";
 
 static const char* kPipelineInstruction =
     "Press capital C/P/A/T/R to change tabs, `p` to pause or resume.\n"
-    "Press `s` to save session, `l` to load session.";
+    "Press `s` to save session, `a` to save as, `l` to load session.";
 
 static const char* kTrainingInstruction =
     "Press capital C/P/A/T/R to change tabs, `p` to pause or resume.\n"
-    "Press `s` to save session, `l` to load session. (`S` and `L` to save/load training data only.)\n"
+    "Press `s` to save session, `a` to save as, `l` to load session. (`S` and `L` to save/load training data only.)\n"
     "Hold 1-9 to record samples. Press `t` to train model, `f` to show features.";
 
 static const char* kAnalysisInstruction =
     "Press capital C/P/A/T/R to change tabs, `p` to pause or resume.\n"
-    "Press `s` to save session, `l` to load session. (`S` and `L` to save/load test data only.)\n"
+    "Press `s` to save session, `a` to save as, `l` to load session. (`S` and `L` to save/load test data only.)\n"
     "Hold `r` to record test data.";
 
 static const char* kPredictionInstruction =
     "Press capital C/P/A/T/R to change tabs, `p` to pause or resume.\n"
-    "Press `s` to save session, `l` to load session.";
+    "Press `s` to save session, `a` to save as, `l` to load session.";
 
 const double kPipelineHeightWeight = 0.3;
 const ofColor kSerialSelectionColor = ofColor::fromHex(0x00FF00);
@@ -286,6 +286,12 @@ void ofApp::setup() {
         plot.setup(label_dim, training_data_manager_.getLabelName(i + 1));
         plot.setColorPalette(color_palette.generate(label_dim));
         plot_samples_.push_back(plot);
+        
+        if (istream_->getNumOutputDimensions() >= kTooManyFeaturesThreshold) {
+            Plotter plot;
+            plot.setup(1, "");
+            plot_samples_snapshots_.push_back(plot);
+        }
 
         vector<Plotter> feature_plots;
         if (num_final_features < kTooManyFeaturesThreshold) {
@@ -350,6 +356,8 @@ void ofApp::setup() {
 
     for (uint32_t i = 0; i < plot_samples_.size(); i++) {
         plot_samples_[i].onRangeSelected(this, &ofApp::onPlotRangeSelected,
+                                         reinterpret_cast<void*>(i + 1));
+        plot_samples_[i].onValueHighlighted(this, &ofApp::onPlotSamplesValueHighlight,
                                          reinterpret_cast<void*>(i + 1));
     }
 
@@ -416,10 +424,29 @@ void ofApp::setup() {
     GRT::ErrorLog::registerObserver(*this);
 }
 
-void ofApp::onPlotRangeSelected(Plotter::CallbackArgs arg) {
+void ofApp::onPlotRangeSelected(InteractivePlot::RangeSelectedCallbackArgs arg) {
     if (is_in_feature_view_) {
         uint32_t sample_index = reinterpret_cast<uint64_t>(arg.data) - 1;
         populateSampleFeatures(sample_index);
+    }
+}
+
+void ofApp::onPlotSamplesValueHighlight(InteractivePlot::ValueHighlightedCallbackArgs arg) {
+    uint32_t sample_index = reinterpret_cast<uint64_t>(arg.data) - 1;
+    updatePlotSamplesSnapshot(sample_index, arg.index);
+}
+
+void ofApp::updatePlotSamplesSnapshot(int num, int row) {
+    // Nothing to do if we're not showing the snapshots.
+    if (istream_->getNumOutputDimensions() < kTooManyFeaturesThreshold) return;
+    
+    plot_samples_snapshots_[num].clearData();
+    
+    if (row == -1) row = plot_samples_[num].getData().getNumRows() - 1;
+    for (int i = 0; i < plot_samples_[num].getData().getNumCols(); i++) {
+        plot_samples_snapshots_[num].push_back({
+            plot_samples_[num].getData().getRowVector(row)[i]
+        });
     }
 }
 
@@ -501,6 +528,7 @@ void ofApp::onInputPlotValueSelection(InteractiveTimeSeriesPlot::ValueHighlighte
         predicted_class_distances_ = predicted_class_distances_buffer_[i];
         predicted_class_likelihoods_ = predicted_class_likelihoods_buffer_[i];
         predicted_class_labels_ = predicted_class_labels_buffer_[i];
+        plot_inputs_snapshot_.setData(plot_inputs_.getData(arg.index));
     }
 }
 
@@ -516,7 +544,7 @@ void ofApp::onClassDistancePlotValueHighlight(InteractiveTimeSeriesPlot::ValueHi
     }
 }
 
-void ofApp::onTestOverviewPlotSelection(Plotter::CallbackArgs arg) {
+void ofApp::onTestOverviewPlotSelection(InteractivePlot::RangeSelectedCallbackArgs arg) {
     updateTestWindowPlot();
 }
 
@@ -744,6 +772,8 @@ bool ofApp::loadTrainingData(const string& filename) {
 
         std::string title = training_data_manager_.getLabelName(i);
         plot_samples_[i - 1].setTitle(title);
+        
+        updatePlotSamplesSnapshot(i - 1);
     }
 
     return true;
@@ -843,7 +873,8 @@ void ofApp::loadAll() {
         "Load an exising ESP session", true);
     if (!result.bSuccess) { return; }
 
-    const string dir = result.getPath() + "/";
+    save_path_ = result.getPath();
+    const string dir = save_path_ + "/";
 
     // Need to load tuneable before pipeline because loading the tuneables
     // resets the pipeline. Also, need to load pipeline after training and
@@ -864,13 +895,16 @@ void ofApp::loadAll() {
 
 }
 
-void ofApp::saveAll() {
-    ofFileDialogResult result = ofSystemSaveDialog(
-        "ESP", "Save this session");
-    if (!result.bSuccess) { return; }
+void ofApp::saveAll(bool saveAs) {
+    if (save_path_.empty() || saveAs) {
+        ofFileDialogResult result = ofSystemSaveDialog(
+            "ESP", "Save this session");
+        if (!result.bSuccess) { return; }
+        save_path_ = result.getPath();
+    }
 
     // Create a directory with result.path as the absolute path.
-    const string dir = result.getPath() + "/";
+    const string dir = save_path_ + "/";
     if (ofDirectory::createDirectory(dir, false, false)
         && saveCalibrationData(dir + kCalibrationDataFilename)
         && savePipeline(dir + kPipelineFilename)
@@ -969,6 +1003,7 @@ void ofApp::deleteTrainingSample(int num) {
         plot_sample_indices_[num] = -1;
     }
 
+    updatePlotSamplesSnapshot(num);
     populateSampleFeatures(num);
     should_save_training_data_ = true;
 }
@@ -983,6 +1018,7 @@ void ofApp::deleteAllTrainingSamples(int num) {
     plot_samples_[num].reset();
     plot_sample_indices_[num] = -1;
 
+    updatePlotSamplesSnapshot(num);
     populateSampleFeatures(num);
     should_save_training_data_ = true;
 }
@@ -1000,6 +1036,7 @@ void ofApp::trimTrainingSample(int num) {
     plot_samples_[num].setData(
         training_data_manager_.getSample(label, plot_sample_indices_[num]));
 
+    updatePlotSamplesSnapshot(num);
     populateSampleFeatures(num);
     should_save_training_data_ = true;
 }
@@ -1033,12 +1070,14 @@ void ofApp::doRelabelTrainingSample(uint32_t source, uint32_t target) {
         plot_samples_[num].reset();
         plot_sample_indices_[num] = -1;
     }
+    updatePlotSamplesSnapshot(num);
     populateSampleFeatures(num);
 
     // Update the target plot
     plot_sample_indices_[target - 1]++;
     plot_samples_[target - 1].setData(
         training_data_manager_.getSample(target, plot_sample_indices_[target - 1]));
+    updatePlotSamplesSnapshot(target - 1);
     populateSampleFeatures(target - 1);
 
     should_save_training_data_ = true;
@@ -1133,12 +1172,12 @@ void ofApp::update() {
 
             for (int i = 0; i < predicted_class_distances_.size() &&
                             i < predicted_class_labels_.size(); i++) {
+                vector<double> thresholds = pipeline_->getClassifier()->getNullRejectionThresholds();
                 plot_class_distances_[predicted_class_labels_[i] - 1].update(
                     vector<double>{
-                        pipeline_->getClassifier()->getNullRejectionThresholds()[i],
+                        (thresholds.size() > i ? thresholds[i] : 0.0),
                         predicted_class_distances_[i]
-                    }, predicted_class_distances_[i] <
-                       pipeline_->getClassifier()->getNullRejectionThresholds()[i],
+                    }, thresholds.size() > i && predicted_class_distances_[i] < thresholds[i],
                     "");
             }
         } else predicted_label_ = 0;
@@ -1147,7 +1186,8 @@ void ofApp::update() {
         if (istream_->getNumOutputDimensions() >= kTooManyFeaturesThreshold)
             plot_inputs_snapshot_.setData(data_point);
 
-        if (istream_->hasStarted() && calibrator_->isCalibrated()) {
+        if (istream_->hasStarted() &&
+            (calibrator_ == NULL || calibrator_->isCalibrated())) {
             if (!pipeline_->preProcessData(data_point)) {
                 ofLog(OF_LOG_ERROR) << "ERROR: Failed to compute features!";
             }
@@ -1445,7 +1485,13 @@ void ofApp::drawTrainingInfo() {
         uint32_t label = i + 1;
         uint32_t x = stage_left + i * width;
         plot_samples_[i].setRanges(minY, maxY, true);
-        plot_samples_[i].draw(x, stage_top, width, stage_height);
+        
+        if (istream_->getNumOutputDimensions() >= kTooManyFeaturesThreshold) {
+            plot_samples_snapshots_[i].draw(x, stage_top, width, 2 * stage_height / 3);
+            plot_samples_[i].draw(x, stage_top + 2 * stage_height / 3, width, stage_height / 3);
+        } else {
+            plot_samples_[i].draw(x, stage_top, width, stage_height);
+        }
 
         uint32_t num_samples = training_data_manager_.getNumSampleForLabel(label);
         ofDrawBitmapString(
@@ -1830,6 +1876,7 @@ void ofApp::keyPressed(int key){
             input_data_.clear();
             break;
         }
+        case 'a': saveAll(true); break;
         case 's': saveAll(); break;
         case 'S':
             if (fragment_ == CALIBRATION) saveCalibrationDataWithPrompt();
@@ -1868,6 +1915,8 @@ void ofApp::keyReleased(int key) {
 
             plot_samples_[label_ - 1].setData(sample_data_);
             plot_sample_indices_[label_ - 1] = num_samples - 1;
+            
+            updatePlotSamplesSnapshot(label_ - 1);
 
             should_save_training_data_ = true;
         }
@@ -1923,6 +1972,8 @@ void ofApp::keyReleased(int key) {
 
             plot_samples_[label_ - 1].setData(sample_data_);
             plot_sample_indices_[label_ - 1] = num_samples - 1;
+            
+            updatePlotSamplesSnapshot(label_ - 1);
 
             should_save_training_data_ = true;
         }
@@ -1963,6 +2014,7 @@ void ofApp::mouseReleased(int x, int y, int button) {
                 plot_samples_[i].setData(
                     training_data_manager_.getSample(label, plot_sample_indices_[i]));
                 assert(true == plot_samples_[i].clearContentModifiedFlag());
+                updatePlotSamplesSnapshot(i);
                 populateSampleFeatures(i);
             }
         }
@@ -1972,6 +2024,7 @@ void ofApp::mouseReleased(int x, int y, int button) {
                 plot_samples_[i].setData(
                     training_data_manager_.getSample(label, plot_sample_indices_[i]));
                 assert(true == plot_samples_[i].clearContentModifiedFlag());
+                updatePlotSamplesSnapshot(i);
                 populateSampleFeatures(i);
             }
         }

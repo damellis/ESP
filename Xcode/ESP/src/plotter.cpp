@@ -4,9 +4,7 @@ using std::string;
 
 Plotter::Plotter() :
         initialized_(false), is_content_modified_(false), is_in_renaming_(false),
-        lock_ranges_(false), minY_(0), maxY_(0),
-        x_start_(0), x_end_(0),
-        is_tracking_mouse_(false), range_selected_callback_(nullptr) {
+        lock_ranges_(false), minY_(0), maxY_(0) {
     // Constructor
 }
 
@@ -129,7 +127,7 @@ bool Plotter::draw(uint32_t x, uint32_t y, uint32_t w, uint32_t h) {
 
     // Draw the timeseries
     float xPos = 0;
-    x_step_ = 1.0 * w_ / data_.getNumRows();
+    float x_step = 1.0 * w_ / data_.getNumRows();
 
     uint32_t index = 0;
     ofNoFill();
@@ -141,7 +139,7 @@ bool Plotter::draw(uint32_t x, uint32_t y, uint32_t w, uint32_t h) {
             float min = lock_ranges_ ? default_minY_ : minY_;
             float max = lock_ranges_ ? default_maxY_ : maxY_;
             ofVertex(xPos, ofMap(data_[i][n], min, max, h, 0, true));
-            xPos += x_step_;
+            xPos += x_step;
         }
         ofEndShape(false);
     }

@@ -142,8 +142,8 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
                                                 // only if the number of input
                                                 // dimensions is greater than
                                                 // kTooManyFeaturesThreshold
-    void onInputPlotRangeSelection(InteractiveTimeSeriesPlot::RangeSelectedCallbackArgs arg);
-    void onInputPlotValueSelection(InteractiveTimeSeriesPlot::ValueHighlightedCallbackArgs arg);
+    void onInputPlotRangeSelection(InteractivePlot::RangeSelectedCallbackArgs arg);
+    void onInputPlotValueSelection(InteractivePlot::ValueHighlightedCallbackArgs arg);
     bool enable_history_recording_ = false;
     bool is_in_history_recording_ = false;
 
@@ -152,7 +152,10 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     vector<ofxGrtTimeseriesPlot> plot_pre_processed_;
     vector<vector<ofxGrtTimeseriesPlot>> plot_features_;
     vector<Plotter> plot_samples_;
+    vector<Plotter> plot_samples_snapshots_;
     vector<std::string> plot_samples_info_;
+    void updatePlotSamplesSnapshot(int num, int row = -1);
+    void onPlotSamplesValueHighlight(InteractivePlot::ValueHighlightedCallbackArgs arg);
     // Features associated with each sample.
     vector<vector<Plotter>> plot_sample_features_;
     void toggleFeatureView();
@@ -163,12 +166,12 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     vector<int> plot_sample_indices_; // the index of the currently plotted
                                       // sample for each class label
     vector<pair<ofRectangle, ofRectangle>> plot_sample_button_locations_;
-    void onPlotRangeSelected(Plotter::CallbackArgs arg);
+    void onPlotRangeSelected(InteractivePlot::RangeSelectedCallbackArgs arg);
     bool is_final_features_too_many_ = false;
 
     Plotter plot_testdata_overview_;
     ofxGrtTimeseriesPlot plot_testdata_window_;
-    void onTestOverviewPlotSelection(Plotter::CallbackArgs arg);
+    void onTestOverviewPlotSelection(InteractivePlot::RangeSelectedCallbackArgs arg);
     void updateTestWindowPlot();
     void runPredictionOnTestData();
 
@@ -231,8 +234,9 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     const string kTrainingDataFilename    = "TrainingData.grt";
     const string kTestDataFilename        = "TestData.grt";
     const string kTuneablesFilename       = "TuneableParameters.grt";
+    string save_path_ = "";
     void loadAll();
-    void saveAll();
+    void saveAll(bool saveAs = false);
 
     ofxDatGuiDropdown *serial_selection_dropdown_;
     void onSerialSelectionDropdownEvent(ofxDatGuiDropdownEvent e);

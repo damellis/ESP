@@ -5,119 +5,27 @@
 
 using std::string;
 
-// The plotter class extends ofxGrtTimeseriesPlot and manages user-input to
-// support interactive operations over time-series data.
-class Plotter {
-  public:
-    Plotter();
-
-    struct CallbackArgs {
-        uint32_t start;
-        uint32_t end;
-        void* data;
-    };
-
-    bool setup(uint32_t num_dimensions, string title, string subtitle = "");
-    bool setData(const GRT::MatrixDouble& data);
-
-    bool clearContentModifiedFlag();
-
-    bool push_back(const vector<double>& data_point);
-
-    GRT::MatrixDouble& getData() { return data_; }
-    bool setRanges(float minY, float maxY, bool lockRanges = false);
-
-    std::pair<float, float> getRanges();
-    bool setColorPalette(const vector<ofColor>& colors);
-
-    bool setTitle(const string& title);
-    void renameTitleStart();
-    void renameTitleDone();
-
-    const string& getTitle() const;
-
-    bool draw(uint32_t x, uint32_t y, uint32_t w, uint32_t h);
-
-    bool reset();
-
-    bool clearData();
-
-    typedef std::function<void(CallbackArgs)> onRangeSelectedCallback;
-
-    void onRangeSelected(const onRangeSelectedCallback& cb, void* data);
-
-    template<typename T1, typename arg, class T>
-    void onRangeSelected(T1* owner, void (T::*listenerMethod)(arg), void* data) {
-        using namespace std::placeholders;
-        onRangeSelected(std::bind(listenerMethod, owner, _1), data);
-    }
-
-    std::pair<uint32_t, uint32_t> getSelection();
-
-  private:
-    bool initialized_;
-    bool is_content_modified_;
-    bool is_in_renaming_;
-    uint32_t num_dimensions_;
-    vector<ofColor> colors_;
-    string title_;
-    string subtitle_;
-    bool lock_ranges_;
-    float minY_, default_minY_;
-    float maxY_, default_maxY_;
-    GRT::MatrixDouble data_;
-    float x_step_;
-
-    bool contains(uint32_t x, uint32_t y);
-    void normalize();
-    void startSelection(ofMouseEventArgs& arg);
-    void duringSelection(ofMouseEventArgs& arg);
-    void endSelection(ofMouseEventArgs& arg);
-
-    uint32_t x_;
-    uint32_t y_;
-    uint32_t w_;
-    uint32_t h_;
-
-    // x_click_ and x_release_ keeps track of where the mouse is clicked and
-    // releasesd. Their values are normalized by subtracting x_.
-    uint32_t x_click_;
-    uint32_t x_release_;
-
-    // x_start_ and x_end_ are values that are reported to users of this class
-    // for selections. When selection happens, x_start_ is always smaller than
-    // x_end_.
-    uint32_t x_start_;
-    uint32_t x_end_;
-
-    // To avoid accidental tracking (such as out of range or when no data).
-    bool is_tracking_mouse_;
-
-    onRangeSelectedCallback range_selected_callback_;
-    void* callback_data_;
-};
-
-class InteractiveTimeSeriesPlot : public ofxGrtTimeseriesPlot {
+class InteractivePlot {
   public:
     struct RangeSelectedCallbackArgs {
-        InteractiveTimeSeriesPlot *source;
+        InteractivePlot *source;
         uint32_t start;
         uint32_t end;
         void* data;
     };
 
     struct ValueHighlightedCallbackArgs {
-        InteractiveTimeSeriesPlot *source;
+        InteractivePlot *source;
         uint32_t index;
         void* data;
     };
 
     struct NoValueHighlightedCallbackArgs {
-        InteractiveTimeSeriesPlot *source;
+        InteractivePlot *source;
         void* data;
     };
 
-    InteractiveTimeSeriesPlot() :
+    InteractivePlot() :
             x_click_(0), x_release_(0),
             x_start_(0), x_end_(0),
             is_tracking_mouse_(false) {
@@ -127,37 +35,15 @@ class InteractiveTimeSeriesPlot : public ofxGrtTimeseriesPlot {
     typedef std::function<void(ValueHighlightedCallbackArgs)> onValueHighlightedCallback;
     typedef std::function<void(NoValueHighlightedCallbackArgs)> onNoValueHighlightedCallback;
 
-    bool draw(uint32_t x, uint32_t y, uint32_t w, uint32_t h) {
-        x_ = x;
-        y_ = y;
-        w_ = w;
-        h_ = h;
-        ofxGrtTimeseriesPlot::draw(x, y, w, h);
-
-        // Draw the selection.
-        if (x_start_ > 0 && x_end_ > x_start_) {
-            ofEnableAlphaBlending();
-            // Draw border
-            ofSetColor(0xFF, 0xFF, 0xFF, 0x7F);
-            ofDrawRectangle(x_ + x_start_, y_, x_end_ - x_start_, h);
-
-            // Fill the rectangle
-            ofFill();
-            ofSetColor(0xFF, 0xFF, 0xFF, 0x2F);
-            ofDrawRectangle(x_ + x_start_, y_, x_end_ - x_start_, h);
-        }
-        return true;
-    }
-
     void onRangeSelected(const onRangeSelectedCallback& cb, void* data) {
         range_selected_callback_ = cb;
         range_selected_callback_data_ = data;
         ofAddListener(ofEvents().mousePressed,
-                      this, &InteractiveTimeSeriesPlot::startSelection);
+                      this, &InteractivePlot::startSelection);
         ofAddListener(ofEvents().mouseDragged,
-                      this, &InteractiveTimeSeriesPlot::duringSelection);
+                      this, &InteractivePlot::duringSelection);
         ofAddListener(ofEvents().mouseReleased,
-                      this, &InteractiveTimeSeriesPlot::endSelection);
+                      this, &InteractivePlot::endSelection);
     }
 
     template<typename T1, typename arg, class T>
@@ -169,8 +55,10 @@ class InteractiveTimeSeriesPlot : public ofxGrtTimeseriesPlot {
     void onValueHighlighted(const onValueHighlightedCallback& cb, void* data) {
         value_highlighted_callback_ = cb;
         value_highlighted_callback_data_ = data;
+        ofAddListener(ofEvents().mouseDragged,
+                      this, &InteractivePlot::mouseMoved);
         ofAddListener(ofEvents().mouseMoved,
-                      this, &InteractiveTimeSeriesPlot::mouseMoved);
+                      this, &InteractivePlot::mouseMoved);
     }
 
     template<typename T1, typename arg, class T>
@@ -183,7 +71,7 @@ class InteractiveTimeSeriesPlot : public ofxGrtTimeseriesPlot {
         no_value_highlighted_callback_ = cb;
         no_value_highlighted_callback_data_ = data;
         ofAddListener(ofEvents().mouseMoved,
-                      this, &InteractiveTimeSeriesPlot::mouseMoved);
+                      this, &InteractivePlot::mouseMoved);
     }
 
     template<typename T1, typename arg, class T>
@@ -192,31 +80,21 @@ class InteractiveTimeSeriesPlot : public ofxGrtTimeseriesPlot {
         onNoValueHighlighted(std::bind(listenerMethod, owner, _1), data);
     }
 
-    MatrixDouble getData(uint32_t x_start_idx, uint32_t x_end_idx) {
-        // dataBuffer is a "CircularBuffer< vector<float> >" inside
-        // ofxGrtTimeseriesPlot.
-        MatrixDouble selected_data;
-        for (uint32_t i = x_start_idx; i < x_end_idx && i < dataBuffer.getSize(); i++) {
-            vector<double> v_double(dataBuffer[i].begin(), dataBuffer[i].end());
-            selected_data.push_back(v_double);
-        }
-        return selected_data;
+    virtual MatrixDouble getData(uint32_t x_start_idx, uint32_t x_end_idx) = 0;
+    virtual vector<double> getData(uint32_t x_idx) = 0;
+    
+     std::pair<uint32_t, uint32_t> getSelection() {
+        return std::make_pair(mouseCoordinateToIndex(x_start_),
+                              mouseCoordinateToIndex(x_end_));
     }
     
-    vector<double> getData(uint32_t x_idx) {
-        return vector<double>(dataBuffer[x_idx].begin(), dataBuffer[x_idx].end());
-    }
-
     void clearSelection() {
         x_start_ = 0;
         x_end_ = 0;
     }
 
-  private:
-    uint32_t mouseCoordinateToIndex(uint32_t x) {
-        float x_step = w_ * 1.0 / timeseriesLength;
-        return x / x_step;
-    }
+  protected:
+    virtual uint32_t mouseCoordinateToIndex(uint32_t x) = 0;
   
     bool contains(uint32_t x, uint32_t y) {
         return (x_ <= x && x <= x_ + w_ && y_ <= y && y <= y_ + h_) ?
@@ -286,6 +164,9 @@ class InteractiveTimeSeriesPlot : public ofxGrtTimeseriesPlot {
         is_tracking_mouse_ = false;
     }
 
+    // These need to be saved by the sub-class's draw() function so that the
+    // plot knows where it is (and can convert mouse coordinates to plot
+    // coordinates).
     uint32_t x_;
     uint32_t y_;
     uint32_t w_;
@@ -315,4 +196,119 @@ class InteractiveTimeSeriesPlot : public ofxGrtTimeseriesPlot {
     
     onNoValueHighlightedCallback no_value_highlighted_callback_;
     void *no_value_highlighted_callback_data_;
+};
+
+// The Plotter class plots fixed length samples and allows for interaction
+// using the InteractivePlot API.
+class Plotter : public InteractivePlot {
+  public:
+    Plotter();
+
+    bool setup(uint32_t num_dimensions, string title, string subtitle = "");
+    bool setData(const GRT::MatrixDouble& data);
+
+    bool clearContentModifiedFlag();
+
+    bool push_back(const vector<double>& data_point);
+
+    virtual GRT::MatrixDouble& getData() { return data_; }
+    
+    virtual MatrixDouble getData(uint32_t x_start_idx, uint32_t x_end_idx) {
+        // dataBuffer is a "CircularBuffer< vector<float> >" inside
+        // ofxGrtTimeseriesPlot.
+        MatrixDouble selected_data;
+        for (uint32_t i = x_start_idx; i < x_end_idx && i < data_.getSize(); i++) {
+            vector<double> v_double(data_.getRowVector(i).begin(),
+                                    data_.getRowVector(i).end());
+            selected_data.push_back(v_double);
+        }
+        return selected_data;
+    }
+    
+    virtual vector<double> getData(uint32_t x_idx) {
+        return vector<double>(data_.getRowVector(x_idx).begin(),
+                              data_.getRowVector(x_idx).end());
+    }
+    
+    bool setRanges(float minY, float maxY, bool lockRanges = false);
+    std::pair<float, float> getRanges();
+    
+    bool setColorPalette(const vector<ofColor>& colors);
+
+    bool setTitle(const string& title);
+    void renameTitleStart();
+    void renameTitleDone();
+
+    const string& getTitle() const;
+
+    bool draw(uint32_t x, uint32_t y, uint32_t w, uint32_t h);
+
+    bool reset();
+
+    bool clearData();
+
+  protected:
+    virtual uint32_t mouseCoordinateToIndex(uint32_t x) {
+        float x_step = w_ * 1.0 / data_.getNumRows();
+        return std::min(std::max((uint32_t) 0, (uint32_t) (x / x_step)), data_.getNumRows() - 1);
+    }
+  
+  private:
+    bool initialized_;
+    bool is_content_modified_;
+    bool is_in_renaming_;
+    uint32_t num_dimensions_;
+    vector<ofColor> colors_;
+    string title_;
+    string subtitle_;
+    bool lock_ranges_;
+    float minY_, default_minY_;
+    float maxY_, default_maxY_;
+    GRT::MatrixDouble data_;
+};
+
+class InteractiveTimeSeriesPlot : public ofxGrtTimeseriesPlot, public InteractivePlot {
+  public:
+    bool draw(uint32_t x, uint32_t y, uint32_t w, uint32_t h) {
+        x_ = x;
+        y_ = y;
+        w_ = w;
+        h_ = h;
+        ofxGrtTimeseriesPlot::draw(x, y, w, h);
+
+        // Draw the selection.
+        if (x_start_ > 0 && x_end_ > x_start_) {
+            ofEnableAlphaBlending();
+            // Draw border
+            ofSetColor(0xFF, 0xFF, 0xFF, 0x7F);
+            ofDrawRectangle(x_ + x_start_, y_, x_end_ - x_start_, h);
+
+            // Fill the rectangle
+            ofFill();
+            ofSetColor(0xFF, 0xFF, 0xFF, 0x2F);
+            ofDrawRectangle(x_ + x_start_, y_, x_end_ - x_start_, h);
+        }
+        return true;
+    }
+
+    virtual MatrixDouble getData(uint32_t x_start_idx, uint32_t x_end_idx) {
+        // dataBuffer is a "CircularBuffer< vector<float> >" inside
+        // ofxGrtTimeseriesPlot.
+        MatrixDouble selected_data;
+        for (uint32_t i = x_start_idx; i < x_end_idx && i < dataBuffer.getSize(); i++) {
+            vector<double> v_double(dataBuffer[i].begin(), dataBuffer[i].end());
+            selected_data.push_back(v_double);
+        }
+        return selected_data;
+    }
+    
+    virtual vector<double> getData(uint32_t x_idx) {
+        return vector<double>(dataBuffer[x_idx].begin(), dataBuffer[x_idx].end());
+    }
+    
+  protected:
+    virtual uint32_t mouseCoordinateToIndex(uint32_t x) {
+        float x_step = w_ * 1.0 / timeseriesLength;
+        return std::min(std::max((uint32_t) 0, (uint32_t) (x / x_step)), timeseriesLength - 1);
+    }
 };
