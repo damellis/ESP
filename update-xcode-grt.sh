@@ -3,9 +3,9 @@ set -e
 
 if [ -z "$1" ]
 then
-    SRC_DYLIB=~/repos/grt/build/tmp/libgrt.dylib
+    SRC_DYLIB=third-party/grt/build/tmp/libgrt.dylib
 else
-    SRC_DYLIB=~/repos/grt/build/$1/libgrt.dylib
+    SRC_DYLIB=third-party/grt/build/$1/libgrt.dylib
 fi
 
 cp ${SRC_DYLIB} Xcode/ESP
