@@ -78,7 +78,6 @@ set(ESP_SRC
   ${ESP_PATH}/src/calibrator.cpp
   ${ESP_PATH}/src/iostream.cpp
   ${ESP_PATH}/src/istream.cpp
-  ${ESP_PATH}/src/main.cpp
   ${ESP_PATH}/src/ofApp.cpp
   ${ESP_PATH}/src/ostream.cpp
   ${ESP_PATH}/src/plotter.cpp
@@ -87,6 +86,8 @@ set(ESP_SRC
   ${ESP_PATH}/src/tuneable.cpp
   ${ESP_PATH}/src/user.cpp
 )
+
+set(ESP_MAIN ${ESP_PATH}/src/main.cpp)
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   set(GRT_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/third-party/grt/)
@@ -102,7 +103,7 @@ endif()
 # =============================================================
 #   Create library and executables
 # =============================================================
-add_executable(${PROJECT} ${ADDONS_SRC} ${ESP_SRC})
+add_executable(${PROJECT} ${ADDONS_SRC} ${ESP_SRC} ${ESP_MAIN})
 
 target_include_directories(${PROJECT} PUBLIC
   ${openFrameworks_INCLUDES}
@@ -197,4 +198,37 @@ if(test)
     )
 
   add_test(esp-test runUnitTests)
+endif()
+
+# =============================================================
+#  esp-cli
+# =============================================================
+option(WITH_CLI "Build command line program" OFF)
+if(WITH_CLI)
+  set(CLI esp-cli)
+
+  set(CLI_SRC
+    ${ESP_PATH}/src/Filter.cpp
+    ${ESP_PATH}/src/MFCC.cpp
+    ${ESP_PATH}/src/ThresholdDetection.cpp
+    ${ESP_PATH}/src/training-data-manager.cpp
+    )
+
+  set(CLI_MAIN ${ESP_PATH}/src/cli.cpp)
+  add_executable(${CLI} ${CLI_SRC} ${CLI_MAIN})
+
+  target_include_directories(${CLI} PUBLIC
+    ${ESP_PATH}/src
+    ${GRT_INCLUDE_DIR}
+    )
+
+  target_link_libraries(${CLI} PUBLIC
+    ${GRT_LIBRARY}
+    ${SYS_LIBS}
+    "-framework Accelerate"
+    "-lpython2.7"
+    )
+
+  set_target_properties(${CLI} PROPERTIES COMPILE_FLAGS
+    "-Wno-unused-value -Wno-deprecated-declarations")
 endif()
