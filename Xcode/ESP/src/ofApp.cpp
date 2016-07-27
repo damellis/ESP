@@ -286,7 +286,7 @@ void ofApp::setup() {
         plot.setup(label_dim, training_data_manager_.getLabelName(i + 1));
         plot.setColorPalette(color_palette.generate(label_dim));
         plot_samples_.push_back(plot);
-        
+
         if (istream_->getNumOutputDimensions() >= kTooManyFeaturesThreshold) {
             Plotter plot;
             plot.setup(1, "");
@@ -439,9 +439,9 @@ void ofApp::onPlotSamplesValueHighlight(InteractivePlot::ValueHighlightedCallbac
 void ofApp::updatePlotSamplesSnapshot(int num, int row) {
     // Nothing to do if we're not showing the snapshots.
     if (istream_->getNumOutputDimensions() < kTooManyFeaturesThreshold) return;
-    
+
     plot_samples_snapshots_[num].clearData();
-    
+
     if (row == -1) row = plot_samples_[num].getData().getNumRows() - 1;
     for (int i = 0; i < plot_samples_[num].getData().getNumCols(); i++) {
         plot_samples_snapshots_[num].push_back({
@@ -772,7 +772,7 @@ bool ofApp::loadTrainingData(const string& filename) {
 
         std::string title = training_data_manager_.getLabelName(i);
         plot_samples_[i - 1].setTitle(title);
-        
+
         updatePlotSamplesSnapshot(i - 1);
     }
 
@@ -1139,7 +1139,7 @@ void ofApp::update() {
 
                 title = training_data_manager_.getLabelName(predicted_label_);
             }
-            
+
             predicted_class_labels_ = pipeline_->getClassLabels();
             predicted_class_labels_buffer_.push_back(predicted_class_labels_);
 
@@ -1485,7 +1485,7 @@ void ofApp::drawTrainingInfo() {
         uint32_t label = i + 1;
         uint32_t x = stage_left + i * width;
         plot_samples_[i].setRanges(minY, maxY, true);
-        
+
         if (istream_->getNumOutputDimensions() >= kTooManyFeaturesThreshold) {
             plot_samples_snapshots_[i].draw(x, stage_top, width, 2 * stage_height / 3);
             plot_samples_[i].draw(x, stage_top + 2 * stage_height / 3, width, stage_height / 3);
@@ -1614,7 +1614,7 @@ void ofApp::drawPrediction() {
         }
         ofDrawBitmapString(s, stage_left, stage_top - margin / 3);
     }
-    
+
     ofPushStyle();
     plot_class_likelihoods_.draw(stage_left, stage_top, stage_width, stage_height);
     ofPopStyle();
@@ -1627,7 +1627,7 @@ void ofApp::drawPrediction() {
             " vs. Threshold: " + std::to_string(class_distance_values_[0]),
             stage_left, stage_top - margin / 3);
     }
-    
+
     uint32_t height = stage_height / kNumMaxLabels_;
     double minDistance = 0.0, maxDistance = 1.0;
     for (int i = 0; i < kNumMaxLabels_; i++) {
@@ -1915,7 +1915,7 @@ void ofApp::keyReleased(int key) {
 
             plot_samples_[label_ - 1].setData(sample_data_);
             plot_sample_indices_[label_ - 1] = num_samples - 1;
-            
+
             updatePlotSamplesSnapshot(label_ - 1);
 
             should_save_training_data_ = true;
@@ -1972,7 +1972,7 @@ void ofApp::keyReleased(int key) {
 
             plot_samples_[label_ - 1].setData(sample_data_);
             plot_sample_indices_[label_ - 1] = num_samples - 1;
-            
+
             updatePlotSamplesSnapshot(label_ - 1);
 
             should_save_training_data_ = true;
@@ -2121,4 +2121,8 @@ string decodeName(const string &from) {
     }
 
     return escaped.str();
+}
+
+void useCalibrator(Calibrator &calibrator) {
+    ((ofApp *) ofGetAppPtr())->useCalibrator(calibrator);
 }

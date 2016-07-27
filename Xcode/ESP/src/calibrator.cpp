@@ -1,5 +1,3 @@
-#include "ofApp.h"
-
 #include "calibrator.h"
 
 const char *CalibrateResult::result_strings_[3] = { "Success", "Warning", "Failure" };
@@ -83,7 +81,4 @@ bool Calibrator::isCalibrateProcessRegistered(const CalibrateProcess& cp) {
     return registered_.find(cp.getName()) != registered_.end();
 }
 
-
-void useCalibrator(Calibrator &calibrator) {
-    ((ofApp *) ofGetAppPtr())->useCalibrator(calibrator);
-}
+extern void useCalibrator(Calibrator &calibrator);
