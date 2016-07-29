@@ -8,7 +8,8 @@ interactive projects through the application of machine learning.
 ## Pre-requisites
 
 At the moment, this project runs on OS X and Linux. You'll need Xcode
-and git (to clone this repository and its submodules).
+and git (to clone this repository and its submodules). You can also build
+the project for Windows, but not all examples are supported yet.
 
 ## Installation
 
@@ -104,6 +105,10 @@ cd build
 cmake ..
 make -j4
 ```
+
+### Windows
+
+See this [setup guide](https://github.com/damellis/ESP/wiki/Windows-Setup-Guide)
 
 ## API
 
