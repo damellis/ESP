@@ -16,7 +16,6 @@
     <ClCompile Include="..\..\third-party\openFrameworks\addons\ofxDatGui\src\core\ofxDatGuiComponent.cpp" />
     <ClCompile Include="..\..\third-party\openFrameworks\addons\ofxDatGui\src\libs\ofxSmartFont\ofxSmartFont.cpp" />
     <ClCompile Include="..\..\third-party\openFrameworks\addons\ofxDatGui\src\ofxDatGui.cpp" />
-    <ClCompile Include="..\..\third-party\openFrameworks\addons\ofxGrt\src\ofxGrtBarPlot.cpp" />
     <ClCompile Include="..\..\third-party\openFrameworks\addons\ofxGrt\src\ofxGrtMatrixPlot.cpp" />
     <ClCompile Include="..\..\third-party\openFrameworks\addons\ofxGrt\src\ofxGrtTimeseriesPlot.cpp" />
     <ClCompile Include="..\..\third-party\openFrameworks\addons\ofxNetwork\src\ofxTCPClient.cpp" />
@@ -134,7 +133,6 @@
     <ClInclude Include="..\..\third-party\openFrameworks\addons\ofxDatGui\src\themes\ofxDatGuiTheme.h" />
     <ClInclude Include="..\..\third-party\openFrameworks\addons\ofxDatGui\src\themes\ofxDatGuiThemes.h" />
     <ClInclude Include="..\..\third-party\openFrameworks\addons\ofxGrt\src\ofxGrt.h" />
-    <ClInclude Include="..\..\third-party\openFrameworks\addons\ofxGrt\src\ofxGrtBarPlot.h" />
     <ClInclude Include="..\..\third-party\openFrameworks\addons\ofxGrt\src\ofxGrtMatrixPlot.h" />
     <ClInclude Include="..\..\third-party\openFrameworks\addons\ofxGrt\src\ofxGrtTimeseriesPlot.h" />
     <ClInclude Include="..\..\third-party\openFrameworks\addons\ofxNetwork\src\ofxNetwork.h" />
