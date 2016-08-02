@@ -373,7 +373,7 @@ void ofApp::setup() {
     // If failed, this could be due to serial stream's port configuration.
     // We prompt to ask for the port.
     if (!istream_->start()) {
-        if (ASCIISerialStream* ss = dynamic_cast<ASCIISerialStream*>(istream_)) {
+        if (BaseSerialInputStream* ss = dynamic_cast<BaseSerialInputStream*>(istream_)) {
             vector<string> serials = ss->getSerialDeviceList();
             serial_selection_dropdown_ =
                     gui_.addDropdown("Select A Serial Port", serials);
@@ -925,7 +925,7 @@ void ofApp::saveAll(bool saveAs) {
 void ofApp::onSerialSelectionDropdownEvent(ofxDatGuiDropdownEvent e) {
     if (istream_->hasStarted()) { return; }
 
-    if (ASCIISerialStream* ss = dynamic_cast<ASCIISerialStream*>(istream_)) {
+    if (BaseSerialInputStream* ss = dynamic_cast<BaseSerialInputStream*>(istream_)) {
         if (ss->selectSerialDevice(e.child)) {
             serial_selection_dropdown_->collapse();
             serial_selection_dropdown_->setVisible(false);

@@ -4,7 +4,7 @@
 
 #include <ESP.h>
 
-BinaryIntArraySerialStream stream(0, 115200, 160);
+BinaryIntArraySerialStream stream(115200, 160);
 GestureRecognitionPipeline pipeline;
 
 void setup()

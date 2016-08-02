@@ -125,22 +125,69 @@ class AudioFileStream : public InputStream {
     unique_ptr<std::thread> update_thread_;
 };
 
-class BaseSerialStream : public InputStream {
+class BaseSerialInputStream : public virtual InputStream {
   public:
-    BaseSerialStream(uint32_t usb_port_num, uint32_t baud, int numDimensions);
+    /**
+     Create an BaseSerialInputStream instance.
+
+     @param port: the index of the (USB) serial port to use.
+     @param baud: the baud rate at which to communicate with the serial port
+     @param numDimensions: the number of dimensions in the data that will come
+     from the serial port (i.e. the number of numbers in each line of data).
+     */
+    BaseSerialInputStream(uint32_t usb_port_num, uint32_t baud, int numDimensions);
+
+    /**
+     Create an BaseSerialInputStream instance.
+
+     This constructor doesn't require USB port so users will be asked to select
+     them at runtime.
+
+     @param baud: the baud rate at which to communicate with the serial port
+     @param numDimensions: the number of dimensions in the data that will come
+     from the serial port (i.e. the number of numbers in each line of data).
+     */
+    BaseSerialInputStream(uint32_t baud, int numDimensions);
+    
     virtual bool start() final;
     virtual void stop() final;
     virtual int getNumInputDimensions() final;
+    
+    vector<string> getSerialDeviceList() {
+        serial_->listDevices();
+        vector<string> retval;
+        vector<ofSerialDeviceInfo> device_list = serial_->getDeviceList();
+        retval.reserve(device_list.size());
+        for (auto& d : device_list) {
+            retval.push_back(d.getDevicePath());
+        }
+        return retval;
+    }
+
+    bool selectSerialDevice(uint32_t port) {
+        assert(has_started_ == false
+               && "Should only reach here if ASCIISerialStream hasn't started");
+
+        port_ = port;
+        if (!serial_->setup(port_, baud_)) {
+            return false;
+        }
+
+        reading_thread_.reset(new std::thread(&BaseSerialInputStream::readSerial, this));
+        has_started_ = true;
+        return true;
+    }
+
   protected:
     virtual void parseSerial(vector<unsigned char> &buffer) = 0;
+    unique_ptr<ofSerial> serial_;
+
   private:
     uint32_t port_ = -1;
     uint32_t baud_;
     int dimensions_;
 
     vector<unsigned char> buffer_;
-
-    unique_ptr<ofSerial> serial_;
 
     // A separate reading thread to read data from Serial.
     unique_ptr<std::thread> reading_thread_;
@@ -166,9 +213,9 @@ class SerialStream : public InputStream {
     void readSerial();
 };
 
-class BinaryIntArraySerialStream : public BaseSerialStream {
+class BinaryIntArraySerialStream : public BaseSerialInputStream {
   public:
-    using BaseSerialStream::BaseSerialStream; // inherit constructors
+    using BaseSerialInputStream::BaseSerialInputStream; // inherit constructors
   private:
     virtual void parseSerial(vector<unsigned char> &buffer);
 };

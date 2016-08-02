@@ -121,39 +121,45 @@ int AudioFileStream::getNumInputDimensions() {
     return 512;
 }
 
-BaseSerialStream::BaseSerialStream(uint32_t port, uint32_t baud, int dimensions)
+BaseSerialInputStream::BaseSerialInputStream(uint32_t baud, int dimensions)
+        : port_(-1), baud_(baud), dimensions_(dimensions), serial_(new ofSerial()) {
+    // Print all devices for convenience.
+    // serial_->listDevices();
+}
+
+BaseSerialInputStream::BaseSerialInputStream(uint32_t port, uint32_t baud, int dimensions)
         : port_(port), baud_(baud), dimensions_(dimensions), serial_(new ofSerial()) {
     // Print all devices for convenience.
     // serial_->listDevices();
 }
 
-bool BaseSerialStream::start() {
+bool BaseSerialInputStream::start() {
     if (port_ == -1) {
-        ofLog(OF_LOG_ERROR) << "USB Port has not been properly set";
+        ofLog(OF_LOG_ERROR) << "USB Port will be selected by user.";
         return false;
     }
 
     if (!has_started_) {
         if (!serial_->setup(port_, baud_)) return false;
-        reading_thread_.reset(new std::thread(&BaseSerialStream::readSerial, this));
+        reading_thread_.reset(new std::thread(&BaseSerialInputStream::readSerial, this));
         has_started_ = true;
     }
 
     return true;
 }
 
-void BaseSerialStream::stop() {
+void BaseSerialInputStream::stop() {
     has_started_ = false;
     if (reading_thread_ != nullptr && reading_thread_->joinable()) {
         reading_thread_->join();
     }
 }
 
-int BaseSerialStream::getNumInputDimensions() {
+int BaseSerialInputStream::getNumInputDimensions() {
     return dimensions_;
 }
 
-void BaseSerialStream::readSerial() {
+void BaseSerialInputStream::readSerial() {
     // TODO(benzh) This readSerial is running in a different thread
     // and performing a busy polling (100% CPU usage). Should be
     // optimized.
