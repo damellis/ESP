@@ -97,20 +97,15 @@ void MacOSMouseOStream::doubleClick(pair<uint32_t, uint32_t> mouse, int clickCou
 }
 
 bool TcpOStream::start() {
-	if (client_ == nullptr) {
-		client_ = new ofxTCPClient();
-	}
-	has_started_ = client_->setup(server_, port_);
-	client_->setMessageDelimiter("\n");
-	return has_started_;
+    if (client_ == nullptr) {
+        client_ = new ofxTCPClient();
+    }
+    has_started_ = client_->setup(server_, port_);
+    return has_started_;
 }
 
 void TcpOStream::sendString(const string& tosend) {
-	if (client_->isConnected()) {
-		client_->send(tosend);
-	}
-	if (client_ != nullptr) {
-		delete client_;
-		client_ = nullptr;
+    if (client_ != nullptr && client_->isConnected()) {
+        client_->sendRaw(tosend);
     }
 }

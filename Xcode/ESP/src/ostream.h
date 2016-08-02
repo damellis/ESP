@@ -281,7 +281,7 @@ class TcpOStream : public OStreamVector {
         if (!s.empty()) sendString(s);
     }
 
-	bool start();
+    bool start();
 
 private:
     void sendString(const string& tosend);
