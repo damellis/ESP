@@ -4,10 +4,6 @@
 [submodule "third-party/grt"]
 	path = third-party/grt
 	url = git@github.com:damellis/grt.git
-[submodule "Arduino/libraries/grt"]
-	path = Arduino/libraries/grt
-	url = https://github.com/damellis/grt.git
-	branch = avr
 [submodule "third-party/SpaceInvaders"]
 	path = third-party/SpaceInvaders
 	url = https://github.com/damellis/Processing_SpaceInv.git
