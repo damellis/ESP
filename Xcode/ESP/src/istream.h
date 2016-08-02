@@ -213,13 +213,6 @@ class SerialStream : public InputStream {
     void readSerial();
 };
 
-class BinaryIntArraySerialStream : public BaseSerialInputStream {
-  public:
-    using BaseSerialInputStream::BaseSerialInputStream; // inherit constructors
-  private:
-    virtual void parseSerial(vector<unsigned char> &buffer);
-};
-
 /**
  @brief Input stream for reading analog data from an Arduino running Firmata.
 

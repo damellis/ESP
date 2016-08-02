@@ -3,7 +3,7 @@
 #include "istream.h"
 #include "ostream.h"
 
-class IOStream : public InputStream, public OStream {};
+class IOStream : public virtual InputStream, public OStream {};
 class IOStreamVector : public virtual InputStream, public OStreamVector {};
 
 /**
@@ -18,6 +18,17 @@ class IOStreamVector : public virtual InputStream, public OStreamVector {};
  your setup() function.
  */
 class ASCIISerialStream : public BaseSerialInputStream, public IOStreamVector {
+  public:
+    using BaseSerialInputStream::BaseSerialInputStream; // inherit constructors
+
+    virtual void onReceive(uint32_t label);
+    virtual void onReceive(vector<double> data);
+
+  private:
+    virtual void parseSerial(vector<unsigned char> &buffer);
+};
+
+class BinaryIntArraySerialStream : public BaseSerialInputStream, public IOStreamVector {
   public:
     using BaseSerialInputStream::BaseSerialInputStream; // inherit constructors
 

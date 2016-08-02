@@ -184,49 +184,6 @@ void BaseSerialInputStream::readSerial() {
     }
 }
 
-void BinaryIntArraySerialStream::parseSerial(vector<unsigned char> &buffer) {
-    auto start = std::find(buffer.begin(), buffer.end(), 0); // look for packet start
-    if (start != buffer.end()) {
-        buffer.erase(buffer.begin(), start); // advance to start of packet
-        if (buffer.size() >= 3) { // 0, LSB(n), MSB(n)
-            unsigned char checksum = 0;
-            int LSB = buffer[1]; checksum += LSB;
-            int MSB = buffer[2]; checksum += MSB;
-            int n = ((MSB & 0x7F) << 7) | (LSB & 0x7F);
-            if (buffer.size() >= 4 + 2 * n) {
-                vector<double> vals;
-                //std::cout << "Got array of " << n << " bytes: " << buffer.size();
-                for (int j = 3; j < (3 + 2 * n);) {
-                    LSB = buffer[j++]; checksum += LSB;
-                    MSB = buffer[j++]; checksum += MSB;
-                    int val = ((MSB & 0x7F) << 7) | (LSB & 0x7F);
-                    //std::cout << val << " ";
-                    vals.push_back(val);
-                }
-                //std::cout << "(" << (checksum | 0x80) << " <> " << buffer[3 + 2 * n] << ")" << std::endl;
-                if ((checksum | 0x80) != buffer[3 + 2 * n]) {
-                    ofLog(OF_LOG_WARNING) << "Invalid checksum, discarding serial packet.";
-                } else if (n != getNumInputDimensions()) {
-                    ofLog(OF_LOG_WARNING) << "Serial packet contains " << n <<
-                        " dimensions. Expected " << getNumInputDimensions();
-                } else {
-                    GRT::MatrixDouble data(1, n);
-                    for (int i = 0; i < getNumInputDimensions(); i++) {
-                        int b = vals[i];
-                        data[0][i] = (normalizer_ != nullptr) ? normalizer_(b) : b;
-                    }
-                    if (data_ready_callback_ != nullptr) {
-                        data_ready_callback_(data);
-                    }
-                    
-                }
-                
-                buffer.erase(buffer.begin(), buffer.begin() + (4 + 2 * n));
-            }
-        }
-    }
-}
-
 SerialStream::SerialStream(uint32_t port, uint32_t baud = 115200)
         : port_(port), baud_(baud), serial_(new ofSerial()) {
     // Print all devices for convenience.
