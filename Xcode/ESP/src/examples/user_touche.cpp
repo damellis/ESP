@@ -9,8 +9,10 @@ GestureRecognitionPipeline pipeline;
 
 void setup()
 {
-    useInputStream(stream);
+    useStream(stream);
     
     pipeline.setClassifier(SVM(SVM::POLY_KERNEL, SVM::C_SVC, false, true, true, 0.1, 1.0, 0, 0.5, 2));
     usePipeline(pipeline);
+    
+    useLeaveOneOutScoring(false);
 }
