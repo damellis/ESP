@@ -34,7 +34,7 @@
  learning pipeline, adjust the tuneable parameters, and use the example in a
  larger interactive project.
 
- For an example, see: https://github.com/damellis/sensors/blob/master/Xcode/ESP/src/user_accelerometer_gestures.h
+ For an example, see: <a href="user_accelerometer_gestures_8cpp-example.html">user_accelerometer_gestures.cpp</a>
  */
 
 #pragma once

@@ -1,5 +1,5 @@
 /** @example user_accelerometer_gestures.cpp
- * Gesture detection using accelerometers.
+ * Gesture detection using accelerometers. See the <a href="https://create.arduino.cc/projecthub/mellis/gesture-recognition-using-accelerometer-and-esp-mac-only-71faa1">associated tutorial</a>.
  */
 #include <ESP.h>
 

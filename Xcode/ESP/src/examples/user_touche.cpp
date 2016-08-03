@@ -1,5 +1,5 @@
 /** @example user_touche.cpp
- Touche example.
+ Touche example. See <a href="https://github.com/damellis/ESP/wiki/%5BExample%5D-Touché-swept-frequency-capacitive-sensing">documentation on the wiki</a>.
  */
 
 #include <ESP.h>
