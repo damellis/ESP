@@ -50,12 +50,12 @@ bool ofSystemYesNoDialog(string title,string message){
 //only works for pc and mac // shouldn't be hard to do the linux version though
 #if defined( TARGET_LINUX ) && defined (OF_USING_GTK)
     initGTK();
-    GtkWidget* dialog = gtk_message_dialog_new (NULL, (GtkDialogFlags) 0, GTK_MESSAGE_INFO, GTK_BUTTONS_OK, "%s", errorMessage.c_str());
+    GtkWidget* dialog = gtk_message_dialog_new (NULL, (GtkDialogFlags) 0, GTK_MESSAGE_INFO, GTK_BUTTONS_OK, "%s", title.c_str());
     gtk_dialog_run (GTK_DIALOG (dialog));
     startGTK(dialog);
 #endif
 
 #ifdef TARGET_ANDROID
-    ofxAndroidAlertBox(errorMessage);
+    ofxAndroidAlertBox(title);
 #endif
 }
