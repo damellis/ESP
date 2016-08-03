@@ -18,20 +18,18 @@ bool ofSystemYesNoDialog(string title,string message){
 
 
 #ifdef TARGET_WIN32
-    int length = strlen(errorMessage.c_str());
+    int length = strlen(title.c_str());
     wchar_t * widearray = new wchar_t[length+1];
     memset(widearray, 0, sizeof(wchar_t)*(length+1));
-    mbstowcs(widearray, errorMessage.c_str(), length);
-     int length2 = strlen(message.c_str());
+    mbstowcs(widearray, title.c_str(), length);
+    int length2 = strlen(message.c_str());
     wchar_t * widearray2 = new wchar_t[length2+1];
     memset(widearray2, 0, sizeof(wchar_t)*(length2+1));
     mbstowcs(widearray2, message.c_str(), length2);
-    int dialogueResult =  MessageBoxW(NULL, widearray2, widearray, MB_OKCANCEL);
-    bool result = false;
-    if(dialogueResult==1)result = true; else result = false;
-    return result;
+    int dialogueResult = MessageBoxW(NULL, widearray2, widearray, MB_OKCANCEL);
     delete widearray;
     delete widearray2;
+	return dialogueResult == 1;
 #endif
 
 
