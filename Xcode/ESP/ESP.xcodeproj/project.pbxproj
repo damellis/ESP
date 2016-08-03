@@ -26,6 +26,7 @@
 		637A06C23B6F54498F35B81F /* ofxSmartFont.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00C32701B394C1DD8762AD1E /* ofxSmartFont.cpp */; };
 		798434EF9EE5EE2E41E2F0DE /* ofxGrtTimeseriesPlot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3016C29D8E0735FBAEF55DFA /* ofxGrtTimeseriesPlot.cpp */; };
 		811B7BF71CF51D830078CD0A /* Filter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 811B7BF51CF51D830078CD0A /* Filter.cpp */; };
+		812188581D525F720088AAB1 /* ofYesNoDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 812188571D525F720088AAB1 /* ofYesNoDialog.cpp */; };
 		814E133B1D1A072800774F7B /* training.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 814E133A1D1A072800774F7B /* training.cpp */; };
 		8164C6761CD927F900DFEF70 /* iostream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8164C6751CD927F900DFEF70 /* iostream.cpp */; };
 		817BE7751CCB063E00FE581B /* libgrt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 817BE7741CCB063E00FE581B /* libgrt.dylib */; };
@@ -130,6 +131,8 @@
 		806F715C55B9B786D65F7B33 /* ofxDatGuiSlider.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxDatGuiSlider.h; path = "../../third-party/openFrameworks/addons/ofxDatGui/src/components/ofxDatGuiSlider.h"; sourceTree = SOURCE_ROOT; };
 		811B7BF51CF51D830078CD0A /* Filter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Filter.cpp; sourceTree = "<group>"; };
 		811B7BF61CF51D830078CD0A /* Filter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Filter.h; sourceTree = "<group>"; };
+		812188571D525F720088AAB1 /* ofYesNoDialog.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = ofYesNoDialog.cpp; sourceTree = "<group>"; };
+		812188591D525FA90088AAB1 /* ofYesNoDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofYesNoDialog.h; sourceTree = "<group>"; };
 		814E13391D1A037100774F7B /* training.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = training.h; sourceTree = "<group>"; };
 		814E133A1D1A072800774F7B /* training.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = training.cpp; sourceTree = "<group>"; };
 		8164C6731CD924EC00DFEF70 /* stream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stream.h; sourceTree = "<group>"; };
@@ -421,6 +424,8 @@
 				8164C6751CD927F900DFEF70 /* iostream.cpp */,
 				814E13391D1A037100774F7B /* training.h */,
 				814E133A1D1A072800774F7B /* training.cpp */,
+				812188571D525F720088AAB1 /* ofYesNoDialog.cpp */,
+				812188591D525FA90088AAB1 /* ofYesNoDialog.h */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -580,6 +585,7 @@
 				497D66D31CC3232900D5C3DC /* ofxTCPClient.cpp in Sources */,
 				49B9D96C1CF0340A008AA943 /* user.cpp in Sources */,
 				497D66D41CC3232900D5C3DC /* ofxTCPManager.cpp in Sources */,
+				812188581D525F720088AAB1 /* ofYesNoDialog.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
