@@ -13,6 +13,25 @@
 	#include <Cocoa/Cocoa.h>
 #endif
 
+#if defined( TARGET_LINUX ) && defined (OF_USING_GTK)
+#include <gtk/gtk.h>
+#include "ofGstUtils.h"
+#include "Poco/Condition.h"
+
+static void initGTK(){
+    static bool initialized = false;
+    if(!initialized){
+        #if !defined(TARGET_RASPBERRY_PI)
+        XInitThreads();
+        #endif
+        int argc=0; char **argv = nullptr;
+        gtk_init (&argc, &argv);
+        ofGstUtils::startGstMainLoop();
+        initialized = true;
+    }
+}
+#endif
+
 //------------------------------------------------------------------------------
 bool ofSystemYesNoDialog(string title,string message){
 
@@ -50,9 +69,10 @@ bool ofSystemYesNoDialog(string title,string message){
 //only works for pc and mac // shouldn't be hard to do the linux version though
 #if defined( TARGET_LINUX ) && defined (OF_USING_GTK)
     initGTK();
-    GtkWidget* dialog = gtk_message_dialog_new (NULL, (GtkDialogFlags) 0, GTK_MESSAGE_INFO, GTK_BUTTONS_OK, "%s", title.c_str());
-    gtk_dialog_run (GTK_DIALOG (dialog));
-    startGTK(dialog);
+    GtkWidget* dialog = gtk_message_dialog_new (NULL, (GtkDialogFlags) 0, GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK_CANCEL, "%s", title.c_str());
+    GtkResponseType response = gtk_dialog_run (GTK_DIALOG (dialog));
+    gtk_widget_destroy (dialog);
+    return response == GTK_RESPONSE_OK;
 #endif
 
 #ifdef TARGET_ANDROID
