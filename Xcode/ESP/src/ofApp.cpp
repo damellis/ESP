@@ -140,6 +140,14 @@ void ofApp::setup() {
 
     // setup() is a user-defined function.
     ::setup(); setup_finished_ = true;
+    
+    kinect.setup();
+    kinect.addImageGenerator();
+    kinect.addDepthGenerator();
+    kinect.setDepthColoring(COLORING_BLUES);
+    kinect.setMirror(true);
+    kinect.addUserGenerator();
+    kinect.start();
 
     for (OStream *ostream : ostreams_) {
         if (!(ostream->start())) {
@@ -1109,6 +1117,7 @@ string ofApp::getTrainingDataAdvice() {
 
 //--------------------------------------------------------------
 void ofApp::update() {
+    kinect.update();
     std::lock_guard<std::mutex> guard(input_data_mutex_);
     for (int i = 0; i < input_data_.getNumRows(); i++){
         vector<double> raw_data = input_data_.getRowVector(i);
@@ -1331,6 +1340,37 @@ void ofApp::draw() {
     ofDrawBitmapString(status_text_, left_margin, ofGetHeight() - 20);
 
     gui_.draw();
+    
+    kinect.drawImage();
+    kinect.drawDepth();
+    int n = kinect.getNumTrackedUsers();
+    for (int i= 0; i<n; i++){
+        ofxOpenNIUser user = kinect.getTrackedUser(i);
+        
+        ofPushStyle();
+        ofSetColor(ofColor::red);
+        ofLog(OF_LOG_NOTICE) << user.getJoint(JOINT_HEAD).getWorldPosition() << "\t"
+                             << user.getJoint(JOINT_LEFT_HAND).getWorldPosition() << "\t"
+                             << user.getJoint(JOINT_RIGHT_HAND).getWorldPosition() << "\t"
+                             << user.getJoint(JOINT_LEFT_ELBOW).getWorldPosition() << "\t"
+                             << user.getJoint(JOINT_RIGHT_ELBOW).getWorldPosition() << "\t";
+        ofLog(OF_LOG_NOTICE) << user.getJoint(JOINT_HEAD).getProjectivePosition() << "\t"
+                             << user.getJoint(JOINT_LEFT_HAND).getProjectivePosition() << "\t"
+                             << user.getJoint(JOINT_RIGHT_HAND).getProjectivePosition() << "\t"
+                             << user.getJoint(JOINT_LEFT_ELBOW).getProjectivePosition() << "\t"
+                             << user.getJoint(JOINT_RIGHT_ELBOW).getProjectivePosition() << "\t";
+        ofLog(OF_LOG_NOTICE) << " ";
+        ofPoint p;
+        
+        p = user.getJoint(JOINT_HEAD).getProjectivePosition(); ofDrawRectangle(p.x, p.y, 30, 30);
+        p = user.getJoint(JOINT_LEFT_HAND).getProjectivePosition(); ofDrawRectangle(p.x, p.y, 30, 30);
+        p = user.getJoint(JOINT_RIGHT_HAND).getProjectivePosition(); ofDrawRectangle(p.x, p.y, 30, 30);
+        p = user.getJoint(JOINT_LEFT_ELBOW).getProjectivePosition(); ofDrawRectangle(p.x, p.y, 30, 30);
+        p = user.getJoint(JOINT_RIGHT_ELBOW).getProjectivePosition(); ofDrawRectangle(p.x, p.y, 30, 30);
+        ofPopStyle();
+//        ofPoint headWorldPoint = user.getJoint(JOINT_HEAD).getWorldPosition();
+        //ofxOpenNIJoint joint = user.get
+    }
 }
 
 void ofApp::drawInputs(uint32_t stage_left, uint32_t stage_top,

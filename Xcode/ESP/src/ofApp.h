@@ -10,6 +10,7 @@
 #include "ofMain.h"
 #include "ofxDatGui.h"
 #include "ofxGrt.h"
+#include "ofxOpenNI.h"
 
 // custom
 #include "calibrator.h"
@@ -293,6 +294,8 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
 
     bool is_training_scheduled_;
     uint64_t schedule_time_;
+
+    ofxOpenNI kinect;
 };
 
 class TrainingSampleGuiListener {
