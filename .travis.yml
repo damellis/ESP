@@ -41,6 +41,7 @@ before_script:
       sudo apt-get -y install doxygen
       sudo apt-get -y install cmake
       sudo apt-get -y install libblas-dev
+      sudo apt-get -y install libgtk-3-dev
       # Build GRT
       cd third-party/grt/build
       mkdir -p tmp && cd tmp

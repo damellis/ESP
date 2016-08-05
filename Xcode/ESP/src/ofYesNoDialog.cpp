@@ -60,9 +60,9 @@ bool ofSystemYesNoDialog(string title,string message){
            encoding:NSUTF8StringEncoding]];
     [alert setInformativeText:[NSString stringWithCString:message.c_str()
            encoding:NSUTF8StringEncoding]];
-    
+
     NSInteger returnCode = [alert runModal];
-    
+
     return returnCode == NSAlertFirstButtonReturn;
 
 #endif
@@ -70,7 +70,7 @@ bool ofSystemYesNoDialog(string title,string message){
 #if defined( TARGET_LINUX ) && defined (OF_USING_GTK)
     initGTK();
     GtkWidget* dialog = gtk_message_dialog_new (NULL, (GtkDialogFlags) 0, GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK_CANCEL, "%s", title.c_str());
-    GtkResponseType response = gtk_dialog_run (GTK_DIALOG (dialog));
+    gint response = gtk_dialog_run (GTK_DIALOG (dialog));
     gtk_widget_destroy (dialog);
     return response == GTK_RESPONSE_OK;
 #endif
