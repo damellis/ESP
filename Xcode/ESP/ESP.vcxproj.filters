@@ -56,6 +56,9 @@
     <ClCompile Include="src\user.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\ofYesNoDialog.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -179,6 +182,9 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\user.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ofYesNoDialog.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

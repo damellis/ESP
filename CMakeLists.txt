@@ -79,6 +79,7 @@ set(ESP_SRC
   ${ESP_PATH}/src/iostream.cpp
   ${ESP_PATH}/src/istream.cpp
   ${ESP_PATH}/src/ofApp.cpp
+  ${ESP_PATH}/src/ofYesNoDialog.cpp
   ${ESP_PATH}/src/ostream.cpp
   ${ESP_PATH}/src/plotter.cpp
   ${ESP_PATH}/src/training.cpp
@@ -90,13 +91,22 @@ set(ESP_SRC
 set(ESP_MAIN ${ESP_PATH}/src/main.cpp)
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+  set(OBJECTIVE_CPP_SRC ${ESP_PATH}/src/ofYesNoDialog.cpp)
+  set_source_files_properties(${OBJECTIVE_CPP_SRC} PROPERTIES COMPILE_FLAGS "-x objective-c++")
   set(GRT_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/third-party/grt/)
   set(GRT_LIBRARY ${CMAKE_CURRENT_SOURCE_DIR}/Xcode/ESP/libgrt.dylib)
   set(SYS_LIBS "-lobjc")
 else()  # Linux
   set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/")
+
+  # Configure GTK
+  find_package(PkgConfig REQUIRED)
+  pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
+  add_definitions(-DOF_USING_GTK)
+  include_directories(${GTK3_INCLUDE_DIRS})
+
   find_package(Grt REQUIRED)
-  set(SYS_LIBS "-L/usr/local/lib -lblas" )
+  set(SYS_LIBS "-L/usr/local/lib -lblas" ${GTK3_LIBRARIES})
 endif()
 
 
