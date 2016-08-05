@@ -1653,10 +1653,15 @@ void ofApp::exit() {
     // Save data here!
     if (should_save_calibration_data_ || should_save_training_data_ ||
         should_save_pipeline_ || should_save_test_data_) {
+#ifdef TARGET_LINUX
+        saveAll(true); // ofSystemYesNoDialog() doesn't work on Linux, so
+                       // prompt user for a file name to save as.
+#else
         bool result = ofSystemYesNoDialog("Save Session?", "Save your ESP session?");
         if (result) {
             saveAll();
         }
+#endif
     }
 }
 
