@@ -617,8 +617,13 @@ bool ofApp::loadPipelineWithPrompt() {
 }
 
 bool ofApp::loadPipeline(const string& filename) {
-    std::lock_guard<std::mutex> guard(pipeline_mutex_);
-    if (pipeline_->load(filename)) {
+    bool is_load_successful;
+    {
+        std::lock_guard<std::mutex> guard(pipeline_mutex_);
+        is_load_successful = pipeline_->load(filename);
+    }
+
+    if (is_load_successful) {
         setStatus("Pipeline is loaded from " + filename);
         should_save_pipeline_ = false;
         if (pipeline_->getTrained()) afterTrainModel();
