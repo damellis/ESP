@@ -50,6 +50,10 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
         status_text_ = data.getMessage();
     }
 
+    void setBufferSize(uint32_t buffer_size) {
+        buffer_size_ = buffer_size;
+    }
+
   private:
     enum Fragment { CALIBRATION, PIPELINE, TRAINING, ANALYSIS, PREDICTION };
     Fragment fragment_;
@@ -91,7 +95,7 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
 
     // kBufferSize_ controls the number of points in the plot. Note: This is not
     // the buffer size used for training/prediction.
-    const uint32_t kBufferSize_ = 256;
+    uint32_t buffer_size_ = 256;
 
     // The calibrator that is in use.
     Calibrator *calibrator_;
@@ -317,3 +321,5 @@ class TrainingSampleGuiListener {
     ofApp *app;
     int num;
 };
+
+void setGUIBufferSize(uint32_t buffer_size);

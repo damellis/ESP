@@ -21,7 +21,7 @@
  of various aspects of the application. Specified by the registerTuneable()
  functions in the tuneable.h file.
  \li Zero or one training samples checkers, to provide the user with feedback
- on the quality of their training data. Specified by a call to 
+ on the quality of their training data. Specified by a call to
  useTrainingSampleChecker().
  \li Optional advice to the user on the collection of training data, using
  useTrainingDataAdvice().
@@ -44,5 +44,9 @@
 #include "iostream.h"
 #include "tuneable.h"
 #include "training.h"
+
+/* This will be linked against ofApp::setGUIBufferSize
+ */
+extern void setGUIBufferSize(uint32_t buffer_size);
 
 using namespace GRT;
