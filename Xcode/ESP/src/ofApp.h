@@ -121,6 +121,7 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     GRT::MatrixDouble input_data_;
 
     // Pipeline
+    std::mutex pipeline_mutex_;
     GRT::GestureRecognitionPipeline *pipeline_;
 
     TrainingDataManager training_data_manager_;
