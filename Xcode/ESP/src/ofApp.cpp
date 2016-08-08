@@ -452,7 +452,6 @@ void ofApp::updatePlotSamplesSnapshot(int num, int row) {
 }
 
 void ofApp::populateSampleFeatures(uint32_t sample_index) {
-    std::lock_guard<std::mutex> guard(pipeline_mutex_);
     if (pipeline_->getNumFeatureExtractionModules() == 0) { return; }
 
     // Clean up historical data/caches.
@@ -575,7 +574,6 @@ void ofApp::updateTestWindowPlot() {
 }
 
 void ofApp::runPredictionOnTestData() {
-    std::lock_guard<std::mutex> guard(pipeline_mutex_);
     test_data_predicted_class_labels_.resize(test_data_.getNumRows());
     for (int i = 0; i < test_data_.getNumRows(); i++) {
         if (pipeline_->getTrained()) {
@@ -598,7 +596,6 @@ bool ofApp::savePipelineWithPrompt() {
 }
 
 bool ofApp::savePipeline(const string& filename) {
-    std::lock_guard<std::mutex> guard(pipeline_mutex_);
     if (pipeline_->save(filename)) {
         setStatus("Pipeline is saved to " + filename);
         should_save_pipeline_ = false;
@@ -617,13 +614,7 @@ bool ofApp::loadPipelineWithPrompt() {
 }
 
 bool ofApp::loadPipeline(const string& filename) {
-    bool is_load_successful;
-    {
-        std::lock_guard<std::mutex> guard(pipeline_mutex_);
-        is_load_successful = pipeline_->load(filename);
-    }
-
-    if (is_load_successful) {
+    if (pipeline_->load(filename)) {
         setStatus("Pipeline is loaded from " + filename);
         should_save_pipeline_ = false;
         if (pipeline_->getTrained()) afterTrainModel();
@@ -1119,9 +1110,7 @@ string ofApp::getTrainingDataAdvice() {
 
 //--------------------------------------------------------------
 void ofApp::update() {
-    std::lock_guard<std::mutex> data_guard(input_data_mutex_);
-    std::lock_guard<std::mutex> pipeline_guard(pipeline_mutex_);
-
+    std::lock_guard<std::mutex> guard(input_data_mutex_);
     for (int i = 0; i < input_data_.getNumRows(); i++){
         vector<double> raw_data = input_data_.getRowVector(i);
         vector<double> data_point;
@@ -1710,31 +1699,15 @@ void ofApp::trainModel() {
        training_thread_.join();
    }
 
-   auto training_func = [this]() mutable -> bool {
+   auto training_func = [this]() -> bool {
        ofLog() << "Training started";
-
-       GestureRecognitionPipeline pipeline;
-       // Make a copy of the pipeline before training
-       {
-           std::lock_guard<std::mutex> guard(this->pipeline_mutex_);
-           pipeline = *(this->pipeline_);
-           pipeline.reset();
-       }
-
        bool training_status = false;
 
        // Enable logging. GRT error logs will call ofApp::notify().
        GRT::ErrorLog::enableLogging(true);
 
-       if (pipeline.train(this->training_data_manager_.getAllData())) {
+       if (pipeline_->train(training_data_manager_.getAllData())) {
            ofLog() << "Training is successful";
-
-           // This copy operation is not guaranteed to be thread-safe
-           // Use a Mutex to protect it.
-           {
-               std::lock_guard<std::mutex> guard(this->pipeline_mutex_);
-               *(this->pipeline_) = pipeline;
-           }
 
            for (Plotter& plot : plot_samples_) {
                assert(true == plot.clearContentModifiedFlag());
@@ -1742,9 +1715,6 @@ void ofApp::trainModel() {
 
            should_save_pipeline_ = true;
            training_status = true;
-
-           afterTrainModel();
-           status_text_ = "Training was successful";
        } else {
            ofLog(OF_LOG_ERROR) << "Failed to train the model";
        }
@@ -1754,8 +1724,11 @@ void ofApp::trainModel() {
        return training_status;
    };
 
-   training_thread_ = std::thread(training_func);
-   training_thread_.detach();
+   // TODO(benzh) Fix data race issue later.
+   if (training_func()) {
+       afterTrainModel();
+       status_text_ = "Training was successful";
+   }
 }
 
 void ofApp::afterTrainModel() {
@@ -1763,19 +1736,12 @@ void ofApp::afterTrainModel() {
     fragment_ = TRAINING;
     runPredictionOnTestData();
     updateTestWindowPlot();
-
-    {
-        std::lock_guard<std::mutex> guard(pipeline_mutex_);
-        pipeline_->reset();
-    }
-
+    pipeline_->reset();
     for (int i = 0; i < plot_class_distances_.size(); i++)
         plot_class_distances_[i].reset();
 }
 
 void ofApp::scoreTrainingData(bool leaveOneOut) {
-    std::lock_guard<std::mutex> guard(pipeline_mutex_);
-
     for (int label = 1; label <= training_data_manager_.getNumLabels(); label++) {
         // No point in doing leave-one-out scoring for labels w/ one sample.
         if (leaveOneOut && training_data_manager_.getNumSampleForLabel(label) == 1)
@@ -1823,7 +1789,6 @@ void ofApp::scoreTrainingData(bool leaveOneOut) {
 }
 
 void ofApp::scoreImpactOfTrainingSample(int label, const MatrixDouble &sample) {
-    std::lock_guard<std::mutex> guard(pipeline_mutex_);
     if (!pipeline_->getTrained()) return; // can't calculate a score
 
     GestureRecognitionPipeline p(*pipeline_);
@@ -1852,7 +1817,6 @@ void ofApp::scoreImpactOfTrainingSample(int label, const MatrixDouble &sample) {
 }
 
 void ofApp::reloadPipelineModules() {
-    std::lock_guard<std::mutex> guard(pipeline_mutex_);
     pipeline_->clearAll();
     ::setup();
 }
