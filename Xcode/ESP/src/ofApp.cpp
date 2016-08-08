@@ -1724,6 +1724,13 @@ void ofApp::trainModel() {
        if (pipeline.train(this->training_data_manager_.getAllData())) {
            ofLog() << "Training is successful";
 
+           // This copy operation is not guaranteed to be thread-safe
+           // Use a Mutex to protect it.
+           {
+               std::lock_guard<std::mutex> guard(this->pipeline_mutex_);
+               *(this->pipeline_) = pipeline;
+           }
+
            for (Plotter& plot : plot_samples_) {
                assert(true == plot.clearContentModifiedFlag());
            }
@@ -1733,13 +1740,6 @@ void ofApp::trainModel() {
 
            afterTrainModel();
            status_text_ = "Training was successful";
-
-           // This copy operation is not guaranteed to be thread-safe
-           // Use a Mutex to protect it.
-           {
-               std::lock_guard<std::mutex> guard(this->pipeline_mutex_);
-               *(this->pipeline_) = pipeline;
-           }
        } else {
            ofLog(OF_LOG_ERROR) << "Failed to train the model";
        }
