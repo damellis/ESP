@@ -1906,6 +1906,7 @@ void ofApp::keyPressed(int key){
         case 'L':
             if (fragment_ == CALIBRATION) loadCalibrationDataWithPrompt();
             else if (fragment_ == TRAINING) loadTrainingDataWithPrompt();
+            else if (fragment_ == PIPELINE) loadPipelineWithPrompt();
             else if (fragment_ == ANALYSIS) loadTestDataWithPrompt();
             break;
         case 'p': {
@@ -1922,6 +1923,7 @@ void ofApp::keyPressed(int key){
         case 's': saveAll(); break;
         case 'S':
             if (fragment_ == CALIBRATION) saveCalibrationDataWithPrompt();
+            else if (fragment_ == PIPELINE) savePipelineWithPrompt();
             else if (fragment_ == TRAINING) saveTrainingDataWithPrompt();
             else if (fragment_ == ANALYSIS) saveTestDataWithPrompt();
             break;
