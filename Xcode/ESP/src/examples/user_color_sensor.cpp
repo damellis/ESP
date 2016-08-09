@@ -1,5 +1,5 @@
 /** @example user_color_sensor.cpp
- * Color sensing.
+ * Color sensing. See <a href="https://github.com/damellis/ESP/wiki/%5BExample%5D-Color-Detection">documentation on the wiki</a>.
  */
 #include <ESP.h>
 
