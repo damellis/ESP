@@ -4,10 +4,11 @@
 
  For each tuneable parameter, a corresponding slider or checkbox is created in
  the interface to allow the user to modify the value of that parameter.
- Currently, when the user changes the value of a tuneable parameter, the ESP
- system re-runs the entire setup() function with the tuneable parameters set
- to their new values.
- */
+
+ There are two possible behaviors when UI event happens:
+ 1. If a corresponding callback is provided, it's called
+ 2. If there is no callback provided, we proceed to reload the pipeline
+**/
 
 #pragma once
 
@@ -23,22 +24,32 @@ class Tuneable {
     enum Type { SET, INT_RANGE, DOUBLE_RANGE, BOOL };
 
     // Range tuneable (int)
-    Tuneable(int* value, int min, int max, const string& title, const string& description)
-            : value_ptr_(value), ui_ptr_(NULL),
-              type_(INT_RANGE), title_(title), description_(description),
-              min_(min), max_(max) {}
+    Tuneable(int* value, int min, int max, const string& title,
+             const string& description,
+             std::function<void(int)> cb)
+        : value_ptr_(value), ui_ptr_(NULL),
+          type_(INT_RANGE), title_(title), description_(description),
+          min_(min), max_(max),
+          int_cb_(cb), double_cb_(nullptr), bool_cb_(nullptr) {
+    }
 
     // Range tuneable (double)
     Tuneable(double* value, double min, double max,
-             const string& title, const string& description)
-            : value_ptr_(value), ui_ptr_(NULL),
-              type_(DOUBLE_RANGE), title_(title), description_(description),
-              min_(min), max_(max) {}
+             const string& title, const string& description,
+             std::function<void(double)> cb)
+        : value_ptr_(value), ui_ptr_(NULL),
+          type_(DOUBLE_RANGE), title_(title), description_(description),
+          min_(min), max_(max),
+          int_cb_(nullptr), double_cb_(cb), bool_cb_(nullptr) {
+    }
 
     // Boolean tuneable
-    Tuneable(bool* value, const string& title, const string& description)
-            : value_ptr_(value), ui_ptr_(NULL),
-              type_(BOOL), title_(title), description_(description) {}
+    Tuneable(bool* value, const string& title, const string& description,
+             std::function<void(bool)> cb)
+        : value_ptr_(value), ui_ptr_(NULL),
+          type_(BOOL), title_(title), description_(description),
+          int_cb_(nullptr), double_cb_(nullptr), bool_cb_(cb) {
+    }
 
     void addToGUI(ofxDatGui& gui) {
         switch (type_) {
@@ -135,6 +146,7 @@ class Tuneable {
     Type getType() const {
         return type_;
     }
+
   private:
     void onSliderEvent(ofxDatGuiSliderEvent e);
     void onToggleEvent(ofxDatGuiButtonEvent e);
@@ -147,6 +159,10 @@ class Tuneable {
     string description_;
     double min_;
     double max_;
+
+    std::function<void(int)> int_cb_;
+    std::function<void(double)> double_cb_;
+    std::function<void(bool)> bool_cb_;
 };
 
 /**
@@ -166,9 +182,11 @@ class Tuneable {
  @param name: the name of the tuneable parameter. Will be shown to the user.
  @param description: the description of the tuneable parameter. Shown to the
  user.
+ @param cb: a callback function that is invoked when user input is received.
  */
 void registerTuneable(int& value, int min, int max,
-                      const string& name, const string& description);
+                      const string& name, const string& description,
+                      std::function<void(int)> cb = nullptr);
 
 /**
  Create a tuneable parameter of type double. This will generate a slider in the
@@ -187,9 +205,12 @@ void registerTuneable(int& value, int min, int max,
  @param name: the name of the tuneable parameter. Will be shown to the user.
  @param description: the description of the tuneable parameter. Shown to the
  user.
+ @param cb: a callback function that is invoked when user input is received.
  */
 void registerTuneable(double& value, double min, double max,
-                      const string& name, const string& description);
+                      const string& name, const string& description,
+                      std::function<void(double)> cb = nullptr);
+
 
 /**
  Create a tuneable parameter of type bool. This will generate a checkbox in the
@@ -205,5 +226,7 @@ void registerTuneable(double& value, double min, double max,
  @param name: the name of the tuneable parameter. Will be shown to the user.
  @param description: the description of the tuneable parameter. Shown to the
  user.
+ @param cb: a callback function that is invoked when user input is received.
  */
-void registerTuneable(bool& value, const string& name, const string& description);
+void registerTuneable(bool& value, const string& name, const string& description,
+                      std::function<void(bool)> cb = nullptr);

@@ -19,12 +19,22 @@ void Tuneable::onSliderEvent(ofxDatGuiSliderEvent e) {
                 // Because slider only supports double, we have to manually
                 // round it to match integer semantics.
                 e.target->setValue(set_value);
+
+                if (int_cb_ != nullptr) {
+                    int_cb_(*value);
+                } else {
+                    ((ofApp *) ofGetAppPtr())->reloadPipelineModules();
+                }
             } else {
                 double* value = static_cast<double*>(data_ptr);
                 *value = e.value;
-            }
 
-            ((ofApp *) ofGetAppPtr())->reloadPipelineModules();
+                if (double_cb_ != nullptr) {
+                    double_cb_(*value);
+                } else {
+                    ((ofApp *) ofGetAppPtr())->reloadPipelineModules();
+                }
+            }
         }
     }
 }
@@ -37,45 +47,54 @@ void Tuneable::onToggleEvent(ofxDatGuiButtonEvent e) {
             bool* value = static_cast<bool*>(data_ptr);
             *value = e.enabled;
             ((ofApp *) ofGetAppPtr())->reloadPipelineModules();
+
+            if (bool_cb_ != nullptr) {
+                bool_cb_(*value);
+            } else {
+                ((ofApp *) ofGetAppPtr())->reloadPipelineModules();
+            }
         }
     }
 }
 
 void registerTuneable(int& value, int min, int max,
                       const string& title,
-                      const string& description) {
+                      const string& description,
+                      std::function<void(int)> cb) {
     void* address = &value;
     if (allTuneables.find(address) != allTuneables.end()) {
         return;
     }
 
-    Tuneable* t = new Tuneable(&value, min, max, title, description);
+    Tuneable* t = new Tuneable(&value, min, max, title, description, cb);
     allTuneables[address] = t;
     ((ofApp *) ofGetAppPtr())->registerTuneable(t);
 }
 
 void registerTuneable(double& value, double min, double max,
                       const string& title,
-                      const string& description) {
+                      const string& description,
+                      std::function<void(double)> cb) {
     void* address = &value;
     if (allTuneables.find(address) != allTuneables.end()) {
         return;
     }
 
-    Tuneable* t = new Tuneable(&value, min, max, title, description);
+    Tuneable* t = new Tuneable(&value, min, max, title, description, cb);
     allTuneables[address] = t;
     ((ofApp *) ofGetAppPtr())->registerTuneable(t);
 }
 
 void registerTuneable(bool& value,
                       const string& title,
-                      const string& description) {
+                      const string& description,
+                      std::function<void(bool)> cb) {
     void* address = &value;
     if (allTuneables.find(address) != allTuneables.end()) {
         return;
     }
 
-    Tuneable* t = new Tuneable(&value, title, description);
+    Tuneable* t = new Tuneable(&value, title, description, cb);
     allTuneables[address] = t;
     ((ofApp *) ofGetAppPtr())->registerTuneable(t);
 }
