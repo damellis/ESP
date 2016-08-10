@@ -46,7 +46,6 @@ void Tuneable::onToggleEvent(ofxDatGuiButtonEvent e) {
         if (e.target == ui_ptr) {
             bool* value = static_cast<bool*>(data_ptr);
             *value = e.enabled;
-            ((ofApp *) ofGetAppPtr())->reloadPipelineModules();
 
             if (t.second->bool_cb_ != nullptr) {
                 t.second->bool_cb_(*value);
