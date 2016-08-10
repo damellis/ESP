@@ -84,6 +84,39 @@ bool always_pick_something = false;
 bool send_repeated_predictions = false;
 int timeout = 100;
 
+void updateAlwaysPickSomething(bool new_val) {
+    pipeline.getClassifier()->enableNullRejection(!new_val);
+}
+
+void updateVariability(double new_val) {
+    pipeline.getClassifier()->setNullRejectionCoeff(new_val);
+    pipeline.getClassifier()->recomputeNullRejectionThresholds();
+}
+
+void updateSendRepeatedPredictions(bool new_val) {
+    if (new_val) {
+        assert(pipeline.getNumPostProcessingModules() == 0);
+        pipeline.addPostProcessingModule(ClassLabelTimeoutFilter(timeout));
+    } else {
+        assert(pipeline.getNumPostProcessingModules() == 1);
+        pipeline.removePostProcessingModule(0);
+    }
+}
+
+void updateTimeout(int new_val) {
+    if (pipeline.getNumPostProcessingModules() > 0) {
+        ClassLabelTimeoutFilter *filter =
+            dynamic_cast<ClassLabelTimeoutFilter *>
+                (pipeline.getPostProcessingModule(0));
+        assert(filter != nullptr);
+        filter->setTimeoutDuration(new_val);
+    }
+    
+    // else do nothing, i.e. allow the user to adjust the timout parameter
+    // even if it's not currently being used (because send_repeated_predictions
+    // is false).
+}
+
 void setup()
 {
     stream.setLabelsForAllDimensions({"x", "y", "z"});
@@ -111,18 +144,18 @@ void setup()
     registerTuneable(always_pick_something, "Always Pick Something",
         "Whether to always pick (predict) one of the classes of training data, "
         "even if it's not a very good match. If selected, 'Variability' will "
-        "not be used.");
+        "not be used.", updateAlwaysPickSomething);
     registerTuneable(null_rej, 1.0, 25.0, "Variability",
          "How different from the training data a new gesture can be and "
          "still be considered the same gesture. The higher the number, the more "
-         "different it can be.");
+         "different it can be.", updateVariability);
     registerTuneable(send_repeated_predictions, "Send Repeated Predictions",
         "Whether to send repeated predictions while a pose is being held. If "
         "not selected, predictions will only be sent on transition from one "
-        "pose to another.");
+        "pose to another.", updateSendRepeatedPredictions);
     registerTuneable(timeout, 1, 3000,
         "Timeout",
         "How long (in milliseconds) to wait after recognizing a class before "
         "recognizing a different one. Only used if 'Send Repeated Predictions' "
-        "is selected.");
+        "is selected.", updateTimeout);
 }
