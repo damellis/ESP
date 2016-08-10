@@ -20,8 +20,8 @@ void Tuneable::onSliderEvent(ofxDatGuiSliderEvent e) {
                 // round it to match integer semantics.
                 e.target->setValue(set_value);
 
-                if (int_cb_ != nullptr) {
-                    int_cb_(*value);
+                if (t.second->int_cb_ != nullptr) {
+                    t.second->int_cb_(*value);
                 } else {
                     ((ofApp *) ofGetAppPtr())->reloadPipelineModules();
                 }
@@ -29,8 +29,8 @@ void Tuneable::onSliderEvent(ofxDatGuiSliderEvent e) {
                 double* value = static_cast<double*>(data_ptr);
                 *value = e.value;
 
-                if (double_cb_ != nullptr) {
-                    double_cb_(*value);
+                if (t.second->double_cb_ != nullptr) {
+                    t.second->double_cb_(*value);
                 } else {
                     ((ofApp *) ofGetAppPtr())->reloadPipelineModules();
                 }
@@ -48,8 +48,8 @@ void Tuneable::onToggleEvent(ofxDatGuiButtonEvent e) {
             *value = e.enabled;
             ((ofApp *) ofGetAppPtr())->reloadPipelineModules();
 
-            if (bool_cb_ != nullptr) {
-                bool_cb_(*value);
+            if (t.second->bool_cb_ != nullptr) {
+                t.second->bool_cb_(*value);
             } else {
                 ((ofApp *) ofGetAppPtr())->reloadPipelineModules();
             }
