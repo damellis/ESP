@@ -24,7 +24,7 @@ static const char* kCalibrateInstruction =
     "Use key 1-9 to record calibration samples (required before you can start training).";
 
 static const char* kPipelineInstruction =
-    "Press capital C/P/A/T/R to change tabs, `p` to pause or resume.\n"
+    "Press capital C/P/A/T/R to change tabs, `p` to pause or resume. (`S` and `L` to save/load pipeline only.)\n"
     "Press `s` to save session, `a` to save as, `l` to load session.";
 
 static const char* kTrainingInstruction =
