@@ -1642,13 +1642,6 @@ void ofApp::drawPrediction() {
     uint32_t height = stage_height / kNumMaxLabels_;
     double minDistance = 0.0, maxDistance = 1.0;
     for (int i = 0; i < kNumMaxLabels_; i++) {
-        auto range = plot_class_distances_[i].getRanges();
-        if (range.first < minDistance) minDistance = range.first;
-        if (range.second > maxDistance) maxDistance = range.second;
-    }
-
-    for (int i = 0; i < kNumMaxLabels_; i++) {
-        plot_class_distances_[i].setRanges(minDistance, maxDistance, true);
         plot_class_distances_[i].draw(stage_left, stage_top, stage_width, height);
         stage_top += height;
     }
