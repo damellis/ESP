@@ -36,7 +36,7 @@ before_script:
         -project "third-party/openFrameworks/scripts/templates/osx/emptyExample.xcodeproj"
     else
       # Linux/Ubuntu
-      sudo third-party/openFrameworks/scripts/ci/linux/install.sh
+      sudo ROOT=`pwd`/third-party/openFrameworks/ third-party/openFrameworks/scripts/ci/linux/install.sh
       sudo third-party/openFrameworks/scripts/ci/linux/build.sh
       sudo apt-get -y install doxygen
       sudo apt-get -y install cmake
