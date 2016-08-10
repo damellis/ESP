@@ -1157,29 +1157,39 @@ void ofApp::update() {
             plot_class_likelihoods_.update(likelihoods, predicted_label_ != 0, title);
 
             predicted_class_distances_ = pipeline_->getClassDistances();
-//            // TODO(damellis): this shouldn't be classifier-specific but should
-//            // instead be based on a virtual function in Classifier or similar.
-//            DTW *dtw = dynamic_cast<DTW *>(pipeline_->getClassifier());
-//            if (dtw != NULL) {
-//                for (int k = 0; k < predicted_class_distances_.size() &&
-//                                k < predicted_class_labels_.size(); k++) {
-//                    predicted_class_distances_[k] =
-//                        dtw->classDistanceToNullRejectionCoefficient(
-//                            predicted_class_labels_[k],
-//                            predicted_class_distances_[k]);
-//                }
-//            }
+            if (pipeline_->getClassifier()->
+                getSupportsClassDistanceToNullRejectionCoefficient()) {
+                for (int k = 0; k < predicted_class_distances_.size() &&
+                                k < predicted_class_labels_.size(); k++) {
+                    predicted_class_distances_[k] =
+                        pipeline_->getClassifier()->classDistanceToNullRejectionCoefficient(
+                            predicted_class_labels_[k],
+                            predicted_class_distances_[k]);
+                }
+            }
             predicted_class_distances_buffer_.push_back(predicted_class_distances_);
 
             for (int i = 0; i < predicted_class_distances_.size() &&
                             i < predicted_class_labels_.size(); i++) {
-                vector<double> thresholds = pipeline_->getClassifier()->getNullRejectionThresholds();
-                plot_class_distances_[predicted_class_labels_[i] - 1].update(
-                    vector<double>{
-                        (thresholds.size() > i ? thresholds[i] : 0.0),
-                        predicted_class_distances_[i]
-                    }, thresholds.size() > i && predicted_class_distances_[i] < thresholds[i],
-                    "");
+                if (pipeline_->getClassifier()->
+                    getSupportsClassDistanceToNullRejectionCoefficient()) {
+                    double nullRejectionCoeff =
+                        pipeline_->getClassifier()->getNullRejectionCoeff();
+                    plot_class_distances_[predicted_class_labels_[i] - 1].update(
+                        vector<double>{
+                            nullRejectionCoeff,
+                            predicted_class_distances_[i]
+                        }, predicted_class_distances_[i] < nullRejectionCoeff,
+                        "");
+                } else {
+                    vector<double> thresholds = pipeline_->getClassifier()->getNullRejectionThresholds();
+                    plot_class_distances_[predicted_class_labels_[i] - 1].update(
+                        vector<double>{
+                            (thresholds.size() > i ? thresholds[i] : 0.0),
+                            predicted_class_distances_[i]
+                        }, thresholds.size() > i && predicted_class_distances_[i] < thresholds[i],
+                        "");
+                }
             }
         } else predicted_label_ = 0;
 
