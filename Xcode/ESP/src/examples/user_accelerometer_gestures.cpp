@@ -95,6 +95,19 @@ TrainingSampleCheckerResult checkTrainingSample(const MatrixDouble &in)
 int timeout = 500; // milliseconds
 double null_rej = 0.4;
 
+void updateVariability(double new_null_rej) {
+    pipeline.getClassifier()->setNullRejectionCoeff(new_null_rej);
+    pipeline.getClassifier()->recomputeNullRejectionThresholds();
+}
+
+void updateTimeout(int new_timeout) {
+    ClassLabelTimeoutFilter *filter =
+        dynamic_cast<ClassLabelTimeoutFilter *>
+            (pipeline.getPostProcessingModule(0));
+    assert(filter != nullptr);
+    filter->setTimeoutDuration(new_timeout);
+}
+
 void setup()
 {
     stream.setLabelsForAllDimensions({"x", "y", "z"});
@@ -119,11 +132,11 @@ void setup()
     registerTuneable(null_rej, 0.1, 5.0, "Variability",
          "How different from the training data a new gesture can be and "
          "still be considered the same gesture. The higher the number, the "
-         "more different it can be.");
+         "more different it can be.", updateVariability);
     registerTuneable(timeout, 1, 3000,
         "Timeout",
         "How long (in milliseconds) to wait after recognizing a "
-        "gesture before recognizing another one.");
+        "gesture before recognizing another one.", updateTimeout);
     
     useTrainingSampleChecker(checkTrainingSample);
 }
