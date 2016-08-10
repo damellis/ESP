@@ -88,6 +88,7 @@ std::string TrainingDataManager::getLabelName(uint32_t label) {
 bool TrainingDataManager::setNameForLabel(const std::string name, uint32_t label) {
     CHECK_LABEL(label);
     default_label_names_[label] = name;
+    data_.setClassNameForCorrespondingClassLabel(name, label);
     return true;
 }
 
@@ -125,7 +126,7 @@ bool TrainingDataManager::deleteSample(uint32_t label, uint32_t index) {
 
     auto& scores = training_sample_scores_[label];
     scores.erase(scores.begin() + index);
-    
+
     auto& likelihoods = training_sample_class_likelihoods_[label];
     likelihoods.erase(likelihoods.begin() + index);
 
