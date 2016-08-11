@@ -190,6 +190,7 @@
     <ClCompile Include="..\..\third-party\openFrameworks\addons\ofxNetwork\src\ofxTCPServer.cpp" />
     <ClCompile Include="..\..\third-party\openFrameworks\addons\ofxNetwork\src\ofxUDPManager.cpp" />
     <ClCompile Include="..\..\third-party\openFrameworks\addons\ofxParagraph\src\ofxParagraph.cpp" />
+    <ClCompile Include="src\ofConsoleFileLoggerChannel.cpp" />
     <ClCompile Include="src\ofYesNoDialog.cpp" />
     <ClCompile Include="src\ostream.cpp" />
     <ClCompile Include="src\plotter.cpp" />
@@ -237,6 +238,7 @@
     <ClInclude Include="..\..\third-party\openFrameworks\addons\ofxNetwork\src\ofxTCPServer.h" />
     <ClInclude Include="..\..\third-party\openFrameworks\addons\ofxNetwork\src\ofxUDPManager.h" />
     <ClInclude Include="..\..\third-party\openFrameworks\addons\ofxParagraph\src\ofxParagraph.h" />
+    <ClInclude Include="src\ofConsoleFileLoggerChannel.h" />
     <ClInclude Include="src\ofYesNoDialog.h" />
     <ClInclude Include="src\ostream.h" />
     <ClInclude Include="src\plotter.h" />

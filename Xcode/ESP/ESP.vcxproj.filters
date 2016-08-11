@@ -59,6 +59,9 @@
     <ClCompile Include="src\ofYesNoDialog.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\ofConsoleFileLoggerChannel.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -185,6 +188,9 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\ofYesNoDialog.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ofConsoleFileLoggerChannel.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
