@@ -26,7 +26,7 @@ void Tuneable::onSliderEvent(ofxDatGuiSliderEvent e) {
                     ((ofApp *) ofGetAppPtr())->reloadPipelineModules();
                 }
 
-                ESP_EVENT("Tune " + t.second->toString());
+                ESP_EVENT("Tune " + t.second->title_ + " " + t.second->toString());
             } else {
                 double* value = static_cast<double*>(data_ptr);
                 *value = e.value;
@@ -36,7 +36,7 @@ void Tuneable::onSliderEvent(ofxDatGuiSliderEvent e) {
                 } else {
                     ((ofApp *) ofGetAppPtr())->reloadPipelineModules();
                 }
-                ESP_EVENT("Tune " + t.second->toString());
+                ESP_EVENT("Tune " + t.second->title_ + " " + t.second->toString());
             }
         }
     }
@@ -55,7 +55,7 @@ void Tuneable::onToggleEvent(ofxDatGuiButtonEvent e) {
             } else {
                 ((ofApp *) ofGetAppPtr())->reloadPipelineModules();
             }
-            ESP_EVENT("Tune " + t.second->toString());
+            ESP_EVENT("Tune " + t.second->title_ + " " + t.second->toString());
         }
     }
 }

@@ -781,7 +781,7 @@ bool ofApp::loadTrainingData(const string& filename) {
 
     if (training_data_manager_.load(filename)) {
         setStatus("Training data is loaded from " + filename);
-        ESP_EVENT("Calibration data load info, " +
+        ESP_EVENT("Training data load info, " +
                   training_data_manager_.getAllData().getStatsAsString());
         should_save_training_data_ = false;
     } else {
@@ -2148,7 +2148,8 @@ void ofApp::mouseReleased(int x, int y, int button) {
                 populateSampleFeatures(i);
 
                 ESP_EVENT(std::string("Navigate left on class ") +
-                          std::to_string(label));
+                          std::to_string(label) + std::string(" to sample ") +
+                          std::to_string(plot_sample_indices_[i]));
             }
         }
         if (plot_sample_button_locations_[i].second.inside(x, y)) {
@@ -2161,7 +2162,8 @@ void ofApp::mouseReleased(int x, int y, int button) {
                 populateSampleFeatures(i);
 
                 ESP_EVENT(std::string("Navigate right on class ") +
-                          std::to_string(label));
+                          std::to_string(label) + std::string(" to sample ") +
+                          std::to_string(plot_sample_indices_[i]));
             }
         }
     }
