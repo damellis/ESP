@@ -48,6 +48,17 @@ static const char* kPredictionInstruction =
 const double kPipelineHeightWeight = 0.3;
 const ofColor kSerialSelectionColor = ofColor::fromHex(0x00FF00);
 
+// Platform-specific log file location
+#if __APPLE__
+static std::string kLogDirectory = "~/Library/Application Support/ESP/";
+#elif __linux__
+static std::string kLogDirectory = "~/.esp/";
+#elif _WIN32
+static std::string kLogDirectory = "";
+#else
+#error "Unknown compiler"
+#endif
+
 // Utility functions forward declaration
 string encodeName(const string &name);
 string decodeName(const string &name);
@@ -142,9 +153,26 @@ ofApp::ofApp() : fragment_(TRAINING),
 
 //--------------------------------------------------------------
 void ofApp::setup() {
+#if __APPLE__ || __linux__
+    // Expand ~ to /Users/JohnDoe or /home/johndoe
+    char const* home = getenv("HOME");
+    if (home != NULL) {
+        std::string home_str(home);
+        // Replace ~ with the home_str
+        kLogDirectory.replace(0, 1, home_str);
+    } else {
+        // Home directory is not set, we clear the content of kLogDirectory
+        // to use the default directory.
+        kLogDirectory = "";
+    }
+#endif
+    if (!ofDirectory::doesDirectoryExist(kLogDirectory, false)) {
+        ofDirectory::createDirectory(kLogDirectory, false, false);
+    }
+
     // Before anything, set up openFrameworks to redirect the logs to logfile,
     // with the timestamp as prefix. And set the property to be appending.
-    ofLogToFile("ESP-" + ofGetTimestampString() + ".txt", true);
+    ofLogToFile(kLogDirectory + "ESP-" + ofGetTimestampString() + ".txt", true);
 
     // Normally we only set it to warning level. During the workshop, we should
     // capture OF_LOG_NOTICE.
