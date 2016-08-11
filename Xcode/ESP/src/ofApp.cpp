@@ -1338,7 +1338,7 @@ void ofApp::draw() {
 
     ofColor red = ofColor(0xFF, 0, 0);
     uint32_t tab_start = 0;
-    uint32_t kTabWidth = 120;
+    uint32_t kTabWidth = 126;
 
     switch (fragment_) {
         case CALIBRATION:
