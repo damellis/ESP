@@ -15,8 +15,8 @@ void ofConsoleFileLoggerChannel::setFile(const string & path,bool append) {
 
 void ofConsoleFileLoggerChannel::log(
     ofLogLevel level, const string &module, const string &message) {
-    consoleLogger.log(level, module, message);
-    fileLogger.log(level, module, message);
+    if (level >= consoleLogLevel) consoleLogger.log(level, module, message);
+    if (level >= fileLogLevel) fileLogger.log(level, module, message);
 }
 
 void ofConsoleFileLoggerChannel::log(ofLogLevel level, const string & module, const char* format, ...){
@@ -28,6 +28,6 @@ void ofConsoleFileLoggerChannel::log(ofLogLevel level, const string & module, co
 
 void ofConsoleFileLoggerChannel::log(
     ofLogLevel level, const string & module, const char* format, va_list args) {
-    consoleLogger.log(level, module, format, args);
-    fileLogger.log(level, module, format, args);
+    if (level >= consoleLogLevel) consoleLogger.log(level, module, format, args);
+    if (level >= fileLogLevel) fileLogger.log(level, module, format, args);
 }

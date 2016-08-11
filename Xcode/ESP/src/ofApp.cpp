@@ -186,11 +186,10 @@ void ofApp::setup() {
     // with the timestamp as prefix. And set the property to be appending.
     logger_ = std::make_shared<ofConsoleFileLoggerChannel>(
         kLogDirectory + "ESP-" + ofGetTimestampString() + ".txt", true);
+    logger_->setConsoleLogLevel(OF_LOG_NOTICE);
     ofSetLoggerChannel(logger_);
 
-    // Normally we only set it to warning level. During the workshop, we should
-    // capture OF_LOG_NOTICE.
-    ofSetLogLevel(OF_LOG_NOTICE);
+    ofSetLogLevel(OF_LOG_VERBOSE);
     ESP_EVENT("System Started");
 
     // setup() is a user-defined function.

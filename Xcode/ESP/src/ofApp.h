@@ -21,7 +21,7 @@
 #include "tuneable.h"
 
 #define ESP_EVENT(s)                                                \
-    ofLogNotice() << "[" << ofGetTimestampString() << "] " << (s)
+    ofLogVerbose() << "[" << ofGetTimestampString() << "] " << (s)
 
 class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
   public:
