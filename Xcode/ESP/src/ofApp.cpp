@@ -48,11 +48,6 @@ static const char* kPredictionInstruction =
 const double kPipelineHeightWeight = 0.3;
 const ofColor kSerialSelectionColor = ofColor::fromHex(0x00FF00);
 
-template <class T>
-constexpr void ESP_EVENT(T&& s) {
-    ofLogNotice() << "[" << ofGetTimestampString() << "] " << s;
-}
-
 // Utility functions forward declaration
 string encodeName(const string &name);
 string decodeName(const string &name);
@@ -1798,6 +1793,7 @@ void ofApp::trainModel() {
 }
 
 void ofApp::afterTrainModel() {
+    ESP_EVENT("Post training, jump to TRAINING tab");
     scoreTrainingData(use_leave_one_out_scoring_);
     fragment_ = TRAINING;
     runPredictionOnTestData();
@@ -1960,6 +1956,8 @@ void ofApp::keyPressed(int key){
                 class_distance_values_.resize(0);
             }
             input_data_.clear();
+
+            ESP_EVENT("Toggle streaming");
             break;
         }
         case 'a': saveAll(true); break;

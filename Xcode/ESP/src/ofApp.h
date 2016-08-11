@@ -19,6 +19,11 @@
 #include "training-data-manager.h"
 #include "tuneable.h"
 
+template <class T>
+constexpr void ESP_EVENT(T&& s) {
+    ofLogNotice() << "[" << ofGetTimestampString() << "] " << s;
+}
+
 class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
   public:
     ofApp();
