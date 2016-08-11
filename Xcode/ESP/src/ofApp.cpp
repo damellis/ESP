@@ -2,8 +2,8 @@
 
 #include <algorithm>
 #include <cctype>
+#include <cmath>
 #include <iomanip>
-#include <math.h>
 #include <sstream>
 #include <string>
 
@@ -48,7 +48,7 @@ static const char* kPredictionInstruction =
 const double kPipelineHeightWeight = 0.3;
 const ofColor kSerialSelectionColor = ofColor::fromHex(0x00FF00);
 
-template<class T>
+template <class T>
 constexpr void ESP_EVENT(T s) {
     ofLogNotice() << "[" << ofGetTimestampString() << "] " << s;
 }
