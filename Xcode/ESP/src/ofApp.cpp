@@ -44,6 +44,11 @@ static const char* kPredictionInstruction =
 const double kPipelineHeightWeight = 0.3;
 const ofColor kSerialSelectionColor = ofColor::fromHex(0x00FF00);
 
+template<class T>
+constexpr void ESP_EVENT(T s) {
+    ofLogNotice() << "[" << ofGetTimestampString() << "] " << s;
+}
+
 // Utility functions forward declaration
 string encodeName(const string &name);
 string decodeName(const string &name);
@@ -132,12 +137,20 @@ ofApp::ofApp() : fragment_(TRAINING),
                  should_save_pipeline_(false),
                  should_save_training_data_(false),
                  should_save_test_data_(false),
-                 is_training_scheduled_(false) {
+                 is_training_scheduled_(false),
+                 is_recording_(false) {
 }
 
 //--------------------------------------------------------------
 void ofApp::setup() {
-    is_recording_ = false;
+    // Before anything, set up openFrameworks to redirect the logs to logfile,
+    // with the timestamp as prefix. And set the property to be appending.
+    ofLogToFile("ESP-" + ofGetTimestampString() + ".txt", true);
+
+    // Normally we only set it to warning level. During the workshop, we should
+    // capture OF_LOG_NOTICE.
+    ofSetLogLevel(OF_LOG_NOTICE);
+    ESP_EVENT("System Started");
 
     // setup() is a user-defined function.
     ::setup(); setup_finished_ = true;
