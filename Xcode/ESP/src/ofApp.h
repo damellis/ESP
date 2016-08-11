@@ -10,6 +10,7 @@
 #include "ofMain.h"
 #include "ofxDatGui.h"
 #include "ofxGrt.h"
+#include "ofConsoleFileLoggerChannel.h"
 
 // custom
 #include "calibrator.h"
@@ -301,6 +302,8 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
 
     bool is_training_scheduled_;
     uint64_t schedule_time_;
+
+    std::shared_ptr<ofConsoleFileLoggerChannel> logger_;
 };
 
 class TrainingSampleGuiListener {

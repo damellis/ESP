@@ -184,7 +184,9 @@ void ofApp::setup() {
 
     // Before anything, set up openFrameworks to redirect the logs to logfile,
     // with the timestamp as prefix. And set the property to be appending.
-    ofLogToFile(kLogDirectory + "ESP-" + ofGetTimestampString() + ".txt", true);
+    logger_ = std::make_shared<ofConsoleFileLoggerChannel>(
+        kLogDirectory + "ESP-" + ofGetTimestampString() + ".txt", true);
+    ofSetLoggerChannel(logger_);
 
     // Normally we only set it to warning level. During the workshop, we should
     // capture OF_LOG_NOTICE.

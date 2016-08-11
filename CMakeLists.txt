@@ -79,6 +79,7 @@ set(ESP_SRC
   ${ESP_PATH}/src/iostream.cpp
   ${ESP_PATH}/src/istream.cpp
   ${ESP_PATH}/src/ofApp.cpp
+  ${ESP_PATH}/src/ofConsoleFileLoggerChannel.cpp
   ${ESP_PATH}/src/ofYesNoDialog.cpp
   ${ESP_PATH}/src/ostream.cpp
   ${ESP_PATH}/src/plotter.cpp
