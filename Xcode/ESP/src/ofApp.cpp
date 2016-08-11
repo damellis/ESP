@@ -20,21 +20,25 @@ const uint32_t kDelayBeforeTraining = 50;  // milliseconds
 
 // Instructions for each tab.
 static const char* kCalibrateInstruction =
-    "Press `s` to save session, `a` to save as, `l` to load session. (`S` and `L` to save/load calibration data only.)\n"
+    "Press `s` to save session, `a` to save as, `l` to load session."
+    " (`S` and `L` to save/load calibration data only.)\n"
     "Use key 1-9 to record calibration samples (required before you can start training).";
 
 static const char* kPipelineInstruction =
-    "Press capital C/P/A/T/R to change tabs, `p` to pause or resume. (`S` and `L` to save/load pipeline only.)\n"
+    "Press capital C/P/A/T/R to change tabs, `p` to pause or resume."
+    " (`S` and `L` to save/load pipeline only.)\n"
     "Press `s` to save session, `a` to save as, `l` to load session.";
 
 static const char* kTrainingInstruction =
     "Press capital C/P/A/T/R to change tabs, `p` to pause or resume.\n"
-    "Press `s` to save session, `a` to save as, `l` to load session. (`S` and `L` to save/load training data only.)\n"
+    "Press `s` to save session, `a` to save as, `l` to load session."
+    " (`S` and `L` to save/load training data only.)\n"
     "Hold 1-9 to record samples. Press `t` to train model, `f` to show features.";
 
 static const char* kAnalysisInstruction =
     "Press capital C/P/A/T/R to change tabs, `p` to pause or resume.\n"
-    "Press `s` to save session, `a` to save as, `l` to load session. (`S` and `L` to save/load test data only.)\n"
+    "Press `s` to save session, `a` to save as, `l` to load session."
+    " (`S` and `L` to save/load test data only.)\n"
     "Hold `r` to record test data.";
 
 static const char* kPredictionInstruction =
