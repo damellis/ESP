@@ -54,7 +54,7 @@ static std::string kLogDirectory = "~/Library/Application Support/ESP/";
 #elif __linux__
 static std::string kLogDirectory = "~/.esp/";
 #elif _WIN32
-static std::string kLogDirectory = "";
+static std::string kLogDirectory = "%APPDATA%/ESP/";
 #else
 #error "Unknown compiler"
 #endif
@@ -162,6 +162,18 @@ void ofApp::setup() {
         kLogDirectory.replace(0, 1, home_str);
     } else {
         // Home directory is not set, we clear the content of kLogDirectory
+        // to use the default directory.
+        kLogDirectory = "";
+    }
+#elif _WIN32
+    // Expand %APPDATA%
+    char const* appdata = getenv("APPDATA");
+    if (appdata != NULL) {
+        std::string appdata_str(appdata);
+        // Replace ~ with the home_str
+        kLogDirectory.replace(0, 9, appdata_str);
+    } else {
+        // App-Data directory is not set, we clear the content of kLogDirectory
         // to use the default directory.
         kLogDirectory = "";
     }
