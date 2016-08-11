@@ -611,6 +611,11 @@ bool ofApp::savePipeline(const string& filename) {
     if (pipeline_->save(filename)) {
         setStatus("Pipeline is saved to " + filename);
         should_save_pipeline_ = false;
+        ESP_EVENT(std::string("Pipeline save info") +
+                  ", numClasses: " + std::to_string(pipeline_->getNumClasses()) +
+                  ", getTrained: " + std::to_string(pipeline_->getTrained()) +
+                  ", trainTime: " + std::to_string(pipeline_->getTrainingTime()) +
+                  "");
         return true;
     } else {
         setStatus("Failed to save pipeline to " + filename);
@@ -630,6 +635,11 @@ bool ofApp::loadPipeline(const string& filename) {
         setStatus("Pipeline is loaded from " + filename);
         should_save_pipeline_ = false;
         if (pipeline_->getTrained()) afterTrainModel();
+        ESP_EVENT(std::string("Pipeline load info") +
+                  ", numClasses: " + std::to_string(pipeline_->getNumClasses()) +
+                  ", getTrained: " + std::to_string(pipeline_->getTrained()) +
+                  ", trainTime: " + std::to_string(pipeline_->getTrainingTime()) +
+                  "");
         return true;
     } else {
         setStatus("Failed to load pipeline from " + filename);
@@ -662,7 +672,7 @@ bool ofApp::saveCalibrationData(const string& filename) {
 
     if (data.save(filename)) {
         setStatus("Calibration data is saved to " + filename);
-        ESP_EVENT("Calibration data is saved to " + filename);
+        ESP_EVENT("Calibration data save info, " + data.getStatsAsString());
         should_save_calibration_data_ = false;
         return true;
     } else {
@@ -695,6 +705,7 @@ bool ofApp::loadCalibrationData(const string& filename) {
 
     if (data.load(filename)) {
         setStatus("Calibration data is loaded from " + filename);
+        ESP_EVENT("Calibration data load info, " + data.getStatsAsString());
     } else {
         setStatus("Failed to load calibration data from " + filename);
         return false;
@@ -748,8 +759,9 @@ bool ofApp::saveTrainingDataWithPrompt() {
 bool ofApp::saveTrainingData(const string& filename) {
     if (training_data_manager_.save(filename)) {
         setStatus("Training data is saved to " + filename);
+        ESP_EVENT("Calibration data save info, " +
+                  training_data_manager_.getAllData().getStatsAsString());
         should_save_training_data_ = false;
-        ESP_EVENT("Trainig data is saved to " + filename);
         return true;
     } else {
         setStatus("Failed to save training data to " + filename);
@@ -769,6 +781,8 @@ bool ofApp::loadTrainingData(const string& filename) {
 
     if (training_data_manager_.load(filename)) {
         setStatus("Training data is loaded from " + filename);
+        ESP_EVENT("Calibration data load info, " +
+                  training_data_manager_.getAllData().getStatsAsString());
         should_save_training_data_ = false;
     } else {
         setStatus("Failed to load training data from " + filename);
@@ -812,7 +826,7 @@ bool ofApp::saveTestData(const string& filename) {
 
     if (test_data_.save(filename)) {
         setStatus("Test data is saved to " + filename);
-        ESP_EVENT("Test data is saved to " + filename);
+        ESP_EVENT("Test data save info, points: " + test_data_.getNumRows());
         should_save_test_data_ = false;
         return true;
     } else {
@@ -834,6 +848,7 @@ bool ofApp::loadTestData(const string& filename) {
     if (ofFile::doesFileExist(filename)) {
         if (test_data.load(filename) ){
             setStatus("Test data is loaded from " + filename);
+            ESP_EVENT("Test data load info, points: " + test_data_.getNumRows());
             should_save_test_data_ = false;
         } else {
             setStatus("Failed to load test data from " + filename);
@@ -910,7 +925,6 @@ void ofApp::loadAll() {
         loadPipeline(dir + kPipelineFilename)) {
 
         setStatus("ESP session is loaded from " + dir);
-        ESP_EVENT("ESP session is loaded from " + dir);
     } else {
         // TODO(benzh) Temporarily disable this message so that each individual
         // load will reveal which one failed.
@@ -937,7 +951,6 @@ void ofApp::saveAll(bool saveAs) {
         && saveTuneables(dir + kTuneablesFilename)) {
 
         setStatus("ESP session is saved to " + dir);
-        ESP_EVENT("ESP session is saved to " + dir);
         should_save_test_data_ = false;
     } else {
         // TODO(benzh) Temporarily disable this message so that each individual

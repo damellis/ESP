@@ -297,6 +297,7 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     // Status for user notification
     string status_text_;
     void setStatus(const string& msg) {
+        ESP_EVENT(msg);
         status_text_ = msg;
     }
 
