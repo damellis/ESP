@@ -118,7 +118,7 @@ void setup()
     calibrator.setCalibrateFunction(processAccelerometerData);
     calibrator.addCalibrateProcess("Upright",
         "Rest accelerometer upright on flat surface.", uprightDataCollected);
-    calibrator.addCalibrateProcess("Upside_Down",
+    calibrator.addCalibrateProcess("Upside Down",
         "Rest accelerometer upside down on flat surface.", upsideDownDataCollected);
     useCalibrator(calibrator);
 
