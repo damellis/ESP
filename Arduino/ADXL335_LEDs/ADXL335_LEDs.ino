@@ -4,9 +4,9 @@
 // ESP system. Use with the user_accelerometer_gestures.cpp ESP example.
 
 // the accelerometer pins
-int zpin = A3;
-int ypin = A4;
-int xpin = A5;
+int zpin = A2;
+int ypin = A1;
+int xpin = A0;
 
 // the LED pins
 int redpin = 9;
@@ -16,9 +16,9 @@ int bluepin = 11;
 // These are only used if you're plugging the ADXL335 (on the
 // Adafruit breakout board) directly into the analog input pins
 // of your Arduino. See comment below.
-int vinpin = A0;
-int voutpin = A1;
-int gndpin = A2;
+int vinpin = A5;
+int voutpin = A4;
+int gndpin = A3;
 
 void setup() {
   Serial.begin(115200);
