@@ -826,7 +826,8 @@ bool ofApp::saveTestData(const string& filename) {
 
     if (test_data_.save(filename)) {
         setStatus("Test data is saved to " + filename);
-        ESP_EVENT("Test data save info, points: " + test_data_.getNumRows());
+        ESP_EVENT(std::string("Test data save info, points: ") +
+                  std::to_string(test_data_.getNumRows()));
         should_save_test_data_ = false;
         return true;
     } else {
@@ -848,7 +849,8 @@ bool ofApp::loadTestData(const string& filename) {
     if (ofFile::doesFileExist(filename)) {
         if (test_data.load(filename) ){
             setStatus("Test data is loaded from " + filename);
-            ESP_EVENT("Test data load info, points: " + test_data_.getNumRows());
+            ESP_EVENT(std::string("Test data load info, points: ") +
+                      std::to_string(test_data_.getNumRows()));
             should_save_test_data_ = false;
         } else {
             setStatus("Failed to load test data from " + filename);
@@ -1051,7 +1053,7 @@ void ofApp::deleteTrainingSample(int num) {
     should_save_training_data_ = true;
 
     ESP_EVENT("Delete sample from class " + std::to_string(label) +
-              ", left " + std::to_string(num_sample_left) + "samples");
+              ", left " + std::to_string(num_sample_left) + " samples");
 }
 
 void ofApp::deleteAllTrainingSamples(int num) {
@@ -2145,7 +2147,8 @@ void ofApp::mouseReleased(int x, int y, int button) {
                 updatePlotSamplesSnapshot(i);
                 populateSampleFeatures(i);
 
-                ESP_EVENT("Navigate left on class " + label);
+                ESP_EVENT(std::string("Navigate left on class ") +
+                          std::to_string(label));
             }
         }
         if (plot_sample_button_locations_[i].second.inside(x, y)) {
@@ -2157,7 +2160,8 @@ void ofApp::mouseReleased(int x, int y, int button) {
                 updatePlotSamplesSnapshot(i);
                 populateSampleFeatures(i);
 
-                ESP_EVENT("Navigate right on class " + label);
+                ESP_EVENT(std::string("Navigate right on class ") +
+                          std::to_string(label));
             }
         }
     }
