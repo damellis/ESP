@@ -30,8 +30,7 @@ void ASCIISerialStream::parseSerial(vector<unsigned char> &buffer) {
     if (newline != buffer.end()) {
         string s(buffer.begin(), newline);
         
-        buffer.erase(newline);
-        buffer.erase(buffer.begin(), newline);
+        buffer.erase(buffer.begin(), ++newline);
         
         if (data_ready_callback_ != nullptr) {
             istringstream iss(s);
