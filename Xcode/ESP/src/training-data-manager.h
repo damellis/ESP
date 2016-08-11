@@ -53,6 +53,8 @@ class TrainingDataManager {
 
     uint32_t getNumLabels() { return num_classes_; }
 
+    uint32_t getTotalNumSamples() { return data_.getNumSamples(); }
+
     // =================================================
     //  Functions that enables per-sample naming
     // =================================================
