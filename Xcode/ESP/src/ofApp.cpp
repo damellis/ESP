@@ -49,7 +49,7 @@ const double kPipelineHeightWeight = 0.3;
 const ofColor kSerialSelectionColor = ofColor::fromHex(0x00FF00);
 
 template <class T>
-constexpr void ESP_EVENT(T s) {
+constexpr void ESP_EVENT(T&& s) {
     ofLogNotice() << "[" << ofGetTimestampString() << "] " << s;
 }
 
@@ -667,6 +667,7 @@ bool ofApp::saveCalibrationData(const string& filename) {
 
     if (data.save(filename)) {
         setStatus("Calibration data is saved to " + filename);
+        ESP_EVENT("Calibration data is saved to " + filename);
         should_save_calibration_data_ = false;
         return true;
     } else {
@@ -737,6 +738,7 @@ bool ofApp::loadCalibrationData(const string& filename) {
     }
 
     plot_inputs_.reset();
+    ESP_EVENT("Calibration data is loaded from " + filename);
     should_save_calibration_data_ = false;
     return true;
 }
@@ -752,6 +754,7 @@ bool ofApp::saveTrainingData(const string& filename) {
     if (training_data_manager_.save(filename)) {
         setStatus("Training data is saved to " + filename);
         should_save_training_data_ = false;
+        ESP_EVENT("Trainig data is saved to " + filename);
         return true;
     } else {
         setStatus("Failed to save training data to " + filename);
@@ -794,6 +797,7 @@ bool ofApp::loadTrainingData(const string& filename) {
         updatePlotSamplesSnapshot(i - 1);
     }
 
+    ESP_EVENT("Training data is loaded from " + filename);
     return true;
 }
 
@@ -813,6 +817,7 @@ bool ofApp::saveTestData(const string& filename) {
 
     if (test_data_.save(filename)) {
         setStatus("Test data is saved to " + filename);
+        ESP_EVENT("Test data is saved to " + filename);
         should_save_test_data_ = false;
         return true;
     } else {
@@ -846,6 +851,7 @@ bool ofApp::loadTestData(const string& filename) {
     runPredictionOnTestData();
     updateTestWindowPlot();
 
+    ESP_EVENT("Test data is loaded from " + filename);
     return true;
 }
 
@@ -862,6 +868,8 @@ bool ofApp::saveTuneables(const string& filename) {
         file << t->toString() << std::endl;
     }
     file.close();
+
+    ESP_EVENT("Tuneable is saved to " + filename);
     return true; // TODO: check for failure
 }
 
@@ -880,6 +888,8 @@ bool ofApp::loadTuneables(const string& filename) {
     }
     file.close();
     reloadPipelineModules();
+
+    ESP_EVENT("Tuneable is loaded from " + filename);
     return true; // TODO: check for failure
 }
 
@@ -905,6 +915,7 @@ void ofApp::loadAll() {
         loadPipeline(dir + kPipelineFilename)) {
 
         setStatus("ESP session is loaded from " + dir);
+        ESP_EVENT("ESP session is loaded from " + dir);
     } else {
         // TODO(benzh) Temporarily disable this message so that each individual
         // load will reveal which one failed.
@@ -931,6 +942,7 @@ void ofApp::saveAll(bool saveAs) {
         && saveTuneables(dir + kTuneablesFilename)) {
 
         setStatus("ESP session is saved to " + dir);
+        ESP_EVENT("ESP session is saved to " + dir);
         should_save_test_data_ = false;
     } else {
         // TODO(benzh) Temporarily disable this message so that each individual
@@ -948,6 +960,8 @@ void ofApp::onSerialSelectionDropdownEvent(ofxDatGuiDropdownEvent e) {
             serial_selection_dropdown_->collapse();
             serial_selection_dropdown_->setVisible(false);
             gui_.collapse();
+            ESP_EVENT("Serial input selected");
+
             status_text_ = "";
         } else {
             status_text_ = "Please select another serial port!";
@@ -983,6 +997,9 @@ void ofApp::renameTrainingSampleDone() {
     plot_samples_[rename_target_ - 1].renameTitleDone();
     ofRemoveListener(ofEvents().update, this, &ofApp::updateEventReceived);
     should_save_training_data_ = true;
+
+    ESP_EVENT("Renamed class " + std::to_string(rename_target_) +
+              " to " + rename_title_);
 }
 
 void ofApp::updateEventReceived(ofEventArgs& arg) {
@@ -1024,6 +1041,9 @@ void ofApp::deleteTrainingSample(int num) {
     updatePlotSamplesSnapshot(num);
     populateSampleFeatures(num);
     should_save_training_data_ = true;
+
+    ESP_EVENT("Delete sample from class " + std::to_string(label) +
+              ", left " + std::to_string(num_sample_left) + "samples");
 }
 
 void ofApp::deleteAllTrainingSamples(int num) {
@@ -1039,6 +1059,8 @@ void ofApp::deleteAllTrainingSamples(int num) {
     updatePlotSamplesSnapshot(num);
     populateSampleFeatures(num);
     should_save_training_data_ = true;
+
+    ESP_EVENT("Delete all samples from class " + std::to_string(label));
 }
 
 void ofApp::trimTrainingSample(int num) {
@@ -1057,6 +1079,12 @@ void ofApp::trimTrainingSample(int num) {
     updatePlotSamplesSnapshot(num);
     populateSampleFeatures(num);
     should_save_training_data_ = true;
+
+    ESP_EVENT("Trim samples from class " + std::to_string(label) +
+              ", index: " + std::to_string(plot_sample_indices_[num]) +
+              ", range: (" +
+              std::to_string(selection.first) + ", " +
+              std::to_string(selection.second) + ")");
 }
 
 void ofApp::relabelTrainingSample(int num) {
@@ -1099,6 +1127,12 @@ void ofApp::doRelabelTrainingSample(uint32_t source, uint32_t target) {
     populateSampleFeatures(target - 1);
 
     should_save_training_data_ = true;
+
+    uint32_t num_target = training_data_manager_.getNumSampleForLabel(target);
+    ESP_EVENT("Relabel samples from class " + std::to_string(source) +
+              " to " + std::to_string(target) +
+              "source training number " + std::to_string(num_source_sample_left) +
+              "target training number " + std::to_string(num_target));
 }
 
 string ofApp::getTrainingDataAdvice() {
@@ -1669,6 +1703,8 @@ void ofApp::drawPrediction() {
 }
 
 void ofApp::exit() {
+    ESP_EVENT("Quit the program");
+
     if (training_thread_.joinable()) {
         training_thread_.join();
     }
@@ -1683,6 +1719,7 @@ void ofApp::exit() {
 #else
         bool result = ofSystemYesNoDialog("Save Session?", "Save your ESP session?");
         if (result) {
+            ESP_EVENT("Save All");
             saveAll();
         }
 #endif
@@ -1716,6 +1753,10 @@ void ofApp::beginTrainModel() {
 }
 
 void ofApp::trainModel() {
+    ESP_EVENT("Start training the model with " +
+              std::to_string(training_data_manager_.getTotalNumSamples()) +
+              " samples");
+
     is_training_scheduled_ = false;
 
    // If prior training has not finished, we wait.
@@ -1731,16 +1772,17 @@ void ofApp::trainModel() {
        GRT::ErrorLog::enableLogging(true);
 
        if (pipeline_->train(training_data_manager_.getAllData())) {
-           ofLog() << "Training is successful";
-
            for (Plotter& plot : plot_samples_) {
                assert(true == plot.clearContentModifiedFlag());
            }
 
            should_save_pipeline_ = true;
            training_status = true;
+
+           ESP_EVENT("Training is successful");
        } else {
            ofLog(OF_LOG_ERROR) << "Failed to train the model";
+           ESP_EVENT("Training failed");
        }
 
        // Stop logging.
@@ -1847,6 +1889,10 @@ void ofApp::reloadPipelineModules() {
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
+    std::string key_str;
+    key_str = static_cast<char>(key);
+    ESP_EVENT("keyPressed: " + key_str);
+
     if (is_in_renaming_) {
         // Add normal characters.
         if (key >= 32 && key <= 126) {
@@ -1894,7 +1940,11 @@ void ofApp::keyPressed(int key){
                 plot_testdata_window_.reset();
             }
             break;
-        case 'f': toggleFeatureView(); break;
+        case 'f': {
+            toggleFeatureView();
+            ESP_EVENT("Toggle Feature View");
+            break;
+        }
         case 'l': loadAll(); break;
         case 'L':
             if (fragment_ == CALIBRATION) loadCalibrationDataWithPrompt();
@@ -1923,25 +1973,43 @@ void ofApp::keyPressed(int key){
         case 't': beginTrainModel(); break;
 
         // Tab related
-        case 'C': fragment_ = CALIBRATION; break;
-        case 'P': fragment_ = PIPELINE; break;
+        case 'C': {
+            fragment_ = CALIBRATION;
+            ESP_EVENT("Jump to CALIBRATION tab (keyboard)");
+            break;
+        }
+        case 'P': {
+            fragment_ = PIPELINE;
+            ESP_EVENT("Jump to PIPELINE tab (keyboard)");
+            break;
+        }
         case 'T': {
             if (pipeline_->getClassifier() != nullptr) {
                 fragment_ = TRAINING;
+                ESP_EVENT("Jump to TRAINING tab (keyboard)");
             }
             break;
         }
         case 'R': {
             if (pipeline_->getClassifier() != nullptr) {
                 fragment_ = PREDICTION;
+                ESP_EVENT("Jump to PREDICTION tab (keyboard)");
             }
             break;
         }
-        case 'A': fragment_ = ANALYSIS; break;
+        case 'A': {
+            fragment_ = ANALYSIS;
+            ESP_EVENT("Jump to ANALYSIS tab (keyboard)");
+            break;
+        }
     }
 }
 
 void ofApp::keyReleased(int key) {
+    std::string key_str;
+    key_str = static_cast<char>(key);
+    ESP_EVENT("keyReleased: " + key_str);
+
     if (is_in_renaming_) { return; }
     if (is_in_history_recording_) {
         // Pressing 1-9 will turn the samples into training data
@@ -1949,6 +2017,9 @@ void ofApp::keyReleased(int key) {
             label_ = key - '0';
             training_data_manager_.addSample(key - '0', sample_data_);
             int num_samples = training_data_manager_.getNumSampleForLabel(label_);
+
+            ESP_EVENT("Converting " + std::to_string(sample_data_.getNumRows()) +
+                      " data points from live data to class " + std::to_string(label_));
 
             plot_samples_[label_ - 1].setData(sample_data_);
             plot_sample_indices_[label_ - 1] = num_samples - 1;
@@ -1989,6 +2060,9 @@ void ofApp::keyReleased(int key) {
                 status_text_ = calibrators[label_ - 1].getName() +
                         " calibration: " + result.getResultString() + ": " +
                         result.getMessage();
+
+                ESP_EVENT("Collected " + std::to_string(sample_data_.getNumRows()) +
+                          " data points for calibration " + std::to_string(label_));
             }
         } else if (fragment_ == TRAINING) {
             if (training_sample_checker_) {
@@ -2013,6 +2087,9 @@ void ofApp::keyReleased(int key) {
             updatePlotSamplesSnapshot(label_ - 1);
 
             should_save_training_data_ = true;
+
+            ESP_EVENT("Collected " + std::to_string(sample_data_.getNumRows()) +
+                      " data points for training class " + std::to_string(label_));
         }
     }
 
@@ -2022,6 +2099,9 @@ void ofApp::keyReleased(int key) {
         runPredictionOnTestData();
         updateTestWindowPlot();
         should_save_test_data_ = true;
+
+        ESP_EVENT("Collected " + std::to_string(sample_data_.getNumRows()) +
+                  " data points for test data");
     }
 }
 
@@ -2053,6 +2133,8 @@ void ofApp::mouseReleased(int x, int y, int button) {
                 assert(true == plot_samples_[i].clearContentModifiedFlag());
                 updatePlotSamplesSnapshot(i);
                 populateSampleFeatures(i);
+
+                ESP_EVENT("Navigate left on class " + label);
             }
         }
         if (plot_sample_button_locations_[i].second.inside(x, y)) {
@@ -2063,6 +2145,8 @@ void ofApp::mouseReleased(int x, int y, int button) {
                 assert(true == plot_samples_[i].clearContentModifiedFlag());
                 updatePlotSamplesSnapshot(i);
                 populateSampleFeatures(i);
+
+                ESP_EVENT("Navigate right on class " + label);
             }
         }
     }
@@ -2074,16 +2158,21 @@ void ofApp::mouseReleased(int x, int y, int button) {
     if (x > left_margin && y < top_margin + 5) {
         if (x < left_margin + tab_width) {
             fragment_ = CALIBRATION;
+            ESP_EVENT("Jump to CALIBRATION tab (mouse)");
         } else if (x < left_margin + 2 * tab_width) {
             fragment_ = PIPELINE;
+            ESP_EVENT("Jump to PIPELINE tab (mouse)");
         } else if (x < left_margin + 3 * tab_width) {
             fragment_ = ANALYSIS;
+            ESP_EVENT("Jump to ANALYSIS tab (mouse)");
         } else if (x < left_margin + 4 * tab_width
                    && pipeline_->getClassifier() != nullptr) {
             fragment_ = TRAINING;
+            ESP_EVENT("Jump to TRAINING tab (mouse)");
         } else if (x < left_margin + 5 * tab_width
                    && pipeline_->getClassifier() != nullptr) {
             fragment_ = PREDICTION;
+            ESP_EVENT("Jump to PREDICTION tab (mouse)");
         }
     }
 }
