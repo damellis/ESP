@@ -1347,6 +1347,9 @@ void ofApp::draw() {
 void ofApp::drawInputs(uint32_t stage_left, uint32_t stage_top,
                       uint32_t stage_width, uint32_t stage_height) {
     if (istream_->getNumOutputDimensions() >= kTooManyFeaturesThreshold) {
+        float minY = plot_inputs_.getRanges().first;
+        float maxY = plot_inputs_.getRanges().second;
+        plot_inputs_snapshot_.setRanges(minY, maxY, true);
         plot_inputs_snapshot_.draw(stage_left, stage_top, stage_width, stage_height * 0.75);
         plot_inputs_.draw(stage_left, stage_top + stage_height * 0.75, stage_width, stage_height * 0.25);
     } else {
@@ -1498,6 +1501,7 @@ void ofApp::drawTrainingInfo() {
         plot_samples_[i].setRanges(minY, maxY, true);
 
         if (istream_->getNumOutputDimensions() >= kTooManyFeaturesThreshold) {
+            plot_samples_snapshots_[i].setRanges(minY, maxY, true);
             plot_samples_snapshots_[i].draw(x, stage_top, width, 2 * stage_height / 3);
             plot_samples_[i].draw(x, stage_top + 2 * stage_height / 3, width, stage_height / 3);
         } else {
