@@ -1889,8 +1889,8 @@ void ofApp::scoreImpactOfTrainingSample(int label, const MatrixDouble &sample) {
         //std::cout << non_zero << std::endl;
     }
     //std::cout << std::to_string(score / num_non_zero);
-    status_text_ = "Information gain of sample: " +
-        std::to_string((int) (100 * -log(score / num_non_zero))) + "%";
+    setStatus("Information gain of sample: " +
+        std::to_string((int) (100 * -log(score / num_non_zero))) + "%");
 }
 
 void ofApp::reloadPipelineModules() {
@@ -2070,9 +2070,9 @@ void ofApp::keyReleased(int key) {
                     should_save_calibration_data_ = true;
                 }
 
-                status_text_ = calibrators[label_ - 1].getName() +
-                        " calibration: " + result.getResultString() + ": " +
-                        result.getMessage();
+                setStatus(calibrators[label_ - 1].getName() +
+                          " calibration: " + result.getResultString() + ": " +
+                          result.getMessage());
 
                 ESP_EVENT("Collected " + std::to_string(sample_data_.getNumRows()) +
                           " data points for calibration " + std::to_string(label_));
@@ -2081,8 +2081,8 @@ void ofApp::keyReleased(int key) {
             if (training_sample_checker_) {
                 TrainingSampleCheckerResult result =
                     training_sample_checker_(sample_data_);
-                status_text_ = plot_samples_[label_ - 1].getTitle() +
-                    " check: " + result.getMessage();
+                setStatus(plot_samples_[label_ - 1].getTitle() +
+                    " check: " + result.getMessage());
 
                 // Don't save sample if the checker returns failure.
                 if (result.getResult() == TrainingSampleCheckerResult::FAILURE)
