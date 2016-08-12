@@ -68,7 +68,7 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   set(RTAUDIO_LIBRARIES
     ${openFrameworksRoot}/libs/rtAudio/lib/${PLATFORM}/${LIB_PREFIX}rtAudio.a
     )
-else(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+elseif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
   find_package(Cairo REQUIRED)
   find_package(GStreamer REQUIRED)
   find_package(GLib REQUIRED)
@@ -78,6 +78,9 @@ else(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
   find_package(GLEW REQUIRED)
   find_package(OpenSSL REQUIRED)
   find_package(RtAudio REQUIRED)
+else()
+  set(CAIRO_INCLUDE_DIRS "")
+  set(CAIRO_LIBRARIES "")
 endif()
 
 set(openFrameworks_INCLUDES

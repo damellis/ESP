@@ -97,7 +97,7 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   set(GRT_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/third-party/grt/)
   set(GRT_LIBRARY ${CMAKE_CURRENT_SOURCE_DIR}/Xcode/ESP/libgrt.dylib)
   set(SYS_LIBS "-lobjc")
-else()  # Linux
+elseif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")  # Linux
   set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/")
 
   # Configure GTK
