@@ -16,7 +16,7 @@ MacOSKeyboardOStream o_stream(3, 'j', 'd', '\0');
 
 // Tuneable parameters
 int post_duration  = 1000;   // ms
-double post_ratio  = 0.7d;   // 70%
+double post_ratio  = 0.7f;   // 70%
 double noise_level = 5.0f;   // Noise level, the unit is not yet standardized)
 
 void setup() {
@@ -86,7 +86,7 @@ void setup() {
                      "for smoothing the prediction",
                      duration_updater);
 
-    registerTuneable(post_ratio, 0.0d, 1.0d,
+    registerTuneable(post_ratio, 0.0f, 1.0f,
                      "Ratio",
                      "The portion of time in duration that "
                      "should be from the same class",
