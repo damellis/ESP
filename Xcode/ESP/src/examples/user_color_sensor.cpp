@@ -15,9 +15,9 @@ vector<double> normalize(vector<double> input) {
     return input;
 }
 
-ASCIISerialStream stream(0, 9600, 3);
+ASCIISerialStream stream(9600, 3);
 GestureRecognitionPipeline pipeline;
-TcpOStream oStream("localhost", 5204, 3, "l", "r", " ");
+TcpOStream oStream("localhost", 5204);
 
 bool always_pick_something = false;
 double null_rej = 5.0;
@@ -60,7 +60,7 @@ void updateTimeout(int new_val) {
 void setup() {
     stream.useNormalizer(normalize);
     stream.setLabelsForAllDimensions({"red", "green", "blue"});
-    useInputStream(stream);
+    useStream(stream);
     useOutputStream(oStream);
     // useStream(stream);
 

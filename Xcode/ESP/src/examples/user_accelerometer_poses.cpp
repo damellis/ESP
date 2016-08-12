@@ -6,7 +6,7 @@
 ASCIISerialStream stream(115200, 3);
 GestureRecognitionPipeline pipeline;
 Calibrator calibrator;
-TcpOStream oStream("localhost", 5204, 3, "l", "r", " ");
+TcpOStream oStream("localhost", 5204);
 
 MatrixDouble uprightData, upsideDownData;
 bool haveUprightData = false, haveUpsideDownData = false;
@@ -120,7 +120,7 @@ void updateTimeout(int new_val) {
 void setup()
 {
     stream.setLabelsForAllDimensions({"x", "y", "z"});
-    useInputStream(stream);
+    useStream(stream);
     useOutputStream(oStream);
     //useStream(stream);
 
