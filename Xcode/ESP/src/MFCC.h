@@ -131,6 +131,11 @@ class MFCC : public FeatureExtraction {
     bool computeFeatures(const VectorDouble& inputVector) override;
     bool reset() override;
 
+    // Configurable Parameters
+    bool setNoiseLevel(double noise_level) {
+        options_.noise_level = noise_level;
+    }
+
     // Save and Load from file
     bool saveModelToFile(string filename) const override;
     bool loadModelFromFile(string filename) override;

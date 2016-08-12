@@ -1,20 +1,23 @@
 /** @example user_speaker.cpp
- * Speaker identification.
+ * Speaker identification with MFCC and GMM.
  */
 #include <ESP.h>
 #include <MFCC.h>
 
 constexpr uint32_t kDownsample = 5;
 constexpr uint32_t kSampleRate = 44100 / 5;  // 8820
-constexpr uint32_t kFftWindowSize = 256;    // 256 samples => 30 ms, frame size
-constexpr uint32_t kFftHopSize = 128;       // 128 samples => 15 ms, hop size
+constexpr uint32_t kFftWindowSize = 256;     // 256 samples => 30 ms, frame size
+constexpr uint32_t kFftHopSize = 128;        // 128 samples => 15 ms, hop size
 constexpr uint32_t DIM = 1;
 
 AudioStream stream(kDownsample);
 GestureRecognitionPipeline pipeline;
 MacOSKeyboardOStream o_stream(3, 'j', 'd', '\0');
 
-int confidence = 30;
+// Tuneable parameters
+int post_duration  = 1000;   // ms
+double post_ratio  = 0.7d;   // 70%
+double noise_level = 5.0f;   // Noise level, the unit is not yet standardized)
 
 void setup() {
     stream.setLabelsForAllDimensions({"audio"});
@@ -32,27 +35,62 @@ void setup() {
     options.num_cepstral_coeff = 12;
     options.lifter_param = 22;
     options.use_vad = true;
-    options.noise_level = 5;
+    options.noise_level = noise_level;
 
     pipeline.addFeatureExtractionModule(MFCC(options));
 
     pipeline.setClassifier(GMM(16, true, false, 1, 100, 0.001));
 
-    // out of 50 prediction (50 * 15 ms => 750 ms), if the number of correct
-    // predictions are larger than `confidence`, it's confirmed as the label
-    pipeline.addPostProcessingModule(ClassLabelFilter(confidence, 50));
+    // In post processing, we wait #n predicitons. If m out of n predictions are
+    // from the same class, we declare the class as the right one.
+    //
+    // n = (duration * sample_rate) / frame_size
+    //   where duration    = post_duration
+    //         sample_rate = kSampleRate
+    //         frame_size  = kFftHopSize
+    // m = n * post_ratio
+    int num_predictions = post_duration * kSampleRate / kFftHopSize;
+    pipeline.addPostProcessingModule(
+            ClassLabelFilter(num_predictions * post_ratio, num_predictions));
 
-    auto update_confidence = [](int new_confidence) {
+    auto ratio_updater = [](double new_ratio) {
         ClassLabelFilter* filter =
             dynamic_cast<ClassLabelFilter*>(pipeline.getPostProcessingModule(0));
-        filter->setMinimumCount(new_confidence);
+        // Recalculate num_predictions as post_duration might have been changed
+        int num_predictions = post_duration * kSampleRate / kFftHopSize;
+        filter->setMinimumCount(new_ratio * num_predictions);
     };
 
-    registerTuneable(confidence, 0, 50,
-                     "Confidence",
-                     "The number of the same predictions before it's confirmed"
-                     " as a correct prediction",
-                     update_confidence);
+    auto duration_updater = [](int new_duration) {
+        ClassLabelFilter* filter =
+            dynamic_cast<ClassLabelFilter*>(pipeline.getPostProcessingModule(0));
+        // Recalculate num_predictions as post_duration might have been changed
+        int num_predictions = post_duration * kSampleRate / kFftHopSize;
+        filter->setBufferSize(num_predictions);
+    };
+
+    auto noise_updater = [](int new_noise_level) {
+        MFCC *mfcc = dynamic_cast<MFCC*>(pipeline.getFeatureExtractionModule(1));
+        mfcc->setNoiseLevel(new_noise_level);
+    };
+
+    registerTuneable(noise_level, 0, 20,
+                     "Noise Level",
+                     "The threshold for the system to distinguish between "
+                     "ambient noise and speech/sound",
+                     noise_updater);
+
+    registerTuneable(post_duration, 0, 2000,
+                     "Duration",
+                     "Time (in ms) that is considered as a whole "
+                     "for smoothing the prediction",
+                     duration_updater);
+
+    registerTuneable(post_ratio, 0.0d, 1.0d,
+                     "Ratio",
+                     "The portion of time in duration that "
+                     "should be from the same class",
+                     ratio_updater);
 
     useInputStream(stream);
     usePipeline(pipeline);
