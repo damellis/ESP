@@ -134,6 +134,7 @@ class MFCC : public FeatureExtraction {
     // Configurable Parameters
     bool setNoiseLevel(double noise_level) {
         options_.noise_level = noise_level;
+        return true;
     }
 
     // Save and Load from file
