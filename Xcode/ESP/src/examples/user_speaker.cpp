@@ -12,7 +12,7 @@ constexpr uint32_t DIM = 1;
 
 AudioStream stream(kDownsample);
 GestureRecognitionPipeline pipeline;
-MacOSKeyboardOStream o_stream(3, 'j', 'd', '\0');
+TcpOStream oStream("localhost", 5204);
 
 // Tuneable parameters
 int post_duration  = 1000;   // ms
@@ -93,6 +93,7 @@ void setup() {
                      ratio_updater);
 
     useInputStream(stream);
+    useOutputStream(oStream);
     usePipeline(pipeline);
     useLeaveOneOutScoring(false);
     setGUIBufferSize(kSampleRate);
