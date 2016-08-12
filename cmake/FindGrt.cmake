@@ -14,11 +14,6 @@
 find_package(PkgConfig)
 pkg_check_modules(PC_GRT QUIET libgrt)
 
-find_library(GRT_LIBRARY
-  NAMES grt
-  HINTS ${PC_GRT_LIBDIR} ${PC_GRT_LIBRARY_DIRS}
-  )
-
 find_path(GRT_INCLUDE_DIR
   NAMES GRT/GRT.h
   HINTS ${PC_LIBDIR} ${PC_LIBRARY_DIRS} ${_GRT_LIBRARY_DIR}
@@ -36,5 +31,11 @@ find_package_handle_standard_args(
   grt
   REQUIRED_VARS GRT_LIBRARY GRT_INCLUDE_DIR
   )
+
+if(GRT_LIBRARY AND GRT_INCLUDE_DIR)
+  SET(GRT_FOUND TRUE)
+else(GRT_LIBRARY AND GRT_INCLUDE_DIR)
+  SET(GRT_FOUND FALSE)
+endif(GRT_LIBRARY AND GRT_INCLUDE_DIR)
 
 mark_as_advanced(GRT_INCLUDE_DIR GRT_LIBRARY)

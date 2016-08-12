@@ -107,6 +107,14 @@ else()  # Linux
   include_directories(${GTK3_INCLUDE_DIRS})
 
   find_package(Grt REQUIRED)
+  if(GRT_FOUND)
+    message("-- GRT found")
+  else(GRT_FOUND)
+    ## If there is no GRT installed on the system, we use Xcode/ESP/libgrt.a
+    message("-- GRT not installed, using Xcode/ESP/libgrt.a")
+    set(GRT_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/third-party/grt/)
+    set(GRT_LIBRARY "-L${CMAKE_CURRENT_SOURCE_DIR}/Xcode/ESP/ -lgrt")
+  endif(GRT_FOUND)
   set(SYS_LIBS "-L/usr/local/lib -lblas" ${GTK3_LIBRARIES})
 endif()
 
