@@ -100,12 +100,6 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 else()  # Linux
   set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/")
 
-  # Configure GTK
-  find_package(PkgConfig REQUIRED)
-  pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
-  add_definitions(-DOF_USING_GTK)
-  include_directories(${GTK3_INCLUDE_DIRS})
-
   find_package(Grt REQUIRED)
   if(GRT_FOUND)
     message("-- GRT found")
@@ -115,7 +109,7 @@ else()  # Linux
     set(GRT_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/third-party/grt/)
     set(GRT_LIBRARY "-L${CMAKE_CURRENT_SOURCE_DIR}/Xcode/ESP/ -lgrt")
   endif(GRT_FOUND)
-  set(SYS_LIBS "-L/usr/local/lib -lblas" ${GTK3_LIBRARIES})
+  set(SYS_LIBS "-L/usr/local/lib -lblas")
 endif()
 
 
