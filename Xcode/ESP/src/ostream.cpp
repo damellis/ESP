@@ -108,4 +108,16 @@ void TcpOStream::sendString(const string& tosend) {
     if (client_ != nullptr && client_->isConnected()) {
         client_->sendRaw(tosend);
     }
+
+    // If not connected, we start a new thread that tries to connect
+    if (!client_->isConnected() && !is_in_retry_) {
+        is_in_retry_ = true;
+        auto t = std::thread([this] () {
+            while (!this->client_->setup(server_, port_)) {
+                std::this_thread::sleep_for(std::chrono::seconds(1));
+            }
+            is_in_retry_ = false;
+        });
+        t.detach();
+    }
 }

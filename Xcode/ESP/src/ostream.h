@@ -219,7 +219,7 @@ class TcpOStream : public OStreamVector {
      */
     TcpOStream(string server, int port)
             : server_(server), port_(port),
-            use_tcp_stream_mapping_(false) {}
+              use_tcp_stream_mapping_(false), is_in_retry_(false) {}
 
     /**
      Create a TCPOStream instance.
@@ -235,8 +235,9 @@ class TcpOStream : public OStreamVector {
     TcpOStream(string server, int port,
                std::map<uint32_t, string> tcp_stream_mapping)
             : server_(server), port_(port),
-            use_tcp_stream_mapping_(true),
-            tcp_stream_mapping_(tcp_stream_mapping) {
+              use_tcp_stream_mapping_(true),
+              tcp_stream_mapping_(tcp_stream_mapping),
+              is_in_retry_(false) {
     }
 
     /**
@@ -252,7 +253,8 @@ class TcpOStream : public OStreamVector {
      in the provided strings.
      */
     TcpOStream(string server, int port, uint32_t count, ...)
-            : server_(server), port_(port), use_tcp_stream_mapping_(true) {
+        : server_(server), port_(port), use_tcp_stream_mapping_(true),
+          is_in_retry_(false) {
         va_list args;
         va_start(args, count);
         for (uint32_t i = 1; i <= count; i++) {
@@ -298,6 +300,8 @@ private:
     uint64_t elapsed_time_ = 0;
     std::map<uint32_t, string> tcp_stream_mapping_;
     bool use_tcp_stream_mapping_;
+
+    bool is_in_retry_;
 };
 
 /**
