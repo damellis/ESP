@@ -39,7 +39,8 @@ void setup() {
 
     pipeline.addFeatureExtractionModule(MFCC(options));
 
-    pipeline.setClassifier(GMM(16, true, false, 1, 100, 0.001));
+    pipeline.setClassifier(SVM());
+    // GMM(16, true, false, 1, 100, 0.001));
 
     // In post processing, we wait #n predicitons. If m out of n predictions are
     // from the same class, we declare the class as the right one.
@@ -49,7 +50,7 @@ void setup() {
     //         sample_rate = kSampleRate
     //         frame_size  = kFftHopSize
     // m = n * post_ratio
-    int num_predictions = post_duration * kSampleRate / kFftHopSize;
+    int num_predictions = post_duration / 1000 * kSampleRate / kFftHopSize;
     pipeline.addPostProcessingModule(
             ClassLabelFilter(num_predictions * post_ratio, num_predictions));
 
@@ -57,7 +58,7 @@ void setup() {
         ClassLabelFilter* filter =
             dynamic_cast<ClassLabelFilter*>(pipeline.getPostProcessingModule(0));
         // Recalculate num_predictions as post_duration might have been changed
-        int num_predictions = post_duration * kSampleRate / kFftHopSize;
+        int num_predictions = post_duration / 1000 * kSampleRate / kFftHopSize;
         filter->setMinimumCount(new_ratio * num_predictions);
     };
 
@@ -65,7 +66,7 @@ void setup() {
         ClassLabelFilter* filter =
             dynamic_cast<ClassLabelFilter*>(pipeline.getPostProcessingModule(0));
         // Recalculate num_predictions as post_duration might have been changed
-        int num_predictions = post_duration * kSampleRate / kFftHopSize;
+        int num_predictions = post_duration / 1000 * kSampleRate / kFftHopSize;
         filter->setBufferSize(num_predictions);
     };
 
