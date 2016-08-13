@@ -1300,7 +1300,8 @@ void ofApp::update() {
             plot_inputs_snapshot_.setData(data_point);
 
         if (istream_->hasStarted() &&
-            (calibrator_ == NULL || calibrator_->isCalibrated())) {
+            (calibrator_ == NULL || calibrator_->isCalibrated()) &&
+            fragment_== PIPELINE) {
             if (!pipeline_->preProcessData(data_point)) {
                 ofLog(OF_LOG_ERROR) << "ERROR: Failed to compute features!";
             }
