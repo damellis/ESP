@@ -1,15 +1,15 @@
 [submodule "third-party/ofxGrt"]
 	path = third-party/ofxGrt
-	url = https://github.com/nebgnahz/ofxGrt.git
+	url = git@github.com:nebgnahz/ofxGrt.git
 [submodule "third-party/grt"]
 	path = third-party/grt
-	url = https://github.com/damellis/grt.git
+	url = git@github.com:damellis/grt.git
 [submodule "third-party/SpaceInvaders"]
 	path = third-party/SpaceInvaders
 	url = https://github.com/damellis/Processing_SpaceInv.git
 [submodule "third-party/ofxDatGui"]
 	path = third-party/ofxDatGui
-	url = https://github.com/nebgnahz/ofxDatGui.git
+	url = git@github.com:nebgnahz/ofxDatGui.git
 [submodule "third-party/ofxParagraph"]
 	path = third-party/ofxParagraph
 	url = https://github.com/braitsch/ofxParagraph.git
