@@ -456,8 +456,8 @@ void ofApp::setup() {
 
     // Two extra button for saving/loading tuneable parameters.
     gui_.addBreak()->setHeight(30.0f);
-    ofxDatGuiButton* save_button = gui_.addButton("Save");
-    ofxDatGuiButton* load_button = gui_.addButton("Load");
+    ofxDatGuiButton* save_button = gui_.addButton("Save Parameters");
+    ofxDatGuiButton* load_button = gui_.addButton("Load Parameters");
     save_button->onButtonEvent(this, &ofApp::saveTuneables);
     load_button->onButtonEvent(this, &ofApp::loadTuneables);
 
