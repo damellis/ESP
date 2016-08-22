@@ -21,13 +21,12 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "ofMain.h"
+#include "ofxNetwork.h"
 #include "stream.h"
 
 const uint64_t kGracePeriod = 500; // 0.5 second
 
 // Forward declaration.
-class ofApp;
 class ofxTCPClient;
 
 /**
@@ -303,18 +302,5 @@ private:
 
     bool is_in_retry_;
 };
-
-/**
- @brief Specify an OStream to which to stream predictions made by the active
- ESP pipeline. Multiple output streams are supported.
-
- See also: useInputStream() to specify the input stream (from which to read
- sensor data into the ESP pipeline); and useStream() to specify a single
- stream for both input and output.
-
- @param stream: the OStream to use
- */
-void useOutputStream(OStream &stream);
-void useOutputStream(OStreamVector &stream);
 
 #endif

@@ -1,4 +1,3 @@
-#include "ofApp.h"
 #include "ostream.h"
 
 #ifdef TARGET_WIN32
@@ -9,19 +8,12 @@
 #include <Windows.h>
 #endif
 
+#include <thread>
 #include "ofxTCPClient.h"
 
 #if __APPLE__
 #include <ApplicationServices/ApplicationServices.h>
 #endif
-
-void useOutputStream(OStream &stream) {
-    ((ofApp *) ofGetAppPtr())->useOStream(stream);
-}
-
-void useOutputStream(OStreamVector &stream) {
-    ((ofApp *) ofGetAppPtr())->useOStream(stream);
-}
 
 void MacOSKeyboardOStream::sendKey(char c) {
 #if __APPLE__

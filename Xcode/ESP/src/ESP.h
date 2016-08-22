@@ -45,8 +45,160 @@
 #include "tuneable.h"
 #include "training.h"
 
-/* This will be linked against ofApp::setGUIBufferSize
+/**
+ Tells the ESP system from which input stream to read sensor data for
+ processing by the active machine learning pipeline. Call from your setup()
+ function. The specified stream will be automatically started by the ESP
+ system. Note that only one input stream is supported; subsequent calls to
+ useInputStream() will replace the previously-specified stream.
+
+ See also: useOutputStream() for specifying an output stream (to which to
+ stream the predictions made by the ESP pipeline) and useStream() to specify
+ a stream to use for both input and output.
+
+ @param stream: the input stream to use. May be an IOStream instance, in which
+ case the stream will only be used for input.
  */
-extern void setGUIBufferSize(uint32_t buffer_size);
+void useInputStream(InputStream &stream);
+
+/**
+ Tells the ESP system which stream to use, for both input and output. Call
+ from your setup() function. The specified stream will be automatically
+ started by the ESP system. Note that only one input stream is supported
+ at a time; subsequent calls to useStream() will cause the new stream to be
+ used for input, replacing input from streams passed to any previous calls to
+ useStream() or useInputStream(). Multiple simultaneous output streams are
+ supported, however, so calling useStream() will cause output to be sent to
+ the specified stream in addition to streams previously specified with
+ useStream() or useOutputStream().
+
+ @param stream: the stream to use for input and output
+ */
+void useStream(IOStream &stream);
+void useStream(IOStreamVector &stream);
+
+/**
+ @brief Specify an OStream to which to stream predictions made by the active
+ ESP pipeline. Multiple output streams are supported.
+
+ See also: useInputStream() to specify the input stream (from which to read
+ sensor data into the ESP pipeline); and useStream() to specify a single
+ stream for both input and output.
+
+ @param stream: the OStream to use
+ */
+void useOutputStream(OStream &stream);
+void useOutputStream(OStreamVector &stream);
+
+/**
+ Tells the ESP system which machine learning pipeline to use. Call from your
+ setup() function. Note that only one pipeline is supported; subsequent calls
+ to usePipeline() will replace the previously-specified pipeline.
+
+ The pipeline will be fed with data from the input stream specified using
+ useStream() or useInputStream(), as modified by the calibrators specified
+ using useCalibrator().
+ */
+void usePipeline(GRT::GestureRecognitionPipeline &pipeline);
+
+/**
+ @brief Specify the Calibrator to be used by the ESP system.
+
+ This Calibrator will be applied to data coming from the current input stream
+ (IStream instance specified by useInputStream()) before it is passed to the
+ current machine learning pipeline (GestureRecognitionPipeline specified by
+ usePipeline()). Only one calibrator can be active at a time, but it can
+ include multiple CalibrateProcess instances, each of which specifies one
+ sample of calibration data to be collected by the user.
+ */
+void useCalibrator(Calibrator &calibrator);
+
+/**
+ @brief Register a function for checking training samples.
+
+ The TrainingSampleChecker specified here will be called on each new sample
+ of training data collected by the user. The result, indicated by the
+ TrainingSampleCheckerResult returned, will be shown to the user.
+
+ Here's an example of how you might use this function:
+
+     TrainingSampleCheckerResult myChecker(const MatrixDouble &data) {
+         if (data.getNumRows() == 0) {
+             return TrainingSampleCheckerResult(
+                 TrainingSampleCheckerResult::FAILURE,
+                 "Error: Training sample doesn't contain any data.");
+         }
+         if (data.getNumRows() == 1) {
+             return TrainingSampleCheckerResult(
+                 TrainingSampleCheckerResult::WARNING,
+                 "Warning: Sample only contains one data point.");
+         }
+
+         return TrainingSampleCheckerResult::SUCCESS; // use default message
+     }
+
+     void setup() {
+         useTrainingSampleChecker(myChecker);
+     }
+
+ Note that only one TrainingSampleChecker can be active at any time.
+ Subsequent calls to this function will replace the previously-registered
+ checker.
+
+ @param checker the function to be called on the user's training samples
+ */
+void useTrainingSampleChecker(TrainingSampleChecker checker);
+
+/**
+ @brief Provide the user with custom advice on collecting training data.
+
+ This advice will be shown in the training tab of the interface. If supplied,
+ it will override the default, per-classifier advice provided by ESP.
+
+ You may want to provide advice on:
+   - the amount of training data required
+   - the effect of gathering additional training data
+   - the effect of individual bad training samples
+   - what good sample look like (although see useTrainingSampleChecker() for
+     a programmatic means of providing the user with feedback on the quality of
+     individual training samples)
+   - etc.
+
+ On the other hand, try to keep the advice relatively brief, as it will take up
+ space on the training tab of the ESP interface.
+
+ The string will be automatically wrapped at the edge of the screen. No markup
+ or formatting (including explicit line breaks) supported.
+
+ @param advice the advice to show to the user
+ */
+void useTrainingDataAdvice(string advice);
+
+/**
+ @brief Whether or not to do leave-one-out scoring of training data.
+
+ If enabled, to score each training sample, the model will be trained on all
+ other samples. Otherwise, the model will be trained once on all samples and
+ then each sample will be scored using this one model.
+
+  Leave-one-out training is generally more useful, as it's typically more
+  informative to evaluate models using data that wasn't used to train them.
+  On the other hand, leave-one-out scoring can be much slower because it
+  requires retraining the model once for each training sample.
+
+  Note that "training sample" refers to one sample collected by the user,
+  which may consist of multiple individual data-points.
+
+  Leave-one-out scoring is enabled by default and will be used unless disabled
+  by a call to this function in the setup() of the active example.
+
+  @param enable whether or not to enable leave-one-out scoring
+  */
+void useLeaveOneOutScoring(bool enable = true);
+
+/**
+ This will be linked against ofApp::setGUIBufferSize
+ */
+void setGUIBufferSize(uint32_t buffer_size);
 
 using namespace GRT;

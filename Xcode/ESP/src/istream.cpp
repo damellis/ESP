@@ -1,16 +1,8 @@
 #include "istream.h"
-#include "ofApp.h"
 
+#include <GRT/GRT.h>
 #include <chrono>         // std::chrono::milliseconds
 #include <thread>         // std::this_thread::sleep_for
-
-void useInputStream(InputStream &stream) {
-    ((ofApp *) ofGetAppPtr())->useIStream(stream);
-}
-
-void usePipeline(GRT::GestureRecognitionPipeline &pipeline) {
-    ((ofApp *) ofGetAppPtr())->usePipeline(pipeline);
-}
 
 InputStream::InputStream() : data_ready_callback_(nullptr) {}
 
@@ -95,7 +87,7 @@ bool AudioFileStream::start() {
         update_thread_.reset(new std::thread(&AudioFileStream::readSpectrum, this));
         has_started_ = true;
     }
-    
+
     return true;
 }
 
@@ -111,8 +103,8 @@ void AudioFileStream::readSpectrum() {
     while (has_started_) {
         std::this_thread::sleep_for(std::chrono::milliseconds(1000 / (44100 / 1024)));
         float *spectrum = ofSoundGetSpectrum(512);
-        VectorDouble data(spectrum, spectrum + 512);
-        MatrixDouble out; out.push_back(data);
+        GRT::VectorDouble data(spectrum, spectrum + 512);
+        GRT::MatrixDouble out; out.push_back(data);
         if (data_ready_callback_ != nullptr) data_ready_callback_(out);
     }
 }
@@ -171,7 +163,7 @@ void BaseSerialInputStream::readSerial() {
         unsigned char buf[kBufSize];
         while (serial_->available() > 0) {
             int result = serial_->readBytes(buf, kBufSize);
-            
+
             if ( result == OF_SERIAL_ERROR ) {
                 ofLog( OF_LOG_ERROR, "unrecoverable error reading from serial" );
                 break;
@@ -179,7 +171,7 @@ void BaseSerialInputStream::readSerial() {
                 buffer_.insert(buffer_.end(), buf, buf + result);
             }
         }
-        
+
         parseSerial(buffer_);
     }
 }

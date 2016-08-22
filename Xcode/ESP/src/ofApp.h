@@ -383,5 +383,3 @@ class TrainingSampleGuiListener {
     ofApp *app;
     int num;
 };
-
-void setGUIBufferSize(uint32_t buffer_size);

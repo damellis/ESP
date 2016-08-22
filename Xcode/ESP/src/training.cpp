@@ -1,5 +1,4 @@
 #include "training.h"
-#include "ofApp.h"
 
 const string TrainingSampleCheckerResult::kDefaultSuccessMessage = "Success";
 const string TrainingSampleCheckerResult::kDefaultWarningMessage = "Warning";
@@ -21,16 +20,4 @@ TrainingSampleCheckerResult::TrainingSampleCheckerResult(Result result) : result
 
 TrainingSampleCheckerResult::TrainingSampleCheckerResult(Result result, string message)
         : result_(result), result_message_(std::move(message)) {
-}
-
-void useTrainingSampleChecker(TrainingSampleChecker checker) {
-    ((ofApp *) ofGetAppPtr())->useTrainingSampleChecker(checker);
-}
-
-void useTrainingDataAdvice(string advice) {
-    ((ofApp *) ofGetAppPtr())->useTrainingDataAdvice(advice);
-}
-
-void useLeaveOneOutScoring(bool enable) {
-    ((ofApp *) ofGetAppPtr())->useLeaveOneOutScoring(enable);
 }

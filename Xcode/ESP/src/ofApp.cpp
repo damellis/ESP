@@ -2324,6 +2324,22 @@ string decodeName(const string &from) {
     return escaped.str();
 }
 
+void useInputStream(InputStream &stream) {
+    ((ofApp *) ofGetAppPtr())->useIStream(stream);
+}
+
+void useOutputStream(OStream &stream) {
+    ((ofApp *) ofGetAppPtr())->useOStream(stream);
+}
+
+void useOutputStream(OStreamVector &stream) {
+    ((ofApp *) ofGetAppPtr())->useOStream(stream);
+}
+
+void usePipeline(GRT::GestureRecognitionPipeline &pipeline) {
+    ((ofApp *) ofGetAppPtr())->usePipeline(pipeline);
+}
+
 void useCalibrator(Calibrator &calibrator) {
     ((ofApp *) ofGetAppPtr())->useCalibrator(calibrator);
 }
@@ -2340,4 +2356,16 @@ void useStream(IOStream &stream) {
 void useStream(IOStreamVector &stream) {
     ((ofApp *) ofGetAppPtr())->useIStream(stream);
     ((ofApp *) ofGetAppPtr())->useOStream(stream);
+}
+
+void useTrainingSampleChecker(TrainingSampleChecker checker) {
+    ((ofApp *) ofGetAppPtr())->useTrainingSampleChecker(checker);
+}
+
+void useTrainingDataAdvice(string advice) {
+    ((ofApp *) ofGetAppPtr())->useTrainingDataAdvice(advice);
+}
+
+void useLeaveOneOutScoring(bool enable) {
+    ((ofApp *) ofGetAppPtr())->useLeaveOneOutScoring(enable);
 }

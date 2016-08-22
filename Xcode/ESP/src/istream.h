@@ -107,7 +107,7 @@ class AudioStream : public ofBaseApp, public InputStream {
 
 /**
  @brief Input stream for getting the FFT spectrum of an audio file as it plays.
- 
+
  This class plays an audio file and supplies its 1024-sample / 512-bin FFT
  spectrum as input to the current pipeline. The spectrum is supplied every
  ~23 milliseconds (i.e. 441000 KHz / 1024 = ~43 Hz).
@@ -120,7 +120,7 @@ class AudioFileStream : public InputStream {
     virtual int getNumInputDimensions() final;
   private:
     void readSpectrum();
-  
+
     ofSoundPlayer player_;
     unique_ptr<std::thread> update_thread_;
 };
@@ -148,11 +148,11 @@ class BaseSerialInputStream : public virtual InputStream {
      from the serial port (i.e. the number of numbers in each line of data).
      */
     BaseSerialInputStream(uint32_t baud, int numDimensions);
-    
+
     virtual bool start() final;
     virtual void stop() final;
     virtual int getNumInputDimensions() final;
-    
+
     vector<string> getSerialDeviceList() {
         serial_->listDevices();
         vector<string> retval;
@@ -253,30 +253,3 @@ class FirmataStream : public InputStream {
     unique_ptr<std::thread> update_thread_;
     void update();
 };
-
-/**
- Tells the ESP system from which input stream to read sensor data for
- processing by the active machine learning pipeline. Call from your setup()
- function. The specified stream will be automatically started by the ESP
- system. Note that only one input stream is supported; subsequent calls to
- useInputStream() will replace the previously-specified stream.
-
- See also: useOutputStream() for specifying an output stream (to which to
- stream the predictions made by the ESP pipeline) and useStream() to specify
- a stream to use for both input and output.
-
- @param stream: the input stream to use. May be an IOStream instance, in which
- case the stream will only be used for input.
- */
-void useInputStream(InputStream &stream);
-
-/**
- Tells the ESP system which machine learning pipeline to use. Call from your
- setup() function. Note that only one pipeline is supported; subsequent calls
- to usePipeline() will replace the previously-specified pipeline.
-
- The pipeline will be fed with data from the input stream specified using
- useStream() or useInputStream(), as modified by the calibrators specified
- using useCalibrator().
- */
-void usePipeline(GRT::GestureRecognitionPipeline &pipeline);
