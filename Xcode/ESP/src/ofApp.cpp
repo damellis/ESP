@@ -1067,6 +1067,15 @@ void ofApp::updateEventReceived(ofEventArgs& arg) {
             update_counter_ = 0;
         }
         plot_samples_[rename_target_ - 1].setTitle(display_title_);
+    } else if (is_in_relabeling_) {
+        // Simply flash the name
+        if (update_counter_ == period) {
+            display_title_ = "";
+        } else if (update_counter_ == period * 2) {
+            display_title_ = relabel_source_title_;
+            update_counter_ = 0;
+        }
+        plot_samples_[relabel_source_ - 1].setTitle(display_title_);
     }
 }
 
@@ -1143,6 +1152,8 @@ void ofApp::relabelTrainingSample(int num) {
     // After this button is pressed, we enter relabel_mode
     is_in_relabeling_ = true;
     relabel_source_ = num + 1;
+    relabel_source_title_ = plot_samples_[num].getTitle();
+    ofAddListener(ofEvents().update, this, &ofApp::updateEventReceived);
 }
 
 void ofApp::doRelabelTrainingSample(uint32_t source, uint32_t target) {
@@ -1185,6 +1196,8 @@ void ofApp::doRelabelTrainingSample(uint32_t source, uint32_t target) {
               " to " + std::to_string(target) +
               "source training number " + std::to_string(num_source_sample_left) +
               "target training number " + std::to_string(num_target));
+
+    ofRemoveListener(ofEvents().update, this, &ofApp::updateEventReceived);
 }
 
 string ofApp::getTrainingDataAdvice() {
@@ -2317,4 +2330,14 @@ void useCalibrator(Calibrator &calibrator) {
 
 void setGUIBufferSize(uint32_t buffer_size) {
     ((ofApp *) ofGetAppPtr())->setBufferSize(buffer_size);
+}
+
+void useStream(IOStream &stream) {
+    ((ofApp *) ofGetAppPtr())->useIStream(stream);
+    ((ofApp *) ofGetAppPtr())->useOStream(stream);
+}
+
+void useStream(IOStreamVector &stream) {
+    ((ofApp *) ofGetAppPtr())->useIStream(stream);
+    ((ofApp *) ofGetAppPtr())->useOStream(stream);
 }

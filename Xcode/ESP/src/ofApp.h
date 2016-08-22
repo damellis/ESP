@@ -96,10 +96,6 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     // useful there.
     bool setup_finished_ = false;
 
-    // The number of pipeline stages, this will control the UI layout. The
-    // number is obtained during setup() and used in draw().
-    uint32_t num_pipeline_stages_;
-
     // Currently, we support labels (stored in label_) from 1 to 9.
     const uint32_t kNumMaxLabels_ = 9;
     uint8_t label_;
@@ -108,18 +104,19 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     // the buffer size used for training/prediction.
     uint32_t buffer_size_ = 256;
 
-    // The calibrator that is in use.
-    Calibrator *calibrator_;
-
-    TrainingSampleChecker training_sample_checker_ = 0;
-
     //========================================================================
     // Pipeline, tuneables and all data
     //========================================================================
     GRT::GestureRecognitionPipeline *pipeline_;
-    vector<Tuneable*> tuneable_parameters_;
+    // The number of pipeline stages, this will control the UI layout. The
+    // number is obtained during setup() and used in draw().
+    uint32_t num_pipeline_stages_;
 
+    vector<Tuneable*> tuneable_parameters_;
+    Calibrator* calibrator_;
     TrainingDataManager training_data_manager_;
+    TrainingSampleChecker training_sample_checker_ = 0;
+
     GRT::MatrixDouble sample_data_;
     GRT::MatrixDouble input_data_;
     std::mutex input_data_mutex_;  // input_data_ is written by istream_ thread
@@ -176,6 +173,7 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     // relabel
     //========================================================================
     uint32_t relabel_source_;
+    string relabel_source_title_;
 
     //========================================================================
     // visual: status message
