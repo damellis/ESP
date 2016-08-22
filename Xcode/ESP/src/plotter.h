@@ -8,80 +8,71 @@ using std::string;
 class InteractivePlot {
   public:
     struct RangeSelectedCallbackArgs {
-        InteractivePlot *source;
+        InteractivePlot* source;
         uint32_t start;
         uint32_t end;
         void* data;
     };
 
     struct ValueHighlightedCallbackArgs {
-        InteractivePlot *source;
+        InteractivePlot* source;
         uint32_t index;
         void* data;
     };
 
     struct NoValueHighlightedCallbackArgs {
-        InteractivePlot *source;
+        InteractivePlot* source;
         void* data;
     };
 
-    InteractivePlot() :
-            x_click_(0), x_release_(0),
-            x_start_(0), x_end_(0),
-            is_tracking_mouse_(false) {
+    InteractivePlot()
+        : x_click_(0), x_release_(0), x_start_(0), x_end_(0),
+          is_tracking_mouse_(false) {
     }
 
-    typedef std::function<void(RangeSelectedCallbackArgs)> onRangeSelectedCallback;
-    typedef std::function<void(ValueHighlightedCallbackArgs)> onValueHighlightedCallback;
-    typedef std::function<void(NoValueHighlightedCallbackArgs)> onNoValueHighlightedCallback;
+    typedef std::function<void(RangeSelectedCallbackArgs)>
+        onRangeSelectedCallback;
+    typedef std::function<void(ValueHighlightedCallbackArgs)>
+        onValueHighlightedCallback;
 
-    void onRangeSelected(const onRangeSelectedCallback& cb, void* data) {
+    void onRangeSelected(const onRangeSelectedCallback& cb,
+                         void* data = nullptr) {
         range_selected_callback_ = cb;
         range_selected_callback_data_ = data;
-        ofAddListener(ofEvents().mousePressed,
-                      this, &InteractivePlot::startSelection);
-        ofAddListener(ofEvents().mouseDragged,
-                      this, &InteractivePlot::duringSelection);
-        ofAddListener(ofEvents().mouseReleased,
-                      this, &InteractivePlot::endSelection);
+        ofAddListener(ofEvents().mousePressed, this,
+                      &InteractivePlot::startSelection);
+        ofAddListener(ofEvents().mouseDragged, this,
+                      &InteractivePlot::duringSelection);
+        ofAddListener(ofEvents().mouseReleased, this,
+                      &InteractivePlot::endSelection);
     }
 
-    template<typename T1, typename arg, class T>
-    void onRangeSelected(T1* owner, void (T::*listenerMethod)(arg), void* data) {
+    template <typename T1, typename arg, class T>
+    void onRangeSelected(T1* owner, void (T::*listenerMethod)(arg),
+                         void* data = nullptr) {
         using namespace std::placeholders;
         onRangeSelected(std::bind(listenerMethod, owner, _1), data);
     }
 
-    void onValueHighlighted(const onValueHighlightedCallback& cb, void* data) {
+    void onValueHighlighted(const onValueHighlightedCallback& cb,
+                            void* data = nullptr) {
         value_highlighted_callback_ = cb;
         value_highlighted_callback_data_ = data;
-        ofAddListener(ofEvents().mouseMoved,
-                      this, &InteractivePlot::mouseMoved);
+        ofAddListener(ofEvents().mouseMoved, this,
+                      &InteractivePlot::mouseMoved);
     }
 
-    template<typename T1, typename arg, class T>
-    void onValueHighlighted(T1* owner, void (T::*listenerMethod)(arg), void* data) {
+    template <typename T1, typename arg, class T>
+    void onValueHighlighted(T1* owner, void (T::*listenerMethod)(arg),
+                            void* data = nullptr) {
         using namespace std::placeholders;
         onValueHighlighted(std::bind(listenerMethod, owner, _1), data);
-    }
-
-    void onNoValueHighlighted(const onNoValueHighlightedCallback& cb, void* data) {
-        no_value_highlighted_callback_ = cb;
-        no_value_highlighted_callback_data_ = data;
-        ofAddListener(ofEvents().mouseMoved,
-                      this, &InteractivePlot::mouseMoved);
-    }
-
-    template<typename T1, typename arg, class T>
-    void onNoValueHighlighted(T1* owner, void (T::*listenerMethod)(arg), void* data) {
-        using namespace std::placeholders;
-        onNoValueHighlighted(std::bind(listenerMethod, owner, _1), data);
     }
 
     virtual MatrixDouble getData(uint32_t x_start_idx, uint32_t x_end_idx) = 0;
     virtual vector<double> getData(uint32_t x_idx) = 0;
 
-     std::pair<uint32_t, uint32_t> getSelection() {
+    std::pair<uint32_t, uint32_t> getSelection() {
         return std::make_pair(mouseCoordinateToIndex(x_start_),
                               mouseCoordinateToIndex(x_end_));
     }
@@ -95,8 +86,8 @@ class InteractivePlot {
     virtual uint32_t mouseCoordinateToIndex(uint32_t x) = 0;
 
     bool contains(uint32_t x, uint32_t y) {
-        return (x_ <= x && x <= x_ + w_ && y_ <= y && y <= y_ + h_) ?
-                true : false;
+        return (x_ <= x && x <= x_ + w_ && y_ <= y && y <= y_ + h_) ? true
+                                                                    : false;
     }
 
     void mouseMoved(ofMouseEventArgs& arg) {
@@ -104,18 +95,11 @@ class InteractivePlot {
         if (contains(arg.x, arg.y)) {
             x_move_ = arg.x - x_;
             if (value_highlighted_callback_ != nullptr) {
-				ValueHighlightedCallbackArgs args;
-				args.source = this;
-				args.index = mouseCoordinateToIndex(x_move_);
-				args.data = value_highlighted_callback_data_;
+                ValueHighlightedCallbackArgs args;
+                args.source = this;
+                args.index = mouseCoordinateToIndex(x_move_);
+                args.data = value_highlighted_callback_data_;
                 value_highlighted_callback_(args);
-            }
-        } else {
-            if (no_value_highlighted_callback_ != nullptr) {
-				NoValueHighlightedCallbackArgs args;
-				args.source = this;
-				args.data = no_value_highlighted_callback_data_;
-                no_value_highlighted_callback_(args);
             }
         }
     }
@@ -151,11 +135,11 @@ class InteractivePlot {
             }
 
             if (range_selected_callback_ != nullptr) {
-				RangeSelectedCallbackArgs args;
-				args.source = this;
-				args.start = mouseCoordinateToIndex(x_start_);
-				args.end = mouseCoordinateToIndex(x_end_);
-				args.data = range_selected_callback_data_;
+                RangeSelectedCallbackArgs args;
+                args.source = this;
+                args.start = mouseCoordinateToIndex(x_start_);
+                args.end = mouseCoordinateToIndex(x_end_);
+                args.data = range_selected_callback_data_;
                 range_selected_callback_(args);
             }
         }
@@ -191,9 +175,6 @@ class InteractivePlot {
 
     onValueHighlightedCallback value_highlighted_callback_;
     void* value_highlighted_callback_data_;
-
-    onNoValueHighlightedCallback no_value_highlighted_callback_;
-    void *no_value_highlighted_callback_data_;
 };
 
 // The Plotter class plots fixed length samples and allows for interaction
@@ -209,13 +190,16 @@ class Plotter : public InteractivePlot {
 
     bool push_back(const vector<double>& data_point);
 
-    virtual GRT::MatrixDouble& getData() { return data_; }
+    virtual GRT::MatrixDouble& getData() {
+        return data_;
+    }
 
     virtual MatrixDouble getData(uint32_t x_start_idx, uint32_t x_end_idx) {
         // dataBuffer is a "CircularBuffer< vector<float> >" inside
         // ofxGrtTimeseriesPlot.
         MatrixDouble selected_data;
-        for (uint32_t i = x_start_idx; i < x_end_idx && i < data_.getSize(); i++) {
+        for (uint32_t i = x_start_idx; i < x_end_idx && i < data_.getSize();
+             i++) {
             vector<double> v_double(data_.getRowVector(i).begin(),
                                     data_.getRowVector(i).end());
             selected_data.push_back(v_double);
@@ -248,7 +232,8 @@ class Plotter : public InteractivePlot {
   protected:
     virtual uint32_t mouseCoordinateToIndex(uint32_t x) {
         float x_step = w_ * 1.0 / data_.getNumRows();
-        return std::min(std::max((uint32_t) 0, (uint32_t) (x / x_step)), data_.getNumRows() - 1);
+        return std::min(std::max((uint32_t) 0, (uint32_t)(x / x_step)),
+                        data_.getNumRows() - 1);
     }
 
   private:
@@ -265,7 +250,8 @@ class Plotter : public InteractivePlot {
     GRT::MatrixDouble data_;
 };
 
-class InteractiveTimeSeriesPlot : public ofxGrtTimeseriesPlot, public InteractivePlot {
+class InteractiveTimeSeriesPlot : public ofxGrtTimeseriesPlot,
+                                  public InteractivePlot {
   public:
     bool draw(uint32_t x, uint32_t y, uint32_t w, uint32_t h) {
         x_ = x;
@@ -293,7 +279,8 @@ class InteractiveTimeSeriesPlot : public ofxGrtTimeseriesPlot, public Interactiv
         // dataBuffer is a "CircularBuffer< vector<float> >" inside
         // ofxGrtTimeseriesPlot.
         MatrixDouble selected_data;
-        for (uint32_t i = x_start_idx; i < x_end_idx && i < dataBuffer.getSize(); i++) {
+        for (uint32_t i = x_start_idx;
+             i < x_end_idx && i < dataBuffer.getSize(); i++) {
             vector<double> v_double(dataBuffer[i].begin(), dataBuffer[i].end());
             selected_data.push_back(v_double);
         }
@@ -301,12 +288,14 @@ class InteractiveTimeSeriesPlot : public ofxGrtTimeseriesPlot, public Interactiv
     }
 
     virtual vector<double> getData(uint32_t x_idx) {
-        return vector<double>(dataBuffer[x_idx].begin(), dataBuffer[x_idx].end());
+        return vector<double>(dataBuffer[x_idx].begin(),
+                              dataBuffer[x_idx].end());
     }
 
   protected:
     virtual uint32_t mouseCoordinateToIndex(uint32_t x) {
         float x_step = w_ * 1.0 / timeseriesLength;
-        return std::min(std::max((uint32_t) 0, (uint32_t) (x / x_step)), timeseriesLength - 1);
+        return std::min(std::max((uint32_t) 0, (uint32_t)(x / x_step)),
+                        timeseriesLength - 1);
     }
 };
