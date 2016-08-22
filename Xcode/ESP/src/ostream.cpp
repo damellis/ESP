@@ -1,4 +1,5 @@
 #include "ostream.h"
+#include "ofUtils.h"
 
 #ifdef TARGET_WIN32
 #define _WINSOCKAPI_
