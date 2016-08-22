@@ -411,8 +411,9 @@ void ofApp::setup() {
     for (uint32_t i = 0; i < plot_samples_.size(); i++) {
         plot_samples_[i].onRangeSelected(this, &ofApp::onPlotRangeSelected,
                                          reinterpret_cast<void*>(i + 1));
-        plot_samples_[i].onValueHighlighted(this, &ofApp::onPlotSamplesValueHighlight,
-                                         reinterpret_cast<void*>(i + 1));
+        plot_samples_[i].onValueHighlighted(this,
+                                            &ofApp::onPlotSamplesValueHighlight,
+                                            reinterpret_cast<void*>(i + 1));
     }
 
     training_data_manager_.setNumDimensions(istream_->getNumOutputDimensions());
@@ -1448,13 +1449,15 @@ void ofApp::draw() {
 }
 
 void ofApp::drawInputs(uint32_t stage_left, uint32_t stage_top,
-                      uint32_t stage_width, uint32_t stage_height) {
+                       uint32_t stage_width, uint32_t stage_height) {
     if (istream_->getNumOutputDimensions() >= kTooManyFeaturesThreshold) {
         float minY = plot_inputs_.getRanges().first;
         float maxY = plot_inputs_.getRanges().second;
         plot_inputs_snapshot_.setRanges(minY, maxY, true);
-        plot_inputs_snapshot_.draw(stage_left, stage_top, stage_width, stage_height * 0.75);
-        plot_inputs_.draw(stage_left, stage_top + stage_height * 0.75, stage_width, stage_height * 0.25);
+        plot_inputs_snapshot_.draw(stage_left, stage_top, stage_width,
+                                   stage_height * 0.75);
+        plot_inputs_.draw(stage_left, stage_top + stage_height * 0.75,
+                          stage_width, stage_height * 0.25);
     } else {
         plot_inputs_.draw(stage_left, stage_top, stage_width, stage_height);
     }
@@ -1941,7 +1944,7 @@ void ofApp::reloadPipelineModules() {
 }
 
 //--------------------------------------------------------------
-void ofApp::keyPressed(int key){
+void ofApp::keyPressed(int key) {
     std::string key_str;
     key_str = static_cast<char>(key);
     ESP_EVENT("keyPressed: " + key_str);

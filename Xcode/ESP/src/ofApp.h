@@ -89,8 +89,15 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     friend void useTrainingDataAdvice(string advice);
     friend void useLeaveOneOutScoring(bool enable);
 
+    // This variable is a guard so that code can check its status and made to be
+    // executed only once. Because we are loading the user code ::setup()
+    // function multiple times during the execution, this may cause input- or
+    // output-streams initialized multiple times. This boolean variable is
+    // useful there.
     bool setup_finished_ = false;
 
+    // The number of pipeline stages, this will control the UI layout. The
+    // number is obtained during setup() and used in draw().
     uint32_t num_pipeline_stages_;
 
     // Currently, we support labels (stored in label_) from 1 to 9.
@@ -106,95 +113,174 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
 
     TrainingSampleChecker training_sample_checker_ = 0;
 
-    // Input stream, a callback should be registered upon data arrival
-    InputStream *istream_;
-    // Callback used for input data stream (istream_)
-    void onDataIn(GRT::MatrixDouble in);
-
-    // Output streams to which to write the results of the pipeline
-    vector<OStream *> ostreams_;
-    vector<OStreamVector *> ostreamvectors_;
-
-    // When button 1-9 is pressed, is_recording_ will be set and data will be
-    // added to sample_data_.
-    bool is_recording_;
-    GRT::MatrixDouble sample_data_;
-
-    // input_data_ is written by istream_ thread and read by GUI thread.
-    std::mutex input_data_mutex_;
-    GRT::MatrixDouble input_data_;
-
-    // Pipeline
+    //========================================================================
+    // Pipeline, tuneables and all data
+    //========================================================================
     GRT::GestureRecognitionPipeline *pipeline_;
+    vector<Tuneable*> tuneable_parameters_;
 
     TrainingDataManager training_data_manager_;
-
+    GRT::MatrixDouble sample_data_;
+    GRT::MatrixDouble input_data_;
+    std::mutex input_data_mutex_;  // input_data_ is written by istream_ thread
+                                   // and read by GUI thread.
     GRT::MatrixDouble test_data_;
+
+    //========================================================================
+    // Analysis
+    //========================================================================
     float training_accuracy_;
     int predicted_label_; CircularBuffer<int> predicted_label_buffer_;
-    vector<double> predicted_class_distances_; CircularBuffer<vector<double>> predicted_class_distances_buffer_;
-    vector<double> predicted_class_likelihoods_; CircularBuffer<vector<double>> predicted_class_likelihoods_buffer_;
-    vector<UINT> predicted_class_labels_; CircularBuffer<vector<UINT>> predicted_class_labels_buffer_;
+    vector<double> predicted_class_distances_;
+    CircularBuffer<vector<double>> predicted_class_distances_buffer_;
+
+    vector<double> predicted_class_likelihoods_;
+    CircularBuffer<vector<double>> predicted_class_likelihoods_buffer_;
+
+    vector<UINT> predicted_class_labels_;
+    CircularBuffer<vector<UINT>> predicted_class_labels_buffer_;
+
     vector<UINT> test_data_predicted_class_labels_;
 
     vector<double> class_distance_values_;
     vector<double> class_likelihood_values_;
 
-    /// ====================================================
-    ///  Visuals
-    /// ====================================================
-    ofxGrtTimeseriesPlot plot_raw_;
-    InteractiveTimeSeriesPlot plot_inputs_;
-    ofxGrtTimeseriesPlot plot_inputs_snapshot_; // a spectrum of the most
-                                                // recent input vector, shown
-                                                // only if the number of input
-                                                // dimensions is greater than
-                                                // kTooManyFeaturesThreshold
-    void onInputPlotRangeSelection(InteractivePlot::RangeSelectedCallbackArgs arg);
-    void onInputPlotValueSelection(InteractivePlot::ValueHighlightedCallbackArgs arg);
+    //========================================================================
+    // Input/Output streams
+    //========================================================================
+    InputStream *istream_;
+    void onDataIn(GRT::MatrixDouble in);
+    vector<OStream *> ostreams_;
+    vector<OStreamVector *> ostreamvectors_;
+
+    //========================================================================
+    // Application states
+    //========================================================================
+    bool is_recording_;  // When button 1-9 is pressed, is_recording_ will be
+                         // set and data will be added to sample_data_.
     bool enable_history_recording_ = false;
     bool is_in_history_recording_ = false;
+    bool is_in_feature_view_ = false;
+    bool is_in_renaming_ = false;
+    bool is_in_relabeling_ = false;
 
+    //========================================================================
+    // rename
+    //========================================================================
+    int rename_target_ = -1;
+    string rename_title_;
+    string display_title_;  // Display title is rename_title_ plus a blinking
+                            // underscore.
+
+    //========================================================================
+    // relabel
+    //========================================================================
+    uint32_t relabel_source_;
+
+    //========================================================================
+    // visual: status message
+    //========================================================================
+    string status_text_;
+    void setStatus(const string& msg) {
+        ESP_EVENT(msg);
+        status_text_ = msg;
+    }
+
+    ofxDatGui gui_;
+
+    //========================================================================
+    // visual: input stream
+    //========================================================================
+    ofxDatGuiDropdown *serial_selection_dropdown_;
+    void onSerialSelectionDropdownEvent(ofxDatGuiDropdownEvent e);
+
+    //========================================================================
+    // visual: live plots are across all tabs
+    //========================================================================
+    InteractiveTimeSeriesPlot plot_inputs_;
+    ofxGrtTimeseriesPlot plot_inputs_snapshot_;  // a spectrum of the most
+                                                 // recent input vector, shown
+                                                 // only if the number of input
+                                                 // dimensions is greater than
+                                                 // kTooManyFeaturesThreshold
+    void onInputPlotRangeSelection(InteractivePlot::RangeSelectedCallbackArgs);
+    void onInputPlotValueSelection(
+        InteractivePlot::ValueHighlightedCallbackArgs arg);
+
+    //========================================================================
+    // visual: calibration
+    //
+    // Raw input + plotter for each calibrators
+    //========================================================================
+    ofxGrtTimeseriesPlot plot_raw_;
     vector<Plotter> plot_calibrators_;
 
+    //========================================================================
+    // visual: pipeline
+    //
+    // live data (above) + pre_processed + features
+    //========================================================================
     vector<ofxGrtTimeseriesPlot> plot_pre_processed_;
     vector<vector<ofxGrtTimeseriesPlot>> plot_features_;
+
+    //========================================================================
+    // visual: test
+    //
+    // live (above) + window + overview
+    //========================================================================
+    ofxGrtTimeseriesPlot plot_testdata_window_;
+    Plotter plot_testdata_overview_;
+    void onTestOverviewPlotSelection(InteractivePlot::RangeSelectedCallbackArgs);
+    void updateTestWindowPlot();
+    void runPredictionOnTestData();
+
+    //========================================================================
+    // visual: training
+    //
+    // live + samples + features
+    //========================================================================
     vector<Plotter> plot_samples_;
     vector<Plotter> plot_samples_snapshots_;
     vector<std::string> plot_samples_info_;
+    void onPlotRangeSelected(InteractivePlot::RangeSelectedCallbackArgs arg);
     void updatePlotSamplesSnapshot(int num, int row = -1);
     void onPlotSamplesValueHighlight(InteractivePlot::ValueHighlightedCallbackArgs arg);
-    // Features associated with each sample.
+
+    bool is_final_features_too_many_ = false;
     vector<vector<Plotter>> plot_sample_features_;
     void toggleFeatureView();
-    bool is_in_feature_view_ = false;
     void populateSampleFeatures(uint32_t sample_index);
     vector<pair<double, double>> sample_feature_ranges_;
 
     vector<int> plot_sample_indices_; // the index of the currently plotted
                                       // sample for each class label
     vector<pair<ofRectangle, ofRectangle>> plot_sample_button_locations_;
-    void onPlotRangeSelected(InteractivePlot::RangeSelectedCallbackArgs arg);
-    bool is_final_features_too_many_ = false;
 
-    Plotter plot_testdata_overview_;
-    ofxGrtTimeseriesPlot plot_testdata_window_;
-    void onTestOverviewPlotSelection(InteractivePlot::RangeSelectedCallbackArgs arg);
-    void updateTestWindowPlot();
-    void runPredictionOnTestData();
+    vector<ofxDatGui *> training_sample_guis_;
+    void renameTrainingSample(int num);
+    void renameTrainingSampleDone();
+    void deleteTrainingSample(int num);
+    void trimTrainingSample(int num);
+    void relabelTrainingSample(int num);
+    void deleteAllTrainingSamples(int num);
+    void doRelabelTrainingSample(uint32_t from, uint32_t to);
+    friend class TrainingSampleGuiListener;
 
+    //========================================================================
+    // visual: prediction
+    //
+    // live + likelihood + class_distances
+    //========================================================================
     InteractiveTimeSeriesPlot plot_class_likelihoods_;
     vector<InteractiveTimeSeriesPlot> plot_class_distances_;
+    void onClassLikelihoodsPlotValueHighlight(
+        InteractiveTimeSeriesPlot::ValueHighlightedCallbackArgs arg);
+    void onClassDistancePlotValueHighlight(
+        InteractiveTimeSeriesPlot::ValueHighlightedCallbackArgs arg);
 
-    void onClassLikelihoodsPlotValueHighlight(InteractiveTimeSeriesPlot::ValueHighlightedCallbackArgs arg);
-    void onClassDistancePlotValueHighlight(InteractiveTimeSeriesPlot::ValueHighlightedCallbackArgs arg);
-
-    // Panel for storing and loading pipeline.
-    ofxDatGui gui_;
-
-    /// ====================================================
-    ///  Save and load functionalities
-    /// ====================================================
+    //==========================================================================
+    // Save and load functionalities
+    //==========================================================================
     // Tuneable parameters
     void saveTuneables(ofxDatGuiButtonEvent e);
     void loadTuneables(ofxDatGuiButtonEvent e);
@@ -243,66 +329,37 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     const string kTestDataFilename        = "TestData.grt";
     const string kTuneablesFilename       = "TuneableParameters.grt";
     string save_path_ = "";
+
+    // Load all and save all
     void loadAll();
     void saveAll(bool saveAs = false);
 
-    ofxDatGuiDropdown *serial_selection_dropdown_;
-    void onSerialSelectionDropdownEvent(ofxDatGuiDropdownEvent e);
-
-    void beginTrainModel();
-    void drawEventReceived(ofEventArgs& arg);
-    void trainModel();
-    void afterTrainModel();
-
-    void scoreTrainingData(bool leaveOneOut);
-    void scoreImpactOfTrainingSample(int label, const MatrixDouble &sample);
-
-    bool use_leave_one_out_scoring_ = true;
-
-    vector<ofxDatGui *> training_sample_guis_;
-    void renameTrainingSample(int num);
-    void renameTrainingSampleDone();
-    void deleteTrainingSample(int num);
-    void trimTrainingSample(int num);
-    void relabelTrainingSample(int num);
-    void deleteAllTrainingSamples(int num);
-    void doRelabelTrainingSample(uint32_t from, uint32_t to);
-
-    string getTrainingDataAdvice();
-    string training_data_advice_ = "";
-
-    // Rename
-    bool is_in_renaming_ = false;
-    int rename_target_ = -1;
-    string rename_title_;
-    // Display title is rename_title_ plus a blinking underscore.
-    string display_title_;
-
-    // Multithreading to avoid GUI blocked.
+    //========================================================================
+    // Training
+    //========================================================================
     std::thread training_thread_;
-
-    friend class TrainingSampleGuiListener;
-
-    void updateEventReceived(ofEventArgs& arg);
-    uint32_t update_counter_ = 0;
-
-    // Relabel
-    bool is_in_relabeling_ = false;
-    uint32_t relabel_source_;
-
-    // tuneable parameters
-    vector<Tuneable*> tuneable_parameters_;
-
-    // Status for user notification
-    string status_text_;
-    void setStatus(const string& msg) {
-        ESP_EVENT(msg);
-        status_text_ = msg;
-    }
-
     bool is_training_scheduled_;
     uint64_t schedule_time_;
 
+    void beginTrainModel();
+    void trainModel();
+    void afterTrainModel();
+
+    //========================================================================
+    // Scoring
+    //========================================================================
+    void scoreTrainingData(bool leaveOneOut);
+    void scoreImpactOfTrainingSample(int label, const MatrixDouble &sample);
+    bool use_leave_one_out_scoring_ = true;
+
+    //========================================================================
+    // Utils
+    //========================================================================
+    string getTrainingDataAdvice();
+    string training_data_advice_ = "";
+
+    void updateEventReceived(ofEventArgs& arg);  // For renaming
+    uint32_t update_counter_ = 0;
     std::shared_ptr<ofConsoleFileLoggerChannel> logger_;
 };
 
