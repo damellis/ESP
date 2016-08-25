@@ -70,6 +70,8 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     AppState state_;
     AppState last_state_;
 
+    string getAppStateInstruction() const;
+
     enum Fragment {
         CALIBRATION,
         PIPELINE,

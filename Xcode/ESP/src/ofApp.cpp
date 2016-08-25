@@ -20,29 +20,28 @@ const uint32_t kDelayBeforeTraining = 50;  // milliseconds
 
 // Instructions for each tab.
 static const char* kCalibrateInstruction =
-    "Press `s` to save session, `a` to save as, `l` to load session."
-    " (`S` and `L` to save/load calibration data only.)\n"
-    "Use key 1-9 to record calibration samples (required before you can start training).";
+    "Calibration: Use key 1-9 to record calibration samples (required for "
+    "training), `S` and `L` to save/load calibration data only.\n"
+    "Press `s` to save session, `a` to save as, `l` to load session.";
 
 static const char* kPipelineInstruction =
-    "Press capital C/P/A/T/R to change tabs, `p` to pause or resume."
-    " (`S` and `L` to save/load pipeline only.)\n"
+    "Pipeline: press `p` to pause or resume. `S` and `L` to save/load pipeline "
+    "only.\n"
     "Press `s` to save session, `a` to save as, `l` to load session.";
 
 static const char* kTrainingInstruction =
-    "Press capital C/P/A/T/R to change tabs, `p` to pause or resume.\n"
-    "Press `s` to save session, `a` to save as, `l` to load session."
-    " (`S` and `L` to save/load training data only.)\n"
-    "Hold 1-9 to record samples. Press `t` to train model, `f` to show features.";
+    "Training: Hold 1-9 to record samples. Press `t` to train model, `f` to "
+    "show features."
+    " `S` and `L` to save/load training data only. \n"
+    "Press `s` to save session, `a` to save as, `l` to load session.";
 
 static const char* kAnalysisInstruction =
-    "Press capital C/P/A/T/R to change tabs, `p` to pause or resume.\n"
-    "Press `s` to save session, `a` to save as, `l` to load session."
-    " (`S` and `L` to save/load test data only.)\n"
-    "Hold `r` to record test data.";
+    "Analysis: Hold `r` to record test data. "
+    "`S` and `L` to save/load test data only.\n"
+    "Press `s` to save session, `a` to save as, `l` to load session.";
 
 static const char* kPredictionInstruction =
-    "Press capital C/P/A/T/R to change tabs, `p` to pause or resume.\n"
+    "Prediction: Press `p` to pause or resume.\n"
     "Press `s` to save session, `a` to save as, `l` to load session.";
 
 const double kPipelineHeightWeight = 0.3;
@@ -1043,6 +1042,8 @@ void ofApp::renameTrainingSample(int num) {
 
     is_in_renaming_ = true;
     state_ = AppState::kTrainingRenaming;
+    // In renaming, do not exit when pressing ESC
+    ofSetEscapeQuitsApp(false);
 
     rename_target_ = label;
     display_title_ = rename_title_;
@@ -1055,7 +1056,9 @@ void ofApp::renameTrainingSampleDone() {
     training_data_manager_.setNameForLabel(rename_title_, rename_target_);
 
     is_in_renaming_ = false;
+    assert(state_ == AppState::kTrainingRenaming);
     state_ = AppState::kTraining;
+    ofSetEscapeQuitsApp(true);
 
     plot_samples_[rename_target_ - 1].setTitle(rename_title_);
     plot_samples_[rename_target_ - 1].renameTitleDone();
@@ -1182,7 +1185,8 @@ void ofApp::doRelabelTrainingSample(uint32_t source, uint32_t target) {
     training_data_manager_.relabelSample(source, plot_sample_indices_[num], target);
 
     // Update the source plot
-    uint32_t num_source_sample_left = training_data_manager_.getNumSampleForLabel(source);
+    uint32_t num_source_sample_left =
+        training_data_manager_.getNumSampleForLabel(source);
     if (plot_sample_indices_[num] == num_source_sample_left) {
         plot_sample_indices_[num]--;
     }
@@ -1248,7 +1252,7 @@ void ofApp::update() {
             last_state_ = state_;
             state_ = AppState::kConfiguration;
         }
-    } else {
+    } else if (state_ == AppState::kConfiguration) {
         state_ = last_state_;
     }
 
@@ -1404,6 +1408,31 @@ void ofDrawColoredBitmapString(ofColor color,
     ofPopStyle();
 }
 
+string ofApp::getAppStateInstruction() const {
+    switch (state_) {
+        case AppState::kCalibration:
+            return kCalibrateInstruction;
+        case AppState::kPipeline:
+            return kPipelineInstruction;
+        case AppState::kTraining:
+            return kTrainingInstruction;
+        case AppState::kTrainingRenaming:
+            return "You are renaming the class, press `ENTER` to end";
+        case AppState::kTrainingHistoryRecording:
+            return "You've selected a range of data, press 1-9 to label the "
+                   "data";
+        case AppState::kTrainingRelabelling:
+            return "You are relabelling data, press 1-9 to select the target "
+                   "class label";
+        case AppState::kAnalysis:
+            return kAnalysisInstruction;
+        case AppState::kPrediction:
+            return kPredictionInstruction;
+        case AppState::kConfiguration:
+            return "You've opened the configuration panel";
+    }
+}
+
 //--------------------------------------------------------------
 void ofApp::draw() {
     // Hacky panel on the top.
@@ -1412,12 +1441,16 @@ void ofApp::draw() {
     const uint32_t margin = 20;
 
     if (pipeline_->getClassifier() != nullptr) {
-        ofDrawBitmapString("[C]alibration\t[P]ipeline\t[A]nalysis\t[T]raining\tP[R]ediction",
-                           left_margin, top_margin);
+        ofDrawBitmapString(
+            "[C]alibration\t[P]ipeline\t[A]nalysis\t[T]raining\tP[R]ediction",
+            left_margin, top_margin);
     } else {
         ofDrawBitmapString("[C]alibration\t[P]ipeline\t[A]nalysis",
                            left_margin, top_margin);
     }
+
+    ofDrawBitmapString(getAppStateInstruction(), left_margin,
+                       top_margin + margin);
 
     ofColor red = ofColor(0xFF, 0, 0);
     uint32_t tab_start = 0;
@@ -1427,23 +1460,17 @@ void ofApp::draw() {
         case CALIBRATION:
             ofDrawColoredBitmapString(red, "[C]alibration\t",
                                       left_margin, top_margin);
-            ofDrawBitmapString(kCalibrateInstruction,
-                               left_margin, top_margin + margin);
             drawCalibration();
             break;
         case PIPELINE:
             ofDrawColoredBitmapString(red, "\t\t[P]ipeline\t",
                                       left_margin, top_margin);
-            ofDrawBitmapString(kPipelineInstruction,
-                               left_margin, top_margin + margin);
             drawLivePipeline();
             tab_start += kTabWidth;
             break;
         case ANALYSIS:
             ofDrawColoredBitmapString(red, "\t\t\t\t[A]nalysis",
                                       left_margin, top_margin);
-            ofDrawBitmapString(kAnalysisInstruction,
-                               left_margin, top_margin + margin);
             drawAnalysis();
             tab_start += 2 * kTabWidth;
             break;
@@ -1451,8 +1478,6 @@ void ofApp::draw() {
             if (pipeline_->getClassifier() == nullptr) { break; }
             ofDrawColoredBitmapString(red, "\t\t\t\t\t\t[T]raining",
                                       left_margin, top_margin);
-            ofDrawBitmapString(kTrainingInstruction,
-                               left_margin, top_margin + margin);
             drawTrainingInfo();
             tab_start += 3 * kTabWidth;
             break;
@@ -1460,8 +1485,6 @@ void ofApp::draw() {
             if (pipeline_->getClassifier() == nullptr) { break; }
             ofDrawColoredBitmapString(red, "\t\t\t\t\t\t\t\tP[R]ediction",
                                       left_margin, top_margin);
-            ofDrawBitmapString(kPredictionInstruction,
-                               left_margin, top_margin + margin);
             drawPrediction();
             tab_start += 4 * kTabWidth;
             break;
@@ -1988,32 +2011,38 @@ void ofApp::reloadPipelineModules() {
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key) {
+    // Event logging
     std::string key_str;
     key_str = static_cast<char>(key);
     ESP_EVENT("keyPressed: " + key_str);
 
-    if (is_in_renaming_) {
-        // Add normal characters.
-        if (key >= 32 && key <= 126) {
-            // key code 32 is for space, we remap it to '_'.
-            key = (key == 32) ? '_' : key;
-            rename_title_ += key;
+    switch (state_) {
+        case AppState::kTrainingRenaming: {
+            // Add normal characters.
+            if (key >= 32 && key <= 126) {
+                // key code 32 is for space, we remap it to '_'.
+                key = (key == 32) ? '_' : key;
+                rename_title_ += key;
+                return;
+            }
+
+            switch (key) {
+                case OF_KEY_BACKSPACE:
+                    rename_title_ =
+                        rename_title_.substr(0, rename_title_.size() - 1);
+                    break;
+                case OF_KEY_RETURN:
+                    renameTrainingSampleDone();
+                    return;
+                default:
+                    break;
+            }
+
+            plot_samples_[rename_target_ - 1].setTitle(display_title_);
             return;
         }
-
-        switch (key) {
-          case OF_KEY_BACKSPACE:
-            rename_title_ = rename_title_.substr(0, rename_title_.size() - 1);
+        default:
             break;
-          case OF_KEY_RETURN:
-            renameTrainingSampleDone();
-            return;
-          default:
-            break;
-        }
-
-        plot_samples_[rename_target_ - 1].setTitle(display_title_);
-        return;
     }
 
     if (is_in_history_recording_) { return; }
