@@ -1851,6 +1851,7 @@ void ofApp::onDataIn(GRT::MatrixDouble input) {
 
 //--------------------------------------------------------------
 void ofApp::toggleFeatureView() {
+    ESP_EVENT("Toggle Feature View");
     if (fragment_ != TRAINING) { return; }
 
     if (is_in_feature_view_) {
@@ -2017,49 +2018,40 @@ void ofApp::keyPressed(int key) {
     ESP_EVENT("keyPressed: " + key_str);
 
     switch (state_) {
-        case AppState::kTrainingRenaming: {
-            // Add normal characters.
-            if (key >= 32 && key <= 126) {
-                // key code 32 is for space, we remap it to '_'.
-                key = (key == 32) ? '_' : key;
-                rename_title_ += key;
-                return;
+    case AppState::kTrainingRenaming: return;
+    case AppState::kTrainingHistoryRecording: return;
+    case AppState::kTrainingRelabelling: return;
+    case AppState::kTraining: {
+        // 1-9 will start recording, stop when key release
+        switch (key) {
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+        case '6':
+        case '7':
+        case '8':
+        case '9': {
+            if (!is_recording_) {
+                is_recording_ = true;
+                label_ = key - '0';
+                sample_data_.clear();
             }
-
-            switch (key) {
-                case OF_KEY_BACKSPACE:
-                    rename_title_ =
-                        rename_title_.substr(0, rename_title_.size() - 1);
-                    break;
-                case OF_KEY_RETURN:
-                    renameTrainingSampleDone();
-                    return;
-                default:
-                    break;
-            }
-
-            plot_samples_[rename_target_ - 1].setTitle(display_title_);
             return;
         }
-        default:
-            break;
-    }
-
-    if (is_in_history_recording_) { return; }
-
-    // If in relabeling, take action at key release stage.
-    if (is_in_relabeling_) { return; }
-
-    if (key >= '1' && key <= '9') {
-        if (!is_recording_) {
-            is_recording_ = true;
-            label_ = key - '0';
-            sample_data_.clear();
+        case 'f':
+            toggleFeatureView();
+            return;
+        case 't':
+            beginTrainModel();
+            return;
         }
-    }
+        break;
+    }  // case AppState::kTraining
 
-    switch (key) {
-        case 'r':
+    case AppState::kAnalysis: {
+        if (key == 'r') {
             if (!is_recording_) {
                 is_recording_ = true;
                 label_ = 255;
@@ -2067,12 +2059,21 @@ void ofApp::keyPressed(int key) {
                 test_data_.clear();
                 plot_testdata_window_.reset();
             }
-            break;
-        case 'f': {
-            toggleFeatureView();
-            ESP_EVENT("Toggle Feature View");
-            break;
+            return;
         }
+        break;
+    }  // case AppState::kAnalysis
+
+    case AppState::kCalibration:
+    case AppState::kConfiguration:
+    case AppState::kPipeline:
+    case AppState::kPrediction:
+        break;
+    }  // switch (state_)
+
+    // Below are global key bindings that are enabled across any application
+    // state.
+    switch (key) {
         case 'l': loadAll(); break;
         case 'L':
             if (fragment_ == CALIBRATION) loadCalibrationDataWithPrompt();
@@ -2100,7 +2101,6 @@ void ofApp::keyPressed(int key) {
             else if (fragment_ == TRAINING) saveTrainingDataWithPrompt();
             else if (fragment_ == ANALYSIS) saveTestDataWithPrompt();
             break;
-        case 't': beginTrainModel(); break;
     }
 }
 
@@ -2109,16 +2109,43 @@ void ofApp::keyReleased(int key) {
     key_str = static_cast<char>(key);
     ESP_EVENT("keyReleased: " + key_str);
 
-    if (is_in_renaming_) { return; }
-    if (is_in_history_recording_) {
+    switch (state_) {
+    case AppState::kTrainingRenaming: {
+        // Add normal characters.
+        if (key >= 32 && key <= 126) {
+            // key code 32 is for space, we remap it to '_'.
+            key = (key == 32) ? '_' : key;
+            rename_title_ += key;
+            return;
+        }
+
+        switch (key) {
+        case OF_KEY_BACKSPACE:
+            rename_title_ = rename_title_.substr(0, rename_title_.size() - 1);
+            break;
+        case OF_KEY_RETURN:
+            renameTrainingSampleDone();
+            return;
+        default:
+            break;
+        }
+
+        plot_samples_[rename_target_ - 1].setTitle(display_title_);
+        return;
+    }  // case AppState::kTrainingRenaming
+
+    case AppState::kTrainingHistoryRecording: {
         // Pressing 1-9 will turn the samples into training data
         if (key >= '1' && key <= '9') {
             label_ = key - '0';
             training_data_manager_.addSample(key - '0', sample_data_);
-            int num_samples = training_data_manager_.getNumSampleForLabel(label_);
+            int num_samples =
+                training_data_manager_.getNumSampleForLabel(label_);
 
-            ESP_EVENT("Converting " + std::to_string(sample_data_.getNumRows()) +
-                      " data points from live data to class " + std::to_string(label_));
+            ESP_EVENT("Converting " +
+                      std::to_string(sample_data_.getNumRows()) +
+                      " data points from live data to class " +
+                      std::to_string(label_));
 
             plot_samples_[label_ - 1].setData(sample_data_);
             plot_sample_indices_[label_ - 1] = num_samples - 1;
@@ -2134,21 +2161,62 @@ void ofApp::keyReleased(int key) {
         status_text_ = "";
         plot_inputs_.clearSelection();
         return;
+    }  // case AppState::kTrainingHistoryRecording
+
+    case AppState::kTrainingRelabelling: {
+        if (key >= '1' && key <= '9') {
+            doRelabelTrainingSample(relabel_source_, key - '0');
+            is_in_relabeling_ = false;
+            state_ = AppState::kTraining;
+            return;
+        }
+        break;
     }
 
-    if (is_in_relabeling_ && key >= '1' && key <= '9') {
-        doRelabelTrainingSample(relabel_source_, key - '0');
-        is_in_relabeling_ = false;
-        state_ = AppState::kTraining;
-        return;
+    case AppState::kTraining: {
+        is_recording_ = false;
+        if (key >= '1' && key <= '9') {
+            if (training_sample_checker_) {
+                TrainingSampleCheckerResult result =
+                    training_sample_checker_(sample_data_);
+                setStatus(plot_samples_[label_ - 1].getTitle() + " check: " +
+                          result.getMessage());
+
+                // Don't save sample if the checker returns failure.
+                if (result.getResult() == TrainingSampleCheckerResult::FAILURE)
+                    return;
+            }
+
+            scoreImpactOfTrainingSample(label_, sample_data_);
+
+            training_data_manager_.addSample(label_, sample_data_);
+            int num_samples =
+                training_data_manager_.getNumSampleForLabel(label_);
+
+            plot_samples_[label_ - 1].setData(sample_data_);
+            plot_sample_indices_[label_ - 1] = num_samples - 1;
+
+            updatePlotSamplesSnapshot(label_ - 1);
+
+            should_save_training_data_ = true;
+
+            ESP_EVENT("Collected " + std::to_string(sample_data_.getNumRows()) +
+                      " data points for training class " +
+                      std::to_string(label_));
+            return;
+        }
+        break;
     }
 
-    is_recording_ = false;
-    if (key >= '1' && key <= '9') {
-        if (fragment_ == CALIBRATION) {
-            if (calibrator_ == nullptr) { return; }
+    case AppState::kCalibration: {
+        is_recording_ = false;
+        if (key >= '1' && key <= '9') {
+            if (calibrator_ == nullptr) {
+                return;
+            }
 
-            vector<CalibrateProcess>& calibrators = calibrator_->getCalibrateProcesses();
+            vector<CalibrateProcess>& calibrators =
+                calibrator_->getCalibrateProcesses();
             if (label_ - 1 < calibrators.size()) {
                 CalibrateResult result =
                     calibrators[label_ - 1].calibrate(sample_data_);
@@ -2159,52 +2227,37 @@ void ofApp::keyReleased(int key) {
                     should_save_calibration_data_ = true;
                 }
 
-                setStatus(calibrators[label_ - 1].getName() +
-                          " calibration: " + result.getResultString() + ": " +
+                setStatus(calibrators[label_ - 1].getName() + " calibration: " +
+                          result.getResultString() + ": " +
                           result.getMessage());
 
-                ESP_EVENT("Collected " + std::to_string(sample_data_.getNumRows()) +
-                          " data points for calibration " + std::to_string(label_));
+                ESP_EVENT(
+                    "Collected " + std::to_string(sample_data_.getNumRows()) +
+                    " data points for calibration " + std::to_string(label_));
             }
-        } else if (fragment_ == TRAINING) {
-            if (training_sample_checker_) {
-                TrainingSampleCheckerResult result =
-                    training_sample_checker_(sample_data_);
-                setStatus(plot_samples_[label_ - 1].getTitle() +
-                    " check: " + result.getMessage());
+        }
+        break;
+    }  // case AppState::kCalibration
 
-                // Don't save sample if the checker returns failure.
-                if (result.getResult() == TrainingSampleCheckerResult::FAILURE)
-                    return;
-            }
-
-            scoreImpactOfTrainingSample(label_, sample_data_);
-
-            training_data_manager_.addSample(label_, sample_data_);
-            int num_samples = training_data_manager_.getNumSampleForLabel(label_);
-
-            plot_samples_[label_ - 1].setData(sample_data_);
-            plot_sample_indices_[label_ - 1] = num_samples - 1;
-
-            updatePlotSamplesSnapshot(label_ - 1);
-
-            should_save_training_data_ = true;
+    case AppState::kAnalysis: {
+        if (key == 'r') {
+            test_data_ = sample_data_;
+            plot_testdata_overview_.setData(test_data_);
+            runPredictionOnTestData();
+            updateTestWindowPlot();
+            should_save_test_data_ = true;
 
             ESP_EVENT("Collected " + std::to_string(sample_data_.getNumRows()) +
-                      " data points for training class " + std::to_string(label_));
+                      " data points for test data");
         }
-    }
+        break;
+    }  // case AppState::kAnalysis
 
-    if (key == 'r') {
-        test_data_ = sample_data_;
-        plot_testdata_overview_.setData(test_data_);
-        runPredictionOnTestData();
-        updateTestWindowPlot();
-        should_save_test_data_ = true;
-
-        ESP_EVENT("Collected " + std::to_string(sample_data_.getNumRows()) +
-                  " data points for test data");
-    }
+    case AppState::kPipeline:
+    case AppState::kPrediction:
+    case AppState::kConfiguration:
+        break;
+    }  // switch (state_)
 }
 
 //--------------------------------------------------------------
