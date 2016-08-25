@@ -140,6 +140,7 @@ void ofApp::useTrainingDataAdvice(string advice) {
 
 // TODO(benzh): initialize other members as well.
 ofApp::ofApp() : fragment_(TRAINING),
+                 state_(AppState::kTraining),
                  num_pipeline_stages_(0),
                  calibrator_(nullptr),
                  training_data_manager_(kNumMaxLabels_),
@@ -1239,6 +1240,18 @@ string ofApp::getTrainingDataAdvice() {
 
 //--------------------------------------------------------------
 void ofApp::update() {
+    // There doesn't seem to be a callback API for when the configuration window
+    // is opened (expanded/collapsed). As a simple approach, we query
+    // `getExpanded`.
+    if (gui_.getExpanded()) {
+        if (state_ != AppState::kConfiguration) {
+            last_state_ = state_;
+            state_ = AppState::kConfiguration;
+        }
+    } else {
+        state_ = last_state_;
+    }
+
     std::lock_guard<std::mutex> guard(input_data_mutex_);
     for (int i = 0; i < input_data_.getNumRows(); i++){
         vector<double> raw_data = input_data_.getRowVector(i);
