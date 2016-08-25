@@ -200,10 +200,7 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     bool is_recording_;  // When button 1-9 is pressed, is_recording_ will be
                          // set and data will be added to sample_data_.
     bool enable_history_recording_ = false;
-    bool is_in_history_recording_ = false;
     bool is_in_feature_view_ = false;
-    bool is_in_renaming_ = false;
-    bool is_in_relabeling_ = false;
 
     //========================================================================
     // rename

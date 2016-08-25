@@ -576,7 +576,6 @@ void ofApp::onInputPlotRangeSelection(InteractiveTimeSeriesPlot::RangeSelectedCa
     }
 
     status_text_ = "Press 1-9 to extract from live data to training data.";
-    is_in_history_recording_ = true;
     state_ = AppState::kTrainingHistoryRecording;
 
     sample_data_.clear();
@@ -1030,18 +1029,15 @@ void ofApp::onSerialSelectionDropdownEvent(ofxDatGuiDropdownEvent e) {
 
 void ofApp::renameTrainingSample(int num) {
     // If we are already in renaming, finish it by calling rename...Done.
-    if (is_in_renaming_) {
+    if (state_ == AppState::kTrainingRenaming) {
         renameTrainingSampleDone();
     }
 
     int label = num + 1;
-    // TODO(benzh) This should be renaming each sample, instead of each label.
-    // Currently, we are in the transition from managing everything in ofApp to
-    // individual components (such as TrainingDataManager).
     rename_title_ = training_data_manager_.getLabelName(label);
 
-    is_in_renaming_ = true;
     state_ = AppState::kTrainingRenaming;
+
     // In renaming, do not exit when pressing ESC
     ofSetEscapeQuitsApp(false);
 
@@ -1055,7 +1051,6 @@ void ofApp::renameTrainingSample(int num) {
 void ofApp::renameTrainingSampleDone() {
     training_data_manager_.setNameForLabel(rename_title_, rename_target_);
 
-    is_in_renaming_ = false;
     assert(state_ == AppState::kTrainingRenaming);
     state_ = AppState::kTraining;
     ofSetEscapeQuitsApp(true);
@@ -1074,7 +1069,7 @@ void ofApp::updateEventReceived(ofEventArgs& arg) {
 
     // Assuming 60fps, to update the cursor every 0.1 seconds
     int period = 60 * 0.1;
-    if (is_in_renaming_) {
+    if (state_ == AppState::kTrainingRenaming) {
         if (update_counter_ == period) {
             display_title_ = rename_title_ + "_";
         } else if (update_counter_ == period * 2) {
@@ -1082,7 +1077,7 @@ void ofApp::updateEventReceived(ofEventArgs& arg) {
             update_counter_ = 0;
         }
         plot_samples_[rename_target_ - 1].setTitle(display_title_);
-    } else if (is_in_relabeling_) {
+    } else if (state_ == AppState::kTrainingRelabelling) {
         // Simply flash the name
         if (update_counter_ == period) {
             display_title_ = "";
@@ -1165,7 +1160,6 @@ void ofApp::trimTrainingSample(int num) {
 
 void ofApp::relabelTrainingSample(int num) {
     // After this button is pressed, we enter relabel_mode
-    is_in_relabeling_ = true;
     state_ = AppState::kTrainingRelabelling;
 
     relabel_source_ = num + 1;
@@ -2155,7 +2149,7 @@ void ofApp::keyReleased(int key) {
             should_save_training_data_ = true;
         }
         // Reset the status of the GUI
-        is_in_history_recording_ = false;
+        assert(state_ == AppState::kTrainingHistoryRecording);
         state_ = AppState::kTraining;
 
         status_text_ = "";
@@ -2166,7 +2160,7 @@ void ofApp::keyReleased(int key) {
     case AppState::kTrainingRelabelling: {
         if (key >= '1' && key <= '9') {
             doRelabelTrainingSample(relabel_source_, key - '0');
-            is_in_relabeling_ = false;
+            assert(state_ == AppState::kTrainingRelabelling);
             state_ = AppState::kTraining;
             return;
         }
