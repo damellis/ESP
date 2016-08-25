@@ -577,6 +577,8 @@ void ofApp::onInputPlotRangeSelection(InteractiveTimeSeriesPlot::RangeSelectedCa
 
     status_text_ = "Press 1-9 to extract from live data to training data.";
     is_in_history_recording_ = true;
+    state_ = AppState::kTrainingHistoryRecording;
+
     sample_data_.clear();
     sample_data_ = plot_inputs_.getData(arg.start, arg.end);
 }
@@ -1039,6 +1041,8 @@ void ofApp::renameTrainingSample(int num) {
     rename_title_ = training_data_manager_.getLabelName(label);
 
     is_in_renaming_ = true;
+    state_ = AppState::kTrainingRenaming;
+
     rename_target_ = label;
     display_title_ = rename_title_;
     plot_samples_[rename_target_ - 1].renameTitleStart();
@@ -1050,6 +1054,8 @@ void ofApp::renameTrainingSampleDone() {
     training_data_manager_.setNameForLabel(rename_title_, rename_target_);
 
     is_in_renaming_ = false;
+    state_ = AppState::kTraining;
+
     plot_samples_[rename_target_ - 1].setTitle(rename_title_);
     plot_samples_[rename_target_ - 1].renameTitleDone();
     ofRemoveListener(ofEvents().update, this, &ofApp::updateEventReceived);
@@ -1156,6 +1162,8 @@ void ofApp::trimTrainingSample(int num) {
 void ofApp::relabelTrainingSample(int num) {
     // After this button is pressed, we enter relabel_mode
     is_in_relabeling_ = true;
+    state_ = AppState::kTrainingRelabelling;
+
     relabel_source_ = num + 1;
     relabel_source_title_ = plot_samples_[num].getTitle();
     ofAddListener(ofEvents().update, this, &ofApp::updateEventReceived);
@@ -2079,6 +2087,8 @@ void ofApp::keyReleased(int key) {
         }
         // Reset the status of the GUI
         is_in_history_recording_ = false;
+        state_ = AppState::kTraining;
+
         status_text_ = "";
         plot_inputs_.clearSelection();
         return;
@@ -2087,6 +2097,7 @@ void ofApp::keyReleased(int key) {
     if (is_in_relabeling_ && key >= '1' && key <= '9') {
         doRelabelTrainingSample(relabel_source_, key - '0');
         is_in_relabeling_ = false;
+        state_ = AppState::kTraining;
         return;
     }
 
