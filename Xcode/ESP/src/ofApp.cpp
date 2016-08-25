@@ -209,10 +209,15 @@ void ofApp::setup() {
         }
     }
 
+    // Determine the initial state of the application:
+    //  o  w/ calibrator: direct to calibrator view
+    //  o  no calibrator: jump directly to pipeline view
     if (calibrator_ && !(calibrator_->isCalibrated())) {
         fragment_ = CALIBRATION;
+        state_ = AppState::kCalibration;
     } else {
         fragment_ = PIPELINE;
+        state_ = AppState::kPipeline;
     }
 
     if (training_data_advice_ == "")
@@ -1238,6 +1243,7 @@ void ofApp::update() {
         } else {
             // Not calibrated! For now, force the tab to be CALIBRATION.
             fragment_ = CALIBRATION;
+            state_ = AppState::kCalibration;
         }
 
         std::string title;
@@ -1315,7 +1321,7 @@ void ofApp::update() {
 
         if (istream_->hasStarted() &&
             (calibrator_ == NULL || calibrator_->isCalibrated()) &&
-            fragment_== PIPELINE) {
+            fragment_ == PIPELINE) {
             if (!pipeline_->preProcessData(data_point)) {
                 ofLog(OF_LOG_ERROR) << "ERROR: Failed to compute features!";
             }
@@ -1868,7 +1874,10 @@ void ofApp::trainModel() {
 void ofApp::afterTrainModel() {
     ESP_EVENT("Post training, jump to TRAINING tab");
     scoreTrainingData(use_leave_one_out_scoring_);
+
     fragment_ = TRAINING;
+    state_ = AppState::kTraining;
+
     runPredictionOnTestData();
     updateTestWindowPlot();
     pipeline_->reset();
@@ -2042,37 +2051,6 @@ void ofApp::keyPressed(int key) {
             else if (fragment_ == ANALYSIS) saveTestDataWithPrompt();
             break;
         case 't': beginTrainModel(); break;
-
-        // Tab related
-        case 'C': {
-            fragment_ = CALIBRATION;
-            ESP_EVENT("Jump to CALIBRATION tab (keyboard)");
-            break;
-        }
-        case 'P': {
-            fragment_ = PIPELINE;
-            ESP_EVENT("Jump to PIPELINE tab (keyboard)");
-            break;
-        }
-        case 'T': {
-            if (pipeline_->getClassifier() != nullptr) {
-                fragment_ = TRAINING;
-                ESP_EVENT("Jump to TRAINING tab (keyboard)");
-            }
-            break;
-        }
-        case 'R': {
-            if (pipeline_->getClassifier() != nullptr) {
-                fragment_ = PREDICTION;
-                ESP_EVENT("Jump to PREDICTION tab (keyboard)");
-            }
-            break;
-        }
-        case 'A': {
-            fragment_ = ANALYSIS;
-            ESP_EVENT("Jump to ANALYSIS tab (keyboard)");
-            break;
-        }
     }
 }
 
@@ -2232,20 +2210,25 @@ void ofApp::mouseReleased(int x, int y, int button) {
     const uint32_t tab_width = 120;
     if (x > left_margin && y < top_margin + 5) {
         if (x < left_margin + tab_width) {
+            state_ = AppState::kCalibration;
             fragment_ = CALIBRATION;
             ESP_EVENT("Jump to CALIBRATION tab (mouse)");
         } else if (x < left_margin + 2 * tab_width) {
+            state_ = AppState::kPipeline;
             fragment_ = PIPELINE;
             ESP_EVENT("Jump to PIPELINE tab (mouse)");
         } else if (x < left_margin + 3 * tab_width) {
+            state_ = AppState::kAnalysis;
             fragment_ = ANALYSIS;
             ESP_EVENT("Jump to ANALYSIS tab (mouse)");
         } else if (x < left_margin + 4 * tab_width
                    && pipeline_->getClassifier() != nullptr) {
+            state_ = AppState::kTraining;
             fragment_ = TRAINING;
             ESP_EVENT("Jump to TRAINING tab (mouse)");
         } else if (x < left_margin + 5 * tab_width
                    && pipeline_->getClassifier() != nullptr) {
+            state_ = AppState::kPrediction;
             fragment_ = PREDICTION;
             ESP_EVENT("Jump to PREDICTION tab (mouse)");
         }

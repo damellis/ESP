@@ -1,9 +1,6 @@
 #pragma once
 
-// C System
-#include <stdint.h>
-
-// C++ System
+#include <cstdint>
 #include <thread>
 
 // of System
@@ -59,8 +56,50 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     }
 
   private:
-    enum Fragment { CALIBRATION, PIPELINE, TRAINING, ANALYSIS, PREDICTION };
+    enum class AppState {
+        kCalibration,
+        kPipeline,
+        kTraining,
+        kTrainingRenaming,
+        kTrainingHistoryRecording,
+        kTrainingRelabelling,
+        kAnalysis,
+        kPrediction,
+        kConfiguration,
+    };
+    AppState state_;
+    enum Fragment {
+        CALIBRATION,
+        PIPELINE,
+        TRAINING,
+        ANALYSIS,
+        PREDICTION,
+        CONFIGURATION
+    };
     Fragment fragment_;
+
+    inline Fragment getAppView(AppState state) {
+        switch (state) {
+            case AppState::kCalibration:
+                return CALIBRATION;
+            case AppState::kPipeline:
+                return PIPELINE;
+            case AppState::kTraining:
+            case AppState::kTrainingRenaming:
+            case AppState::kTrainingHistoryRecording:
+            case AppState::kTrainingRelabelling:
+                return TRAINING;
+            case AppState::kAnalysis:
+                return ANALYSIS;
+            case AppState::kPrediction:
+                return PREDICTION;
+            case AppState::kConfiguration:
+                return CONFIGURATION;
+            default:
+                // Should never be here.
+                assert(false);
+        }
+    }
 
     void drawInputs(uint32_t, uint32_t, uint32_t, uint32_t);
     void drawCalibration();
@@ -69,14 +108,15 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     void drawAnalysis();
     void drawPrediction();
 
-    void useCalibrator(Calibrator &calibrator);
-    void usePipeline(GRT::GestureRecognitionPipeline &pipeline);
-    void useIStream(InputStream &stream);
-    void useOStream(OStream &stream);
-    void useOStream(OStreamVector &stream);
+    void useCalibrator(Calibrator& calibrator);
+    void usePipeline(GRT::GestureRecognitionPipeline& pipeline);
+    void useIStream(InputStream& stream);
+    void useOStream(OStream& stream);
+    void useOStream(OStreamVector& stream);
     void useTrainingSampleChecker(TrainingSampleChecker checker);
     void useTrainingDataAdvice(string advice);
-    void useLeaveOneOutScoring(bool enable) { use_leave_one_out_scoring_ = enable; }
+    void useLeaveOneOutScoring(bool enable) {
+        use_leave_one_out_scoring_ = enable;}
 
     friend void useCalibrator(Calibrator &calibrator);
     friend void usePipeline(GRT::GestureRecognitionPipeline &pipeline);
@@ -337,7 +377,7 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     //========================================================================
     std::thread training_thread_;
     bool is_training_scheduled_;
-    uint64_t schedule_time_;
+    std::uint64_t schedule_time_;
 
     void beginTrainModel();
     void trainModel();
