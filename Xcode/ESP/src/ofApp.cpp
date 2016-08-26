@@ -1436,10 +1436,10 @@ void ofApp::draw() {
 
     if (pipeline_->getClassifier() != nullptr) {
         ofDrawBitmapString(
-            "[C]alibration\t[P]ipeline\t[A]nalysis\t[T]raining\tP[R]ediction",
+            "Calibration\tPipeline\tAnalysis\tTraining\tPrediction",
             left_margin, top_margin);
     } else {
-        ofDrawBitmapString("[C]alibration\t[P]ipeline\t[A]nalysis",
+        ofDrawBitmapString("Calibration\tPipeline\tAnalysis",
                            left_margin, top_margin);
     }
 
@@ -1452,37 +1452,36 @@ void ofApp::draw() {
 
     switch (fragment_) {
         case CALIBRATION:
-            ofDrawColoredBitmapString(red, "[C]alibration\t",
+            ofDrawColoredBitmapString(red, "Calibration\t",
                                       left_margin, top_margin);
             drawCalibration();
             break;
         case PIPELINE:
-            ofDrawColoredBitmapString(red, "\t\t[P]ipeline\t",
+            ofDrawColoredBitmapString(red, "\t\tPipeline\t",
                                       left_margin, top_margin);
             drawLivePipeline();
             tab_start += kTabWidth;
             break;
         case ANALYSIS:
-            ofDrawColoredBitmapString(red, "\t\t\t\t[A]nalysis",
+            ofDrawColoredBitmapString(red, "\t\t\t\tAnalysis",
                                       left_margin, top_margin);
             drawAnalysis();
             tab_start += 2 * kTabWidth;
             break;
         case TRAINING:
             if (pipeline_->getClassifier() == nullptr) { break; }
-            ofDrawColoredBitmapString(red, "\t\t\t\t\t\t[T]raining",
+            ofDrawColoredBitmapString(red, "\t\t\t\t\t\tTraining",
                                       left_margin, top_margin);
             drawTrainingInfo();
             tab_start += 3 * kTabWidth;
             break;
         case PREDICTION:
             if (pipeline_->getClassifier() == nullptr) { break; }
-            ofDrawColoredBitmapString(red, "\t\t\t\t\t\t\t\tP[R]ediction",
+            ofDrawColoredBitmapString(red, "\t\t\t\t\t\t\t\tPrediction",
                                       left_margin, top_margin);
             drawPrediction();
             tab_start += 4 * kTabWidth;
             break;
-
         default:
             ofLog(OF_LOG_ERROR) << "Unknown tag!";
             break;
