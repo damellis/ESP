@@ -1243,11 +1243,29 @@ void ofApp::update() {
     // `getExpanded`.
     if (gui_.getExpanded()) {
         if (state_ != AppState::kConfiguration) {
+            // From other state to configuration tab open state.
+            if (state_ == AppState::kTrainingRenaming) {
+                renameTrainingSampleDone();
+            } else if (state_ == AppState::kTrainingRelabelling) {
+                // Nothing happens, but should remove the listern
+                ofRemoveListener(ofEvents().update, this,
+                                 &ofApp::updateEventReceived);
+            }
+
             last_state_ = state_;
             state_ = AppState::kConfiguration;
         }
-    } else if (state_ == AppState::kConfiguration) {
-        state_ = last_state_;
+    } else {
+        if (state_ == AppState::kConfiguration) {
+            // From kConfiguration state back to previous state
+            if (last_state_ == AppState::kTrainingRenaming ||
+                last_state_ == AppState::kTrainingRelabelling) {
+                // Special handling the state
+                state_ = AppState::kTraining;
+            } else {
+                state_ = last_state_;
+            }
+        }
     }
 
     std::lock_guard<std::mutex> guard(input_data_mutex_);
@@ -2328,31 +2346,41 @@ void ofApp::mouseReleased(int x, int y, int button) {
     const uint32_t left_margin = 10;
     const uint32_t top_margin = 20;
     const uint32_t tab_width = 120;
+    AppState new_state;
     if (x > left_margin && y < top_margin + 5) {
         if (x < left_margin + tab_width) {
-            state_ = AppState::kCalibration;
+            new_state = AppState::kCalibration;
             fragment_ = CALIBRATION;
             ESP_EVENT("Jump to CALIBRATION tab (mouse)");
         } else if (x < left_margin + 2 * tab_width) {
-            state_ = AppState::kPipeline;
+            new_state = AppState::kPipeline;
             fragment_ = PIPELINE;
             ESP_EVENT("Jump to PIPELINE tab (mouse)");
         } else if (x < left_margin + 3 * tab_width) {
-            state_ = AppState::kAnalysis;
+            new_state = AppState::kAnalysis;
             fragment_ = ANALYSIS;
             ESP_EVENT("Jump to ANALYSIS tab (mouse)");
         } else if (x < left_margin + 4 * tab_width
                    && pipeline_->getClassifier() != nullptr) {
-            state_ = AppState::kTraining;
+            new_state = AppState::kTraining;
             fragment_ = TRAINING;
             ESP_EVENT("Jump to TRAINING tab (mouse)");
         } else if (x < left_margin + 5 * tab_width
                    && pipeline_->getClassifier() != nullptr) {
-            state_ = AppState::kPrediction;
+            new_state = AppState::kPrediction;
             fragment_ = PREDICTION;
             ESP_EVENT("Jump to PREDICTION tab (mouse)");
         }
     }
+
+    if (state_ == AppState::kTrainingRenaming) {
+        renameTrainingSampleDone();
+    } else if (state_ == AppState::kTrainingRelabelling) {
+        // Nothing happens, but should remove the listern
+        ofRemoveListener(ofEvents().update, this, &ofApp::updateEventReceived);
+    }
+
+    state_ = new_state;
 }
 
 //--------------------------------------------------------------
