@@ -2058,7 +2058,28 @@ void ofApp::keyPressed(int key) {
         break;
     }  // case AppState::kAnalysis
 
-    case AppState::kCalibration:
+    case AppState::kCalibration: {
+        // 1-9 will start recording, stop when key release
+        switch (key) {
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+        case '6':
+        case '7':
+        case '8':
+        case '9': {
+            if (!is_recording_) {
+                is_recording_ = true;
+                label_ = key - '0';
+                sample_data_.clear();
+            }
+            return;
+        }
+        }
+        break;
+    }
     case AppState::kConfiguration:
     case AppState::kPipeline:
     case AppState::kPrediction:
