@@ -1445,6 +1445,12 @@ string ofApp::getAppStateInstruction() const {
     }
 }
 
+void ofApp::enableTrainingSampleGUI(bool should_enable) {
+    for (auto& gui : training_sample_guis_) {
+        gui->setEnabled(should_enable);
+    }
+}
+
 //--------------------------------------------------------------
 void ofApp::draw() {
     // Hacky panel on the top.
@@ -1473,17 +1479,20 @@ void ofApp::draw() {
             ofDrawColoredBitmapString(red, "Calibration\t",
                                       left_margin, top_margin);
             drawCalibration();
+            enableTrainingSampleGUI(false);
             break;
         case PIPELINE:
             ofDrawColoredBitmapString(red, "\t\tPipeline\t",
                                       left_margin, top_margin);
             drawLivePipeline();
+            enableTrainingSampleGUI(false);
             tab_start += kTabWidth;
             break;
         case ANALYSIS:
             ofDrawColoredBitmapString(red, "\t\t\t\tAnalysis",
                                       left_margin, top_margin);
             drawAnalysis();
+            enableTrainingSampleGUI(false);
             tab_start += 2 * kTabWidth;
             break;
         case TRAINING:
@@ -1491,6 +1500,7 @@ void ofApp::draw() {
             ofDrawColoredBitmapString(red, "\t\t\t\t\t\tTraining",
                                       left_margin, top_margin);
             drawTrainingInfo();
+            enableTrainingSampleGUI(true);
             tab_start += 3 * kTabWidth;
             break;
         case PREDICTION:
@@ -1498,6 +1508,7 @@ void ofApp::draw() {
             ofDrawColoredBitmapString(red, "\t\t\t\t\t\t\t\tPrediction",
                                       left_margin, top_margin);
             drawPrediction();
+            enableTrainingSampleGUI(false);
             tab_start += 4 * kTabWidth;
             break;
         default:
@@ -2346,7 +2357,7 @@ void ofApp::mouseReleased(int x, int y, int button) {
     const uint32_t left_margin = 10;
     const uint32_t top_margin = 20;
     const uint32_t tab_width = 120;
-    AppState new_state;
+    AppState new_state = state_;
     if (x > left_margin && y < top_margin + 5) {
         if (x < left_margin + tab_width) {
             new_state = AppState::kCalibration;

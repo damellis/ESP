@@ -109,6 +109,7 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     void drawCalibration();
     void drawLivePipeline();
     void drawTrainingInfo();
+    void enableTrainingSampleGUI(bool);
     void drawAnalysis();
     void drawPrediction();
 
