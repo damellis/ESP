@@ -2361,28 +2361,32 @@ void ofApp::mouseReleased(int x, int y, int button) {
     const uint32_t left_margin = 10;
     const uint32_t top_margin = 20;
     const uint32_t tab_width = 120;
-    AppState new_state = state_;
+
+    // Potential new state will be updated if tab switch is invoked. Record it
+    // with the current state and assign its value back at the end of this
+    // function.
+    AppState potential_new_state = state_;
     if (x > left_margin && y < top_margin + 5) {
         if (x < left_margin + tab_width) {
-            new_state = AppState::kCalibration;
+            potential_new_state = AppState::kCalibration;
             fragment_ = CALIBRATION;
             ESP_EVENT("Jump to CALIBRATION tab (mouse)");
         } else if (x < left_margin + 2 * tab_width) {
-            new_state = AppState::kPipeline;
+            potential_new_state = AppState::kPipeline;
             fragment_ = PIPELINE;
             ESP_EVENT("Jump to PIPELINE tab (mouse)");
         } else if (x < left_margin + 3 * tab_width) {
-            new_state = AppState::kAnalysis;
+            potential_new_state = AppState::kAnalysis;
             fragment_ = ANALYSIS;
             ESP_EVENT("Jump to ANALYSIS tab (mouse)");
         } else if (x < left_margin + 4 * tab_width
                    && pipeline_->getClassifier() != nullptr) {
-            new_state = AppState::kTraining;
+            potential_new_state = AppState::kTraining;
             fragment_ = TRAINING;
             ESP_EVENT("Jump to TRAINING tab (mouse)");
         } else if (x < left_margin + 5 * tab_width
                    && pipeline_->getClassifier() != nullptr) {
-            new_state = AppState::kPrediction;
+            potential_new_state = AppState::kPrediction;
             fragment_ = PREDICTION;
             ESP_EVENT("Jump to PREDICTION tab (mouse)");
         }
@@ -2390,12 +2394,16 @@ void ofApp::mouseReleased(int x, int y, int button) {
 
     if (state_ == AppState::kTrainingRenaming) {
         renameTrainingSampleDone();
+        state_ = AppState::kTraining;
+        return;
     } else if (state_ == AppState::kTrainingRelabelling) {
         // Nothing happens, but should remove the listern
         ofRemoveListener(ofEvents().update, this, &ofApp::updateEventReceived);
+        state_ = AppState::kTraining;
+        return;
     }
 
-    state_ = new_state;
+    state_ = potential_new_state;
 }
 
 //--------------------------------------------------------------
