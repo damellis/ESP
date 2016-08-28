@@ -2170,6 +2170,7 @@ void ofApp::keyReleased(int key) {
             rename_title_ = rename_title_.substr(0, rename_title_.size() - 1);
             break;
         case OF_KEY_RETURN:
+        case OF_KEY_ESC:
             renameTrainingSampleDone();
             return;
         default:
