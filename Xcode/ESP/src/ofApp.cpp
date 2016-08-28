@@ -1164,10 +1164,15 @@ void ofApp::relabelTrainingSample(int num) {
 
     relabel_source_ = num + 1;
     relabel_source_title_ = plot_samples_[num].getTitle();
+    display_title_ = relabel_source_title_;
     ofAddListener(ofEvents().update, this, &ofApp::updateEventReceived);
 }
 
 void ofApp::doRelabelTrainingSample(uint32_t source, uint32_t target) {
+    // Handle UI updates first
+    ofRemoveListener(ofEvents().update, this, &ofApp::updateEventReceived);
+    plot_samples_[source - 1].setTitle(relabel_source_title_);
+
     if (source == target) {
         return;
     }
@@ -1208,8 +1213,6 @@ void ofApp::doRelabelTrainingSample(uint32_t source, uint32_t target) {
               " to " + std::to_string(target) +
               "source training number " + std::to_string(num_source_sample_left) +
               "target training number " + std::to_string(num_target));
-
-    ofRemoveListener(ofEvents().update, this, &ofApp::updateEventReceived);
 }
 
 string ofApp::getTrainingDataAdvice() {
