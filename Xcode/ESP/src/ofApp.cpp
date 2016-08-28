@@ -1162,6 +1162,9 @@ void ofApp::relabelTrainingSample(int num) {
     // After this button is pressed, we enter relabel_mode
     state_ = AppState::kTrainingRelabelling;
 
+    // In relabel, do not exit when pressing ESC
+    ofSetEscapeQuitsApp(false);
+
     relabel_source_ = num + 1;
     relabel_source_title_ = plot_samples_[num].getTitle();
     display_title_ = relabel_source_title_;
@@ -1172,6 +1175,9 @@ void ofApp::doRelabelTrainingSample(uint32_t source, uint32_t target) {
     // Handle UI updates first
     ofRemoveListener(ofEvents().update, this, &ofApp::updateEventReceived);
     plot_samples_[source - 1].setTitle(relabel_source_title_);
+
+    // Enable ESC
+    ofSetEscapeQuitsApp(true);
 
     if (source == target) {
         return;
@@ -2211,6 +2217,15 @@ void ofApp::keyReleased(int key) {
     }  // case AppState::kTrainingHistoryRecording
 
     case AppState::kTrainingRelabelling: {
+        if (key == OF_KEY_ESC) {
+            // relabel from the same class to the same class (doing nop on the
+            // data but will clean up all listeners and UIs)
+            assert(state_ == AppState::kTrainingRelabelling);
+            doRelabelTrainingSample(relabel_source_, relabel_source_);
+            state_ = AppState::kTraining;
+            return;
+        }
+
         if (key >= '1' && key <= '9') {
             doRelabelTrainingSample(relabel_source_, key - '0');
             assert(state_ == AppState::kTrainingRelabelling);
