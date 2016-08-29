@@ -2381,28 +2381,29 @@ void ofApp::mouseReleased(int x, int y, int button) {
     // with the current state and assign its value back at the end of this
     // function.
     AppState potential_new_state = state_;
+    Fragment potential_new_fragment = fragment_;
     if (x > left_margin && y < top_margin + 5) {
         if (x < left_margin + tab_width) {
             potential_new_state = AppState::kCalibration;
-            fragment_ = CALIBRATION;
+            potential_new_fragment = CALIBRATION;
             ESP_EVENT("Jump to CALIBRATION tab (mouse)");
         } else if (x < left_margin + 2 * tab_width) {
             potential_new_state = AppState::kPipeline;
-            fragment_ = PIPELINE;
+            potential_new_fragment = PIPELINE;
             ESP_EVENT("Jump to PIPELINE tab (mouse)");
         } else if (x < left_margin + 3 * tab_width) {
             potential_new_state = AppState::kAnalysis;
-            fragment_ = ANALYSIS;
+            potential_new_fragment = ANALYSIS;
             ESP_EVENT("Jump to ANALYSIS tab (mouse)");
         } else if (x < left_margin + 4 * tab_width
                    && pipeline_->getClassifier() != nullptr) {
             potential_new_state = AppState::kTraining;
-            fragment_ = TRAINING;
+            potential_new_fragment = TRAINING;
             ESP_EVENT("Jump to TRAINING tab (mouse)");
         } else if (x < left_margin + 5 * tab_width
                    && pipeline_->getClassifier() != nullptr) {
             potential_new_state = AppState::kPrediction;
-            fragment_ = PREDICTION;
+            potential_new_fragment = PREDICTION;
             ESP_EVENT("Jump to PREDICTION tab (mouse)");
         }
     }
@@ -2419,6 +2420,7 @@ void ofApp::mouseReleased(int x, int y, int button) {
     }
 
     state_ = potential_new_state;
+    fragment_ = potential_new_fragment;
 }
 
 //--------------------------------------------------------------
