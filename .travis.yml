@@ -82,7 +82,9 @@ cache:
     - third-party/openFrameworks/libs
 before_deploy:
   if [ "$OS" = "Linux" ]; then
-     (cd ../Xcode/ESP/ && doxygen Doxyfile)
+    # previously I am in $ROOT/build
+    cd ..
+    (cd Xcode/ESP/ && doxygen Doxyfile)
   fi;
 deploy:
   skip_cleanup: true
