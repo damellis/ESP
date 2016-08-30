@@ -85,6 +85,7 @@ before_deploy:
      (cd ../Xcode/ESP/ && doxygen Doxyfile)
   fi;
 deploy:
+  skip_cleanup: true
   provider: s3
   access_key_id: AKIAIWOAZT5MLNUB2ZEA
   secret_access_key:
