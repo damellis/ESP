@@ -26,6 +26,10 @@
 		637A06C23B6F54498F35B81F /* ofxSmartFont.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00C32701B394C1DD8762AD1E /* ofxSmartFont.cpp */; };
 		798434EF9EE5EE2E41E2F0DE /* ofxGrtTimeseriesPlot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3016C29D8E0735FBAEF55DFA /* ofxGrtTimeseriesPlot.cpp */; };
 		811B7BF71CF51D830078CD0A /* Filter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 811B7BF51CF51D830078CD0A /* Filter.cpp */; };
+		812173921D75051C00ED6CCB /* libgdp.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 812173911D75051C00ED6CCB /* libgdp.dylib */; };
+		812173941D75053300ED6CCB /* libep.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 812173931D75053300ED6CCB /* libep.dylib */; };
+		812173971D750FC800ED6CCB /* libep.so.3.0 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 812173951D750FC800ED6CCB /* libep.so.3.0 */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		812173981D750FC800ED6CCB /* libgdp.so.0.7 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 812173961D750FC800ED6CCB /* libgdp.so.0.7 */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		812188581D525F720088AAB1 /* ofYesNoDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 812188571D525F720088AAB1 /* ofYesNoDialog.cpp */; };
 		8144865B1D5D2AF5009A3FAA /* ofConsoleFileLoggerChannel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8144865A1D5D2AF5009A3FAA /* ofConsoleFileLoggerChannel.cpp */; };
 		814E133B1D1A072800774F7B /* training.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 814E133A1D1A072800774F7B /* training.cpp */; };
@@ -70,6 +74,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				812173971D750FC800ED6CCB /* libep.so.3.0 in CopyFiles */,
+				812173981D750FC800ED6CCB /* libgdp.so.0.7 in CopyFiles */,
 				817BE7761CCB067800FE581B /* libgrt.dylib in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -132,6 +138,10 @@
 		806F715C55B9B786D65F7B33 /* ofxDatGuiSlider.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxDatGuiSlider.h; path = "../../third-party/openFrameworks/addons/ofxDatGui/src/components/ofxDatGuiSlider.h"; sourceTree = SOURCE_ROOT; };
 		811B7BF51CF51D830078CD0A /* Filter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Filter.cpp; sourceTree = "<group>"; };
 		811B7BF61CF51D830078CD0A /* Filter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Filter.h; sourceTree = "<group>"; };
+		812173911D75051C00ED6CCB /* libgdp.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libgdp.dylib; path = "../../third-party/gdp/libs/libgdp.dylib"; sourceTree = "<group>"; };
+		812173931D75053300ED6CCB /* libep.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libep.dylib; path = "../../third-party/gdp/libs/libep.dylib"; sourceTree = "<group>"; };
+		812173951D750FC800ED6CCB /* libep.so.3.0 */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libep.so.3.0; path = "../../third-party/gdp/libs/libep.so.3.0"; sourceTree = "<group>"; };
+		812173961D750FC800ED6CCB /* libgdp.so.0.7 */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libgdp.so.0.7; path = "../../third-party/gdp/libs/libgdp.so.0.7"; sourceTree = "<group>"; };
 		812188571D525F720088AAB1 /* ofYesNoDialog.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = ofYesNoDialog.cpp; sourceTree = "<group>"; };
 		812188591D525FA90088AAB1 /* ofYesNoDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofYesNoDialog.h; sourceTree = "<group>"; };
 		814486591D5D2A56009A3FAA /* ofConsoleFileLoggerChannel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofConsoleFileLoggerChannel.h; sourceTree = "<group>"; };
@@ -183,6 +193,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				812173941D75053300ED6CCB /* libep.dylib in Frameworks */,
+				812173921D75051C00ED6CCB /* libgdp.dylib in Frameworks */,
 				817BE7751CCB063E00FE581B /* libgrt.dylib in Frameworks */,
 				E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */,
 			);
@@ -383,7 +395,11 @@
 		E4B69B4A0A3A1720003C02F2 = {
 			isa = PBXGroup;
 			children = (
+				812173951D750FC800ED6CCB /* libep.so.3.0 */,
+				812173961D750FC800ED6CCB /* libgdp.so.0.7 */,
 				817BE7741CCB063E00FE581B /* libgrt.dylib */,
+				812173911D75051C00ED6CCB /* libgdp.dylib */,
+				812173931D75053300ED6CCB /* libep.dylib */,
 				E4B6FCAD0C3E899E008CF71C /* openFrameworks-Info.plist */,
 				E4EB6923138AFD0F00A09F29 /* Project.xcconfig */,
 				E4B69E1C0A3A1BDC003C02F2 /* src */,
@@ -652,6 +668,7 @@
 					/usr/local/include,
 					"../../third-party/openFrameworks/addons/ofxGui/src",
 					"../../third-party/openFrameworks/addons/ofxParagraph/src",
+					"../../third-party/gdp",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				ONLY_ACTIVE_ARCH = YES;
@@ -715,6 +732,7 @@
 					/usr/local/include,
 					"../../third-party/openFrameworks/addons/ofxGui/src",
 					"../../third-party/openFrameworks/addons/ofxParagraph/src",
+					"../../third-party/gdp",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				OTHER_CPLUSPLUSFLAGS = (
@@ -771,14 +789,19 @@
 					"../../third-party/openFrameworks/addons/ofxGui/src",
 					"../../third-party/openFrameworks/addons/ofxParagraph/src",
 					"../../third-party/grt",
+					"../../third-party/gdp",
+					/opt/local/include,
 				);
 				ICON = "$(ICON_NAME_DEBUG)";
 				ICON_FILE = "$(ICON_FILE_PATH)$(ICON)";
 				INFOPLIST_FILE = "openFrameworks-Info.plist";
 				INSTALL_PATH = /Applications;
+				LD_RUNPATH_SEARCH_PATHS = "";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					/opt/local/lib,
+					"../../third-party/gdp/libs",
 				);
 				OTHER_LDFLAGS = (
 					"$(OF_CORE_FRAMEWORKS)",
@@ -832,14 +855,19 @@
 					"../../third-party/openFrameworks/addons/ofxGui/src",
 					"../../third-party/openFrameworks/addons/ofxParagraph/src",
 					"../../third-party/grt",
+					"../../third-party/gdp",
+					/opt/local/include,
 				);
 				ICON = "$(ICON_NAME_RELEASE)";
 				ICON_FILE = "$(ICON_FILE_PATH)$(ICON)";
 				INFOPLIST_FILE = "openFrameworks-Info.plist";
 				INSTALL_PATH = /Applications;
+				LD_RUNPATH_SEARCH_PATHS = "";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					/opt/local/lib,
+					"../../third-party/gdp/libs",
 				);
 				OTHER_LDFLAGS = (
 					"$(OF_CORE_FRAMEWORKS)",

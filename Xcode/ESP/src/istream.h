@@ -253,3 +253,9 @@ class FirmataStream : public InputStream {
     unique_ptr<std::thread> update_thread_;
     void update();
 };
+
+class GDPStream : public InputStream {
+  public:
+    GDPStream(char *);
+    virtual int getNumInputDimensions() { return 1; }
+};

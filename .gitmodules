@@ -16,3 +16,6 @@
 [submodule "third-party/googletest"]
 	path = third-party/googletest
 	url = https://github.com/google/googletest.git
+[submodule "third-party/gdp"]
+	path = third-party/gdp
+	url = https://repo.eecs.berkeley.edu/git/projects/swarmlab/gdp.git

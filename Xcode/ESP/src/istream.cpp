@@ -4,6 +4,15 @@
 #include <chrono>         // std::chrono::milliseconds
 #include <thread>         // std::this_thread::sleep_for
 
+extern "C" {
+#include <ep/ep.h>
+#include <ep/ep_dbg.h>
+#include <ep/ep_app.h>
+#include <ep/ep_time.h>
+#include <gdp/gdp.h>
+#include <event2/buffer.h>
+}
+
 InputStream::InputStream() : data_ready_callback_(nullptr) {}
 
 vector<double> InputStream::normalize(vector<double> input) {
@@ -323,4 +332,45 @@ void FirmataStream::update() {
             configured_arduino_ = true;
         }
     }
+}
+
+GDPStream::GDPStream(char *log_name) {
+        gdp_name_t gclname;
+        gdp_iomode_t open_mode = GDP_MODE_RO;
+        gdp_gcl_t *gcl;
+    
+	EP_STAT estat = gdp_init(NULL);
+	if (!EP_STAT_ISOK(estat))
+	{
+		ep_app_error("GDP Initialization failed");
+		return;
+	}
+
+	// allow thread to settle to avoid interspersed debug output
+	ep_time_nanosleep(INT64_C(100000000));		// 100 msec
+
+	// parse the name (either base64-encoded or symbolic)
+	estat = gdp_parse_name(log_name, gclname);
+	if (!EP_STAT_ISOK(estat))
+	{
+		ep_app_fatal("illegal GCL name syntax:\n\t%s", log_name);
+		return;
+	}
+
+	// convert it to printable format and tell the user what we are doing
+        gdp_pname_t gclpname;
+
+        gdp_printable_name(gclname, gclpname);
+        fprintf(stderr, "Reading GCL %s\n", gclpname);
+
+	// open the GCL; arguably this shouldn't be necessary
+	estat = gdp_gcl_open(gclname, open_mode, NULL, &gcl);
+	if (!EP_STAT_ISOK(estat))
+	{
+		char sbuf[100];
+
+		ep_app_error("Cannot open GCL:\n    %s",
+				ep_stat_tostr(estat, sbuf, sizeof sbuf));
+		return;
+	}
 }
