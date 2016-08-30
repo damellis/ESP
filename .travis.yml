@@ -92,6 +92,3 @@ deploy:
   bucket: esp-doc
   local-dir: Xcode/ESP/doc/html
   acl: public_read
-  on:
-    repo: damellis/ESP
-    branch: auto-doc
