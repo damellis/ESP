@@ -1456,7 +1456,8 @@ string ofApp::getAppStateInstruction() const {
 
 void ofApp::enableTrainingSampleGUI(bool should_enable) {
     for (auto& gui : training_sample_guis_) {
-        gui->setEnabled(should_enable);
+        // Setting invisible will disable ofxDatGui component handling events
+        gui->setVisible(should_enable);
     }
 }
 
