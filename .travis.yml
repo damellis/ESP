@@ -4,15 +4,13 @@ matrix:
   include:
     - os: linux
       dist: trusty
-      env:
-        - BUILD_TOOL=CMake
-        - OS=Linux
       sudo: require
+      env:
+        - BUILD_TOOL=CMake OS=Linux
     - os: osx
       osx_image: xcode8
       env:
-        - BUILD_TOOL=Xcode
-        - OS=OSX
+        - BUILD_TOOL=Xcode OS=OSX
   exclude:
     - compiler: clang
 
@@ -82,9 +80,8 @@ cache:
     - third-party/openFrameworks/libs
 before_deploy:
   if [ "$OS" = "Linux" ]; then
-    # previously I am in $ROOT/build
-    cd ..
     (cd Xcode/ESP/ && doxygen Doxyfile)
+    cd ..
   fi;
 deploy:
   skip_cleanup: true
