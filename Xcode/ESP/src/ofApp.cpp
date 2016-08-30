@@ -2413,8 +2413,10 @@ void ofApp::mouseReleased(int x, int y, int button) {
         state_ = AppState::kTraining;
         return;
     } else if (state_ == AppState::kTrainingRelabelling) {
-        // Nothing happens, but should remove the listern
-        ofRemoveListener(ofEvents().update, this, &ofApp::updateEventReceived);
+        // Nothing happens (relabel itself to be itself doesn't change the
+        // training data but will take care of keyboard listeners and title
+        // flashing).
+        doRelabelTrainingSample(relabel_source_, relabel_source_);
         state_ = AppState::kTraining;
         return;
     }
