@@ -1263,6 +1263,9 @@ void ofApp::update() {
 
             last_state_ = state_;
             state_ = AppState::kConfiguration;
+
+            // ESC should close the configuration instead of exiting the app
+            ofSetEscapeQuitsApp(false);
         }
     } else {
         if (state_ == AppState::kConfiguration) {
@@ -1274,6 +1277,7 @@ void ofApp::update() {
             } else {
                 state_ = last_state_;
             }
+            ofSetEscapeQuitsApp(true);
         }
     }
 
@@ -2318,8 +2322,13 @@ void ofApp::keyReleased(int key) {
 
     case AppState::kPipeline:
     case AppState::kPrediction:
-    case AppState::kConfiguration:
         break;
+    case AppState::kConfiguration: {
+        if (key == OF_KEY_ESC) {
+            gui_.collapse();
+        }
+        break;
+    }
     }  // switch (state_)
 }
 
