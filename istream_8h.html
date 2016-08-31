@@ -48,6 +48,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
@@ -108,15 +109,11 @@ $(document).ready(function(){initNavTree('istream_8h.html','');});
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">istream.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-
-<p>Definition of input streams: serial, audio, etc.  
-<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;GRT/GRT.h&quot;</code><br />
 <code>#include &quot;ofMain.h&quot;</code><br />
 <code>#include &quot;<a class="el" href="stream_8h_source.html">stream.h</a>&quot;</code><br />
@@ -126,8 +123,8 @@ $(document).ready(function(){initNavTree('istream_8h.html','');});
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_stream.html">IStream</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base class for input streams that provide live sensor data to the ESP system.  <a href="class_i_stream.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_input_stream.html">InputStream</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base class for input streams that provide live sensor data to the ESP system.  <a href="class_input_stream.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_audio_stream.html">AudioStream</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Input stream for reading audio from the computer's microphone.  <a href="class_audio_stream.html#details">More...</a><br /></td></tr>
@@ -135,18 +132,13 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_audio_file_stream.html">AudioFileStream</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Input stream for getting the FFT spectrum of an audio file as it plays.  <a href="class_audio_file_stream.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_serial_input_stream.html">BaseSerialInputStream</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial_stream.html">SerialStream</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_firmata_stream.html">FirmataStream</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Input stream for reading analog data from an Arduino running Firmata.  <a href="class_firmata_stream.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:a28ecae66cc8c204679f3995fafc93ae6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="istream_8h.html#a28ecae66cc8c204679f3995fafc93ae6">useInputStream</a> (<a class="el" href="class_i_stream.html">IStream</a> &amp;<a class="el" href="user__sudden__motion_8cpp.html#aa0c0eb30458e60c0433f27b43a4c603e">stream</a>)</td></tr>
-<tr class="separator:a28ecae66cc8c204679f3995fafc93ae6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4e89d8b7f053b8e3f5855d084164b39a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="istream_8h.html#a4e89d8b7f053b8e3f5855d084164b39a">usePipeline</a> (GRT::GestureRecognitionPipeline &amp;<a class="el" href="user__sudden__motion_8cpp.html#ad04a77e9fb154385d1f97731437390e4">pipeline</a>)</td></tr>
-<tr class="separator:a4e89d8b7f053b8e3f5855d084164b39a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
@@ -157,52 +149,6 @@ Variables</h2></td></tr>
 <tr class="memitem:a0f7305c1700de2b858bdeca390fcc466"><td class="memItemLeft" align="right" valign="top">const uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="istream_8h.html#a0f7305c1700de2b858bdeca390fcc466">kOfSoundStream_nBuffers</a> = 4</td></tr>
 <tr class="separator:a0f7305c1700de2b858bdeca390fcc466"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Definition of input streams: serial, audio, etc. </p>
-<p>These input streams provide sensor data to the machine learning pipeline. Each stream provides a sequence data samples, each of which is a multi-dimensional vector representing a single reading from a sensor (or group of sensors). </p>
-</div><h2 class="groupheader">Function Documentation</h2>
-<a class="anchor" id="a28ecae66cc8c204679f3995fafc93ae6"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void useInputStream </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="class_i_stream.html">IStream</a> &amp;&#160;</td>
-          <td class="paramname"><em>stream</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Tells the ESP system from which input stream to read sensor data for processing by the active machine learning pipeline. Call from your <a class="el" href="user__accelerometer__gestures_8cpp.html#a4fc01d736fe50cf5b977f755b675f11d">setup()</a> function. The specified stream will be automatically started by the ESP system. Note that only one input stream is supported; subsequent calls to <a class="el" href="istream_8h.html#a28ecae66cc8c204679f3995fafc93ae6">useInputStream()</a> will replace the previously-specified stream.</p>
-<p>See also: <a class="el" href="ostream_8cpp.html#a279f55018c4c054ad565198954f8eb16" title="Specify an OStream to which to stream predictions made by the active ESP pipeline. Multiple output streams are supported. ">useOutputStream()</a> for specifying an output stream (to which to stream the predictions made by the ESP pipeline) and <a class="el" href="iostream_8cpp.html#aff979b7370726d96aac43c99e3f7af10">useStream()</a> to specify a stream to use for both input and output.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">stream</td><td>the input stream to use. May be an <a class="el" href="class_i_o_stream.html">IOStream</a> instance, in which case the stream will only be used for input. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a class="anchor" id="a4e89d8b7f053b8e3f5855d084164b39a"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void usePipeline </td>
-          <td>(</td>
-          <td class="paramtype">GRT::GestureRecognitionPipeline &amp;&#160;</td>
-          <td class="paramname"><em>pipeline</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Tells the ESP system which machine learning pipeline to use. Call from your <a class="el" href="user__accelerometer__gestures_8cpp.html#a4fc01d736fe50cf5b977f755b675f11d">setup()</a> function. Note that only one pipeline is supported; subsequent calls to <a class="el" href="istream_8h.html#a4e89d8b7f053b8e3f5855d084164b39a">usePipeline()</a> will replace the previously-specified pipeline.</p>
-<p>The pipeline will be fed with data from the input stream specified using <a class="el" href="iostream_8cpp.html#aff979b7370726d96aac43c99e3f7af10">useStream()</a> or <a class="el" href="istream_8h.html#a28ecae66cc8c204679f3995fafc93ae6">useInputStream()</a>, as modified by the calibrators specified using <a class="el" href="calibrator_8cpp.html#aa56b17a8db41c36d20d29c360cd4b5bd" title="Specify the Calibrator to be used by the ESP system. ">useCalibrator()</a>. </p>
-
-</div>
-</div>
 <h2 class="groupheader">Variable Documentation</h2>
 <a class="anchor" id="a1f9fb9924409c3cbb2b8709b83e37471"></a>
 <div class="memitem">

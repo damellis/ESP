@@ -1,6 +1,22 @@
 var searchData=
 [
-  ['end',['end',['../struct_plotter_1_1_callback_args.html#a543458e97f91e3fbecef9a8ec96c1a1e',1,'Plotter::CallbackArgs::end()'],['../struct_interactive_time_series_plot_1_1_callback_args.html#ac02e8f8b810958ae0bb81fc198f6f97f',1,'InteractiveTimeSeriesPlot::CallbackArgs::end()']]],
-  ['esp_2eh',['ESP.h',['../_e_s_p_8h.html',1,'']]],
-  ['exit',['exit',['../classof_app.html#ac844ecdc290bd3c87b594c56e82623af',1,'ofApp']]]
+  ['data',['data',['../struct_interactive_plot_1_1_range_selected_callback_args.html#afebb8518226458d9d2140cda72c5ad71',1,'InteractivePlot::RangeSelectedCallbackArgs::data()'],['../struct_interactive_plot_1_1_value_highlighted_callback_args.html#af7f1ddfbeb9ee568ba3d448dba740395',1,'InteractivePlot::ValueHighlightedCallbackArgs::data()'],['../struct_interactive_plot_1_1_no_value_highlighted_callback_args.html#af7c3d4d9464989a2bfc94c257c90c320',1,'InteractivePlot::NoValueHighlightedCallbackArgs::data()']]],
+  ['data_5fready_5fcallback_5f',['data_ready_callback_',['../class_input_stream.html#aa27c2cd4d4c2f73161a42fc305da10ec',1,'InputStream']]],
+  ['databuffer',['dataBuffer',['../class_g_r_t_1_1_filter.html#abafe35ada72384c5f4448fad6e8f291a',1,'GRT::Filter::dataBuffer()'],['../class_g_r_t_1_1_threshold_detection.html#a857c7ceb2a081ceac06705fc26cf4af1',1,'GRT::ThresholdDetection::dataBuffer()']]],
+  ['dct_5fmatrix_5f',['dct_matrix_',['../class_g_r_t_1_1_m_f_c_c.html#a90a7bea22b09ecff00cb6bf0675cb969',1,'GRT::MFCC']]],
+  ['decodename',['decodeName',['../of_app_8cpp.html#abd3d59785db39c884c2bb5d76a576a16',1,'ofApp.cpp']]],
+  ['deepcopyfrom',['deepCopyFrom',['../class_g_r_t_1_1_filter.html#a27f977ba41e35a96dc2139b3bc2bc1e8',1,'GRT::Filter::deepCopyFrom()'],['../class_g_r_t_1_1_m_f_c_c.html#adb9e074324f7704c35177aec8d98515b',1,'GRT::MFCC::deepCopyFrom()'],['../class_g_r_t_1_1_threshold_detection.html#a85fdfdead295ba2555e50fdd7da76104',1,'GRT::ThresholdDetection::deepCopyFrom()']]],
+  ['deleteallbuttonpressed',['deleteAllButtonPressed',['../class_training_sample_gui_listener.html#a0ce9c6b662c271b9861e004972a25021',1,'TrainingSampleGuiListener']]],
+  ['deleteallsamples',['deleteAllSamples',['../class_training_data_manager.html#ad6fefafc8dd9457c45158b8738389a4a',1,'TrainingDataManager']]],
+  ['deleteallsampleswithlabel',['deleteAllSamplesWithLabel',['../class_training_data_manager.html#a572c79c9298f6826ae11f2003457083b',1,'TrainingDataManager']]],
+  ['deletebuttonpressed',['deleteButtonPressed',['../class_training_sample_gui_listener.html#a8785ad8ba7bc5f73f3f012c198650f28',1,'TrainingSampleGuiListener']]],
+  ['deletesample',['deleteSample',['../class_training_data_manager.html#aa26c075c5436dd11572261fa3f150a9f',1,'TrainingDataManager']]],
+  ['detectbeat',['detectBeat',['../user__audio__beat__detection_8cpp.html#a6fd43c8fd546ac4c773bf4f426daf65e',1,'user_audio_beat_detection.cpp']]],
+  ['dim',['DIM',['../cli_8cpp.html#a63a6059ef67cec0e73613f908d3fdc4f',1,'DIM():&#160;cli.cpp'],['../user__audio__beat__detection_8cpp.html#a940f19500389ec3a8318dd52e4a8a1c3',1,'DIM():&#160;user_audio_beat_detection.cpp'],['../user__speaker_8cpp.html#a63a6059ef67cec0e73613f908d3fdc4f',1,'DIM():&#160;user_speaker.cpp']]],
+  ['dotproduct',['dotProduct',['../user__accelerometer__walk__detection_8cpp.html#a1730ef96f862bdaffdadbfc620efbc4f',1,'user_accelerometer_walk_detection.cpp']]],
+  ['double_5frange',['DOUBLE_RANGE',['../class_tuneable.html#a85668dc428a627c31a5b3e76c87b92e5af4da35abcdee22fff02d1c057c757eaa',1,'Tuneable']]],
+  ['downsample_5frate',['downsample_rate',['../cli_8cpp.html#aed1120a8e3e2691b70758749fe1dcf0e',1,'cli.cpp']]],
+  ['dragevent',['dragEvent',['../classof_app.html#a87d731d6cecb0794d286bc64d5963ec3',1,'ofApp']]],
+  ['draw',['draw',['../classof_app.html#a827a252274dfb97aa07c8e390d3bfad7',1,'ofApp::draw()'],['../class_plotter.html#a1f193738ab097f30bd22f6018cba0794',1,'Plotter::draw()'],['../class_interactive_time_series_plot.html#a38a32a41a409d459844e9c5150f54242',1,'InteractiveTimeSeriesPlot::draw()']]],
+  ['duringselection',['duringSelection',['../class_interactive_plot.html#a75ea411294931a042e0d79215ad5e43e',1,'InteractivePlot']]]
 ];

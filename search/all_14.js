@@ -1,6 +1,8 @@
 var searchData=
 [
-  ['warning',['WARNING',['../class_calibrate_result.html#aa473de26f2f0bc502e58b7ebdb038e4ba4fc1d1c38fcfbb9fe85e5f0b6222bfee',1,'CalibrateResult::WARNING()'],['../class_training_sample_checker_result.html#a0cba1d0ca73cf49645dade329dba9e21a6c93df5985c9206ace26c924ac95d524',1,'TrainingSampleCheckerResult::WARNING()']]],
-  ['windowresized',['windowResized',['../classof_app.html#a0dc7a2bd0a10e38346a7a6e70470664c',1,'ofApp']]],
-  ['with_5fdelta_5f',['with_delta_',['../class_g_r_t_1_1_mel_bank_features.html#a2ead5f65be95447528bea7972be8f1a3',1,'GRT::MelBankFeatures']]]
+  ['value_5fhighlighted_5fcallback_5f',['value_highlighted_callback_',['../class_interactive_plot.html#a1fc48450b5dc5eb77aa99fae670b6426',1,'InteractivePlot']]],
+  ['value_5fhighlighted_5fcallback_5fdata_5f',['value_highlighted_callback_data_',['../class_interactive_plot.html#a898d8ade5ef90f9c2bfb503f77b6e68d',1,'InteractivePlot']]],
+  ['valuehighlightedcallbackargs',['ValueHighlightedCallbackArgs',['../struct_interactive_plot_1_1_value_highlighted_callback_args.html',1,'InteractivePlot']]],
+  ['vectornormalizefunc',['vectorNormalizeFunc',['../class_input_stream.html#af5ddcce77c5c46a5c93b1e42257dffda',1,'InputStream']]],
+  ['vectornormalizer_5f',['vectorNormalizer_',['../class_input_stream.html#aa244356b89fcaa06f4cf912e56ac5352',1,'InputStream']]]
 ];

@@ -8,5 +8,6 @@ var class_calibrate_result =
     [ "CalibrateResult", "class_calibrate_result.html#a14fd0072db04ddd96085688ab9cb01b8", null ],
     [ "CalibrateResult", "class_calibrate_result.html#a1d9872a475057d270efa6255dde10cd2", null ],
     [ "getMessage", "class_calibrate_result.html#a941fce0c0a3d3fa08441d34fc2d87dce", null ],
-    [ "getResult", "class_calibrate_result.html#a3bea9189b732b89d508b25e974d168a7", null ]
+    [ "getResult", "class_calibrate_result.html#a3bea9189b732b89d508b25e974d168a7", null ],
+    [ "getResultString", "class_calibrate_result.html#ab97f0dfc05796d13639dc8eec875be72", null ]
 ];

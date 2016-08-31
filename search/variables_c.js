@@ -1,5 +1,7 @@
 var searchData=
 [
-  ['range',['range',['../user__audio_8cpp.html#ac26a49438fb4be02f746d15833a9c591',1,'user_audio.cpp']]],
-  ['registermodule',['registerModule',['../class_g_r_t_1_1_mel_bank_features.html#af603f8bfbb7d9bb6562fbfda49bb571f',1,'GRT::MelBankFeatures::registerModule()'],['../class_g_r_t_1_1_threshold_detection.html#a8a13c87dfda9a81e749c27f8ca015d35',1,'GRT::ThresholdDetection::registerModule()']]]
+  ['oneg',['oneG',['../user__accelerometer__walk__detection_8cpp.html#a6423f81bc2d048133f946ad3c0c22aaf',1,'oneG():&#160;user_accelerometer_walk_detection.cpp'],['../user__sudden__motion_8cpp.html#a6423f81bc2d048133f946ad3c0c22aaf',1,'oneG():&#160;user_sudden_motion.cpp']]],
+  ['options_5f',['options_',['../class_g_r_t_1_1_m_f_c_c.html#a0cb88be5148add12f22728abf0349f8f',1,'GRT::MFCC']]],
+  ['ostream',['oStream',['../user__accelerometer__gestures_8cpp.html#a03d2e0d3fbf91d8bffad36160f3d0d7a',1,'oStream():&#160;user_accelerometer_gestures.cpp'],['../user__accelerometer__poses_8cpp.html#a03d2e0d3fbf91d8bffad36160f3d0d7a',1,'oStream():&#160;user_accelerometer_poses.cpp'],['../user__accelerometer__walk__detection_8cpp.html#a03d2e0d3fbf91d8bffad36160f3d0d7a',1,'oStream():&#160;user_accelerometer_walk_detection.cpp'],['../user__audio__beat__detection_8cpp.html#a03d2e0d3fbf91d8bffad36160f3d0d7a',1,'oStream():&#160;user_audio_beat_detection.cpp'],['../user__color__sensor_8cpp.html#a03d2e0d3fbf91d8bffad36160f3d0d7a',1,'oStream():&#160;user_color_sensor.cpp'],['../user__speaker_8cpp.html#a03d2e0d3fbf91d8bffad36160f3d0d7a',1,'oStream():&#160;user_speaker.cpp'],['../user__touche_8cpp.html#a03d2e0d3fbf91d8bffad36160f3d0d7a',1,'oStream():&#160;user_touche.cpp']]],
+  ['ostream2',['oStream2',['../user__audio__beat__detection_8cpp.html#ac5714508de952c605662d5cd15d3e350',1,'user_audio_beat_detection.cpp']]]
 ];

@@ -48,6 +48,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -109,9 +110,8 @@ $(document).ready(function(){initNavTree('class_plotter.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
-<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="class_plotter-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Plotter Class Reference</div>  </div>
@@ -119,17 +119,16 @@ $(document).ready(function(){initNavTree('class_plotter.html','');});
 <div class="contents">
 
 <p><code>#include &lt;<a class="el" href="plotter_8h_source.html">plotter.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for Plotter:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="class_plotter.png" usemap="#Plotter_map" alt=""/>
+  <map id="Plotter_map" name="Plotter_map">
+<area href="class_interactive_plot.html" alt="InteractivePlot" shape="rect" coords="0,0,92,24"/>
+</map>
+ </div></div>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_plotter_1_1_callback_args.html">CallbackArgs</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
-Public Types</h2></td></tr>
-<tr class="memitem:a4e63ab84954d7ea8c076c974c22fda17"><td class="memItemLeft" align="right" valign="top">typedef std::function&lt; void(<a class="el" href="struct_plotter_1_1_callback_args.html">CallbackArgs</a>)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_plotter.html#a4e63ab84954d7ea8c076c974c22fda17">onRangeSelectedCallback</a></td></tr>
-<tr class="separator:a4e63ab84954d7ea8c076c974c22fda17"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:aba3be32116013da27655868ed5e49af4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_plotter.html#aba3be32116013da27655868ed5e49af4">Plotter</a> ()</td></tr>
@@ -142,8 +141,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a40fd6ee77a712fe81615781ab02f8a16"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1e3f623029d179155bbcb569d07b7b28"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_plotter.html#a1e3f623029d179155bbcb569d07b7b28">push_back</a> (const vector&lt; double &gt; &amp;data_point)</td></tr>
 <tr class="separator:a1e3f623029d179155bbcb569d07b7b28"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a01b6899f3e16ba6e992f8bd977b7680d"><td class="memItemLeft" align="right" valign="top">GRT::MatrixDouble &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_plotter.html#a01b6899f3e16ba6e992f8bd977b7680d">getData</a> ()</td></tr>
-<tr class="separator:a01b6899f3e16ba6e992f8bd977b7680d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3626c3ea70ee26d013dddddcdbd91704"><td class="memItemLeft" align="right" valign="top">virtual GRT::MatrixDouble &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_plotter.html#a3626c3ea70ee26d013dddddcdbd91704">getData</a> ()</td></tr>
+<tr class="separator:a3626c3ea70ee26d013dddddcdbd91704"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c45db07a01882b82f7792a9e91d6aaf"><td class="memItemLeft" align="right" valign="top">virtual MatrixDouble&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_plotter.html#a5c45db07a01882b82f7792a9e91d6aaf">getData</a> (uint32_t x_start_idx, uint32_t x_end_idx)</td></tr>
+<tr class="separator:a5c45db07a01882b82f7792a9e91d6aaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9cccd970f62a3f5ce68eda3b993324fd"><td class="memItemLeft" align="right" valign="top">virtual vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_plotter.html#a9cccd970f62a3f5ce68eda3b993324fd">getData</a> (uint32_t x_idx)</td></tr>
+<tr class="separator:a9cccd970f62a3f5ce68eda3b993324fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5fac765fccef8f5e084e6197e4fe4b3f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_plotter.html#a5fac765fccef8f5e084e6197e4fe4b3f">setRanges</a> (float minY, float maxY, bool lockRanges=false)</td></tr>
 <tr class="separator:a5fac765fccef8f5e084e6197e4fe4b3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a39a8239c89e8d77da437011f40ef6b59"><td class="memItemLeft" align="right" valign="top">std::pair&lt; float, float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_plotter.html#a39a8239c89e8d77da437011f40ef6b59">getRanges</a> ()</td></tr>
@@ -164,27 +167,79 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:afe114c1ace4acbc41c0f86dfa57f76bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e6e1d92181376deecea4fb338412eec"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_plotter.html#a7e6e1d92181376deecea4fb338412eec">clearData</a> ()</td></tr>
 <tr class="separator:a7e6e1d92181376deecea4fb338412eec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af1ca2b4377fdb0eec58389ade01b01c8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_plotter.html#af1ca2b4377fdb0eec58389ade01b01c8">onRangeSelected</a> (const <a class="el" href="class_plotter.html#a4e63ab84954d7ea8c076c974c22fda17">onRangeSelectedCallback</a> &amp;cb, void *data)</td></tr>
-<tr class="separator:af1ca2b4377fdb0eec58389ade01b01c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac3f438dc00a0a9cb8c619055f9d605de"><td class="memTemplParams" colspan="2">template&lt;typename T1 , typename arg , class T &gt; </td></tr>
-<tr class="memitem:ac3f438dc00a0a9cb8c619055f9d605de"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_plotter.html#ac3f438dc00a0a9cb8c619055f9d605de">onRangeSelected</a> (T1 *owner, void(T::*listenerMethod)(arg), void *data)</td></tr>
-<tr class="separator:ac3f438dc00a0a9cb8c619055f9d605de"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a414d068ad8a83b50fe511b7d75a350b6"><td class="memItemLeft" align="right" valign="top">std::pair&lt; uint32_t, uint32_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_plotter.html#a414d068ad8a83b50fe511b7d75a350b6">getSelection</a> ()</td></tr>
-<tr class="separator:a414d068ad8a83b50fe511b7d75a350b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_class_interactive_plot"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_interactive_plot')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_interactive_plot.html">InteractivePlot</a></td></tr>
+<tr class="memitem:afb6b6fb551d70b37705f32cec37687d7 inherit pub_methods_class_interactive_plot"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_interactive_plot.html#afb6b6fb551d70b37705f32cec37687d7">InteractivePlot</a> ()</td></tr>
+<tr class="separator:afb6b6fb551d70b37705f32cec37687d7 inherit pub_methods_class_interactive_plot"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a583d6828a3c894514f79624944b6a8e7 inherit pub_methods_class_interactive_plot"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_interactive_plot.html#a583d6828a3c894514f79624944b6a8e7">onRangeSelected</a> (const <a class="el" href="class_interactive_plot.html#aafa0918d28f4c4e36b517f35c5d122e4">onRangeSelectedCallback</a> &amp;cb, void *data=nullptr)</td></tr>
+<tr class="separator:a583d6828a3c894514f79624944b6a8e7 inherit pub_methods_class_interactive_plot"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9d8f710809cd1eeb7e6caafbce683fe inherit pub_methods_class_interactive_plot"><td class="memTemplParams" colspan="2">template&lt;typename T1 , typename arg , class T &gt; </td></tr>
+<tr class="memitem:ad9d8f710809cd1eeb7e6caafbce683fe inherit pub_methods_class_interactive_plot"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_interactive_plot.html#ad9d8f710809cd1eeb7e6caafbce683fe">onRangeSelected</a> (T1 *owner, void(T::*listenerMethod)(arg), void *data=nullptr)</td></tr>
+<tr class="separator:ad9d8f710809cd1eeb7e6caafbce683fe inherit pub_methods_class_interactive_plot"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af060fee5b4e777d435d62c9d4f2d5f16 inherit pub_methods_class_interactive_plot"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_interactive_plot.html#af060fee5b4e777d435d62c9d4f2d5f16">onValueHighlighted</a> (const <a class="el" href="class_interactive_plot.html#a67c377c0e566d667961efb1b89e39a06">onValueHighlightedCallback</a> &amp;cb, void *data=nullptr)</td></tr>
+<tr class="separator:af060fee5b4e777d435d62c9d4f2d5f16 inherit pub_methods_class_interactive_plot"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a659751c7dc3c5dd6fb1d32b801f96e62 inherit pub_methods_class_interactive_plot"><td class="memTemplParams" colspan="2">template&lt;typename T1 , typename arg , class T &gt; </td></tr>
+<tr class="memitem:a659751c7dc3c5dd6fb1d32b801f96e62 inherit pub_methods_class_interactive_plot"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_interactive_plot.html#a659751c7dc3c5dd6fb1d32b801f96e62">onValueHighlighted</a> (T1 *owner, void(T::*listenerMethod)(arg), void *data=nullptr)</td></tr>
+<tr class="separator:a659751c7dc3c5dd6fb1d32b801f96e62 inherit pub_methods_class_interactive_plot"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2aa28719ccedd19217fbdd31aa231013 inherit pub_methods_class_interactive_plot"><td class="memItemLeft" align="right" valign="top">std::pair&lt; uint32_t, uint32_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_interactive_plot.html#a2aa28719ccedd19217fbdd31aa231013">getSelection</a> ()</td></tr>
+<tr class="separator:a2aa28719ccedd19217fbdd31aa231013 inherit pub_methods_class_interactive_plot"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5be0469c00212d34f873f4db698daab3 inherit pub_methods_class_interactive_plot"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_interactive_plot.html#a5be0469c00212d34f873f4db698daab3">clearSelection</a> ()</td></tr>
+<tr class="separator:a5be0469c00212d34f873f4db698daab3 inherit pub_methods_class_interactive_plot"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:aa8cb974140f2e538b3c9cbec432f8157"><td class="memItemLeft" align="right" valign="top">virtual uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_plotter.html#aa8cb974140f2e538b3c9cbec432f8157">mouseCoordinateToIndex</a> (uint32_t x)</td></tr>
+<tr class="separator:aa8cb974140f2e538b3c9cbec432f8157"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_methods_class_interactive_plot"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_class_interactive_plot')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="class_interactive_plot.html">InteractivePlot</a></td></tr>
+<tr class="memitem:a1f4f3c7c0214a22cd07edd8c714b2a05 inherit pro_methods_class_interactive_plot"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_interactive_plot.html#a1f4f3c7c0214a22cd07edd8c714b2a05">contains</a> (uint32_t x, uint32_t y)</td></tr>
+<tr class="separator:a1f4f3c7c0214a22cd07edd8c714b2a05 inherit pro_methods_class_interactive_plot"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2361f8422cddb17f13e5298024c1ddd4 inherit pro_methods_class_interactive_plot"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_interactive_plot.html#a2361f8422cddb17f13e5298024c1ddd4">mouseMoved</a> (ofMouseEventArgs &amp;arg)</td></tr>
+<tr class="separator:a2361f8422cddb17f13e5298024c1ddd4 inherit pro_methods_class_interactive_plot"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3ab8b15716539759361ed5a762bbe7b inherit pro_methods_class_interactive_plot"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_interactive_plot.html#ab3ab8b15716539759361ed5a762bbe7b">startSelection</a> (ofMouseEventArgs &amp;arg)</td></tr>
+<tr class="separator:ab3ab8b15716539759361ed5a762bbe7b inherit pro_methods_class_interactive_plot"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75ea411294931a042e0d79215ad5e43e inherit pro_methods_class_interactive_plot"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_interactive_plot.html#a75ea411294931a042e0d79215ad5e43e">duringSelection</a> (ofMouseEventArgs &amp;arg)</td></tr>
+<tr class="separator:a75ea411294931a042e0d79215ad5e43e inherit pro_methods_class_interactive_plot"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab19cd71febe6a5148c7d4c1ae3181879 inherit pro_methods_class_interactive_plot"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_interactive_plot.html#ab19cd71febe6a5148c7d4c1ae3181879">normalize</a> ()</td></tr>
+<tr class="separator:ab19cd71febe6a5148c7d4c1ae3181879 inherit pro_methods_class_interactive_plot"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a356e488854c75cd56b2252efa015ff2f inherit pro_methods_class_interactive_plot"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_interactive_plot.html#a356e488854c75cd56b2252efa015ff2f">endSelection</a> (ofMouseEventArgs &amp;arg)</td></tr>
+<tr class="separator:a356e488854c75cd56b2252efa015ff2f inherit pro_methods_class_interactive_plot"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pub_types_class_interactive_plot"><td colspan="2" onclick="javascript:toggleInherit('pub_types_class_interactive_plot')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="class_interactive_plot.html">InteractivePlot</a></td></tr>
+<tr class="memitem:aafa0918d28f4c4e36b517f35c5d122e4 inherit pub_types_class_interactive_plot"><td class="memItemLeft" align="right" valign="top">typedef std::function&lt; void(<a class="el" href="struct_interactive_plot_1_1_range_selected_callback_args.html">RangeSelectedCallbackArgs</a>)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_interactive_plot.html#aafa0918d28f4c4e36b517f35c5d122e4">onRangeSelectedCallback</a></td></tr>
+<tr class="separator:aafa0918d28f4c4e36b517f35c5d122e4 inherit pub_types_class_interactive_plot"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67c377c0e566d667961efb1b89e39a06 inherit pub_types_class_interactive_plot"><td class="memItemLeft" align="right" valign="top">typedef std::function&lt; void(<a class="el" href="struct_interactive_plot_1_1_value_highlighted_callback_args.html">ValueHighlightedCallbackArgs</a>)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_interactive_plot.html#a67c377c0e566d667961efb1b89e39a06">onValueHighlightedCallback</a></td></tr>
+<tr class="separator:a67c377c0e566d667961efb1b89e39a06 inherit pub_types_class_interactive_plot"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_class_interactive_plot"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_class_interactive_plot')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="class_interactive_plot.html">InteractivePlot</a></td></tr>
+<tr class="memitem:ad6ba0c18e3c499c80c16e5917072eb66 inherit pro_attribs_class_interactive_plot"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_interactive_plot.html#ad6ba0c18e3c499c80c16e5917072eb66">x_</a></td></tr>
+<tr class="separator:ad6ba0c18e3c499c80c16e5917072eb66 inherit pro_attribs_class_interactive_plot"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a865372ee157058d35569e7eb26323295 inherit pro_attribs_class_interactive_plot"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_interactive_plot.html#a865372ee157058d35569e7eb26323295">y_</a></td></tr>
+<tr class="separator:a865372ee157058d35569e7eb26323295 inherit pro_attribs_class_interactive_plot"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c99f0439ce996a569058100cc342954 inherit pro_attribs_class_interactive_plot"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_interactive_plot.html#a3c99f0439ce996a569058100cc342954">w_</a></td></tr>
+<tr class="separator:a3c99f0439ce996a569058100cc342954 inherit pro_attribs_class_interactive_plot"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a509e1ce2980779cb17f43fdb9df1a32b inherit pro_attribs_class_interactive_plot"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_interactive_plot.html#a509e1ce2980779cb17f43fdb9df1a32b">h_</a></td></tr>
+<tr class="separator:a509e1ce2980779cb17f43fdb9df1a32b inherit pro_attribs_class_interactive_plot"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc710e7802a996d143ee65cb1cfd5a46 inherit pro_attribs_class_interactive_plot"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_interactive_plot.html#abc710e7802a996d143ee65cb1cfd5a46">x_move_</a></td></tr>
+<tr class="separator:abc710e7802a996d143ee65cb1cfd5a46 inherit pro_attribs_class_interactive_plot"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2208f0edab5c7499ee2655b4b2e3d9ef inherit pro_attribs_class_interactive_plot"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_interactive_plot.html#a2208f0edab5c7499ee2655b4b2e3d9ef">x_click_</a></td></tr>
+<tr class="separator:a2208f0edab5c7499ee2655b4b2e3d9ef inherit pro_attribs_class_interactive_plot"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34cf4a87c61618b6962309ba8e08402b inherit pro_attribs_class_interactive_plot"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_interactive_plot.html#a34cf4a87c61618b6962309ba8e08402b">x_release_</a></td></tr>
+<tr class="separator:a34cf4a87c61618b6962309ba8e08402b inherit pro_attribs_class_interactive_plot"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abbb6a86995871fcf5b074ddd96870422 inherit pro_attribs_class_interactive_plot"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_interactive_plot.html#abbb6a86995871fcf5b074ddd96870422">x_start_</a></td></tr>
+<tr class="separator:abbb6a86995871fcf5b074ddd96870422 inherit pro_attribs_class_interactive_plot"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19b63943afdf71df49b7dd3555916cf5 inherit pro_attribs_class_interactive_plot"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_interactive_plot.html#a19b63943afdf71df49b7dd3555916cf5">x_end_</a></td></tr>
+<tr class="separator:a19b63943afdf71df49b7dd3555916cf5 inherit pro_attribs_class_interactive_plot"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f9377c609931e7814b463ceb18b064b inherit pro_attribs_class_interactive_plot"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_interactive_plot.html#a4f9377c609931e7814b463ceb18b064b">is_tracking_mouse_</a></td></tr>
+<tr class="separator:a4f9377c609931e7814b463ceb18b064b inherit pro_attribs_class_interactive_plot"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acaaad3c7fe03dfd244b762395f594df0 inherit pro_attribs_class_interactive_plot"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_interactive_plot.html#aafa0918d28f4c4e36b517f35c5d122e4">onRangeSelectedCallback</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_interactive_plot.html#acaaad3c7fe03dfd244b762395f594df0">range_selected_callback_</a></td></tr>
+<tr class="separator:acaaad3c7fe03dfd244b762395f594df0 inherit pro_attribs_class_interactive_plot"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab8b745be50c1956147a51cb9cc729257 inherit pro_attribs_class_interactive_plot"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_interactive_plot.html#ab8b745be50c1956147a51cb9cc729257">range_selected_callback_data_</a></td></tr>
+<tr class="separator:ab8b745be50c1956147a51cb9cc729257 inherit pro_attribs_class_interactive_plot"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1fc48450b5dc5eb77aa99fae670b6426 inherit pro_attribs_class_interactive_plot"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_interactive_plot.html#a67c377c0e566d667961efb1b89e39a06">onValueHighlightedCallback</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_interactive_plot.html#a1fc48450b5dc5eb77aa99fae670b6426">value_highlighted_callback_</a></td></tr>
+<tr class="separator:a1fc48450b5dc5eb77aa99fae670b6426 inherit pro_attribs_class_interactive_plot"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a898d8ade5ef90f9c2bfb503f77b6e68d inherit pro_attribs_class_interactive_plot"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_interactive_plot.html#a898d8ade5ef90f9c2bfb503f77b6e68d">value_highlighted_callback_data_</a></td></tr>
+<tr class="separator:a898d8ade5ef90f9c2bfb503f77b6e68d inherit pro_attribs_class_interactive_plot"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Typedef Documentation</h2>
-<a class="anchor" id="a4e63ab84954d7ea8c076c974c22fda17"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef std::function&lt;void(<a class="el" href="struct_plotter_1_1_callback_args.html">CallbackArgs</a>)&gt; <a class="el" href="class_plotter.html#a4e63ab84954d7ea8c076c974c22fda17">Plotter::onRangeSelectedCallback</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="aba3be32116013da27655868ed5e49af4"></a>
 <div class="memitem">
@@ -270,7 +325,7 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a01b6899f3e16ba6e992f8bd977b7680d"></a>
+<a class="anchor" id="a3626c3ea70ee26d013dddddcdbd91704"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -278,7 +333,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">GRT::MatrixDouble&amp; Plotter::getData </td>
+          <td class="memname">virtual GRT::MatrixDouble&amp; Plotter::getData </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -286,10 +341,72 @@ Public Member Functions</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a5c45db07a01882b82f7792a9e91d6aaf"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual MatrixDouble Plotter::getData </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>x_start_idx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>x_end_idx</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="class_interactive_plot.html#a8006f2a8f65a6c8ec9a98750acd1433f">InteractivePlot</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a9cccd970f62a3f5ce68eda3b993324fd"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual vector&lt;double&gt; Plotter::getData </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>x_idx</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="class_interactive_plot.html#a91e163caa19c0e27af82ee26d6514fdf">InteractivePlot</a>.</p>
 
 </div>
 </div>
@@ -299,21 +416,6 @@ Public Member Functions</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">std::pair&lt; float, float &gt; Plotter::getRanges </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a414d068ad8a83b50fe511b7d75a350b6"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::pair&lt; uint32_t, uint32_t &gt; Plotter::getSelection </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -338,71 +440,29 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="af1ca2b4377fdb0eec58389ade01b01c8"></a>
+<a class="anchor" id="aa8cb974140f2e538b3c9cbec432f8157"></a>
 <div class="memitem">
 <div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Plotter::onRangeSelected </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="class_plotter.html#a4e63ab84954d7ea8c076c974c22fda17">onRangeSelectedCallback</a> &amp;&#160;</td>
-          <td class="paramname"><em>cb</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>data</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="ac3f438dc00a0a9cb8c619055f9d605de"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T1 , typename arg , class T &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Plotter::onRangeSelected </td>
+          <td class="memname">virtual uint32_t Plotter::mouseCoordinateToIndex </td>
           <td>(</td>
-          <td class="paramtype">T1 *&#160;</td>
-          <td class="paramname"><em>owner</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>x</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">void(T::*)(arg)&#160;</td>
-          <td class="paramname"><em>listenerMethod</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>data</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Implements <a class="el" href="class_interactive_plot.html#a5685b67c2dbff803b6e01d00af588c97">InteractivePlot</a>.</p>
 
 </div>
 </div>

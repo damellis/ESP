@@ -1,20 +1,10 @@
 var searchData=
 [
-  ['macoskeyboardostream',['MacOSKeyboardOStream',['../class_mac_o_s_keyboard_o_stream.html',1,'MacOSKeyboardOStream'],['../class_mac_o_s_keyboard_o_stream.html#ab440b9df1a731ce5bf47c25b5b08ccce',1,'MacOSKeyboardOStream::MacOSKeyboardOStream(std::map&lt; uint32_t, char &gt; key_mapping)'],['../class_mac_o_s_keyboard_o_stream.html#afa43bc4e4457b42e83798dffc2d26159',1,'MacOSKeyboardOStream::MacOSKeyboardOStream(uint32_t count,...)']]],
-  ['macosmouseostream',['MacOSMouseOStream',['../class_mac_o_s_mouse_o_stream.html',1,'MacOSMouseOStream'],['../class_mac_o_s_mouse_o_stream.html#ae44a6b7be72b4466599f8e6ce29b31be',1,'MacOSMouseOStream::MacOSMouseOStream(std::map&lt; uint32_t, pair&lt; uint32_t, uint32_t &gt; &gt; mouse_mapping)'],['../class_mac_o_s_mouse_o_stream.html#ad898a6dfc839b158dc7a680ecaba0367',1,'MacOSMouseOStream::MacOSMouseOStream(uint32_t count,...)']]],
-  ['main',['main',['../main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4',1,'main.cpp']]],
-  ['main_2ecpp',['main.cpp',['../main_8cpp.html',1,'']]],
-  ['meanandlast',['meanAndLast',['../user__audio__beat__detection_8cpp.html#ac5c50989620375df20ed2d4ae86edcbd',1,'user_audio_beat_detection.cpp']]],
-  ['melbank',['MelBank',['../class_g_r_t_1_1_mel_bank.html#a42e460e43f4d40e916ee333a1e6ca0e1',1,'GRT::MelBank']]],
-  ['melbank',['MelBank',['../class_g_r_t_1_1_mel_bank.html',1,'GRT']]],
-  ['melbankfeatures',['MelBankFeatures',['../class_g_r_t_1_1_mel_bank_features.html#a05186b1d0b164f201c37549a5b8e57ad',1,'GRT::MelBankFeatures::MelBankFeatures(double startFreq=-1, double endFreq=-1, uint32_t FFTSize=-1, uint32_t sampleRate=-1, uint32_t numFilterBanks=26, uint32_t numLowerFeatures=12, bool withDelta=false)'],['../class_g_r_t_1_1_mel_bank_features.html#adb52084097642fa70595e292957f0c08',1,'GRT::MelBankFeatures::MelBankFeatures(const MelBankFeatures &amp;rhs)']]],
-  ['melbankfeatures',['MelBankFeatures',['../class_g_r_t_1_1_mel_bank_features.html',1,'GRT']]],
-  ['mfcc_2ecpp',['MFCC.cpp',['../_m_f_c_c_8cpp.html',1,'']]],
-  ['mfcc_2eh',['MFCC.h',['../_m_f_c_c_8h.html',1,'']]],
-  ['mousedragged',['mouseDragged',['../classof_app.html#a388316ab43b44678835d2fe49a8cde09',1,'ofApp']]],
-  ['mouseentered',['mouseEntered',['../classof_app.html#a9cc437ecae1279f4bdb7008259716664',1,'ofApp']]],
-  ['mouseexited',['mouseExited',['../classof_app.html#a487a75f9944f251a8d6625ca371d71df',1,'ofApp']]],
-  ['mousemoved',['mouseMoved',['../classof_app.html#a998966fa8e05e7c74552f69c4c5ee973',1,'ofApp']]],
-  ['mousepressed',['mousePressed',['../classof_app.html#a23b2db1368e9d26cd1c9d24839e2a519',1,'ofApp']]],
-  ['mousereleased',['mouseReleased',['../classof_app.html#aea0624d68de3f15bd5400c07eb452726',1,'ofApp']]]
+  ['legend',['legend',['../namespacematplotlibcpp.html#a916bb5a9dc5f6a24877cc027bf4ee624',1,'matplotlibcpp']]],
+  ['lifter_5fparam',['lifter_param',['../struct_g_r_t_1_1_m_f_c_c_1_1_options.html#a23af78de1568d1fb22bc001843492629',1,'GRT::MFCC::Options']]],
+  ['liftercc',['lifterCC',['../class_g_r_t_1_1_m_f_c_c.html#a334c2de690033c319edf1fdcd369fb3c',1,'GRT::MFCC']]],
+  ['load',['load',['../class_training_data_manager.html#a8bbdf0b79a367890171a7a16d8da8ed5',1,'TrainingDataManager']]],
+  ['loadmodelfromfile',['loadModelFromFile',['../class_g_r_t_1_1_filter.html#a89abfe18e81bcc3973eccc968932ea61',1,'GRT::Filter::loadModelFromFile(string filename)'],['../class_g_r_t_1_1_filter.html#a967206e1f9f7d521d6a1b6dea669f385',1,'GRT::Filter::loadModelFromFile(fstream &amp;file)'],['../class_g_r_t_1_1_m_f_c_c.html#a1b3a2be64a3183f4a33e6002f113b3dc',1,'GRT::MFCC::loadModelFromFile(string filename) override'],['../class_g_r_t_1_1_m_f_c_c.html#a26d20e3816dd352f79dc08d2ab00fff6',1,'GRT::MFCC::loadModelFromFile(fstream &amp;file) override'],['../class_g_r_t_1_1_threshold_detection.html#a3e6b10f9f1d4cc57cdb73f6271342a2b',1,'GRT::ThresholdDetection::loadModelFromFile(string filename)'],['../class_g_r_t_1_1_threshold_detection.html#a6e03f6b6e8e56e141c5a29f2522ba39c',1,'GRT::ThresholdDetection::loadModelFromFile(fstream &amp;file)']]],
+  ['log',['log',['../classof_console_file_logger_channel.html#a9b1cb547cbc627e0795fa8760031f501',1,'ofConsoleFileLoggerChannel::log(ofLogLevel level, const string &amp;module, const string &amp;message)'],['../classof_console_file_logger_channel.html#a34fb675a152cc25d463fb2af4ecae42a',1,'ofConsoleFileLoggerChannel::log(ofLogLevel level, const string &amp;module, const char *format,...) OF_PRINTF_ATTR(4'],['../classof_console_file_logger_channel.html#a9e07bbf0549affd78bf4ce12576474b7',1,'ofConsoleFileLoggerChannel::log(ofLogLevel level, const string &amp;module, const char *format, va_list args)']]],
+  ['logenergy',['LogEnergy',['../class_log_energy.html',1,'LogEnergy'],['../class_log_energy.html#a644a6aea83f5601e815ab7eea233a1c3',1,'LogEnergy::LogEnergy()']]]
 ];

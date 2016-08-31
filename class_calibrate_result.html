@@ -48,6 +48,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -138,13 +139,15 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a1d9872a475057d270efa6255dde10cd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3bea9189b732b89d508b25e974d168a7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_calibrate_result.html#aa473de26f2f0bc502e58b7ebdb038e4b">Result</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_calibrate_result.html#a3bea9189b732b89d508b25e974d168a7">getResult</a> () const </td></tr>
 <tr class="separator:a3bea9189b732b89d508b25e974d168a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab97f0dfc05796d13639dc8eec875be72"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_calibrate_result.html#ab97f0dfc05796d13639dc8eec875be72">getResultString</a> () const </td></tr>
+<tr class="separator:ab97f0dfc05796d13639dc8eec875be72"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a941fce0c0a3d3fa08441d34fc2d87dce"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_calibrate_result.html#a941fce0c0a3d3fa08441d34fc2d87dce">getMessage</a> () const </td></tr>
 <tr class="separator:a941fce0c0a3d3fa08441d34fc2d87dce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="class_calibrate_result.html" title="CalibrateResult indicates if the calibration is successful or not. ">CalibrateResult</a> indicates if the calibration is successful or not. </p>
 <p>There are three supported result: SUCCESS, WARNING, FAILURE. An optional string description can be supplied to better assist user figuring out why the calibration fails. This class is used as the return value for calibrate function used by <a class="el" href="class_calibrate_process.html" title="A data sample to be collected by the user and callback for processing that sample. ">CalibrateProcess</a>. </p>
-<dl><dt><b>Examples: </b></dt><dd><a class="el" href="user_accelerometer_gestures_8cpp-example.html#_a10">user_accelerometer_gestures.cpp</a>, <a class="el" href="user_accelerometer_poses_8cpp-example.html#_a14">user_accelerometer_poses.cpp</a>, <a class="el" href="user_accelerometer_walk_detection_8cpp-example.html#_a8">user_accelerometer_walk_detection.cpp</a>, <a class="el" href="user_audio_8cpp-example.html#_a12">user_audio.cpp</a>, and <a class="el" href="user_sudden_motion_8cpp-example.html#_a8">user_sudden_motion.cpp</a>.</dd>
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="user_accelerometer_gestures_8cpp-example.html#_a14">user_accelerometer_gestures.cpp</a>, <a class="el" href="user_accelerometer_poses_8cpp-example.html#_a14">user_accelerometer_poses.cpp</a>, <a class="el" href="user_accelerometer_walk_detection_8cpp-example.html#_a10">user_accelerometer_walk_detection.cpp</a>, and <a class="el" href="user_sudden_motion_8cpp-example.html#_a8">user_sudden_motion.cpp</a>.</dd>
 </dl></div><h2 class="groupheader">Member Enumeration Documentation</h2>
 <a class="anchor" id="aa473de26f2f0bc502e58b7ebdb038e4b"></a>
 <div class="memitem">
@@ -242,6 +245,29 @@ Public Member Functions</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="class_calibrate_result.html#aa473de26f2f0bc502e58b7ebdb038e4b">Result</a> CalibrateResult::getResult </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ab97f0dfc05796d13639dc8eec875be72"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">string CalibrateResult::getResultString </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>

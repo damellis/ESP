@@ -48,6 +48,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
@@ -107,8 +108,7 @@ $(document).ready(function(){initNavTree('iostream_8h.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#nested-classes">Classes</a>  </div>
   <div class="headertitle">
 <div class="title">iostream.h File Reference</div>  </div>
 </div><!--header-->
@@ -122,39 +122,14 @@ $(document).ready(function(){initNavTree('iostream_8h.html','');});
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_o_stream.html">IOStream</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_o_stream_vector.html">IOStreamVector</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_s_c_i_i_serial_stream.html">ASCIISerialStream</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Input stream for reading ASCII data from a (USB) serial port.  <a href="class_a_s_c_i_i_serial_stream.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:aff979b7370726d96aac43c99e3f7af10"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="iostream_8h.html#aff979b7370726d96aac43c99e3f7af10">useStream</a> (<a class="el" href="class_i_o_stream.html">IOStream</a> &amp;<a class="el" href="user__sudden__motion_8cpp.html#aa0c0eb30458e60c0433f27b43a4c603e">stream</a>)</td></tr>
-<tr class="separator:aff979b7370726d96aac43c99e3f7af10"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_binary_int_array_serial_stream.html">BinaryIntArraySerialStream</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Function Documentation</h2>
-<a class="anchor" id="aff979b7370726d96aac43c99e3f7af10"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void useStream </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="class_i_o_stream.html">IOStream</a> &amp;&#160;</td>
-          <td class="paramname"><em>stream</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Tells the ESP system which stream to use, for both input and output. Call from your <a class="el" href="user__accelerometer__gestures_8cpp.html#a4fc01d736fe50cf5b977f755b675f11d">setup()</a> function. The specified stream will be automatically started by the ESP system. Note that only one input stream is supported at a time; subsequent calls to <a class="el" href="iostream_8h.html#aff979b7370726d96aac43c99e3f7af10">useStream()</a> will cause the new stream to be used for input, replacing input from streams passed to any previous calls to <a class="el" href="iostream_8h.html#aff979b7370726d96aac43c99e3f7af10">useStream()</a> or <a class="el" href="istream_8cpp.html#a28ecae66cc8c204679f3995fafc93ae6">useInputStream()</a>. Multiple simultaneous output streams are supported, however, so calling <a class="el" href="iostream_8h.html#aff979b7370726d96aac43c99e3f7af10">useStream()</a> will cause output to be sent to the specified stream in addition to streams previously specified with <a class="el" href="iostream_8h.html#aff979b7370726d96aac43c99e3f7af10">useStream()</a> or <a class="el" href="ostream_8cpp.html#a279f55018c4c054ad565198954f8eb16" title="Specify an OStream to which to stream predictions made by the active ESP pipeline. Multiple output streams are supported. ">useOutputStream()</a>.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">stream</td><td>the stream to use for input and output </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

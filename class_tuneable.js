@@ -6,9 +6,9 @@ var class_tuneable =
       [ "DOUBLE_RANGE", "class_tuneable.html#a85668dc428a627c31a5b3e76c87b92e5af4da35abcdee22fff02d1c057c757eaa", null ],
       [ "BOOL", "class_tuneable.html#a85668dc428a627c31a5b3e76c87b92e5a81f58a2067eda247ab9d3e5fd26efece", null ]
     ] ],
-    [ "Tuneable", "class_tuneable.html#ab093aed74a7f9918f2941b8edb0ddd27", null ],
-    [ "Tuneable", "class_tuneable.html#a68542e1500e9cee4c2fefb4a63827f86", null ],
-    [ "Tuneable", "class_tuneable.html#a72685a7f91eb2e00b29f6c18b59c2440", null ],
+    [ "Tuneable", "class_tuneable.html#a1558d4bb2ea3be3ee24b032f6f32e667", null ],
+    [ "Tuneable", "class_tuneable.html#a90d2a480572217b41c397759b3c3ecdd", null ],
+    [ "Tuneable", "class_tuneable.html#a09086155a62a5058eadfa2fd72c17694", null ],
     [ "addToGUI", "class_tuneable.html#a2ab44ee0ec2007fedbc3e3158f085650", null ],
     [ "fromString", "class_tuneable.html#a4f2bf356729facf712a161da2f8d1deb", null ],
     [ "getDataAddress", "class_tuneable.html#ad1991808deb5c12ffed72f085548709f", null ],

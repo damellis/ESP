@@ -1,4 +1,5 @@
 var namespaces =
 [
-    [ "GRT", "namespace_g_r_t.html", null ]
+    [ "GRT", "namespace_g_r_t.html", null ],
+    [ "matplotlibcpp", "namespacematplotlibcpp.html", "namespacematplotlibcpp" ]
 ];

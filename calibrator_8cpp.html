@@ -48,6 +48,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
@@ -113,8 +114,7 @@ $(document).ready(function(){initNavTree('calibrator_8cpp.html','');});
 <div class="title">calibrator.cpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="of_app_8h_source.html">ofApp.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="calibrator_8h_source.html">calibrator.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="calibrator_8h_source.html">calibrator.h</a>&quot;</code><br />
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -124,7 +124,6 @@ Typedefs</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:aa56b17a8db41c36d20d29c360cd4b5bd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="calibrator_8cpp.html#aa56b17a8db41c36d20d29c360cd4b5bd">useCalibrator</a> (<a class="el" href="class_calibrator.html">Calibrator</a> &amp;<a class="el" href="user__sudden__motion_8cpp.html#a2dfd966029091cbf3bc049ece6a957ce">calibrator</a>)</td></tr>
-<tr class="memdesc:aa56b17a8db41c36d20d29c360cd4b5bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specify the <a class="el" href="class_calibrator.html" title="Specifies data samples and code used to calibrate incoming sensor data. ">Calibrator</a> to be used by the ESP system.  <a href="#aa56b17a8db41c36d20d29c360cd4b5bd">More...</a><br /></td></tr>
 <tr class="separator:aa56b17a8db41c36d20d29c360cd4b5bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
@@ -154,10 +153,8 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>Specify the <a class="el" href="class_calibrator.html" title="Specifies data samples and code used to calibrate incoming sensor data. ">Calibrator</a> to be used by the ESP system. </p>
-<p>This <a class="el" href="class_calibrator.html" title="Specifies data samples and code used to calibrate incoming sensor data. ">Calibrator</a> will be applied to data coming from the current input stream (<a class="el" href="class_i_stream.html" title="Base class for input streams that provide live sensor data to the ESP system. ">IStream</a> instance specified by <a class="el" href="istream_8cpp.html#a28ecae66cc8c204679f3995fafc93ae6">useInputStream()</a>) before it is passed to the current machine learning pipeline (GestureRecognitionPipeline specified by <a class="el" href="istream_8cpp.html#a4e89d8b7f053b8e3f5855d084164b39a">usePipeline()</a>). Only one calibrator can be active at a time, but it can include multiple <a class="el" href="class_calibrate_process.html" title="A data sample to be collected by the user and callback for processing that sample. ">CalibrateProcess</a> instances, each of which specifies one sample of calibration data to be collected by the user. </p>
-<dl><dt><b>Examples: </b></dt><dd><a class="el" href="user_accelerometer_gestures_8cpp-example.html#a28">user_accelerometer_gestures.cpp</a>, <a class="el" href="user_accelerometer_poses_8cpp-example.html#a29">user_accelerometer_poses.cpp</a>, <a class="el" href="user_accelerometer_walk_detection_8cpp-example.html#a22">user_accelerometer_walk_detection.cpp</a>, and <a class="el" href="user_sudden_motion_8cpp-example.html#a17">user_sudden_motion.cpp</a>.</dd>
+<p>This <a class="el" href="class_calibrator.html" title="Specifies data samples and code used to calibrate incoming sensor data. ">Calibrator</a> will be applied to data coming from the current input stream (IStream instance specified by <a class="el" href="_e_s_p_8h.html#a1aa74be0fb47c0b5b747e64ffaadfb56">useInputStream()</a>) before it is passed to the current machine learning pipeline (GestureRecognitionPipeline specified by <a class="el" href="_e_s_p_8h.html#a4e89d8b7f053b8e3f5855d084164b39a">usePipeline()</a>). Only one calibrator can be active at a time, but it can include multiple <a class="el" href="class_calibrate_process.html" title="A data sample to be collected by the user and callback for processing that sample. ">CalibrateProcess</a> instances, each of which specifies one sample of calibration data to be collected by the user. </p>
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="user_accelerometer_gestures_8cpp-example.html#a35">user_accelerometer_gestures.cpp</a>, <a class="el" href="user_accelerometer_poses_8cpp-example.html#a31">user_accelerometer_poses.cpp</a>, <a class="el" href="user_accelerometer_walk_detection_8cpp-example.html#a25">user_accelerometer_walk_detection.cpp</a>, and <a class="el" href="user_sudden_motion_8cpp-example.html#a17">user_sudden_motion.cpp</a>.</dd>
 </dl>
 </div>
 </div>

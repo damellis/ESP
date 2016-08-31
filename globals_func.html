@@ -48,6 +48,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
@@ -82,14 +83,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li class="current"><a href="globals_func.html"><span>Functions</span></a></li>
       <li><a href="globals_vars.html"><span>Variables</span></a></li>
       <li><a href="globals_type.html"><span>Typedefs</span></a></li>
+      <li><a href="globals_defs.html"><span>Macros</span></a></li>
     </ul>
   </div>
   <div id="navrow4" class="tabs3">
     <ul class="tablist">
-      <li><a href="#index_a"><span>a</span></a></li>
-      <li><a href="#index_b"><span>b</span></a></li>
       <li><a href="#index_c"><span>c</span></a></li>
       <li><a href="#index_d"><span>d</span></a></li>
+      <li><a href="#index_e"><span>e</span></a></li>
       <li><a href="#index_g"><span>g</span></a></li>
       <li><a href="#index_i"><span>i</span></a></li>
       <li><a href="#index_m"><span>m</span></a></li>
@@ -99,7 +100,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="#index_r"><span>r</span></a></li>
       <li><a href="#index_s"><span>s</span></a></li>
       <li><a href="#index_t"><span>t</span></a></li>
-      <li class="current"><a href="#index_u"><span>u</span></a></li>
+      <li><a href="#index_u"><span>u</span></a></li>
+      <li class="current"><a href="#index_z"><span>z</span></a></li>
     </ul>
   </div>
 </div><!-- top -->
@@ -134,24 +136,11 @@ $(document).ready(function(){initNavTree('globals_func.html','');});
 <div class="contents">
 &#160;
 
-<h3><a class="anchor" id="index_a"></a>- a -</h3><ul>
-<li>analogReadToSound()
-: <a class="el" href="user__audio_8cpp.html#a0d0cf20ceb93d1a9b79733449de2c122">user_audio.cpp</a>
-</li>
-<li>analogReadToVoltage()
-: <a class="el" href="user__accelerometer__poses_8cpp.html#aee4e0069bd1c4e48960c9b87036960fb">user_accelerometer_poses.cpp</a>
-</li>
-</ul>
-
-
-<h3><a class="anchor" id="index_b"></a>- b -</h3><ul>
-<li>backgroundCollected()
-: <a class="el" href="user__audio_8cpp.html#a7414b47069de7d10f6fb509fce4cc0f3">user_audio.cpp</a>
-</li>
-</ul>
-
-
 <h3><a class="anchor" id="index_c"></a>- c -</h3><ul>
+<li>calibrate()
+: <a class="el" href="user__accelerometer__gestures_8cpp.html#afc5d4d052636037dbf202cb2b5f0a23f">user_accelerometer_gestures.cpp</a>
+, <a class="el" href="user__accelerometer__poses_8cpp.html#afc5d4d052636037dbf202cb2b5f0a23f">user_accelerometer_poses.cpp</a>
+</li>
 <li>checkTrainingSample()
 : <a class="el" href="user__accelerometer__gestures_8cpp.html#aed228f8343fd345b26ac99a7bd5cc1bf">user_accelerometer_gestures.cpp</a>
 </li>
@@ -159,11 +148,21 @@ $(document).ready(function(){initNavTree('globals_func.html','');});
 
 
 <h3><a class="anchor" id="index_d"></a>- d -</h3><ul>
+<li>decodeName()
+: <a class="el" href="of_app_8cpp.html#abd3d59785db39c884c2bb5d76a576a16">ofApp.cpp</a>
+</li>
 <li>detectBeat()
 : <a class="el" href="user__audio__beat__detection_8cpp.html#a6fd43c8fd546ac4c773bf4f426daf65e">user_audio_beat_detection.cpp</a>
 </li>
 <li>dotProduct()
 : <a class="el" href="user__accelerometer__walk__detection_8cpp.html#a1730ef96f862bdaffdadbfc620efbc4f">user_accelerometer_walk_detection.cpp</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_e"></a>- e -</h3><ul>
+<li>encodeName()
+: <a class="el" href="of_app_8cpp.html#a9104c632327a443f65fd295876242a01">ofApp.cpp</a>
 </li>
 </ul>
 
@@ -184,7 +183,8 @@ $(document).ready(function(){initNavTree('globals_func.html','');});
 
 <h3><a class="anchor" id="index_m"></a>- m -</h3><ul>
 <li>main()
-: <a class="el" href="main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main.cpp</a>
+: <a class="el" href="cli_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97">cli.cpp</a>
+, <a class="el" href="main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main.cpp</a>
 </li>
 <li>meanAndLast()
 : <a class="el" href="user__audio__beat__detection_8cpp.html#ac5c50989620375df20ed2d4ae86edcbd">user_audio_beat_detection.cpp</a>
@@ -196,12 +196,6 @@ $(document).ready(function(){initNavTree('globals_func.html','');});
 <li>normalize()
 : <a class="el" href="user__color__sensor_8cpp.html#aa6784a24c99da5222a904efd99f2f722">user_color_sensor.cpp</a>
 </li>
-<li>normalizeADXL335()
-: <a class="el" href="user__accelerometer__poses_8cpp.html#aa49659dd7099427c1ea7f5f9307fcf35">user_accelerometer_poses.cpp</a>
-</li>
-<li>normalizeArduino101()
-: <a class="el" href="user__accelerometer__poses_8cpp.html#a8b3125a62bffc829c4cbc28cacd9ed92">user_accelerometer_poses.cpp</a>
-</li>
 </ul>
 
 
@@ -209,12 +203,16 @@ $(document).ready(function(){initNavTree('globals_func.html','');});
 <li>ofDrawColoredBitmapString()
 : <a class="el" href="of_app_8cpp.html#a1b8dca9c819270f3ff9f5e5aebd22b88">ofApp.cpp</a>
 </li>
+<li>ofSystemYesNoDialog()
+: <a class="el" href="of_yes_no_dialog_8cpp.html#ab09335c1d75b2768b09a5ffdb4895b0a">ofYesNoDialog.cpp</a>
+, <a class="el" href="of_yes_no_dialog_8h.html#ae069d74d1a80188117c4989527025fc5">ofYesNoDialog.h</a>
+</li>
 </ul>
 
 
 <h3><a class="anchor" id="index_p"></a>- p -</h3><ul>
 <li>processAccelerometerData()
-: <a class="el" href="user__accelerometer__gestures_8cpp.html#add00571ce8cfd3623ea0967ad8b24b89">user_accelerometer_gestures.cpp</a>
+: <a class="el" href="user__accelerometer__gestures_8cpp.html#ae6acd9a631bb403f4d7bad86267c67ca">user_accelerometer_gestures.cpp</a>
 , <a class="el" href="user__accelerometer__poses_8cpp.html#ae6acd9a631bb403f4d7bad86267c67ca">user_accelerometer_poses.cpp</a>
 , <a class="el" href="user__accelerometer__walk__detection_8cpp.html#add00571ce8cfd3623ea0967ad8b24b89">user_accelerometer_walk_detection.cpp</a>
 , <a class="el" href="user__sudden__motion_8cpp.html#add00571ce8cfd3623ea0967ad8b24b89">user_sudden_motion.cpp</a>
@@ -224,35 +222,35 @@ $(document).ready(function(){initNavTree('globals_func.html','');});
 
 <h3><a class="anchor" id="index_r"></a>- r -</h3><ul>
 <li>registerTuneable()
-: <a class="el" href="tuneable_8cpp.html#a4186bf4ee77f5cfdc19607e41d2abf50">tuneable.cpp</a>
-, <a class="el" href="tuneable_8h.html#a5be8e87b8c90c89f946b1fa588d35a82">tuneable.h</a>
-, <a class="el" href="tuneable_8cpp.html#a96deea42850e52a13633462b8d60d4c1">tuneable.cpp</a>
-, <a class="el" href="tuneable_8h.html#ab70b66eef36d646163bde25ec79415e8">tuneable.h</a>
+: <a class="el" href="tuneable_8cpp.html#aa461d9021f6a4ffbd37e7300d4d315bb">tuneable.cpp</a>
+, <a class="el" href="tuneable_8h.html#a170df581c8eb5a5d0e3f286f10579e89">tuneable.h</a>
+, <a class="el" href="tuneable_8cpp.html#a421732df82b07e77872a98bb8d720b9c">tuneable.cpp</a>
+, <a class="el" href="tuneable_8h.html#aa2217254da92b44ec92d19f51b0eeeda">tuneable.h</a>
 </li>
 <li>restingDataCollected()
-: <a class="el" href="user__accelerometer__gestures_8cpp.html#ad5dcfc15f7ade75a4d1ee00ff9bbf4c4">user_accelerometer_gestures.cpp</a>
-, <a class="el" href="user__accelerometer__poses_8cpp.html#ad5dcfc15f7ade75a4d1ee00ff9bbf4c4">user_accelerometer_poses.cpp</a>
-, <a class="el" href="user__accelerometer__walk__detection_8cpp.html#ad5dcfc15f7ade75a4d1ee00ff9bbf4c4">user_accelerometer_walk_detection.cpp</a>
+: <a class="el" href="user__accelerometer__walk__detection_8cpp.html#ad5dcfc15f7ade75a4d1ee00ff9bbf4c4">user_accelerometer_walk_detection.cpp</a>
 , <a class="el" href="user__sudden__motion_8cpp.html#ad5dcfc15f7ade75a4d1ee00ff9bbf4c4">user_sudden_motion.cpp</a>
 </li>
 </ul>
 
 
 <h3><a class="anchor" id="index_s"></a>- s -</h3><ul>
+<li>setGUIBufferSize()
+: <a class="el" href="_e_s_p_8h.html#a5cda154d459d25e729a3fe2555e0feb3">ESP.h</a>
+, <a class="el" href="of_app_8cpp.html#a5cda154d459d25e729a3fe2555e0feb3">ofApp.cpp</a>
+</li>
 <li>setup()
 : <a class="el" href="user__accelerometer__gestures_8cpp.html#a4fc01d736fe50cf5b977f755b675f11d">user_accelerometer_gestures.cpp</a>
+, <a class="el" href="user__color__sensor_8cpp.html#a4fc01d736fe50cf5b977f755b675f11d">user_color_sensor.cpp</a>
+, <a class="el" href="user__accelerometer__walk__detection_8cpp.html#a4fc01d736fe50cf5b977f755b675f11d">user_accelerometer_walk_detection.cpp</a>
+, <a class="el" href="user__audio__beat__detection_8cpp.html#a4fc01d736fe50cf5b977f755b675f11d">user_audio_beat_detection.cpp</a>
+, <a class="el" href="user__capacitive__sensing_8cpp.html#a4fc01d736fe50cf5b977f755b675f11d">user_capacitive_sensing.cpp</a>
+, <a class="el" href="user__touche_8cpp.html#a4fc01d736fe50cf5b977f755b675f11d">user_touche.cpp</a>
+, <a class="el" href="user__speaker_8cpp.html#a4fc01d736fe50cf5b977f755b675f11d">user_speaker.cpp</a>
+, <a class="el" href="user__speech__detection_8cpp.html#a4fc01d736fe50cf5b977f755b675f11d">user_speech_detection.cpp</a>
+, <a class="el" href="user__sudden__motion_8cpp.html#a4fc01d736fe50cf5b977f755b675f11d">user_sudden_motion.cpp</a>
 , <a class="el" href="user__accelerometer__poses_8cpp.html#a4fc01d736fe50cf5b977f755b675f11d">user_accelerometer_poses.cpp</a>
 , <a class="el" href="user_8h.html#a4fc01d736fe50cf5b977f755b675f11d">user.h</a>
-, <a class="el" href="user__accelerometer__walk__detection_8cpp.html#a4fc01d736fe50cf5b977f755b675f11d">user_accelerometer_walk_detection.cpp</a>
-, <a class="el" href="user__capacitive__sensing_8cpp.html#a4fc01d736fe50cf5b977f755b675f11d">user_capacitive_sensing.cpp</a>
-, <a class="el" href="user__audio__beat__detection_8cpp.html#a4fc01d736fe50cf5b977f755b675f11d">user_audio_beat_detection.cpp</a>
-, <a class="el" href="user__color__sensor_8cpp.html#a4fc01d736fe50cf5b977f755b675f11d">user_color_sensor.cpp</a>
-, <a class="el" href="user__sudden__motion_8cpp.html#a4fc01d736fe50cf5b977f755b675f11d">user_sudden_motion.cpp</a>
-, <a class="el" href="user__speech__detection_8cpp.html#a4fc01d736fe50cf5b977f755b675f11d">user_speech_detection.cpp</a>
-, <a class="el" href="user__audio_8cpp.html#a4fc01d736fe50cf5b977f755b675f11d">user_audio.cpp</a>
-</li>
-<li>shoutCollected()
-: <a class="el" href="user__audio_8cpp.html#aa7e91a3cffcd95ce7c0f14c72a244b87">user_audio.cpp</a>
 </li>
 <li>stddev()
 : <a class="el" href="user__accelerometer__walk__detection_8cpp.html#ad4b4c1ac691d1a176bb01bd3a3b7f74d">user_accelerometer_walk_detection.cpp</a>
@@ -261,6 +259,9 @@ $(document).ready(function(){initNavTree('globals_func.html','');});
 
 
 <h3><a class="anchor" id="index_t"></a>- t -</h3><ul>
+<li>TEST_F()
+: <a class="el" href="training-data-manager-test_8cpp.html#a53c5f00f14fe6dfaf95e8a9a669b7951">training-data-manager-test.cpp</a>
+</li>
 <li>threshold()
 : <a class="el" href="user__accelerometer__walk__detection_8cpp.html#a89a39fb6802608a79f311f8275a04035">user_accelerometer_walk_detection.cpp</a>
 </li>
@@ -268,29 +269,69 @@ $(document).ready(function(){initNavTree('globals_func.html','');});
 
 
 <h3><a class="anchor" id="index_u"></a>- u -</h3><ul>
+<li>updateAlwaysPickSomething()
+: <a class="el" href="user__accelerometer__poses_8cpp.html#a41217a59609d733f0461b0fcdfb64214">user_accelerometer_poses.cpp</a>
+, <a class="el" href="user__color__sensor_8cpp.html#a41217a59609d733f0461b0fcdfb64214">user_color_sensor.cpp</a>
+</li>
+<li>updateTimeout()
+: <a class="el" href="user__accelerometer__gestures_8cpp.html#a05667244a084ee373a2c27f399845099">user_accelerometer_gestures.cpp</a>
+</li>
+<li>updateVariability()
+: <a class="el" href="user__accelerometer__gestures_8cpp.html#aa0a30febfe28e6713c07a9b52fb228de">user_accelerometer_gestures.cpp</a>
+, <a class="el" href="user__accelerometer__poses_8cpp.html#ac797b5ca176be253f538da7ab95318bd">user_accelerometer_poses.cpp</a>
+, <a class="el" href="user__color__sensor_8cpp.html#ac797b5ca176be253f538da7ab95318bd">user_color_sensor.cpp</a>
+</li>
+<li>uprightDataCollected()
+: <a class="el" href="user__accelerometer__gestures_8cpp.html#aa2b83b8ac9f7ba293ee141e3a259aa98">user_accelerometer_gestures.cpp</a>
+, <a class="el" href="user__accelerometer__poses_8cpp.html#aa2b83b8ac9f7ba293ee141e3a259aa98">user_accelerometer_poses.cpp</a>
+</li>
+<li>upsideDownDataCollected()
+: <a class="el" href="user__accelerometer__gestures_8cpp.html#adfd1398f54ce5482a37bbb9a30ae90f3">user_accelerometer_gestures.cpp</a>
+, <a class="el" href="user__accelerometer__poses_8cpp.html#adfd1398f54ce5482a37bbb9a30ae90f3">user_accelerometer_poses.cpp</a>
+</li>
 <li>useCalibrator()
 : <a class="el" href="calibrator_8cpp.html#aa56b17a8db41c36d20d29c360cd4b5bd">calibrator.cpp</a>
-, <a class="el" href="calibrator_8h.html#aa56b17a8db41c36d20d29c360cd4b5bd">calibrator.h</a>
+, <a class="el" href="_e_s_p_8h.html#aa56b17a8db41c36d20d29c360cd4b5bd">ESP.h</a>
+, <a class="el" href="of_app_8cpp.html#aa56b17a8db41c36d20d29c360cd4b5bd">ofApp.cpp</a>
 </li>
 <li>useInputStream()
-: <a class="el" href="istream_8cpp.html#a28ecae66cc8c204679f3995fafc93ae6">istream.cpp</a>
-, <a class="el" href="istream_8h.html#a28ecae66cc8c204679f3995fafc93ae6">istream.h</a>
+: <a class="el" href="_e_s_p_8h.html#a1aa74be0fb47c0b5b747e64ffaadfb56">ESP.h</a>
+, <a class="el" href="of_app_8cpp.html#a1aa74be0fb47c0b5b747e64ffaadfb56">ofApp.cpp</a>
+</li>
+<li>useLeaveOneOutScoring()
+: <a class="el" href="_e_s_p_8h.html#ae5880a1863c97b13af34d1518802b051">ESP.h</a>
+, <a class="el" href="of_app_8cpp.html#ab46bb5e45fbf6849c64dc46fe5be4fd0">ofApp.cpp</a>
 </li>
 <li>useOutputStream()
-: <a class="el" href="ostream_8cpp.html#a279f55018c4c054ad565198954f8eb16">ostream.cpp</a>
-, <a class="el" href="ostream_8h.html#a279f55018c4c054ad565198954f8eb16">ostream.h</a>
+: <a class="el" href="_e_s_p_8h.html#a279f55018c4c054ad565198954f8eb16">ESP.h</a>
+, <a class="el" href="of_app_8cpp.html#ab546cd768b31fcee2ec9c3197808f20a">ofApp.cpp</a>
+, <a class="el" href="_e_s_p_8h.html#ab546cd768b31fcee2ec9c3197808f20a">ESP.h</a>
+, <a class="el" href="of_app_8cpp.html#a279f55018c4c054ad565198954f8eb16">ofApp.cpp</a>
 </li>
 <li>usePipeline()
-: <a class="el" href="istream_8cpp.html#a4e89d8b7f053b8e3f5855d084164b39a">istream.cpp</a>
-, <a class="el" href="istream_8h.html#a4e89d8b7f053b8e3f5855d084164b39a">istream.h</a>
+: <a class="el" href="_e_s_p_8h.html#a4e89d8b7f053b8e3f5855d084164b39a">ESP.h</a>
+, <a class="el" href="of_app_8cpp.html#a4e89d8b7f053b8e3f5855d084164b39a">ofApp.cpp</a>
 </li>
 <li>useStream()
-: <a class="el" href="iostream_8cpp.html#aff979b7370726d96aac43c99e3f7af10">iostream.cpp</a>
-, <a class="el" href="iostream_8h.html#aff979b7370726d96aac43c99e3f7af10">iostream.h</a>
+: <a class="el" href="of_app_8cpp.html#a70f53ec83edf60da5229d281ce8cd879">ofApp.cpp</a>
+, <a class="el" href="_e_s_p_8h.html#a70f53ec83edf60da5229d281ce8cd879">ESP.h</a>
+, <a class="el" href="of_app_8cpp.html#aff979b7370726d96aac43c99e3f7af10">ofApp.cpp</a>
+</li>
+<li>useTrainingDataAdvice()
+: <a class="el" href="_e_s_p_8h.html#a4ace49df878355692f9064553363a900">ESP.h</a>
+, <a class="el" href="of_app_8cpp.html#a4ace49df878355692f9064553363a900">ofApp.cpp</a>
 </li>
 <li>useTrainingSampleChecker()
-: <a class="el" href="training_8cpp.html#a1bf90f88fd71128f5b3e393502cd6979">training.cpp</a>
-, <a class="el" href="training_8h.html#a1bf90f88fd71128f5b3e393502cd6979">training.h</a>
+: <a class="el" href="_e_s_p_8h.html#a1bf90f88fd71128f5b3e393502cd6979">ESP.h</a>
+, <a class="el" href="of_app_8cpp.html#a1bf90f88fd71128f5b3e393502cd6979">ofApp.cpp</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_z"></a>- z -</h3><ul>
+<li>zeroGs()
+: <a class="el" href="user__accelerometer__gestures_8cpp.html#aebbcbc51745431bb679a13b14d36ddef">user_accelerometer_gestures.cpp</a>
+, <a class="el" href="user__accelerometer__poses_8cpp.html#aebbcbc51745431bb679a13b14d36ddef">user_accelerometer_poses.cpp</a>
 </li>
 </ul>
 </div><!-- contents -->

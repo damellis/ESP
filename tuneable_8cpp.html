@@ -48,6 +48,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
@@ -118,15 +119,15 @@ $(document).ready(function(){initNavTree('tuneable_8cpp.html','');});
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a4186bf4ee77f5cfdc19607e41d2abf50"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tuneable_8cpp.html#a4186bf4ee77f5cfdc19607e41d2abf50">registerTuneable</a> (int &amp;value, int min, int max, const string &amp;title, const string &amp;description)</td></tr>
-<tr class="separator:a4186bf4ee77f5cfdc19607e41d2abf50"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6ee75a7fee02a87191eab1144842f9c0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tuneable_8cpp.html#a6ee75a7fee02a87191eab1144842f9c0">registerTuneable</a> (double &amp;value, double min, double max, const string &amp;title, const string &amp;description)</td></tr>
-<tr class="separator:a6ee75a7fee02a87191eab1144842f9c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a96deea42850e52a13633462b8d60d4c1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tuneable_8cpp.html#a96deea42850e52a13633462b8d60d4c1">registerTuneable</a> (bool &amp;value, const string &amp;title, const string &amp;description)</td></tr>
-<tr class="separator:a96deea42850e52a13633462b8d60d4c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa461d9021f6a4ffbd37e7300d4d315bb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tuneable_8cpp.html#aa461d9021f6a4ffbd37e7300d4d315bb">registerTuneable</a> (int &amp;value, int min, int max, const string &amp;title, const string &amp;description, std::function&lt; void(int)&gt; cb)</td></tr>
+<tr class="separator:aa461d9021f6a4ffbd37e7300d4d315bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a74dd4b8dcbda35f4d06965836d8041d7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tuneable_8cpp.html#a74dd4b8dcbda35f4d06965836d8041d7">registerTuneable</a> (double &amp;value, double min, double max, const string &amp;title, const string &amp;description, std::function&lt; void(double)&gt; cb)</td></tr>
+<tr class="separator:a74dd4b8dcbda35f4d06965836d8041d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a421732df82b07e77872a98bb8d720b9c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tuneable_8cpp.html#a421732df82b07e77872a98bb8d720b9c">registerTuneable</a> (bool &amp;value, const string &amp;title, const string &amp;description, std::function&lt; void(bool)&gt; cb)</td></tr>
+<tr class="separator:a421732df82b07e77872a98bb8d720b9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a class="anchor" id="a4186bf4ee77f5cfdc19607e41d2abf50"></a>
+<a class="anchor" id="aa461d9021f6a4ffbd37e7300d4d315bb"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -158,7 +159,13 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const string &amp;&#160;</td>
-          <td class="paramname"><em>description</em>&#160;</td>
+          <td class="paramname"><em>description</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::function&lt; void(int)&gt;&#160;</td>
+          <td class="paramname"><em>cb</em> = <code>nullptr</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -175,14 +182,15 @@ Functions</h2></td></tr>
     <tr><td class="paramname">max</td><td>the maximum value of the parameter, used to contrain the range of values to which the user can set the tuneable parameter. </td></tr>
     <tr><td class="paramname">name</td><td>the name of the tuneable parameter. Will be shown to the user. </td></tr>
     <tr><td class="paramname">description</td><td>the description of the tuneable parameter. Shown to the user. </td></tr>
+    <tr><td class="paramname">cb</td><td>a callback function that is invoked when user input is received. </td></tr>
   </table>
   </dd>
 </dl>
-<dl><dt><b>Examples: </b></dt><dd><a class="el" href="user_accelerometer_gestures_8cpp-example.html#a30">user_accelerometer_gestures.cpp</a>, <a class="el" href="user_accelerometer_poses_8cpp-example.html#a31">user_accelerometer_poses.cpp</a>, <a class="el" href="user_accelerometer_walk_detection_8cpp-example.html#a24">user_accelerometer_walk_detection.cpp</a>, and <a class="el" href="user_color_sensor_8cpp-example.html#a16">user_color_sensor.cpp</a>.</dd>
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="user_accelerometer_gestures_8cpp-example.html#a37">user_accelerometer_gestures.cpp</a>, <a class="el" href="user_accelerometer_poses_8cpp-example.html#a33">user_accelerometer_poses.cpp</a>, <a class="el" href="user_accelerometer_walk_detection_8cpp-example.html#a27">user_accelerometer_walk_detection.cpp</a>, <a class="el" href="user_color_sensor_8cpp-example.html#a16">user_color_sensor.cpp</a>, and <a class="el" href="user_speaker_8cpp-example.html#a15">user_speaker.cpp</a>.</dd>
 </dl>
 </div>
 </div>
-<a class="anchor" id="a6ee75a7fee02a87191eab1144842f9c0"></a>
+<a class="anchor" id="a74dd4b8dcbda35f4d06965836d8041d7"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -214,7 +222,13 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const string &amp;&#160;</td>
-          <td class="paramname"><em>description</em>&#160;</td>
+          <td class="paramname"><em>description</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::function&lt; void(double)&gt;&#160;</td>
+          <td class="paramname"><em>cb</em> = <code>nullptr</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -231,13 +245,14 @@ Functions</h2></td></tr>
     <tr><td class="paramname">max</td><td>the maximum value of the parameter, used to contrain the range of values to which the user can set the tuneable parameter. </td></tr>
     <tr><td class="paramname">name</td><td>the name of the tuneable parameter. Will be shown to the user. </td></tr>
     <tr><td class="paramname">description</td><td>the description of the tuneable parameter. Shown to the user. </td></tr>
+    <tr><td class="paramname">cb</td><td>a callback function that is invoked when user input is received. </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a class="anchor" id="a96deea42850e52a13633462b8d60d4c1"></a>
+<a class="anchor" id="a421732df82b07e77872a98bb8d720b9c"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -257,7 +272,13 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const string &amp;&#160;</td>
-          <td class="paramname"><em>description</em>&#160;</td>
+          <td class="paramname"><em>description</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::function&lt; void(bool)&gt;&#160;</td>
+          <td class="paramname"><em>cb</em> = <code>nullptr</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -272,6 +293,7 @@ Functions</h2></td></tr>
     <tr><td class="paramname">value</td><td>reference to the variable in which the value of this tuneable parameter is stored. The initial value of the tuneable parameter will be taken from the value of this variable when this function is called. When the user changes the value of the tuneable parameter, the variable referenced by this parameter will be set to the new value. </td></tr>
     <tr><td class="paramname">name</td><td>the name of the tuneable parameter. Will be shown to the user. </td></tr>
     <tr><td class="paramname">description</td><td>the description of the tuneable parameter. Shown to the user. </td></tr>
+    <tr><td class="paramname">cb</td><td>a callback function that is invoked when user input is received. </td></tr>
   </table>
   </dd>
 </dl>

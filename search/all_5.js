@@ -1,13 +1,10 @@
 var searchData=
 [
-  ['failure',['FAILURE',['../class_calibrate_result.html#aa473de26f2f0bc502e58b7ebdb038e4baa517b8f91ff014dcc9ced02cdab5d1d7',1,'CalibrateResult::FAILURE()'],['../class_training_sample_checker_result.html#a0cba1d0ca73cf49645dade329dba9e21a5a3212d8d91167c19dd480fa7b66eb68',1,'TrainingSampleCheckerResult::FAILURE()']]],
-  ['filter',['Filter',['../class_g_r_t_1_1_filter.html',1,'GRT']]],
-  ['filter',['Filter',['../class_g_r_t_1_1_filter.html#a25aec48bb708da2a028dac682427d604',1,'GRT::Filter::Filter(const char *classType, UINT filterSize=5, UINT numDimensions=1)'],['../class_g_r_t_1_1_filter.html#a71d1a4c9a824b06c5725bffab2fd7842',1,'GRT::Filter::Filter(const Filter &amp;rhs)'],['../class_g_r_t_1_1_filter.html#a6b90315a6342f75a69da882d62896c47',1,'GRT::Filter::filter(const double x)'],['../class_g_r_t_1_1_filter.html#a0956c7fc8faacd5e4cbff4a4d09171b7',1,'GRT::Filter::filter(const VectorDouble &amp;x)'],['../class_g_r_t_1_1_mel_bank.html#aca91fd298fb817ff70c8d2768b3d1170',1,'GRT::MelBank::filter()']]],
-  ['filter_2ecpp',['Filter.cpp',['../_filter_8cpp.html',1,'']]],
-  ['filter_2eh',['Filter.h',['../_filter_8h.html',1,'']]],
-  ['filters_5f',['filters_',['../class_g_r_t_1_1_mel_bank_features.html#a3a50cac67978b2b689ea8b25ddeac863',1,'GRT::MelBankFeatures']]],
-  ['filtersize',['filterSize',['../class_g_r_t_1_1_filter.html#afa71ba37a57bdf69b64ca1892dcb9b60',1,'GRT::Filter']]],
-  ['firmatastream',['FirmataStream',['../class_firmata_stream.html',1,'FirmataStream'],['../class_firmata_stream.html#a71a0da3b4ed420cdf0caf988c5ffa140',1,'FirmataStream::FirmataStream()']]],
-  ['frommelscale',['fromMelScale',['../class_g_r_t_1_1_mel_bank.html#a8053aeab05eb02d9a1baa3c3b3076785',1,'GRT::MelBank']]],
-  ['fromstring',['fromString',['../class_tuneable.html#a4f2bf356729facf712a161da2f8d1deb',1,'Tuneable']]]
+  ['encodename',['encodeName',['../of_app_8cpp.html#a9104c632327a443f65fd295876242a01',1,'ofApp.cpp']]],
+  ['end',['end',['../struct_interactive_plot_1_1_range_selected_callback_args.html#a899539a90843ac8b650122c294b149b3',1,'InteractivePlot::RangeSelectedCallbackArgs']]],
+  ['end_5ffreq',['end_freq',['../struct_g_r_t_1_1_m_f_c_c_1_1_options.html#a0117c359f5e98e4a5bec54ac98cf9de4',1,'GRT::MFCC::Options']]],
+  ['endselection',['endSelection',['../class_interactive_plot.html#a356e488854c75cd56b2252efa015ff2f',1,'InteractivePlot']]],
+  ['esp_2eh',['ESP.h',['../_e_s_p_8h.html',1,'']]],
+  ['esp_5fevent',['ESP_EVENT',['../of_app_8h.html#a839afa819a9d0ca9f28f5c1631bdee64',1,'ofApp.h']]],
+  ['exit',['exit',['../classof_app.html#ac844ecdc290bd3c87b594c56e82623af',1,'ofApp']]]
 ];

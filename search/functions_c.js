@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['normalize',['normalize',['../class_i_stream.html#a26a6814e6190d395065b2ef61aaa0065',1,'IStream::normalize()'],['../user__color__sensor_8cpp.html#aa6784a24c99da5222a904efd99f2f722',1,'normalize():&#160;user_color_sensor.cpp']]],
-  ['normalizeadxl335',['normalizeADXL335',['../user__accelerometer__poses_8cpp.html#aa49659dd7099427c1ea7f5f9307fcf35',1,'user_accelerometer_poses.cpp']]],
-  ['normalizearduino101',['normalizeArduino101',['../user__accelerometer__poses_8cpp.html#a8b3125a62bffc829c4cbc28cacd9ed92',1,'user_accelerometer_poses.cpp']]],
+  ['named_5fplot',['named_plot',['../namespacematplotlibcpp.html#a547854898d3b05c1ed182ad744545f43',1,'matplotlibcpp']]],
+  ['normalize',['normalize',['../class_input_stream.html#a143aefa51ed534a093778ed9a96fb2ed',1,'InputStream::normalize()'],['../class_interactive_plot.html#ab19cd71febe6a5148c7d4c1ae3181879',1,'InteractivePlot::normalize()'],['../user__color__sensor_8cpp.html#aa6784a24c99da5222a904efd99f2f722',1,'normalize():&#160;user_color_sensor.cpp']]],
   ['notify',['notify',['../classof_app.html#abe5b4d26b8498e729f12918974d31a96',1,'ofApp']]]
 ];

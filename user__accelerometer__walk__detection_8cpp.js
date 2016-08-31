@@ -8,6 +8,7 @@ var user__accelerometer__walk__detection_8cpp =
     [ "threshold", "user__accelerometer__walk__detection_8cpp.html#a89a39fb6802608a79f311f8275a04035", null ],
     [ "calibrator", "user__accelerometer__walk__detection_8cpp.html#a2dfd966029091cbf3bc049ece6a957ce", null ],
     [ "oneG", "user__accelerometer__walk__detection_8cpp.html#a6423f81bc2d048133f946ad3c0c22aaf", null ],
+    [ "oStream", "user__accelerometer__walk__detection_8cpp.html#a03d2e0d3fbf91d8bffad36160f3d0d7a", null ],
     [ "pipeline", "user__accelerometer__walk__detection_8cpp.html#ad04a77e9fb154385d1f97731437390e4", null ],
     [ "stream", "user__accelerometer__walk__detection_8cpp.html#a41a00af8a6d249ec09dea539956386f2", null ],
     [ "t", "user__accelerometer__walk__detection_8cpp.html#a87accd1af8e0aff4b818d891374f7cec", null ],

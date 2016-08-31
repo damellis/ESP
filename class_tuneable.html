@@ -48,6 +48,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -130,12 +131,12 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ab093aed74a7f9918f2941b8edb0ddd27"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tuneable.html#ab093aed74a7f9918f2941b8edb0ddd27">Tuneable</a> (int *value, int min, int max, const string &amp;title, const string &amp;description)</td></tr>
-<tr class="separator:ab093aed74a7f9918f2941b8edb0ddd27"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a68542e1500e9cee4c2fefb4a63827f86"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tuneable.html#a68542e1500e9cee4c2fefb4a63827f86">Tuneable</a> (double *value, double min, double max, const string &amp;title, const string &amp;description)</td></tr>
-<tr class="separator:a68542e1500e9cee4c2fefb4a63827f86"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a72685a7f91eb2e00b29f6c18b59c2440"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tuneable.html#a72685a7f91eb2e00b29f6c18b59c2440">Tuneable</a> (bool *value, const string &amp;title, const string &amp;description)</td></tr>
-<tr class="separator:a72685a7f91eb2e00b29f6c18b59c2440"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1558d4bb2ea3be3ee24b032f6f32e667"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tuneable.html#a1558d4bb2ea3be3ee24b032f6f32e667">Tuneable</a> (int *value, int min, int max, const string &amp;title, const string &amp;description, std::function&lt; void(int)&gt; cb)</td></tr>
+<tr class="separator:a1558d4bb2ea3be3ee24b032f6f32e667"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90d2a480572217b41c397759b3c3ecdd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tuneable.html#a90d2a480572217b41c397759b3c3ecdd">Tuneable</a> (double *value, double min, double max, const string &amp;title, const string &amp;description, std::function&lt; void(double)&gt; cb)</td></tr>
+<tr class="separator:a90d2a480572217b41c397759b3c3ecdd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09086155a62a5058eadfa2fd72c17694"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tuneable.html#a09086155a62a5058eadfa2fd72c17694">Tuneable</a> (bool *value, const string &amp;title, const string &amp;description, std::function&lt; void(bool)&gt; cb)</td></tr>
+<tr class="separator:a09086155a62a5058eadfa2fd72c17694"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2ab44ee0ec2007fedbc3e3158f085650"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tuneable.html#a2ab44ee0ec2007fedbc3e3158f085650">addToGUI</a> (ofxDatGui &amp;gui)</td></tr>
 <tr class="separator:a2ab44ee0ec2007fedbc3e3158f085650"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a58beec1e00c1c09c4ea99db07a2de967"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tuneable.html#a58beec1e00c1c09c4ea99db07a2de967">toString</a> ()</td></tr>
@@ -173,7 +174,7 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="ab093aed74a7f9918f2941b8edb0ddd27"></a>
+<a class="anchor" id="a1558d4bb2ea3be3ee24b032f6f32e667"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -208,7 +209,13 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const string &amp;&#160;</td>
-          <td class="paramname"><em>description</em>&#160;</td>
+          <td class="paramname"><em>description</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::function&lt; void(int)&gt;&#160;</td>
+          <td class="paramname"><em>cb</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -225,7 +232,7 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a68542e1500e9cee4c2fefb4a63827f86"></a>
+<a class="anchor" id="a90d2a480572217b41c397759b3c3ecdd"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -260,7 +267,13 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const string &amp;&#160;</td>
-          <td class="paramname"><em>description</em>&#160;</td>
+          <td class="paramname"><em>description</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::function&lt; void(double)&gt;&#160;</td>
+          <td class="paramname"><em>cb</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -277,7 +290,7 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a72685a7f91eb2e00b29f6c18b59c2440"></a>
+<a class="anchor" id="a09086155a62a5058eadfa2fd72c17694"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -300,7 +313,13 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const string &amp;&#160;</td>
-          <td class="paramname"><em>description</em>&#160;</td>
+          <td class="paramname"><em>description</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::function&lt; void(bool)&gt;&#160;</td>
+          <td class="paramname"><em>cb</em>&#160;</td>
         </tr>
         <tr>
           <td></td>

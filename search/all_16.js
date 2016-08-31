@@ -1,7 +1,11 @@
 var searchData=
 [
-  ['_7efilter',['~Filter',['../class_g_r_t_1_1_filter.html#a6c125c36bd1e02e312347523143a904e',1,'GRT::Filter']]],
-  ['_7eistream',['~IStream',['../class_i_stream.html#a78b9543926dc09be94c01842f775c28b',1,'IStream']]],
-  ['_7emelbankfeatures',['~MelBankFeatures',['../class_g_r_t_1_1_mel_bank_features.html#a5d4c28e582911db18b584c1dc2cc5c99',1,'GRT::MelBankFeatures']]],
-  ['_7ethresholddetection',['~ThresholdDetection',['../class_g_r_t_1_1_threshold_detection.html#a5b0fe3f8f1d8fccc7f13396f8db5161a',1,'GRT::ThresholdDetection']]]
+  ['x_5f',['x_',['../class_interactive_plot.html#ad6ba0c18e3c499c80c16e5917072eb66',1,'InteractivePlot']]],
+  ['x_5fclick_5f',['x_click_',['../class_interactive_plot.html#a2208f0edab5c7499ee2655b4b2e3d9ef',1,'InteractivePlot']]],
+  ['x_5fend_5f',['x_end_',['../class_interactive_plot.html#a19b63943afdf71df49b7dd3555916cf5',1,'InteractivePlot']]],
+  ['x_5fmove_5f',['x_move_',['../class_interactive_plot.html#abc710e7802a996d143ee65cb1cfd5a46',1,'InteractivePlot']]],
+  ['x_5frelease_5f',['x_release_',['../class_interactive_plot.html#a34cf4a87c61618b6962309ba8e08402b',1,'InteractivePlot']]],
+  ['x_5fstart_5f',['x_start_',['../class_interactive_plot.html#abbb6a86995871fcf5b074ddd96870422',1,'InteractivePlot']]],
+  ['xlabel',['xlabel',['../namespacematplotlibcpp.html#a8b8f1bb0cc3640fe5140f5a012e4a1c0',1,'matplotlibcpp']]],
+  ['xlim',['xlim',['../namespacematplotlibcpp.html#a712cd34472b3687668048899bee4cdbf',1,'matplotlibcpp']]]
 ];

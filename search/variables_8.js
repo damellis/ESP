@@ -1,12 +1,22 @@
 var searchData=
 [
+  ['kdefaulttrainingdataname',['kDefaultTrainingDataName',['../training-data-manager_8cpp.html#aee33aa130ede8d3c104f970d6d8ac0a1',1,'training-data-manager.cpp']]],
   ['kdelaybeforetraining',['kDelayBeforeTraining',['../of_app_8cpp.html#af87f2c9f0eaf8bd4938257c36eb8a949',1,'ofApp.cpp']]],
-  ['kfft_5fhopsize',['kFFT_HopSize',['../user__audio_8cpp.html#a5acb9b8b2db9065d26ec38c0b97f9a2b',1,'kFFT_HopSize():&#160;user_audio.cpp'],['../user__audio__beat__detection_8cpp.html#a5acb9b8b2db9065d26ec38c0b97f9a2b',1,'kFFT_HopSize():&#160;user_audio_beat_detection.cpp']]],
-  ['kfft_5fwindowsize',['kFFT_WindowSize',['../user__audio_8cpp.html#a18d75fb402f0161662ad100fc42e84bf',1,'kFFT_WindowSize():&#160;user_audio.cpp'],['../user__audio__beat__detection_8cpp.html#ab1b6052ea63bf4bccf962db564882a5e',1,'kFFT_WindowSize():&#160;user_audio_beat_detection.cpp']]],
+  ['kdownsample',['kDownsample',['../user__speaker_8cpp.html#ac9bfcf44166ab9b370bd145e2106de92',1,'user_speaker.cpp']]],
+  ['kfft_5fhopsize',['kFFT_HopSize',['../cli_8cpp.html#a2e0613005171819c94949d3023e8a0aa',1,'kFFT_HopSize():&#160;cli.cpp'],['../user__audio__beat__detection_8cpp.html#a5acb9b8b2db9065d26ec38c0b97f9a2b',1,'kFFT_HopSize():&#160;user_audio_beat_detection.cpp']]],
+  ['kfft_5fwindowsize',['kFFT_WindowSize',['../cli_8cpp.html#a18d75fb402f0161662ad100fc42e84bf',1,'kFFT_WindowSize():&#160;cli.cpp'],['../user__audio__beat__detection_8cpp.html#ab1b6052ea63bf4bccf962db564882a5e',1,'kFFT_WindowSize():&#160;user_audio_beat_detection.cpp']]],
+  ['kffthopsize',['kFftHopSize',['../user__speaker_8cpp.html#a9f34fd1e9f8345155304123b866a9ad3',1,'user_speaker.cpp']]],
+  ['kfftwindowsize',['kFftWindowSize',['../user__speaker_8cpp.html#a399fe9eedaa926fbfb6ec70d52702bce',1,'user_speaker.cpp']]],
   ['kgraceperiod',['kGracePeriod',['../ostream_8h.html#a2c0918946b2cc90bd6a19c497d5f0c8e',1,'ostream.h']]],
+  ['knummaxlabels',['kNumMaxLabels',['../cli_8cpp.html#ad0fe3368643ae2ab8f4ca38fb55d973f',1,'cli.cpp']]],
   ['kofsoundstream_5fbuffersize',['kOfSoundStream_BufferSize',['../istream_8h.html#a1f9fb9924409c3cbb2b8709b83e37471',1,'istream.h']]],
   ['kofsoundstream_5fnbuffers',['kOfSoundStream_nBuffers',['../istream_8h.html#a0f7305c1700de2b858bdeca390fcc466',1,'istream.h']]],
   ['kofsoundstream_5fsamplingrate',['kOfSoundStream_SamplingRate',['../istream_8h.html#ad2280bb8cacaeff9d723a1bca890e81a',1,'istream.h']]],
+  ['kpipelinefilename',['kPipelineFilename',['../cli_8cpp.html#a199ce1a27bf2af0b69c001acdf73021f',1,'cli.cpp']]],
   ['kpipelineheightweight',['kPipelineHeightWeight',['../of_app_8cpp.html#a65da77f480b529c6df31fd02a9ca0ad2',1,'ofApp.cpp']]],
-  ['ktoomanyfeaturesthreshold',['kTooManyFeaturesThreshold',['../of_app_8cpp.html#a5bcdece2c7882b2e320886061038ea06',1,'ofApp.cpp']]]
+  ['ksamplerate',['kSampleRate',['../user__speaker_8cpp.html#a316e60d6254e87d9f41d619e00aa2464',1,'user_speaker.cpp']]],
+  ['kserialselectioncolor',['kSerialSelectionColor',['../of_app_8cpp.html#a0cfbb8f673000f4c553ba38ae460b8e7',1,'ofApp.cpp']]],
+  ['ktestdatafilename',['kTestDataFilename',['../cli_8cpp.html#aa51828a1d85c0ef78f89272eb8db25be',1,'cli.cpp']]],
+  ['ktoomanyfeaturesthreshold',['kTooManyFeaturesThreshold',['../of_app_8cpp.html#a5bcdece2c7882b2e320886061038ea06',1,'ofApp.cpp']]],
+  ['ktrainingdatafilename',['kTrainingDataFilename',['../cli_8cpp.html#a7141b4da927166d660bf3c536a4996b9',1,'cli.cpp']]]
 ];

@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['filter',['Filter',['../class_g_r_t_1_1_filter.html',1,'GRT']]],
-  ['firmatastream',['FirmataStream',['../class_firmata_stream.html',1,'']]]
+  ['baseserialinputstream',['BaseSerialInputStream',['../class_base_serial_input_stream.html',1,'']]],
+  ['binaryintarrayserialstream',['BinaryIntArraySerialStream',['../class_binary_int_array_serial_stream.html',1,'']]]
 ];

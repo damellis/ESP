@@ -48,6 +48,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -126,8 +127,9 @@ Inheritance diagram for TcpOStream:</div>
  <div class="center">
   <img src="class_tcp_o_stream.png" usemap="#TcpOStream_map" alt=""/>
   <map id="TcpOStream_map" name="TcpOStream_map">
-<area href="class_o_stream.html" title="Base class for output streams that forward ESP prediction results to other systems. " alt="OStream" shape="rect" coords="0,56,82,80"/>
-<area href="class_stream.html" alt="Stream" shape="rect" coords="0,0,82,24"/>
+<area href="class_o_stream_vector.html" title="Base class for output streams that forward ESP pipeline output to other systems. " alt="OStreamVector" shape="rect" coords="0,112,99,136"/>
+<area href="class_o_stream.html" title="Base class for output streams that forward ESP prediction results to other systems. " alt="OStream" shape="rect" coords="0,56,99,80"/>
+<area href="class_stream.html" alt="Stream" shape="rect" coords="0,0,99,24"/>
 </map>
  </div></div>
 <table class="memberdecls">
@@ -141,6 +143,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a1062a9c187f255d62d1e091db19d2e26"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a876233a345be2af73054f9e7e09c7938"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tcp_o_stream.html#a876233a345be2af73054f9e7e09c7938">onReceive</a> (uint32_t label)</td></tr>
 <tr class="separator:a876233a345be2af73054f9e7e09c7938"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac5da58c66ef0ce39d51448c2d20124e8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tcp_o_stream.html#ac5da58c66ef0ce39d51448c2d20124e8">onReceive</a> (vector&lt; double &gt; data)</td></tr>
+<tr class="separator:ac5da58c66ef0ce39d51448c2d20124e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a30af284b08149a51651e12df8c2b67ff"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tcp_o_stream.html#a30af284b08149a51651e12df8c2b67ff">start</a> ()</td></tr>
 <tr class="separator:a30af284b08149a51651e12df8c2b67ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_stream"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_stream')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_stream.html">Stream</a></td></tr>
@@ -162,8 +166,8 @@ Additional Inherited Members</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Send strings over a TCP socket based on pipeline predictions. </p>
 <p>This class connects to a TCP server and sends it strings when predictions are made by the current machine learning pipeline. The TCP connection is only made once, when ESP first starts, and is not restored if the other side disconnects.</p>
-<p>To use an <a class="el" href="class_tcp_o_stream.html" title="Send strings over a TCP socket based on pipeline predictions. ">TcpOStream</a> instance in your application, pass it to <a class="el" href="ostream_8cpp.html#a279f55018c4c054ad565198954f8eb16" title="Specify an OStream to which to stream predictions made by the active ESP pipeline. Multiple output streams are supported. ">useOutputStream()</a> in your <a class="el" href="user__accelerometer__gestures_8cpp.html#a4fc01d736fe50cf5b977f755b675f11d">setup()</a> function. </p>
-<dl><dt><b>Examples: </b></dt><dd><a class="el" href="user_accelerometer_gestures_8cpp-example.html#_a5">user_accelerometer_gestures.cpp</a>, <a class="el" href="user_accelerometer_poses_8cpp-example.html#_a5">user_accelerometer_poses.cpp</a>, and <a class="el" href="user_color_sensor_8cpp-example.html#_a4">user_color_sensor.cpp</a>.</dd>
+<p>To use an <a class="el" href="class_tcp_o_stream.html" title="Send strings over a TCP socket based on pipeline predictions. ">TcpOStream</a> instance in your application, pass it to <a class="el" href="_e_s_p_8h.html#a279f55018c4c054ad565198954f8eb16" title="Specify an OStream to which to stream predictions made by the active ESP pipeline. Multiple output streams are supported. ">useOutputStream()</a> in your <a class="el" href="user__accelerometer__gestures_8cpp.html#a4fc01d736fe50cf5b977f755b675f11d">setup()</a> function. </p>
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="user_accelerometer_gestures_8cpp-example.html#_a5">user_accelerometer_gestures.cpp</a>, <a class="el" href="user_accelerometer_poses_8cpp-example.html#_a5">user_accelerometer_poses.cpp</a>, <a class="el" href="user_accelerometer_walk_detection_8cpp-example.html#_a5">user_accelerometer_walk_detection.cpp</a>, <a class="el" href="user_color_sensor_8cpp-example.html#_a4">user_color_sensor.cpp</a>, <a class="el" href="user_speaker_8cpp-example.html#_a8">user_speaker.cpp</a>, and <a class="el" href="user_touche_8cpp-example.html#_a2">user_touche.cpp</a>.</dd>
 </dl></div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="ab533de84cc322c5c1e3bae9d8f246914"></a>
 <div class="memitem">
@@ -338,6 +342,32 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="ac5da58c66ef0ce39d51448c2d20124e8"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void TcpOStream::onReceive </td>
+          <td>(</td>
+          <td class="paramtype">vector&lt; double &gt;&#160;</td>
+          <td class="paramname"><em>data</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="class_o_stream_vector.html#a5bf8619d2a7b66075dea274555682ca8">OStreamVector</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a30af284b08149a51651e12df8c2b67ff"></a>
 <div class="memitem">
 <div class="memproto">
@@ -354,7 +384,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

@@ -1,7 +1,7 @@
 var tuneable_8h =
 [
     [ "Tuneable", "class_tuneable.html", "class_tuneable" ],
-    [ "registerTuneable", "tuneable_8h.html#ab70b66eef36d646163bde25ec79415e8", null ],
-    [ "registerTuneable", "tuneable_8h.html#a5be8e87b8c90c89f946b1fa588d35a82", null ],
-    [ "registerTuneable", "tuneable_8h.html#a7130854c93f62a09e5b1ee01955e3be0", null ]
+    [ "registerTuneable", "tuneable_8h.html#ad7c8879381d1f327a7da269f60f473a3", null ],
+    [ "registerTuneable", "tuneable_8h.html#aa2217254da92b44ec92d19f51b0eeeda", null ],
+    [ "registerTuneable", "tuneable_8h.html#a170df581c8eb5a5d0e3f286f10579e89", null ]
 ];

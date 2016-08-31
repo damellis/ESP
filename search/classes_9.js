@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['tcpostream',['TcpOStream',['../class_tcp_o_stream.html',1,'']]],
-  ['thresholddetection',['ThresholdDetection',['../class_g_r_t_1_1_threshold_detection.html',1,'GRT']]],
-  ['trainingsamplecheckerresult',['TrainingSampleCheckerResult',['../class_training_sample_checker_result.html',1,'']]],
-  ['trainingsampleguilistener',['TrainingSampleGuiListener',['../class_training_sample_gui_listener.html',1,'']]],
-  ['tuneable',['Tuneable',['../class_tuneable.html',1,'']]]
+  ['ofapp',['ofApp',['../classof_app.html',1,'']]],
+  ['ofconsolefileloggerchannel',['ofConsoleFileLoggerChannel',['../classof_console_file_logger_channel.html',1,'']]],
+  ['options',['Options',['../struct_g_r_t_1_1_m_f_c_c_1_1_options.html',1,'GRT::MFCC']]],
+  ['ostream',['OStream',['../class_o_stream.html',1,'']]],
+  ['ostreamvector',['OStreamVector',['../class_o_stream_vector.html',1,'']]]
 ];

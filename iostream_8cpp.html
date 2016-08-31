@@ -48,6 +48,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
@@ -106,46 +107,12 @@ $(document).ready(function(){initNavTree('iostream_8cpp.html','');});
 </div>
 
 <div class="header">
-  <div class="summary">
-<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">iostream.cpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="of_app_8h_source.html">ofApp.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="iostream_8h_source.html">iostream.h</a>&quot;</code><br />
-</div><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:aff979b7370726d96aac43c99e3f7af10"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="iostream_8cpp.html#aff979b7370726d96aac43c99e3f7af10">useStream</a> (<a class="el" href="class_i_o_stream.html">IOStream</a> &amp;<a class="el" href="user__sudden__motion_8cpp.html#aa0c0eb30458e60c0433f27b43a4c603e">stream</a>)</td></tr>
-<tr class="separator:aff979b7370726d96aac43c99e3f7af10"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table>
-<h2 class="groupheader">Function Documentation</h2>
-<a class="anchor" id="aff979b7370726d96aac43c99e3f7af10"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void useStream </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="class_i_o_stream.html">IOStream</a> &amp;&#160;</td>
-          <td class="paramname"><em>stream</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Tells the ESP system which stream to use, for both input and output. Call from your <a class="el" href="user__accelerometer__gestures_8cpp.html#a4fc01d736fe50cf5b977f755b675f11d">setup()</a> function. The specified stream will be automatically started by the ESP system. Note that only one input stream is supported at a time; subsequent calls to <a class="el" href="iostream_8h.html#aff979b7370726d96aac43c99e3f7af10">useStream()</a> will cause the new stream to be used for input, replacing input from streams passed to any previous calls to <a class="el" href="iostream_8h.html#aff979b7370726d96aac43c99e3f7af10">useStream()</a> or <a class="el" href="istream_8cpp.html#a28ecae66cc8c204679f3995fafc93ae6">useInputStream()</a>. Multiple simultaneous output streams are supported, however, so calling <a class="el" href="iostream_8h.html#aff979b7370726d96aac43c99e3f7af10">useStream()</a> will cause output to be sent to the specified stream in addition to streams previously specified with <a class="el" href="iostream_8h.html#aff979b7370726d96aac43c99e3f7af10">useStream()</a> or <a class="el" href="ostream_8cpp.html#a279f55018c4c054ad565198954f8eb16" title="Specify an OStream to which to stream predictions made by the active ESP pipeline. Multiple output streams are supported. ">useOutputStream()</a>.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">stream</td><td>the stream to use for input and output </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl><dt><b>Examples: </b></dt><dd><a class="el" href="user_accelerometer_gestures_8cpp-example.html#a24">user_accelerometer_gestures.cpp</a>, <a class="el" href="user_accelerometer_walk_detection_8cpp-example.html#a19">user_accelerometer_walk_detection.cpp</a>, and <a class="el" href="user_capacitive_sensing_8cpp-example.html#a4">user_capacitive_sensing.cpp</a>.</dd>
-</dl>
-</div>
-</div>
-</div><!-- contents -->
+<div class="textblock"><code>#include &quot;<a class="el" href="iostream_8h_source.html">iostream.h</a>&quot;</code><br />
+</div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

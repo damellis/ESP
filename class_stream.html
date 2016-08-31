@@ -48,6 +48,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -124,17 +125,19 @@ Inheritance diagram for Stream:</div>
  <div class="center">
   <img src="class_stream.png" usemap="#Stream_map" alt=""/>
   <map id="Stream_map" name="Stream_map">
-<area href="class_i_stream.html" title="Base class for input streams that provide live sensor data to the ESP system. " alt="IStream" shape="rect" coords="0,56,159,80"/>
+<area href="class_input_stream.html" title="Base class for input streams that provide live sensor data to the ESP system. " alt="InputStream" shape="rect" coords="0,56,159,80"/>
 <area href="class_o_stream.html" title="Base class for output streams that forward ESP prediction results to other systems. " alt="OStream" shape="rect" coords="338,56,497,80"/>
 <area href="class_audio_file_stream.html" title="Input stream for getting the FFT spectrum of an audio file as it plays. " alt="AudioFileStream" shape="rect" coords="169,112,328,136"/>
 <area href="class_audio_stream.html" title="Input stream for reading audio from the computer&#39;s microphone. " alt="AudioStream" shape="rect" coords="169,168,328,192"/>
-<area href="class_firmata_stream.html" title="Input stream for reading analog data from an Arduino running Firmata. " alt="FirmataStream" shape="rect" coords="169,224,328,248"/>
-<area href="class_i_o_stream.html" alt="IOStream" shape="rect" coords="169,280,328,304"/>
-<area href="class_serial_stream.html" alt="SerialStream" shape="rect" coords="169,336,328,360"/>
+<area href="class_base_serial_input_stream.html" alt="BaseSerialInputStream" shape="rect" coords="169,224,328,248"/>
+<area href="class_firmata_stream.html" title="Input stream for reading analog data from an Arduino running Firmata. " alt="FirmataStream" shape="rect" coords="169,280,328,304"/>
+<area href="class_i_o_stream.html" alt="IOStream" shape="rect" coords="169,336,328,360"/>
+<area href="class_i_o_stream_vector.html" alt="IOStreamVector" shape="rect" coords="169,392,328,416"/>
+<area href="class_serial_stream.html" alt="SerialStream" shape="rect" coords="169,448,328,472"/>
 <area href="class_i_o_stream.html" alt="IOStream" shape="rect" coords="507,112,666,136"/>
 <area href="class_mac_o_s_keyboard_o_stream.html" title="Emulate keyboard key presses corresponding to prediction results. " alt="MacOSKeyboardOStream" shape="rect" coords="507,168,666,192"/>
 <area href="class_mac_o_s_mouse_o_stream.html" title="Emulate mouse double-clicks at locations corresponding to prediction results. " alt="MacOSMouseOStream" shape="rect" coords="507,224,666,248"/>
-<area href="class_tcp_o_stream.html" title="Send strings over a TCP socket based on pipeline predictions. " alt="TcpOStream" shape="rect" coords="507,280,666,304"/>
+<area href="class_o_stream_vector.html" title="Base class for output streams that forward ESP pipeline output to other systems. " alt="OStreamVector" shape="rect" coords="507,280,666,304"/>
 </map>
  </div></div>
 <table class="memberdecls">
@@ -226,7 +229,7 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Start the stream. </p>
 
-<p>Reimplemented in <a class="el" href="class_tcp_o_stream.html#a30af284b08149a51651e12df8c2b67ff">TcpOStream</a>, <a class="el" href="class_firmata_stream.html#a028798d961aea59427ed4ea272e95e4e">FirmataStream</a>, <a class="el" href="class_serial_stream.html#afe8f428de53d4c4ca30bc699f1aa2b89">SerialStream</a>, <a class="el" href="class_audio_file_stream.html#a1b1f8259c74f1357dfae19d6cd5cc252">AudioFileStream</a>, <a class="el" href="class_audio_stream.html#a420fd8324be27f4cd072fdd926bde7f8">AudioStream</a>, and <a class="el" href="class_a_s_c_i_i_serial_stream.html#a25527534c54bf6a6e0d9c41b7f62e4a6">ASCIISerialStream</a>.</p>
+<p>Reimplemented in <a class="el" href="class_tcp_o_stream.html#a30af284b08149a51651e12df8c2b67ff">TcpOStream</a>, <a class="el" href="class_firmata_stream.html#a028798d961aea59427ed4ea272e95e4e">FirmataStream</a>, <a class="el" href="class_serial_stream.html#afe8f428de53d4c4ca30bc699f1aa2b89">SerialStream</a>, <a class="el" href="class_base_serial_input_stream.html#a78d5a483e4b5066296d315cf17123c69">BaseSerialInputStream</a>, <a class="el" href="class_audio_file_stream.html#a1b1f8259c74f1357dfae19d6cd5cc252">AudioFileStream</a>, and <a class="el" href="class_audio_stream.html#a420fd8324be27f4cd072fdd926bde7f8">AudioStream</a>.</p>
 
 </div>
 </div>
@@ -251,7 +254,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Reimplemented in <a class="el" href="class_firmata_stream.html#aae1d1172e3049f3bdb97016c8b0110e1">FirmataStream</a>, <a class="el" href="class_serial_stream.html#ab05ab340356431ab2638be923c17e924">SerialStream</a>, <a class="el" href="class_audio_file_stream.html#a05be48ffe19f7868da18fd09a28a08cf">AudioFileStream</a>, <a class="el" href="class_audio_stream.html#a9b202fb8f50b22515ad09ef54129481b">AudioStream</a>, and <a class="el" href="class_a_s_c_i_i_serial_stream.html#a6e2bf766911928d1d6d061ce1b90d5ba">ASCIISerialStream</a>.</p>
+<p>Reimplemented in <a class="el" href="class_firmata_stream.html#aae1d1172e3049f3bdb97016c8b0110e1">FirmataStream</a>, <a class="el" href="class_serial_stream.html#ab05ab340356431ab2638be923c17e924">SerialStream</a>, <a class="el" href="class_base_serial_input_stream.html#a464e95f5603d193063645a093ae53716">BaseSerialInputStream</a>, <a class="el" href="class_audio_file_stream.html#a05be48ffe19f7868da18fd09a28a08cf">AudioFileStream</a>, and <a class="el" href="class_audio_stream.html#a9b202fb8f50b22515ad09ef54129481b">AudioStream</a>.</p>
 
 </div>
 </div>

@@ -48,6 +48,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -143,9 +144,9 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="class_training_sample_checker_result.html" title="TrainingSampleCheckerResult indicates the result of a check of a training sample. ...">TrainingSampleCheckerResult</a> indicates the result of a check of a training sample. </p>
-<p>There are three supported result: SUCCESS, WARNING, FAILURE. An optional string description can be supplied to better assist user figuring out why the training sample fails. This class is used as the return value for the functions passed to <a class="el" href="training_8cpp.html#a1bf90f88fd71128f5b3e393502cd6979" title="Register a function for checking training samples. ">useTrainingSampleChecker()</a>.</p>
+<p>There are three supported result: SUCCESS, WARNING, FAILURE. An optional string description can be supplied to better assist user figuring out why the training sample fails. This class is used as the return value for the functions passed to <a class="el" href="_e_s_p_8h.html#a1bf90f88fd71128f5b3e393502cd6979" title="Register a function for checking training samples. ">useTrainingSampleChecker()</a>.</p>
 <p>You can create a <a class="el" href="class_training_sample_checker_result.html" title="TrainingSampleCheckerResult indicates the result of a check of a training sample. ...">TrainingSampleCheckerResult</a> like this: </p><pre class="fragment">return TrainingSampleCheckerResult(TrainingSampleCheckerResult::FAILURE, "Error: Something went wrong.");
-</pre><p>Or just use the Result directly if you don't want to supply a custom message: </p><pre class="fragment">return TrainingSampleCheckerResult::SUCCESS; // use default message</pre> <dl><dt><b>Examples: </b></dt><dd><a class="el" href="user_accelerometer_gestures_8cpp-example.html#_a16">user_accelerometer_gestures.cpp</a>.</dd>
+</pre><p>Or just use the Result directly if you don't want to supply a custom message: </p><pre class="fragment">return TrainingSampleCheckerResult::SUCCESS; // use default message</pre> <dl><dt><b>Examples: </b></dt><dd><a class="el" href="user_accelerometer_gestures_8cpp-example.html#_a21">user_accelerometer_gestures.cpp</a>.</dd>
 </dl></div><h2 class="groupheader">Member Enumeration Documentation</h2>
 <a class="anchor" id="a0cba1d0ca73cf49645dade329dba9e21"></a>
 <div class="memitem">

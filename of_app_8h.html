@@ -48,6 +48,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
@@ -107,22 +108,24 @@ $(document).ready(function(){initNavTree('of_app_8h.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a>  </div>
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#define-members">Macros</a>  </div>
   <div class="headertitle">
 <div class="title">ofApp.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;stdint.h&gt;</code><br />
+<div class="textblock"><code>#include &lt;cstdint&gt;</code><br />
 <code>#include &lt;thread&gt;</code><br />
 <code>#include &quot;ofMain.h&quot;</code><br />
 <code>#include &quot;ofxDatGui.h&quot;</code><br />
-<code>#include &quot;ofxGui.h&quot;</code><br />
 <code>#include &quot;ofxGrt.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="of_console_file_logger_channel_8h_source.html">ofConsoleFileLoggerChannel.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="calibrator_8h_source.html">calibrator.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="iostream_8h_source.html">iostream.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="plotter_8h_source.html">plotter.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="tuneable_8h_source.html">tuneable.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="training_8h_source.html">training.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="training-data-manager_8h_source.html">training-data-manager.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="tuneable_8h_source.html">tuneable.h</a>&quot;</code><br />
 </div>
 <p><a href="of_app_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -132,7 +135,29 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_training_sample_gui_listener.html">TrainingSampleGuiListener</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a839afa819a9d0ca9f28f5c1631bdee64"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="of_app_8h.html#a839afa819a9d0ca9f28f5c1631bdee64">ESP_EVENT</a>(s)&#160;&#160;&#160;ofLogVerbose() &lt;&lt; &quot;[&quot; &lt;&lt; ofGetTimestampString() &lt;&lt; &quot;] &quot; &lt;&lt; (s)</td></tr>
+<tr class="separator:a839afa819a9d0ca9f28f5c1631bdee64"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a class="anchor" id="a839afa819a9d0ca9f28f5c1631bdee64"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define ESP_EVENT</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">s</td><td>)</td>
+          <td>&#160;&#160;&#160;ofLogVerbose() &lt;&lt; &quot;[&quot; &lt;&lt; ofGetTimestampString() &lt;&lt; &quot;] &quot; &lt;&lt; (s)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

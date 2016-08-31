@@ -48,6 +48,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
@@ -117,35 +118,68 @@ $(document).ready(function(){initNavTree('user__accelerometer__gestures_8cpp.htm
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:add00571ce8cfd3623ea0967ad8b24b89"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="user__accelerometer__gestures_8cpp.html#add00571ce8cfd3623ea0967ad8b24b89">processAccelerometerData</a> (double input)</td></tr>
-<tr class="separator:add00571ce8cfd3623ea0967ad8b24b89"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad5dcfc15f7ade75a4d1ee00ff9bbf4c4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_calibrate_result.html">CalibrateResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="user__accelerometer__gestures_8cpp.html#ad5dcfc15f7ade75a4d1ee00ff9bbf4c4">restingDataCollected</a> (const MatrixDouble &amp;data)</td></tr>
-<tr class="separator:ad5dcfc15f7ade75a4d1ee00ff9bbf4c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aebbcbc51745431bb679a13b14d36ddef"><td class="memItemLeft" align="right" valign="top">vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="user__accelerometer__gestures_8cpp.html#aebbcbc51745431bb679a13b14d36ddef">zeroGs</a> (3)</td></tr>
+<tr class="separator:aebbcbc51745431bb679a13b14d36ddef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae6acd9a631bb403f4d7bad86267c67ca"><td class="memItemLeft" align="right" valign="top">vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="user__accelerometer__gestures_8cpp.html#ae6acd9a631bb403f4d7bad86267c67ca">processAccelerometerData</a> (vector&lt; double &gt; input)</td></tr>
+<tr class="separator:ae6acd9a631bb403f4d7bad86267c67ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc5d4d052636037dbf202cb2b5f0a23f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_calibrate_result.html">CalibrateResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="user__accelerometer__gestures_8cpp.html#afc5d4d052636037dbf202cb2b5f0a23f">calibrate</a> (const MatrixDouble &amp;data)</td></tr>
+<tr class="separator:afc5d4d052636037dbf202cb2b5f0a23f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2b83b8ac9f7ba293ee141e3a259aa98"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_calibrate_result.html">CalibrateResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="user__accelerometer__gestures_8cpp.html#aa2b83b8ac9f7ba293ee141e3a259aa98">uprightDataCollected</a> (const MatrixDouble &amp;data)</td></tr>
+<tr class="separator:aa2b83b8ac9f7ba293ee141e3a259aa98"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adfd1398f54ce5482a37bbb9a30ae90f3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_calibrate_result.html">CalibrateResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="user__accelerometer__gestures_8cpp.html#adfd1398f54ce5482a37bbb9a30ae90f3">upsideDownDataCollected</a> (const MatrixDouble &amp;data)</td></tr>
+<tr class="separator:adfd1398f54ce5482a37bbb9a30ae90f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aed228f8343fd345b26ac99a7bd5cc1bf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_training_sample_checker_result.html">TrainingSampleCheckerResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="user__accelerometer__gestures_8cpp.html#aed228f8343fd345b26ac99a7bd5cc1bf">checkTrainingSample</a> (const MatrixDouble &amp;in)</td></tr>
 <tr class="separator:aed228f8343fd345b26ac99a7bd5cc1bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0a30febfe28e6713c07a9b52fb228de"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="user__accelerometer__gestures_8cpp.html#aa0a30febfe28e6713c07a9b52fb228de">updateVariability</a> (double new_null_rej)</td></tr>
+<tr class="separator:aa0a30febfe28e6713c07a9b52fb228de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a05667244a084ee373a2c27f399845099"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="user__accelerometer__gestures_8cpp.html#a05667244a084ee373a2c27f399845099">updateTimeout</a> (int new_timeout)</td></tr>
+<tr class="separator:a05667244a084ee373a2c27f399845099"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4fc01d736fe50cf5b977f755b675f11d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="user__accelerometer__gestures_8cpp.html#a4fc01d736fe50cf5b977f755b675f11d">setup</a> ()</td></tr>
 <tr class="separator:a4fc01d736fe50cf5b977f755b675f11d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a41a00af8a6d249ec09dea539956386f2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_a_s_c_i_i_serial_stream.html">ASCIISerialStream</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="user__accelerometer__gestures_8cpp.html#a41a00af8a6d249ec09dea539956386f2">stream</a> (9600, 3)</td></tr>
-<tr class="separator:a41a00af8a6d249ec09dea539956386f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a721356ffb58845d0c62ce4e22356503e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_a_s_c_i_i_serial_stream.html">ASCIISerialStream</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="user__accelerometer__gestures_8cpp.html#a721356ffb58845d0c62ce4e22356503e">stream</a> (115200, 3)</td></tr>
+<tr class="separator:a721356ffb58845d0c62ce4e22356503e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad04a77e9fb154385d1f97731437390e4"><td class="memItemLeft" align="right" valign="top">GestureRecognitionPipeline&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="user__accelerometer__gestures_8cpp.html#ad04a77e9fb154385d1f97731437390e4">pipeline</a></td></tr>
 <tr class="separator:ad04a77e9fb154385d1f97731437390e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2dfd966029091cbf3bc049ece6a957ce"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_calibrator.html">Calibrator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="user__accelerometer__gestures_8cpp.html#a2dfd966029091cbf3bc049ece6a957ce">calibrator</a></td></tr>
 <tr class="separator:a2dfd966029091cbf3bc049ece6a957ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a03d2e0d3fbf91d8bffad36160f3d0d7a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_tcp_o_stream.html">TcpOStream</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="user__accelerometer__gestures_8cpp.html#a03d2e0d3fbf91d8bffad36160f3d0d7a">oStream</a> (&quot;localhost&quot;, 5204)</td></tr>
 <tr class="separator:a03d2e0d3fbf91d8bffad36160f3d0d7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:addc7ddd3b45227e1cd1b2c862a63534a"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="user__accelerometer__gestures_8cpp.html#addc7ddd3b45227e1cd1b2c862a63534a">zeroG</a> = 0</td></tr>
-<tr class="separator:addc7ddd3b45227e1cd1b2c862a63534a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6423f81bc2d048133f946ad3c0c22aaf"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="user__accelerometer__gestures_8cpp.html#a6423f81bc2d048133f946ad3c0c22aaf">oneG</a> = 0</td></tr>
-<tr class="separator:a6423f81bc2d048133f946ad3c0c22aaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52d1d6e99e59987d6feec6e5ed27bb94"><td class="memItemLeft" align="right" valign="top">MatrixDouble&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="user__accelerometer__gestures_8cpp.html#a52d1d6e99e59987d6feec6e5ed27bb94">uprightData</a></td></tr>
+<tr class="separator:a52d1d6e99e59987d6feec6e5ed27bb94"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3bbacf72d09467bb92a276c206c50c60"><td class="memItemLeft" align="right" valign="top">MatrixDouble&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="user__accelerometer__gestures_8cpp.html#a3bbacf72d09467bb92a276c206c50c60">upsideDownData</a></td></tr>
+<tr class="separator:a3bbacf72d09467bb92a276c206c50c60"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57ba16fa46620c264703369d022e30a3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="user__accelerometer__gestures_8cpp.html#a57ba16fa46620c264703369d022e30a3">haveUprightData</a> = false</td></tr>
+<tr class="separator:a57ba16fa46620c264703369d022e30a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3cc542eeedb236de5b662ee4f4ad750c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="user__accelerometer__gestures_8cpp.html#a3cc542eeedb236de5b662ee4f4ad750c">haveUpsideDownData</a> = false</td></tr>
+<tr class="separator:a3cc542eeedb236de5b662ee4f4ad750c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac26a49438fb4be02f746d15833a9c591"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="user__accelerometer__gestures_8cpp.html#ac26a49438fb4be02f746d15833a9c591">range</a></td></tr>
+<tr class="separator:ac26a49438fb4be02f746d15833a9c591"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a493b57f443cc38b3d3df9c1e584d9d82"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="user__accelerometer__gestures_8cpp.html#a493b57f443cc38b3d3df9c1e584d9d82">timeout</a> = 500</td></tr>
 <tr class="separator:a493b57f443cc38b3d3df9c1e584d9d82"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aba6fa4a57d62ac4dd27498a2f538ed47"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="user__accelerometer__gestures_8cpp.html#aba6fa4a57d62ac4dd27498a2f538ed47">null_rej</a> = 0.4</td></tr>
 <tr class="separator:aba6fa4a57d62ac4dd27498a2f538ed47"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
+<a class="anchor" id="afc5d4d052636037dbf202cb2b5f0a23f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_calibrate_result.html">CalibrateResult</a> calibrate </td>
+          <td>(</td>
+          <td class="paramtype">const MatrixDouble &amp;&#160;</td>
+          <td class="paramname"><em>data</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="user_accelerometer_gestures_8cpp-example.html#a15">user_accelerometer_gestures.cpp</a>.</dd>
+</dl>
+</div>
+</div>
 <a class="anchor" id="aed228f8343fd345b26ac99a7bd5cc1bf"></a>
 <div class="memitem">
 <div class="memproto">
@@ -159,41 +193,24 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl><dt><b>Examples: </b></dt><dd><a class="el" href="user_accelerometer_gestures_8cpp-example.html#a17">user_accelerometer_gestures.cpp</a>.</dd>
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="user_accelerometer_gestures_8cpp-example.html#a22">user_accelerometer_gestures.cpp</a>.</dd>
 </dl>
 </div>
 </div>
-<a class="anchor" id="add00571ce8cfd3623ea0967ad8b24b89"></a>
+<a class="anchor" id="ae6acd9a631bb403f4d7bad86267c67ca"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">double processAccelerometerData </td>
+          <td class="memname">vector&lt;double&gt; processAccelerometerData </td>
           <td>(</td>
-          <td class="paramtype">double&#160;</td>
+          <td class="paramtype">vector&lt; double &gt;&#160;</td>
           <td class="paramname"><em>input</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl><dt><b>Examples: </b></dt><dd><a class="el" href="user_accelerometer_gestures_8cpp-example.html#a9">user_accelerometer_gestures.cpp</a>.</dd>
-</dl>
-</div>
-</div>
-<a class="anchor" id="ad5dcfc15f7ade75a4d1ee00ff9bbf4c4"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="class_calibrate_result.html">CalibrateResult</a> restingDataCollected </td>
-          <td>(</td>
-          <td class="paramtype">const MatrixDouble &amp;&#160;</td>
-          <td class="paramname"><em>data</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl><dt><b>Examples: </b></dt><dd><a class="el" href="user_accelerometer_gestures_8cpp-example.html#a11">user_accelerometer_gestures.cpp</a>.</dd>
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="user_accelerometer_gestures_8cpp-example.html#a13">user_accelerometer_gestures.cpp</a>.</dd>
 </dl>
 </div>
 </div>
@@ -209,7 +226,92 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl><dt><b>Examples: </b></dt><dd><a class="el" href="user_accelerometer_gestures_8cpp-example.html#a22">user_accelerometer_gestures.cpp</a>.</dd>
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="user_accelerometer_gestures_8cpp-example.html#a29">user_accelerometer_gestures.cpp</a>.</dd>
+</dl>
+</div>
+</div>
+<a class="anchor" id="a05667244a084ee373a2c27f399845099"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void updateTimeout </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>new_timeout</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="user_accelerometer_gestures_8cpp-example.html#a28">user_accelerometer_gestures.cpp</a>.</dd>
+</dl>
+</div>
+</div>
+<a class="anchor" id="aa0a30febfe28e6713c07a9b52fb228de"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void updateVariability </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>new_null_rej</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="user_accelerometer_gestures_8cpp-example.html#a27">user_accelerometer_gestures.cpp</a>.</dd>
+</dl>
+</div>
+</div>
+<a class="anchor" id="aa2b83b8ac9f7ba293ee141e3a259aa98"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_calibrate_result.html">CalibrateResult</a> uprightDataCollected </td>
+          <td>(</td>
+          <td class="paramtype">const MatrixDouble &amp;&#160;</td>
+          <td class="paramname"><em>data</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="user_accelerometer_gestures_8cpp-example.html#a19">user_accelerometer_gestures.cpp</a>.</dd>
+</dl>
+</div>
+</div>
+<a class="anchor" id="adfd1398f54ce5482a37bbb9a30ae90f3"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_calibrate_result.html">CalibrateResult</a> upsideDownDataCollected </td>
+          <td>(</td>
+          <td class="paramtype">const MatrixDouble &amp;&#160;</td>
+          <td class="paramname"><em>data</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="user_accelerometer_gestures_8cpp-example.html#a20">user_accelerometer_gestures.cpp</a>.</dd>
+</dl>
+</div>
+</div>
+<a class="anchor" id="aebbcbc51745431bb679a13b14d36ddef"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">vector&lt;double&gt; zeroGs </td>
+          <td>(</td>
+          <td class="paramtype">3&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="user_accelerometer_gestures_8cpp-example.html#a12">user_accelerometer_gestures.cpp</a>.</dd>
 </dl>
 </div>
 </div>
@@ -227,6 +329,32 @@ Variables</h2></td></tr>
 </dl>
 </div>
 </div>
+<a class="anchor" id="a57ba16fa46620c264703369d022e30a3"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool haveUprightData = false</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="user_accelerometer_gestures_8cpp-example.html#a9">user_accelerometer_gestures.cpp</a>.</dd>
+</dl>
+</div>
+</div>
+<a class="anchor" id="a3cc542eeedb236de5b662ee4f4ad750c"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool haveUpsideDownData = false</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="user_accelerometer_gestures_8cpp-example.html#a10">user_accelerometer_gestures.cpp</a>.</dd>
+</dl>
+</div>
+</div>
 <a class="anchor" id="aba6fa4a57d62ac4dd27498a2f538ed47"></a>
 <div class="memitem">
 <div class="memproto">
@@ -236,20 +364,7 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl><dt><b>Examples: </b></dt><dd><a class="el" href="user_accelerometer_gestures_8cpp-example.html#a21">user_accelerometer_gestures.cpp</a>.</dd>
-</dl>
-</div>
-</div>
-<a class="anchor" id="a6423f81bc2d048133f946ad3c0c22aaf"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">double oneG = 0</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl><dt><b>Examples: </b></dt><dd><a class="el" href="user_accelerometer_gestures_8cpp-example.html#a8">user_accelerometer_gestures.cpp</a>.</dd>
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="user_accelerometer_gestures_8cpp-example.html#a26">user_accelerometer_gestures.cpp</a>.</dd>
 </dl>
 </div>
 </div>
@@ -279,12 +394,25 @@ Variables</h2></td></tr>
 </dl>
 </div>
 </div>
-<a class="anchor" id="a41a00af8a6d249ec09dea539956386f2"></a>
+<a class="anchor" id="ac26a49438fb4be02f746d15833a9c591"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_a_s_c_i_i_serial_stream.html">ASCIISerialStream</a> stream(9600, 3)</td>
+          <td class="memname">double range</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="user_accelerometer_gestures_8cpp-example.html#a11">user_accelerometer_gestures.cpp</a>, and <a class="el" href="user_accelerometer_walk_detection_8cpp-example.html#a12">user_accelerometer_walk_detection.cpp</a>.</dd>
+</dl>
+</div>
+</div>
+<a class="anchor" id="a721356ffb58845d0c62ce4e22356503e"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_a_s_c_i_i_serial_stream.html">ASCIISerialStream</a> stream(115200, 3)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -301,20 +429,33 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl><dt><b>Examples: </b></dt><dd><a class="el" href="user_accelerometer_gestures_8cpp-example.html#a20">user_accelerometer_gestures.cpp</a>.</dd>
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="user_accelerometer_gestures_8cpp-example.html#a25">user_accelerometer_gestures.cpp</a>.</dd>
 </dl>
 </div>
 </div>
-<a class="anchor" id="addc7ddd3b45227e1cd1b2c862a63534a"></a>
+<a class="anchor" id="a52d1d6e99e59987d6feec6e5ed27bb94"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">double zeroG = 0</td>
+          <td class="memname">MatrixDouble uprightData</td>
         </tr>
       </table>
 </div><div class="memdoc">
 <dl><dt><b>Examples: </b></dt><dd><a class="el" href="user_accelerometer_gestures_8cpp-example.html#a7">user_accelerometer_gestures.cpp</a>.</dd>
+</dl>
+</div>
+</div>
+<a class="anchor" id="a3bbacf72d09467bb92a276c206c50c60"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">MatrixDouble upsideDownData</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="user_accelerometer_gestures_8cpp-example.html#a8">user_accelerometer_gestures.cpp</a>.</dd>
 </dl>
 </div>
 </div>

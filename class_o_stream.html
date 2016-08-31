@@ -48,6 +48,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -126,12 +127,15 @@ Inheritance diagram for OStream:</div>
  <div class="center">
   <img src="class_o_stream.png" usemap="#OStream_map" alt=""/>
   <map id="OStream_map" name="OStream_map">
-<area href="class_stream.html" alt="Stream" shape="rect" coords="253,0,412,24"/>
-<area href="class_i_o_stream.html" alt="IOStream" shape="rect" coords="0,112,159,136"/>
-<area href="class_mac_o_s_keyboard_o_stream.html" title="Emulate keyboard key presses corresponding to prediction results. " alt="MacOSKeyboardOStream" shape="rect" coords="169,112,328,136"/>
-<area href="class_mac_o_s_mouse_o_stream.html" title="Emulate mouse double-clicks at locations corresponding to prediction results. " alt="MacOSMouseOStream" shape="rect" coords="338,112,497,136"/>
-<area href="class_tcp_o_stream.html" title="Send strings over a TCP socket based on pipeline predictions. " alt="TcpOStream" shape="rect" coords="507,112,666,136"/>
-<area href="class_a_s_c_i_i_serial_stream.html" title="Input stream for reading ASCII data from a (USB) serial port. " alt="ASCIISerialStream" shape="rect" coords="0,168,159,192"/>
+<area href="class_stream.html" alt="Stream" shape="rect" coords="265,0,432,24"/>
+<area href="class_i_o_stream.html" alt="IOStream" shape="rect" coords="0,112,167,136"/>
+<area href="class_mac_o_s_keyboard_o_stream.html" title="Emulate keyboard key presses corresponding to prediction results. " alt="MacOSKeyboardOStream" shape="rect" coords="177,112,344,136"/>
+<area href="class_mac_o_s_mouse_o_stream.html" title="Emulate mouse double-clicks at locations corresponding to prediction results. " alt="MacOSMouseOStream" shape="rect" coords="354,112,521,136"/>
+<area href="class_o_stream_vector.html" title="Base class for output streams that forward ESP pipeline output to other systems. " alt="OStreamVector" shape="rect" coords="531,112,698,136"/>
+<area href="class_i_o_stream_vector.html" alt="IOStreamVector" shape="rect" coords="442,168,609,192"/>
+<area href="class_tcp_o_stream.html" title="Send strings over a TCP socket based on pipeline predictions. " alt="TcpOStream" shape="rect" coords="619,168,786,192"/>
+<area href="class_a_s_c_i_i_serial_stream.html" title="Input stream for reading ASCII data from a (USB) serial port. " alt="ASCIISerialStream" shape="rect" coords="354,224,521,248"/>
+<area href="class_binary_int_array_serial_stream.html" alt="BinaryIntArraySerialStream" shape="rect" coords="531,224,698,248"/>
 </map>
  </div></div>
 <table class="memberdecls">
@@ -159,7 +163,8 @@ Additional Inherited Members</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Base class for output streams that forward ESP prediction results to other systems. </p>
-<p>To use an <a class="el" href="class_o_stream.html" title="Base class for output streams that forward ESP prediction results to other systems. ">OStream</a> instance in your application, pass it to <a class="el" href="ostream_8cpp.html#a279f55018c4c054ad565198954f8eb16" title="Specify an OStream to which to stream predictions made by the active ESP pipeline. Multiple output streams are supported. ">useOutputStream()</a> in your <a class="el" href="user__accelerometer__gestures_8cpp.html#a4fc01d736fe50cf5b977f755b675f11d">setup()</a> function. </p>
+<p>To use an <a class="el" href="class_o_stream.html" title="Base class for output streams that forward ESP prediction results to other systems. ">OStream</a> instance in your application, pass it to <a class="el" href="_e_s_p_8h.html#a279f55018c4c054ad565198954f8eb16" title="Specify an OStream to which to stream predictions made by the active ESP pipeline. Multiple output streams are supported. ">useOutputStream()</a> in your <a class="el" href="user__accelerometer__gestures_8cpp.html#a4fc01d736fe50cf5b977f755b675f11d">setup()</a> function.</p>
+<p>Note, this is for output streams that accept the output of classifiers (label numbers). For output streams that can also accept the multi-dimensional output of signal processing pipelines, implement <a class="el" href="class_o_stream_vector.html" title="Base class for output streams that forward ESP pipeline output to other systems. ">OStreamVector</a>. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="aa7e491d3a3a005a7db63b45c9e369f1b"></a>
 <div class="memitem">
@@ -183,7 +188,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="class_tcp_o_stream.html#a876233a345be2af73054f9e7e09c7938">TcpOStream</a>, <a class="el" href="class_mac_o_s_mouse_o_stream.html#ac7fb9eec384b40ba8f19b7cee22c6011">MacOSMouseOStream</a>, <a class="el" href="class_mac_o_s_keyboard_o_stream.html#afc7e6f75b0ff7d7bd6c47ba6298cc1ad">MacOSKeyboardOStream</a>, and <a class="el" href="class_a_s_c_i_i_serial_stream.html#a6535001006927266d223a496fd9b7a06">ASCIISerialStream</a>.</p>
+<p>Implemented in <a class="el" href="class_tcp_o_stream.html#a876233a345be2af73054f9e7e09c7938">TcpOStream</a>, <a class="el" href="class_mac_o_s_mouse_o_stream.html#ac7fb9eec384b40ba8f19b7cee22c6011">MacOSMouseOStream</a>, <a class="el" href="class_mac_o_s_keyboard_o_stream.html#afc7e6f75b0ff7d7bd6c47ba6298cc1ad">MacOSKeyboardOStream</a>, <a class="el" href="class_binary_int_array_serial_stream.html#acc972d2ab28b514ca94370ebaf9f945b">BinaryIntArraySerialStream</a>, and <a class="el" href="class_a_s_c_i_i_serial_stream.html#a6535001006927266d223a496fd9b7a06">ASCIISerialStream</a>.</p>
 
 </div>
 </div>
