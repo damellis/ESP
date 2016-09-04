@@ -1403,15 +1403,14 @@ void ofApp::update() {
             }
         }
 
-        // Till this point, either `pipeline_->predict` or
-        // `pipeline->preProcessData` has been called. It's safe to directly get
-        // the data and update the plots in the PIPELINE tab.
-        if (istream_->hasStarted() &&
-            (calibrator_ == NULL || calibrator_->isCalibrated()) &&
-            fragment_ == PIPELINE) {
-
-            int j = 0;;
+        // At pipeline state implicitly means that the istream has started
+        // and the calibration is done
+        if (state_ == AppState::kPipeline) {
+            int j = 0;
             vector<double> data = data_point;
+            // Till this point, either `pipeline_->predict` or
+            // `pipeline->preProcessData` has been called. It's safe to directly
+            // get the data and update the plots in the PIPELINE tab.
 
             // Pre-processed data
             for (j = 0; j < pipeline_->getNumPreProcessingModules(); j++) {
