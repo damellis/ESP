@@ -1296,6 +1296,9 @@ void ofApp::update() {
             state_ = AppState::kCalibration;
         }
 
+        // title variable here captures the predicted class name, we use it
+        // to highlight the prediction in plotting live data and
+        // classlikelihood plot.
         std::string title;
 
         if (pipeline_->getTrained()) {
@@ -1363,27 +1366,40 @@ void ofApp::update() {
                         "");
                 }
             }
-        } else predicted_label_ = 0;
 
-        plot_inputs_.update(data_point, predicted_label_ != 0, title);
-        if (istream_->getNumOutputDimensions() >= kTooManyFeaturesThreshold)
-            plot_inputs_snapshot_.setData(data_point);
+        } else {  // pipeline_->getTrained() is false
+            predicted_label_ = 0;
 
-        if (istream_->hasStarted() &&
-            (calibrator_ == NULL || calibrator_->isCalibrated()) &&
-            fragment_ == PIPELINE) {
+            // Here we manually call `preProcessData` for the live plot.
             if (!pipeline_->preProcessData(data_point)) {
                 ofLog(OF_LOG_ERROR) << "ERROR: Failed to compute features!";
             }
+        }
 
+        plot_inputs_.update(data_point, predicted_label_ != 0, title);
+
+        if (istream_->getNumOutputDimensions() >= kTooManyFeaturesThreshold) {
+            plot_inputs_snapshot_.setData(data_point);
+        }
+
+        // Till this point, either `pipeline_->predict` or
+        // `pipeline->preProcessData` has been called. It's safe to directly get
+        // the data and update the plots in the PIPELINE tab.
+        if (istream_->hasStarted() &&
+            (calibrator_ == NULL || calibrator_->isCalibrated()) &&
+            fragment_ == PIPELINE) {
+
+            int j = 0;;
             vector<double> data = data_point;
 
-            for (int j = 0; j < pipeline_->getNumPreProcessingModules(); j++) {
+            // Pre-processed data
+            for (j = 0; j < pipeline_->getNumPreProcessingModules(); j++) {
                 data = pipeline_->getPreProcessedData(j);
                 plot_pre_processed_[j].update(data);
             }
 
-            for (int j = 0; j < pipeline_->getNumFeatureExtractionModules(); j++) {
+            // feature data
+            for (j = 0; j < pipeline_->getNumFeatureExtractionModules(); j++) {
                 // Working on j-th stage.
                 data = pipeline_->getFeatureExtractionData(j);
                 if (data.size() < kTooManyFeaturesThreshold) {
