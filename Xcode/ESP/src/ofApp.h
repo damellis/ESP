@@ -106,6 +106,8 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     }
 
     void drawInputs(uint32_t, uint32_t, uint32_t, uint32_t);
+    void drawLiveFeatures(uint32_t, uint32_t, uint32_t, uint32_t);
+
     void drawCalibration();
     void drawLivePipeline();
     void drawTrainingInfo();
@@ -238,6 +240,7 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     // visual: live plots are across all tabs
     //========================================================================
     InteractiveTimeSeriesPlot plot_inputs_;
+    vector<ofxGrtTimeseriesPlot> plot_live_features_;  // live features
     ofxGrtTimeseriesPlot plot_inputs_snapshot_;  // a spectrum of the most
                                                  // recent input vector, shown
                                                  // only if the number of input

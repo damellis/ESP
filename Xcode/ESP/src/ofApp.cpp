@@ -322,6 +322,11 @@ void ofApp::setup() {
         num_final_features = feature_dim;
 
         plot_features_.push_back(feature_at_stage_i);
+
+        // the final stage feature is also used for live plots
+        if (i == num_feature_modules - 1) {
+            plot_live_features_ = feature_at_stage_i;
+        }
     }
 
     for (uint32_t i = 0; i < num_final_features; i++) {
@@ -1376,10 +1381,26 @@ void ofApp::update() {
             }
         }
 
+        // live data
         plot_inputs_.update(data_point, predicted_label_ != 0, title);
-
         if (istream_->getNumOutputDimensions() >= kTooManyFeaturesThreshold) {
             plot_inputs_snapshot_.setData(data_point);
+        }
+
+        // live feature data
+        {
+            vector<double> data = pipeline_->getFeatureExtractionData(
+                pipeline_->getNumFeatureExtractionModules() - 1);
+
+            if (data.size() < kTooManyFeaturesThreshold) {
+                for (int k = 0; k < data.size(); k++) {
+                    vector<double> v = {data[k]};
+                    plot_live_features_[k].update(v);
+                }
+            } else {
+                assert(plot_live_features_.size() == 1);
+                plot_live_features_[0].setData(data);
+            }
         }
 
         // Till this point, either `pipeline_->predict` or
@@ -1578,6 +1599,17 @@ void ofApp::drawInputs(uint32_t stage_left, uint32_t stage_top,
     }
 }
 
+void ofApp::drawLiveFeatures(uint32_t stage_left, uint32_t stage_top,
+                             uint32_t stage_width, uint32_t stage_height) {
+    // Only the last feature vectors
+    uint32_t height = stage_height / plot_live_features_.size();
+
+    for (int j = 0; j < plot_live_features_.size(); j++) {
+        plot_live_features_[j].draw(stage_left, stage_top, stage_width, height);
+        stage_top += height;
+    }
+}
+
 void ofApp::drawCalibration() {
     uint32_t margin = 30;
     uint32_t stage_left = 10;
@@ -1675,12 +1707,14 @@ void ofApp::drawTrainingInfo() {
     }
 
     // 1. Draw Input
-    if (!is_in_feature_view_) {
-        ofPushStyle();
+    ofPushStyle();
+    if (is_in_feature_view_) {
+        drawLiveFeatures(stage_left, stage_top, stage_width, stage_height);
+    } else {
         drawInputs(stage_left, stage_top, stage_width, stage_height);
-        ofPopStyle();
-        stage_top += stage_height + margin;
     }
+    ofPopStyle();
+    stage_top += stage_height + margin;
 
     // 2. Draw advice for training data (if any)
     if (training_data_advice_ != "") {
@@ -1812,7 +1846,11 @@ void ofApp::drawAnalysis() {
 
     // 1. Draw Input
     ofPushStyle();
-    drawInputs(stage_left, stage_top, stage_width, stage_height);
+    if (is_in_feature_view_) {
+        drawLiveFeatures(stage_left, stage_top, stage_width, stage_height);
+    } else {
+        drawInputs(stage_left, stage_top, stage_width, stage_height);
+    }
     ofPopStyle();
     stage_top += stage_height + margin;
 
@@ -1837,7 +1875,11 @@ void ofApp::drawPrediction() {
 
     // 1. Draw Input
     ofPushStyle();
-    drawInputs(stage_left, stage_top, stage_width, stage_height);
+    if (is_in_feature_view_) {
+        drawLiveFeatures(stage_left, stage_top, stage_width, stage_height);
+    } else {
+        drawInputs(stage_left, stage_top, stage_width, stage_height);
+    }
     ofPopStyle();
     stage_top += stage_height + margin;
 
@@ -1904,14 +1946,13 @@ void ofApp::onDataIn(GRT::MatrixDouble input) {
 //--------------------------------------------------------------
 void ofApp::toggleFeatureView() {
     ESP_EVENT("Toggle Feature View");
-    if (fragment_ != TRAINING) { return; }
 
     if (is_in_feature_view_) {
         is_in_feature_view_ = false;
     } else {
         is_in_feature_view_ = true;
         for (uint32_t i = 0; i < kNumMaxLabels_; i++) {
-            populateSampleFeatures(i);
+            // populateSampleFeatures(i);
         }
     }
 }
@@ -2092,9 +2133,6 @@ void ofApp::keyPressed(int key) {
             }
             return;
         }
-        case 'f':
-            toggleFeatureView();
-            return;
         case 't':
             beginTrainModel();
             return;
@@ -2181,6 +2219,13 @@ void ofApp::keyReleased(int key) {
     std::string key_str;
     key_str = static_cast<char>(key);
     ESP_EVENT("keyReleased: " + key_str);
+
+    if (key == 'f' &&
+        (state_ == AppState::kTraining || state_ == AppState::kAnalysis ||
+         state_ == AppState::kPrediction)) {
+        toggleFeatureView();
+        return;
+    }
 
     switch (state_) {
     case AppState::kTrainingRenaming: {
