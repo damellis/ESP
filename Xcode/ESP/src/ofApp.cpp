@@ -1721,8 +1721,7 @@ void ofApp::drawTrainingInfo() {
         stage_top += paragraph.getHeight();
     }
 
-    // 3. Draw samples
-    // Currently we support kNumMaxLabels_ labels
+    // 3. Draw prediction related (likelihood/distance)
     uint32_t width = stage_width / kNumMaxLabels_;
     float minY = plot_inputs_.getRanges().first;
     float maxY = plot_inputs_.getRanges().second;
@@ -1749,17 +1748,44 @@ void ofApp::drawTrainingInfo() {
 
     stage_top += 12;
 
+    // 4. Draw samples (with features if requested).
     for (uint32_t i = 0; i < kNumMaxLabels_; i++) {
         uint32_t label = i + 1;
         uint32_t x = stage_left + i * width;
         plot_samples_[i].setRanges(minY, maxY, true);
 
+        // One-fifth used for sample data
+        uint32_t sample_height =
+            is_in_feature_view_ ? (stage_height / 5) : stage_height;
+        uint32_t feature_height =
+            is_in_feature_view_ ? (4 * stage_height / 5) : 0;
+
         if (istream_->getNumOutputDimensions() >= kTooManyFeaturesThreshold) {
+            // Further split the view into snapshots (2/3) and sample (1/3).
+            uint32_t snapshot_h = 2 * sample_height / 3;
+            uint32_t sample_h = sample_height / 3;
             plot_samples_snapshots_[i].setRanges(minY, maxY, true);
-            plot_samples_snapshots_[i].draw(x, stage_top, width, 2 * stage_height / 3);
-            plot_samples_[i].draw(x, stage_top + 2 * stage_height / 3, width, stage_height / 3);
+            plot_samples_snapshots_[i].draw(x, stage_top, width, snapshot_h);
+            plot_samples_[i].draw(x, stage_top + snapshot_h, width, sample_h);
         } else {
-            plot_samples_[i].draw(x, stage_top, width, stage_height);
+            plot_samples_[i].draw(x, stage_top, width, sample_height);
+        }
+
+        // draw features if requested
+        if (is_in_feature_view_) {
+            uint32_t x = stage_left + i * width;
+            uint32_t y = stage_top + sample_height + margin / 4;
+            vector<Plotter> feature_plots = plot_sample_features_[i];
+            uint32_t margin = 5;
+            uint32_t height = feature_height / feature_plots.size() - margin;
+
+            for (uint32_t j = 0; j < feature_plots.size(); j++) {
+                pair<double, double> range = sample_feature_ranges_[j];
+
+                feature_plots[j].setRanges(range.first, range.second);
+                feature_plots[j].draw(x, y, width, height);
+                y += height + margin;
+            }
         }
 
         uint32_t num_samples = training_data_manager_.getNumSampleForLabel(label);
@@ -1809,28 +1835,6 @@ void ofApp::drawTrainingInfo() {
                                               stage_top + stage_height + 60);
         training_sample_guis_[i]->setWidth(width - margin / 4);
         training_sample_guis_[i]->draw();
-    }
-
-    stage_top += stage_height + 60 + training_sample_guis_[0]->getHeight();
-
-    if (!is_in_feature_view_) { return; }
-    if (pipeline_->getNumFeatureExtractionModules() == 0) { return; }
-    // 3. Features
-    stage_top += margin * 2;
-    for (uint32_t i = 0; i < kNumMaxLabels_; i++) {
-        uint32_t x = stage_left + i * width;
-        uint32_t y = stage_top;
-        vector<Plotter> feature_plots = plot_sample_features_[i];
-        uint32_t margin = 5;
-        uint32_t height = stage_height / feature_plots.size() - margin;
-
-        for (uint32_t j = 0; j < feature_plots.size(); j++) {
-            pair<double, double> range = sample_feature_ranges_[j];
-
-            feature_plots[j].setRanges(range.first, range.second);
-            feature_plots[j].draw(x, y, width, height);
-            y += height + margin;
-        }
     }
 }
 
@@ -1951,7 +1955,7 @@ void ofApp::toggleFeatureView() {
     } else {
         is_in_feature_view_ = true;
         for (uint32_t i = 0; i < kNumMaxLabels_; i++) {
-            // populateSampleFeatures(i);
+            populateSampleFeatures(i);
         }
     }
 }
