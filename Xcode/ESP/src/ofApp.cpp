@@ -273,6 +273,10 @@ void ofApp::setup() {
     // Parse the user supplied pipeline and extract information:
     //  o num_pipeline_stages_
 
+    // num_final_features will be the last stage of processing (either
+    // pre-processing or feature extraction).
+    uint32_t num_final_features = 0;
+
     // 1. Parse pre-processing.
     num_preprocessing_modules_ = pipeline_->getNumPreProcessingModules();
     num_pipeline_stages_ += num_preprocessing_modules_;
@@ -292,11 +296,12 @@ void ofApp::setup() {
         if (i == num_preprocessing_modules_ - 1) {
             plot_live_features_.push_back(plot);
         }
+
+        num_final_features = dim;
     }
 
     // 2. Parse features.
     num_feature_modules_ = pipeline_->getNumFeatureExtractionModules();
-    uint32_t num_final_features = 0;
     for (int i = 0; i < num_feature_modules_; i++) {
         vector<ofxGrtTimeseriesPlot> feature_at_stage_i;
 
@@ -540,7 +545,7 @@ vector<double> ofApp::getLastStageProcessedData() const {
 }
 
 void ofApp::populateSampleFeatures(uint32_t sample_index) {
-    if (pipeline_->getNumFeatureExtractionModules() == 0) { return; }
+    if (num_preprocessing_modules_ + num_feature_modules_ == 0) { return; }
 
     // Clean up historical data/caches.
     pipeline_->reset();
@@ -1810,8 +1815,8 @@ void ofApp::drawTrainingInfo() {
             plot_samples_[i].draw(x, stage_top, width, sample_height);
         }
 
-        // draw features if requested (only draw actual features right now...
-        if (is_in_feature_view_ && num_feature_modules_ > 0) {
+        // draw features if requested
+        if (is_in_feature_view_) {
             uint32_t x = stage_left + i * width;
             uint32_t y = stage_top + sample_height + margin / 4;
             vector<Plotter> feature_plots = plot_sample_features_[i];
