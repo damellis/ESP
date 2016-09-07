@@ -1600,7 +1600,24 @@ void ofApp::drawInputs(uint32_t stage_left, uint32_t stage_top,
 
 void ofApp::drawLiveFeatures(uint32_t stage_left, uint32_t stage_top,
                              uint32_t stage_width, uint32_t stage_height) {
-    // Only the last feature vectors
+    // Two cases here:
+    //   1. feature is a high-dimension data and we choose to show the snapshot,
+    //      then we use 1/5 of the space to show the live data as a timeline
+    //   2. feature itself is a time-series data, simply draw the features
+    //
+    // In the first case, we modify the allocated space for the features,
+    // i.e. modify stage_top and stage_height so that we can reuse the code that
+    // draws the features.
+    if (is_final_features_too_many_) {
+        uint32_t height = stage_height / 5;
+        drawInputs(stage_left, stage_top, stage_width, height);
+
+        // modify the stage height
+        uint32_t margin = 10;
+        stage_top = stage_top + (height + margin);
+        stage_height = stage_height - (height + margin);
+    }
+
     uint32_t height = stage_height / plot_live_features_.size();
 
     for (int j = 0; j < plot_live_features_.size(); j++) {
