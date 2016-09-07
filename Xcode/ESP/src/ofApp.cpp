@@ -141,6 +141,8 @@ void ofApp::useTrainingDataAdvice(string advice) {
 ofApp::ofApp() : fragment_(TRAINING),
                  state_(AppState::kTraining),
                  num_pipeline_stages_(0),
+                 num_preprocessing_modules_(0),
+                 num_feature_modules_(0),
                  calibrator_(nullptr),
                  training_data_manager_(kNumMaxLabels_),
                  should_save_calibration_data_(false),
@@ -272,9 +274,9 @@ void ofApp::setup() {
     //  o num_pipeline_stages_
 
     // 1. Parse pre-processing.
-    uint32_t num_pre_processing = pipeline_->getNumPreProcessingModules();
-    num_pipeline_stages_ += num_pre_processing;
-    for (int i = 0; i < num_pre_processing; i++) {
+    num_preprocessing_modules_ = pipeline_->getNumPreProcessingModules();
+    num_pipeline_stages_ += num_preprocessing_modules_;
+    for (int i = 0; i < num_preprocessing_modules_; i++) {
         PreProcessing* pp = pipeline_->getPreProcessingModule(i);
         uint32_t dim = pp->getNumOutputDimensions();
         ofxGrtTimeseriesPlot plot;
@@ -283,9 +285,16 @@ void ofApp::setup() {
         plot.setDrawInfoText(true);
         // plot.setColorPalette(color_palette.generate(dim));
         plot_pre_processed_.push_back(plot);
+
+        // the final stage pre-processing can be used as the live feature plots
+        // if there is not feature extraction modules. Note: this variable will
+        // directly be overriden in the code below that parses features.
+        if (i == num_preprocessing_modules_ - 1) {
+            plot_live_features_.push_back(plot);
+        }
     }
 
-    // 2. Parse pre-processing.
+    // 2. Parse features.
     num_feature_modules_ = pipeline_->getNumFeatureExtractionModules();
     uint32_t num_final_features = 0;
     for (int i = 0; i < num_feature_modules_; i++) {
@@ -323,7 +332,8 @@ void ofApp::setup() {
 
         plot_features_.push_back(feature_at_stage_i);
 
-        // the final stage feature is also used for live plots
+        // the final stage feature is also used for live plots. Here we override
+        // whatever the plot_live_features_ that has been set before.
         if (i == num_feature_modules_ - 1) {
             plot_live_features_ = feature_at_stage_i;
         }
@@ -515,6 +525,20 @@ void ofApp::updatePlotSamplesSnapshot(int num, int row) {
     }
 }
 
+vector<double> ofApp::getLastStageProcessedData() const {
+    // This could be get last stage of feature extraction if there is feature
+    // extraction or last stage of pre-processing if there is no feature
+    // extraction data
+    if (num_feature_modules_ > 0) {
+        return pipeline_->getFeatureExtractionData(num_feature_modules_ - 1);
+    } else if (num_preprocessing_modules_ > 0) {
+        return pipeline_->getPreProcessedData(num_preprocessing_modules_ - 1);
+    } else {
+        // we should have never been here for pipeline without any processing
+        assert(false);
+    }
+}
+
 void ofApp::populateSampleFeatures(uint32_t sample_index) {
     if (pipeline_->getNumFeatureExtractionModules() == 0) { return; }
 
@@ -536,7 +560,7 @@ void ofApp::populateSampleFeatures(uint32_t sample_index) {
         }
     }
 
-    // 2. get features by flowing samples through
+    // 2. get processed data by flowing samples through
     for (uint32_t i = start; i < end; i++) {
         vector<double> data_point = sample.getRowVector(i);
         if (!pipeline_->preProcessData(data_point)) {
@@ -544,9 +568,8 @@ void ofApp::populateSampleFeatures(uint32_t sample_index) {
             continue;
         }
 
-        // Last stage of feature extraction.
-        uint32_t j = pipeline_->getNumFeatureExtractionModules();
-        vector<double> feature = pipeline_->getFeatureExtractionData(j - 1);
+        // Last stage of processing
+        vector<double> feature = getLastStageProcessedData();
 
         for (uint32_t k = 0; k < feature_plots.size(); k++) {
             vector<double> feature_point = { feature[k] };
@@ -1388,9 +1411,8 @@ void ofApp::update() {
         }
 
         // live feature data
-        if (num_feature_modules_ > 0) {
-            vector<double> data = pipeline_->getFeatureExtractionData(
-                pipeline_->getNumFeatureExtractionModules() - 1);
+        if (num_preprocessing_modules_ + num_feature_modules_ > 0) {
+            vector<double> data = getLastStageProcessedData();
 
             if (data.size() < kTooManyFeaturesThreshold) {
                 for (int k = 0; k < data.size(); k++) {
@@ -1788,8 +1810,8 @@ void ofApp::drawTrainingInfo() {
             plot_samples_[i].draw(x, stage_top, width, sample_height);
         }
 
-        // draw features if requested
-        if (is_in_feature_view_) {
+        // draw features if requested (only draw actual features right now...
+        if (is_in_feature_view_ && num_feature_modules_ > 0) {
             uint32_t x = stage_left + i * width;
             uint32_t y = stage_top + sample_height + margin / 4;
             vector<Plotter> feature_plots = plot_sample_features_[i];
@@ -1966,10 +1988,10 @@ void ofApp::onDataIn(GRT::MatrixDouble input) {
 //--------------------------------------------------------------
 void ofApp::toggleFeatureView() {
     ESP_EVENT("Toggle Feature View");
-    setStatus("This pipeline doesn't have any feature extraction module");
 
-    if (num_feature_modules_ == 0) {
+    if (num_preprocessing_modules_ + num_feature_modules_ == 0) {
         // Then this function is a no-op
+        setStatus("This pipeline doesn't have any feature extraction module");
         return;
     }
 
