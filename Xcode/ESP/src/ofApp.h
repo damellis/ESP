@@ -158,6 +158,7 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     // The number of pipeline stages, this will control the UI layout. The
     // number is obtained during setup() and used in draw().
     uint32_t num_pipeline_stages_;
+    uint32_t num_feature_modules_;
 
     vector<Tuneable*> tuneable_parameters_;
     Calibrator* calibrator_;

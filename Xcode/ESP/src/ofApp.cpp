@@ -286,9 +286,9 @@ void ofApp::setup() {
     }
 
     // 2. Parse pre-processing.
-    uint32_t num_feature_modules = pipeline_->getNumFeatureExtractionModules();
+    num_feature_modules_ = pipeline_->getNumFeatureExtractionModules();
     uint32_t num_final_features = 0;
-    for (int i = 0; i < num_feature_modules; i++) {
+    for (int i = 0; i < num_feature_modules_; i++) {
         vector<ofxGrtTimeseriesPlot> feature_at_stage_i;
 
         FeatureExtraction* fe = pipeline_->getFeatureExtractionModule(i);
@@ -324,7 +324,7 @@ void ofApp::setup() {
         plot_features_.push_back(feature_at_stage_i);
 
         // the final stage feature is also used for live plots
-        if (i == num_feature_modules - 1) {
+        if (i == num_feature_modules_ - 1) {
             plot_live_features_ = feature_at_stage_i;
         }
     }
@@ -1388,7 +1388,7 @@ void ofApp::update() {
         }
 
         // live feature data
-        {
+        if (num_feature_modules_ > 0) {
             vector<double> data = pipeline_->getFeatureExtractionData(
                 pipeline_->getNumFeatureExtractionModules() - 1);
 
@@ -1949,6 +1949,12 @@ void ofApp::onDataIn(GRT::MatrixDouble input) {
 //--------------------------------------------------------------
 void ofApp::toggleFeatureView() {
     ESP_EVENT("Toggle Feature View");
+    setStatus("This pipeline doesn't have any feature extraction module");
+
+    if (num_feature_modules_ == 0) {
+        // Then this function is a no-op
+        return;
+    }
 
     if (is_in_feature_view_) {
         is_in_feature_view_ = false;
