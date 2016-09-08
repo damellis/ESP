@@ -328,21 +328,18 @@ void FirmataStream::update() {
 bool TcpInputStream::start() {
     server_.setup(port_num_);
     server_.setMessageDelimiter("\n");
+    has_started_ = true;
 
     reading_thread_.reset(new std::thread([this]() {
-        // Should sleep a bit here
         int sleep_time = 10;
-        ofLog() << "TCP input streams are checked every " << sleep_time << " ms";
+        ofLog() << "TCP inputs are checked every " << sleep_time << " ms";
         while (has_started_) {
-            while (true) {
-                std::this_thread::sleep_for(
-                    std::chrono::milliseconds(sleep_time));
-                for (int i = 0; i < server_.getLastID(); i++) {
-                    if (server_.isClientConnected(i)) {
-                        string str = server_.receive(i);
-                        if (str != "") {
-                            parseInput(str);
-                        }
+            std::this_thread::sleep_for(std::chrono::milliseconds(sleep_time));
+            for (int i = 0; i < server_.getLastID(); i++) {
+                if (server_.isClientConnected(i)) {
+                    string str = server_.receive(i);
+                    if (str != "") {
+                        parseInput(str);
                     }
                 }
             }
@@ -372,10 +369,11 @@ void TcpInputStream::parseInput(const string& buffer) {
 }
 
 void TcpInputStream::stop() {
+    has_started_.store(false);
+    server_.close();
     if (reading_thread_ != nullptr && reading_thread_->joinable()) {
         reading_thread_->join();
     }
-    server_.close();
 }
 
 int TcpInputStream::getNumInputDimensions() {
