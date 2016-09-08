@@ -1,4 +1,5 @@
 #pragma once
+#include <atomic>
 
 class Stream {
   public:
