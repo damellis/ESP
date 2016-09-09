@@ -7,8 +7,6 @@
 #include <sstream>
 #include <string>
 
-#include <Poco/Net/DNS.h>
-
 #include "user.h"
 #include "ofxParagraph.h"
 #include "ofYesNoDialog.h"
@@ -488,18 +486,6 @@ void ofApp::setup() {
     ofxDatGuiButton* load_button = gui_.addButton("Load Parameters");
     save_button->onButtonEvent(this, &ofApp::saveTuneables);
     load_button->onButtonEvent(this, &ofApp::loadTuneables);
-
-    gui_.addBreak()->setHeight(15.0f);
-    Poco::Net::HostEntry this_host = Poco::Net::DNS::thisHost();
-    auto addresses = this_host.addresses();
-    for (const auto& addr : addresses) {
-        if (addr.isIPv4Compatible()) {
-            string ip_string = addr.toString();
-            gui_.addButton("My IP: " + ip_string);
-            break;
-        }
-    }
-    gui_.addBreak()->setHeight(15.0f);
 
     gui_.addFooter();
     gui_.getFooter()->setLabelWhenExpanded("Click to apply and hide");
