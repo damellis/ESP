@@ -1,6 +1,8 @@
 #pragma once
 #include <atomic>
 
+#include <atomic>
+
 class Stream {
   public:
     Stream() : has_started_(false) {}
@@ -15,7 +17,7 @@ class Stream {
         if (has_started_) { stop(); }
         else { start(); }
     }
-    
+
     bool hasStarted() { return has_started_; }
 
   protected:

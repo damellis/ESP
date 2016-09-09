@@ -25,15 +25,19 @@ set(OFX_GRT_SRC
   ${ADDONS_PATH}/ofxGrt/src/ofxGrtTimeseriesPlot.cpp
   )
 
-set(OFX_GUI_SRC
-  ${ADDONS_PATH}/ofxGui/src/ofxBaseGui.cpp
-  ${ADDONS_PATH}/ofxGui/src/ofxButton.cpp
-  ${ADDONS_PATH}/ofxGui/src/ofxGuiGroup.cpp
-  ${ADDONS_PATH}/ofxGui/src/ofxLabel.cpp
-  ${ADDONS_PATH}/ofxGui/src/ofxPanel.cpp
-  ${ADDONS_PATH}/ofxGui/src/ofxSlider.cpp
-  ${ADDONS_PATH}/ofxGui/src/ofxSliderGroup.cpp
-  ${ADDONS_PATH}/ofxGui/src/ofxToggle.cpp
+set(OFX_OSC_SRC
+  ${ADDONS_PATH}/ofxOsc/src/ofxOscBundle.cpp
+  ${ADDONS_PATH}/ofxOsc/src/ofxOscMessage.cpp
+  ${ADDONS_PATH}/ofxOsc/src/ofxOscParameterSync.cpp
+  ${ADDONS_PATH}/ofxOsc/src/ofxOscReceiver.cpp
+  ${ADDONS_PATH}/ofxOsc/src/ofxOscSender.cpp
+  ${ADDONS_PATH}/ofxOsc/libs/oscpack/src/ip/IpEndpointName.cpp
+  ${ADDONS_PATH}/ofxOsc/libs/oscpack/src/ip/posix/NetworkingUtils.cpp
+  ${ADDONS_PATH}/ofxOsc/libs/oscpack/src/ip/posix/UdpSocket.cpp
+  ${ADDONS_PATH}/ofxOsc/libs/oscpack/src/osc/OscOutboundPacketStream.cpp
+  ${ADDONS_PATH}/ofxOsc/libs/oscpack/src/osc/OscPrintReceivedElements.cpp
+  ${ADDONS_PATH}/ofxOsc/libs/oscpack/src/osc/OscReceivedElements.cpp
+  ${ADDONS_PATH}/ofxOsc/libs/oscpack/src/osc/OscTypes.cpp
   )
 
 set(OFX_NET_SRC
@@ -50,9 +54,9 @@ set(OFX_PARAGRAPH_SRC
 list(APPEND ADDONS_SRC
   ${OFX_DATGUI_SRC}
   ${OFX_GRT_SRC}
-  ${OFX_GUI_SRC}
   ${OFX_PARAGRAPH_SRC}
   ${OFX_NET_SRC}
+  ${OFX_OSC_SRC}
   )
 
 list(APPEND ADDONS_INCLUDE_PATH
@@ -62,9 +66,12 @@ list(APPEND ADDONS_INCLUDE_PATH
   ${ADDONS_PATH}/ofxDatGui/src/themes
   ${ADDONS_PATH}/ofxDatGui/src/libs/ofxSmartFont
   ${ADDONS_PATH}/ofxGrt/src
-  ${ADDONS_PATH}/ofxGui/src
   ${ADDONS_PATH}/ofxParagraph/src
   ${ADDONS_PATH}/ofxNetwork/src
+  ${ADDONS_PATH}/ofxOsc/src
+  ${ADDONS_PATH}/ofxOsc/libs/oscpack/src/osc
+  ${ADDONS_PATH}/ofxOsc/libs/oscpack/src/
+  ${ADDONS_PATH}/ofxOsc/libs/oscpack/src/ip
   )
 
 # =============================================================
