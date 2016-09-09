@@ -11,6 +11,7 @@
 #include "GRT/GRT.h"
 #include "ofMain.h"
 #include "ofxNetwork.h"
+#include "ofxOsc.h"
 #include "stream.h"
 
 #include <cstdint>
