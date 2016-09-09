@@ -7,7 +7,7 @@
 #include <sstream>
 #include <string>
 
-#include <poco/net/dns.h>
+#include <Poco/Net/DNS.h>
 
 #include "user.h"
 #include "ofxParagraph.h"
