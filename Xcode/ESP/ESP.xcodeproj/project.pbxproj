@@ -20,6 +20,7 @@
 		413D2A4CBBA56620E4EDD03D /* ofxTCPClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04340107C0F930FA3BA8D191 /* ofxTCPClient.cpp */; };
 		48F7FEF8914B64EA7053CD0A /* istream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18C4BE08EEF363F2E25EBFC4 /* istream.cpp */; };
 		48FF814403E6859BDFA2495A /* ofxTCPManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 620EA7DA087511AEC72CEE67 /* ofxTCPManager.cpp */; };
+		495B69A11D82649B006C9620 /* libgrt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 495B69A01D82649B006C9620 /* libgrt.dylib */; };
 		4C01A7D4BC8BE15DE60CCB82 /* ofxPanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F27487FA03169CDBC92552C4 /* ofxPanel.cpp */; };
 		50958D8DFAF12469DAFEB044 /* tuneable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B41658326AAF509E0B38863 /* tuneable.cpp */; };
 		50EAFAA31DD759C9B8CC93BD /* ofxUDPManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3A5BF7C4CF117CF4E48E03AF /* ofxUDPManager.cpp */; };
@@ -118,6 +119,7 @@
 		3C7436EA662FF05FD6BB9350 /* ofxDatGuiScrollView.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxDatGuiScrollView.h; path = "../../third-party/openFrameworks/addons/ofxDatGui/src/components/ofxDatGuiScrollView.h"; sourceTree = SOURCE_ROOT; };
 		3FDE1283BACBFFDBDCD6CF18 /* ofxOscBundle.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxOscBundle.cpp; path = "../../third-party/openFrameworks/addons/ofxOsc/src/ofxOscBundle.cpp"; sourceTree = SOURCE_ROOT; };
 		41E1A8BF75C9790BC7B9B720 /* OscException.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = OscException.h; path = "../../third-party/openFrameworks/addons/ofxOsc/libs/oscpack/src/osc/OscException.h"; sourceTree = SOURCE_ROOT; };
+		495B69A01D82649B006C9620 /* libgrt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libgrt.dylib; sourceTree = "<group>"; };
 		49DF02AA1D8244C100DE0FFD /* examples */ = {isa = PBXFileReference; lastKnownFileType = folder; path = examples; sourceTree = "<group>"; };
 		49EA4327CA52EECBC0D0EC91 /* NetworkingUtils.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = NetworkingUtils.cpp; path = "../../third-party/openFrameworks/addons/ofxOsc/libs/oscpack/src/ip/posix/NetworkingUtils.cpp"; sourceTree = SOURCE_ROOT; };
 		4C42376EF0C93B60AB080532 /* ofxBaseGui.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxBaseGui.h; path = "../../third-party/openFrameworks/addons/ofxGui/src/ofxBaseGui.h"; sourceTree = SOURCE_ROOT; };
@@ -224,6 +226,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				495B69A11D82649B006C9620 /* libgrt.dylib in Frameworks */,
 				E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -519,6 +522,7 @@
 		E4B69B4A0A3A1720003C02F2 = {
 			isa = PBXGroup;
 			children = (
+				495B69A01D82649B006C9620 /* libgrt.dylib */,
 				E4B6FCAD0C3E899E008CF71C /* openFrameworks-Info.plist */,
 				E4EB6923138AFD0F00A09F29 /* Project.xcconfig */,
 				E4B69E1C0A3A1BDC003C02F2 /* src */,
@@ -910,12 +914,16 @@
 					"../../third-party/openFrameworks/addons/ofxOsc/libs/oscpack/src/osc",
 					"../../third-party/openFrameworks/addons/ofxOsc/src",
 					"../../third-party/openFrameworks/addons/ofxParagraph/src",
+					"../../third-party/grt",
 				);
 				ICON = "$(ICON_NAME_DEBUG)";
 				ICON_FILE = "$(ICON_FILE_PATH)$(ICON)";
 				INFOPLIST_FILE = "openFrameworks-Info.plist";
 				INSTALL_PATH = /Applications;
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				OTHER_LDFLAGS = (
 					"$(OF_CORE_FRAMEWORKS)",
 					"$(OF_CORE_LIBS)",
@@ -961,12 +969,16 @@
 					"../../third-party/openFrameworks/addons/ofxOsc/libs/oscpack/src/osc",
 					"../../third-party/openFrameworks/addons/ofxOsc/src",
 					"../../third-party/openFrameworks/addons/ofxParagraph/src",
+					"../../third-party/grt",
 				);
 				ICON = "$(ICON_NAME_RELEASE)";
 				ICON_FILE = "$(ICON_FILE_PATH)$(ICON)";
 				INFOPLIST_FILE = "openFrameworks-Info.plist";
 				INSTALL_PATH = /Applications;
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				OTHER_LDFLAGS = (
 					"$(OF_CORE_FRAMEWORKS)",
 					"$(OF_CORE_LIBS)",
