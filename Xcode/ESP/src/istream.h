@@ -1,7 +1,6 @@
 /**
  @file InputStream.h
  @brief Definition of input streams: serial, audio, etc.
-
  These input streams provide sensor data to the machine learning pipeline.
  Each stream provides a sequence data samples, each of which is a
  multi-dimensional vector representing a single reading from a sensor (or
@@ -12,6 +11,7 @@
 #include "GRT/GRT.h"
 #include "ofMain.h"
 #include "ofxNetwork.h"
+#include "ofxOsc.h"
 #include "stream.h"
 
 #include <cstdint>
@@ -25,7 +25,6 @@ const uint32_t kOfSoundStream_nBuffers = 4;
 /**
  @brief Base class for input streams that provide live sensor data to the ESP
  system.
-
  To use an InputStream instance in your application, pass it to useInputStream()
  in your setup() function.
  */
@@ -108,7 +107,6 @@ class AudioStream : public ofBaseApp, public InputStream {
 
 /**
  @brief Input stream for getting the FFT spectrum of an audio file as it plays.
-
  This class plays an audio file and supplies its 1024-sample / 512-bin FFT
  spectrum as input to the current pipeline. The spectrum is supplied every
  ~23 milliseconds (i.e. 441000 KHz / 1024 = ~43 Hz).
@@ -130,7 +128,6 @@ class BaseSerialInputStream : public virtual InputStream {
   public:
     /**
      Create an BaseSerialInputStream instance.
-
      @param port: the index of the (USB) serial port to use.
      @param baud: the baud rate at which to communicate with the serial port
      @param numDimensions: the number of dimensions in the data that will come
@@ -140,10 +137,8 @@ class BaseSerialInputStream : public virtual InputStream {
 
     /**
      Create an BaseSerialInputStream instance.
-
      This constructor doesn't require USB port so users will be asked to select
      them at runtime.
-
      @param baud: the baud rate at which to communicate with the serial port
      @param numDimensions: the number of dimensions in the data that will come
      from the serial port (i.e. the number of numbers in each line of data).
@@ -216,7 +211,6 @@ class SerialStream : public InputStream {
 
 /**
  @brief Input stream for reading analog data from an Arduino running Firmata.
-
  To use an FirmataStream in your application, pass it to useInputStream() in
  your setup() function.
  */
@@ -225,7 +219,6 @@ class FirmataStream : public InputStream {
     /**
      Create a FirmataStream instance. Assumes the Arduino is communicating at
      57600 baud.
-
      @param port: the index of the (USB) serial port to use.
      */
     FirmataStream(uint32_t port);
@@ -239,7 +232,6 @@ class FirmataStream : public InputStream {
      calls to this function (i.e. readings from the pin passed to the first
      call to useAnalogPin() will appear first in the data provided by the
      FirmataStream).
-
      @param i: an analog pin to read from
      */
     void useAnalogPin(int i);
@@ -276,5 +268,28 @@ class TcpInputStream : public InputStream {
     ofxTCPServer server_;
     unique_ptr<std::thread> reading_thread_;
     int port_num_;
+    int dim_;
+};
+
+/**
+ @brief Listening for data inputs over OSC.
+ */
+class OscInputStream : public InputStream {
+  public:
+    OscInputStream(int port_num, string addr, int dimension)
+        : port_num_(port_num), addr_(addr), dim_(dimension) {
+    }
+
+    void handleMessage(ofxOscMessage& m);
+    virtual bool start() final;
+    virtual void stop() final;
+    virtual int getNumInputDimensions() final;
+
+  private:
+    void parseInput(const string& buffer);
+    ofxOscReceiver receiver_;
+    unique_ptr<std::thread> reading_thread_;
+    int port_num_;
+    string addr_;
     int dim_;
 };
