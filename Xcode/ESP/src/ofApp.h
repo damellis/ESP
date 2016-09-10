@@ -106,6 +106,8 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     }
 
     void drawInputs(uint32_t, uint32_t, uint32_t, uint32_t);
+    void drawLiveFeatures(uint32_t, uint32_t, uint32_t, uint32_t);
+
     void drawCalibration();
     void drawLivePipeline();
     void drawTrainingInfo();
@@ -153,9 +155,17 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     // Pipeline, tuneables and all data
     //========================================================================
     GRT::GestureRecognitionPipeline *pipeline_;
-    // The number of pipeline stages, this will control the UI layout. The
-    // number is obtained during setup() and used in draw().
+
+    // The number of pipeline stages will control the UI layout. The number is
+    // obtained during setup() and used in draw().
     uint32_t num_pipeline_stages_;
+
+    // These two variables just track the number of pre-processing modules and
+    // feature extraction modules so that we can control what data to read for
+    // getLastStageProcessedData.
+    uint32_t num_preprocessing_modules_;
+    uint32_t num_feature_modules_;
+    vector<double> getLastStageProcessedData() const;
 
     vector<Tuneable*> tuneable_parameters_;
     Calibrator* calibrator_;
@@ -238,6 +248,7 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     // visual: live plots are across all tabs
     //========================================================================
     InteractiveTimeSeriesPlot plot_inputs_;
+    vector<ofxGrtTimeseriesPlot> plot_live_features_;  // live features
     ofxGrtTimeseriesPlot plot_inputs_snapshot_;  // a spectrum of the most
                                                  // recent input vector, shown
                                                  // only if the number of input

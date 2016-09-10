@@ -141,6 +141,8 @@ void ofApp::useTrainingDataAdvice(string advice) {
 ofApp::ofApp() : fragment_(TRAINING),
                  state_(AppState::kTraining),
                  num_pipeline_stages_(0),
+                 num_preprocessing_modules_(0),
+                 num_feature_modules_(0),
                  calibrator_(nullptr),
                  training_data_manager_(kNumMaxLabels_),
                  should_save_calibration_data_(false),
@@ -271,10 +273,14 @@ void ofApp::setup() {
     // Parse the user supplied pipeline and extract information:
     //  o num_pipeline_stages_
 
+    // num_final_features will be the last stage of processing (either
+    // pre-processing or feature extraction).
+    uint32_t num_final_features = 0;
+
     // 1. Parse pre-processing.
-    uint32_t num_pre_processing = pipeline_->getNumPreProcessingModules();
-    num_pipeline_stages_ += num_pre_processing;
-    for (int i = 0; i < num_pre_processing; i++) {
+    num_preprocessing_modules_ = pipeline_->getNumPreProcessingModules();
+    num_pipeline_stages_ += num_preprocessing_modules_;
+    for (int i = 0; i < num_preprocessing_modules_; i++) {
         PreProcessing* pp = pipeline_->getPreProcessingModule(i);
         uint32_t dim = pp->getNumOutputDimensions();
         ofxGrtTimeseriesPlot plot;
@@ -283,12 +289,20 @@ void ofApp::setup() {
         plot.setDrawInfoText(true);
         // plot.setColorPalette(color_palette.generate(dim));
         plot_pre_processed_.push_back(plot);
+
+        // the final stage pre-processing can be used as the live feature plots
+        // if there is not feature extraction modules. Note: this variable will
+        // directly be overriden in the code below that parses features.
+        if (i == num_preprocessing_modules_ - 1) {
+            plot_live_features_.push_back(plot);
+        }
+
+        num_final_features = dim;
     }
 
-    // 2. Parse pre-processing.
-    uint32_t num_feature_modules = pipeline_->getNumFeatureExtractionModules();
-    uint32_t num_final_features = 0;
-    for (int i = 0; i < num_feature_modules; i++) {
+    // 2. Parse features.
+    num_feature_modules_ = pipeline_->getNumFeatureExtractionModules();
+    for (int i = 0; i < num_feature_modules_; i++) {
         vector<ofxGrtTimeseriesPlot> feature_at_stage_i;
 
         FeatureExtraction* fe = pipeline_->getFeatureExtractionModule(i);
@@ -322,6 +336,12 @@ void ofApp::setup() {
         num_final_features = feature_dim;
 
         plot_features_.push_back(feature_at_stage_i);
+
+        // the final stage feature is also used for live plots. Here we override
+        // whatever the plot_live_features_ that has been set before.
+        if (i == num_feature_modules_ - 1) {
+            plot_live_features_ = feature_at_stage_i;
+        }
     }
 
     for (uint32_t i = 0; i < num_final_features; i++) {
@@ -510,8 +530,22 @@ void ofApp::updatePlotSamplesSnapshot(int num, int row) {
     }
 }
 
+vector<double> ofApp::getLastStageProcessedData() const {
+    // This could be get last stage of feature extraction if there is feature
+    // extraction or last stage of pre-processing if there is no feature
+    // extraction data
+    if (num_feature_modules_ > 0) {
+        return pipeline_->getFeatureExtractionData(num_feature_modules_ - 1);
+    } else if (num_preprocessing_modules_ > 0) {
+        return pipeline_->getPreProcessedData(num_preprocessing_modules_ - 1);
+    } else {
+        // we should have never been here for pipeline without any processing
+        assert(false);
+    }
+}
+
 void ofApp::populateSampleFeatures(uint32_t sample_index) {
-    if (pipeline_->getNumFeatureExtractionModules() == 0) { return; }
+    if (num_preprocessing_modules_ + num_feature_modules_ == 0) { return; }
 
     // Clean up historical data/caches.
     pipeline_->reset();
@@ -531,7 +565,7 @@ void ofApp::populateSampleFeatures(uint32_t sample_index) {
         }
     }
 
-    // 2. get features by flowing samples through
+    // 2. get processed data by flowing samples through
     for (uint32_t i = start; i < end; i++) {
         vector<double> data_point = sample.getRowVector(i);
         if (!pipeline_->preProcessData(data_point)) {
@@ -539,9 +573,8 @@ void ofApp::populateSampleFeatures(uint32_t sample_index) {
             continue;
         }
 
-        // Last stage of feature extraction.
-        uint32_t j = pipeline_->getNumFeatureExtractionModules();
-        vector<double> feature = pipeline_->getFeatureExtractionData(j - 1);
+        // Last stage of processing
+        vector<double> feature = getLastStageProcessedData();
 
         for (uint32_t k = 0; k < feature_plots.size(); k++) {
             vector<double> feature_point = { feature[k] };
@@ -1296,6 +1329,9 @@ void ofApp::update() {
             state_ = AppState::kCalibration;
         }
 
+        // title variable here captures the predicted class name, we use it
+        // to highlight the prediction in plotting live data and
+        // classlikelihood plot.
         std::string title;
 
         if (pipeline_->getTrained()) {
@@ -1363,27 +1399,54 @@ void ofApp::update() {
                         "");
                 }
             }
-        } else predicted_label_ = 0;
 
-        plot_inputs_.update(data_point, predicted_label_ != 0, title);
-        if (istream_->getNumOutputDimensions() >= kTooManyFeaturesThreshold)
-            plot_inputs_snapshot_.setData(data_point);
+        } else {  // pipeline_->getTrained() is false
+            predicted_label_ = 0;
 
-        if (istream_->hasStarted() &&
-            (calibrator_ == NULL || calibrator_->isCalibrated()) &&
-            fragment_ == PIPELINE) {
+            // Here we manually call `preProcessData` for the live plot.
             if (!pipeline_->preProcessData(data_point)) {
                 ofLog(OF_LOG_ERROR) << "ERROR: Failed to compute features!";
             }
+        }
 
+        // live data
+        plot_inputs_.update(data_point, predicted_label_ != 0, title);
+        if (istream_->getNumOutputDimensions() >= kTooManyFeaturesThreshold) {
+            plot_inputs_snapshot_.setData(data_point);
+        }
+
+        // live feature data
+        if (num_preprocessing_modules_ + num_feature_modules_ > 0) {
+            vector<double> data = getLastStageProcessedData();
+
+            if (data.size() < kTooManyFeaturesThreshold) {
+                for (int k = 0; k < data.size(); k++) {
+                    vector<double> v = {data[k]};
+                    plot_live_features_[k].update(v);
+                }
+            } else {
+                assert(plot_live_features_.size() == 1);
+                plot_live_features_[0].setData(data);
+            }
+        }
+
+        // At pipeline state implicitly means that the istream has started
+        // and the calibration is done
+        if (state_ == AppState::kPipeline) {
+            int j = 0;
             vector<double> data = data_point;
+            // Till this point, either `pipeline_->predict` or
+            // `pipeline->preProcessData` has been called. It's safe to directly
+            // get the data and update the plots in the PIPELINE tab.
 
-            for (int j = 0; j < pipeline_->getNumPreProcessingModules(); j++) {
+            // Pre-processed data
+            for (j = 0; j < pipeline_->getNumPreProcessingModules(); j++) {
                 data = pipeline_->getPreProcessedData(j);
                 plot_pre_processed_[j].update(data);
             }
 
-            for (int j = 0; j < pipeline_->getNumFeatureExtractionModules(); j++) {
+            // feature data
+            for (j = 0; j < pipeline_->getNumFeatureExtractionModules(); j++) {
                 // Working on j-th stage.
                 data = pipeline_->getFeatureExtractionData(j);
                 if (data.size() < kTooManyFeaturesThreshold) {
@@ -1562,6 +1625,34 @@ void ofApp::drawInputs(uint32_t stage_left, uint32_t stage_top,
     }
 }
 
+void ofApp::drawLiveFeatures(uint32_t stage_left, uint32_t stage_top,
+                             uint32_t stage_width, uint32_t stage_height) {
+    // Two cases here:
+    //   1. feature is a high-dimension data and we choose to show the snapshot,
+    //      then we use 1/5 of the space to show the live data as a timeline
+    //   2. feature itself is a time-series data, simply draw the features
+    //
+    // In the first case, we modify the allocated space for the features,
+    // i.e. modify stage_top and stage_height so that we can reuse the code that
+    // draws the features.
+    if (is_final_features_too_many_) {
+        uint32_t height = stage_height / 5;
+        drawInputs(stage_left, stage_top, stage_width, height);
+
+        // modify the stage height
+        uint32_t margin = 10;
+        stage_top = stage_top + (height + margin);
+        stage_height = stage_height - (height + margin);
+    }
+
+    uint32_t height = stage_height / plot_live_features_.size();
+
+    for (int j = 0; j < plot_live_features_.size(); j++) {
+        plot_live_features_[j].draw(stage_left, stage_top, stage_width, height);
+        stage_top += height;
+    }
+}
+
 void ofApp::drawCalibration() {
     uint32_t margin = 30;
     uint32_t stage_left = 10;
@@ -1659,12 +1750,14 @@ void ofApp::drawTrainingInfo() {
     }
 
     // 1. Draw Input
-    if (!is_in_feature_view_) {
-        ofPushStyle();
+    ofPushStyle();
+    if (is_in_feature_view_) {
+        drawLiveFeatures(stage_left, stage_top, stage_width, stage_height);
+    } else {
         drawInputs(stage_left, stage_top, stage_width, stage_height);
-        ofPopStyle();
-        stage_top += stage_height + margin;
     }
+    ofPopStyle();
+    stage_top += stage_height + margin;
 
     // 2. Draw advice for training data (if any)
     if (training_data_advice_ != "") {
@@ -1672,8 +1765,7 @@ void ofApp::drawTrainingInfo() {
         stage_top += paragraph.getHeight();
     }
 
-    // 3. Draw samples
-    // Currently we support kNumMaxLabels_ labels
+    // 3. Draw prediction related (likelihood/distance)
     uint32_t width = stage_width / kNumMaxLabels_;
     float minY = plot_inputs_.getRanges().first;
     float maxY = plot_inputs_.getRanges().second;
@@ -1700,17 +1792,44 @@ void ofApp::drawTrainingInfo() {
 
     stage_top += 12;
 
+    // 4. Draw samples (with features if requested).
     for (uint32_t i = 0; i < kNumMaxLabels_; i++) {
         uint32_t label = i + 1;
         uint32_t x = stage_left + i * width;
         plot_samples_[i].setRanges(minY, maxY, true);
 
+        // One-fifth used for sample data
+        uint32_t sample_height =
+            is_in_feature_view_ ? (stage_height / 5) : stage_height;
+        uint32_t feature_height =
+            is_in_feature_view_ ? (4 * stage_height / 5) : 0;
+
         if (istream_->getNumOutputDimensions() >= kTooManyFeaturesThreshold) {
+            // Further split the view into snapshots (2/3) and sample (1/3).
+            uint32_t snapshot_h = 2 * sample_height / 3;
+            uint32_t sample_h = sample_height / 3;
             plot_samples_snapshots_[i].setRanges(minY, maxY, true);
-            plot_samples_snapshots_[i].draw(x, stage_top, width, 2 * stage_height / 3);
-            plot_samples_[i].draw(x, stage_top + 2 * stage_height / 3, width, stage_height / 3);
+            plot_samples_snapshots_[i].draw(x, stage_top, width, snapshot_h);
+            plot_samples_[i].draw(x, stage_top + snapshot_h, width, sample_h);
         } else {
-            plot_samples_[i].draw(x, stage_top, width, stage_height);
+            plot_samples_[i].draw(x, stage_top, width, sample_height);
+        }
+
+        // draw features if requested
+        if (is_in_feature_view_) {
+            uint32_t x = stage_left + i * width;
+            uint32_t y = stage_top + sample_height + margin / 4;
+            vector<Plotter> feature_plots = plot_sample_features_[i];
+            uint32_t margin = 5;
+            uint32_t height = feature_height / feature_plots.size() - margin;
+
+            for (uint32_t j = 0; j < feature_plots.size(); j++) {
+                pair<double, double> range = sample_feature_ranges_[j];
+
+                feature_plots[j].setRanges(range.first, range.second);
+                feature_plots[j].draw(x, y, width, height);
+                y += height + margin;
+            }
         }
 
         uint32_t num_samples = training_data_manager_.getNumSampleForLabel(label);
@@ -1761,28 +1880,6 @@ void ofApp::drawTrainingInfo() {
         training_sample_guis_[i]->setWidth(width - margin / 4);
         training_sample_guis_[i]->draw();
     }
-
-    stage_top += stage_height + 60 + training_sample_guis_[0]->getHeight();
-
-    if (!is_in_feature_view_) { return; }
-    if (pipeline_->getNumFeatureExtractionModules() == 0) { return; }
-    // 3. Features
-    stage_top += margin * 2;
-    for (uint32_t i = 0; i < kNumMaxLabels_; i++) {
-        uint32_t x = stage_left + i * width;
-        uint32_t y = stage_top;
-        vector<Plotter> feature_plots = plot_sample_features_[i];
-        uint32_t margin = 5;
-        uint32_t height = stage_height / feature_plots.size() - margin;
-
-        for (uint32_t j = 0; j < feature_plots.size(); j++) {
-            pair<double, double> range = sample_feature_ranges_[j];
-
-            feature_plots[j].setRanges(range.first, range.second);
-            feature_plots[j].draw(x, y, width, height);
-            y += height + margin;
-        }
-    }
 }
 
 void ofApp::drawAnalysis() {
@@ -1796,7 +1893,11 @@ void ofApp::drawAnalysis() {
 
     // 1. Draw Input
     ofPushStyle();
-    drawInputs(stage_left, stage_top, stage_width, stage_height);
+    if (is_in_feature_view_) {
+        drawLiveFeatures(stage_left, stage_top, stage_width, stage_height);
+    } else {
+        drawInputs(stage_left, stage_top, stage_width, stage_height);
+    }
     ofPopStyle();
     stage_top += stage_height + margin;
 
@@ -1821,7 +1922,11 @@ void ofApp::drawPrediction() {
 
     // 1. Draw Input
     ofPushStyle();
-    drawInputs(stage_left, stage_top, stage_width, stage_height);
+    if (is_in_feature_view_) {
+        drawLiveFeatures(stage_left, stage_top, stage_width, stage_height);
+    } else {
+        drawInputs(stage_left, stage_top, stage_width, stage_height);
+    }
     ofPopStyle();
     stage_top += stage_height + margin;
 
@@ -1888,7 +1993,12 @@ void ofApp::onDataIn(GRT::MatrixDouble input) {
 //--------------------------------------------------------------
 void ofApp::toggleFeatureView() {
     ESP_EVENT("Toggle Feature View");
-    if (fragment_ != TRAINING) { return; }
+
+    if (num_preprocessing_modules_ + num_feature_modules_ == 0) {
+        // Then this function is a no-op
+        setStatus("This pipeline doesn't have any feature extraction module");
+        return;
+    }
 
     if (is_in_feature_view_) {
         is_in_feature_view_ = false;
@@ -2076,9 +2186,6 @@ void ofApp::keyPressed(int key) {
             }
             return;
         }
-        case 'f':
-            toggleFeatureView();
-            return;
         case 't':
             beginTrainModel();
             return;
@@ -2165,6 +2272,13 @@ void ofApp::keyReleased(int key) {
     std::string key_str;
     key_str = static_cast<char>(key);
     ESP_EVENT("keyReleased: " + key_str);
+
+    if (key == 'f' &&
+        (state_ == AppState::kTraining || state_ == AppState::kAnalysis ||
+         state_ == AppState::kPrediction)) {
+        toggleFeatureView();
+        return;
+    }
 
     switch (state_) {
     case AppState::kTrainingRenaming: {
