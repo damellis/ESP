@@ -1,4 +1,5 @@
 #pragma once
+#include <atomic>
 
 class Stream {
   public:
@@ -18,5 +19,5 @@ class Stream {
     bool hasStarted() { return has_started_; }
 
   protected:
-    bool has_started_;
+    std::atomic_bool has_started_;
 };

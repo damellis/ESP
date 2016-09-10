@@ -324,3 +324,58 @@ void FirmataStream::update() {
         }
     }
 }
+
+bool TcpInputStream::start() {
+    server_.setup(port_num_);
+    server_.setMessageDelimiter("\n");
+    has_started_ = true;
+
+    reading_thread_.reset(new std::thread([this]() {
+        int sleep_time = 10;
+        ofLog() << "TCP inputs are checked every " << sleep_time << " ms";
+        while (has_started_) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(sleep_time));
+            for (int i = 0; i < server_.getLastID(); i++) {
+                if (server_.isClientConnected(i)) {
+                    string str = server_.receive(i);
+                    if (str != "") {
+                        parseInput(str);
+                    }
+                }
+            }
+        }
+    }));
+    return true;
+}
+
+void TcpInputStream::parseInput(const string& buffer) {
+    if (data_ready_callback_ != nullptr) {
+        istringstream iss(buffer);
+        vector<double> data;
+        double d;
+
+        while (iss >> d)
+            data.push_back(d);
+
+        if (data.size() > 0) {
+            data = normalize(data);
+
+            GRT::MatrixDouble matrix;
+            matrix.push_back(data);
+
+            data_ready_callback_(matrix);
+        }
+    }
+}
+
+void TcpInputStream::stop() {
+    has_started_.store(false);
+    server_.close();
+    if (reading_thread_ != nullptr && reading_thread_->joinable()) {
+        reading_thread_->join();
+    }
+}
+
+int TcpInputStream::getNumInputDimensions() {
+    return dim_;
+}

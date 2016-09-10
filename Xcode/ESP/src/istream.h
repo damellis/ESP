@@ -11,6 +11,7 @@
 
 #include "GRT/GRT.h"
 #include "ofMain.h"
+#include "ofxNetwork.h"
 #include "stream.h"
 
 #include <cstdint>
@@ -252,4 +253,28 @@ class FirmataStream : public InputStream {
     ofArduino arduino_;
     unique_ptr<std::thread> update_thread_;
     void update();
+};
+
+// Forward declaration.
+class ofxTCPServer;
+
+/**
+ @brief Listening for data inputs over a TCP socket.
+ */
+class TcpInputStream : public InputStream {
+  public:
+    TcpInputStream(int port_num, int dimension)
+        : port_num_(port_num), dim_(dimension) {
+    }
+
+    virtual bool start() final;
+    virtual void stop() final;
+    virtual int getNumInputDimensions() final;
+
+  private:
+    void parseInput(const string& buffer);
+    ofxTCPServer server_;
+    unique_ptr<std::thread> reading_thread_;
+    int port_num_;
+    int dim_;
 };
