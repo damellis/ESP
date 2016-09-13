@@ -150,7 +150,9 @@ ofApp::ofApp() : fragment_(TRAINING),
                  should_save_training_data_(false),
                  should_save_test_data_(false),
                  is_training_scheduled_(false),
-                 is_recording_(false) {
+                 is_recording_(false),
+                 true_positive_threshold_(0),
+                 false_negative_threshold_(0) {
 }
 
 //--------------------------------------------------------------
@@ -1845,25 +1847,43 @@ void ofApp::drawTrainingInfo() {
             ofDrawBitmapString("->", x + width - 20, stage_top + stage_height + 20);
         }
         plot_sample_button_locations_[i].first.set(x, stage_top + stage_height, 20, 20);
-        plot_sample_button_locations_[i].second.set(x + width - 20, stage_top + stage_height, 20, 20);
+        plot_sample_button_locations_[i].second.set(
+            x + width - 20, stage_top + stage_height, 20, 20);
 
         ofDrawBitmapString("Closeness To:", x, stage_top + stage_height + 32);
 
         for (int j = 0; j < kNumMaxLabels_; j++) {
-            ofDrawBitmapString(std::to_string(j + 1), x + j * width / kNumMaxLabels_, stage_top + stage_height + 44);
-            if (training_data_manager_.hasSampleClassLikelihoods(label, plot_sample_indices_[i])) {
+            ofDrawBitmapString(std::to_string(j + 1),
+                               x + j * width / kNumMaxLabels_,
+                               stage_top + stage_height + 44);
+
+            if (training_data_manager_.hasSampleClassLikelihoods(
+                    label, plot_sample_indices_[i])) {
                 double score = training_data_manager_.getSampleClassLikelihoods(
                     label, plot_sample_indices_[i])[j + 1];
-                if (i == j)
-                    // the lower the score => the less likely it is to be
-                    // classified correctly => the more red we want to draw =>
-                    // the less green and blue it should have
-                    ofSetColor(255, 255 * score, 255 * score);
-                else
-                    // the higher the score => the more confused it is with
-                    // another class => the more red we want to draw => the
-                    // less green and blue it should have
-                    ofSetColor(255, 255 * (1.0 - score), 255 * (1.0 - score));
+                if (i == j) {
+                    // We highlight if (1) the threshold is not set; (2) the
+                    // threshold is set and the score is smaller
+                    if (true_positive_threshold_ == 0 ||
+                        (true_positive_threshold_ != 0 &&
+                         score < true_positive_threshold_)) {
+                        // the lower the score => the less likely it is to be
+                        // classified correctly => the more red we want to draw
+                        // => the less green and blue it should have
+                        ofSetColor(255, 255 * score, 255 * score);
+                    }
+                } else {
+                    // We highlight if (1) the threshold is not set; (2) the
+                    // threshold is set and the score is larger
+                    if (false_negative_threshold_ == 0 ||
+                        (false_negative_threshold_ != 0 &&
+                         score > false_negative_threshold_)) {
+                        // the higher the score => the more confused it is with
+                        // another class => the more red we want to draw => the
+                        // less green and blue it should have
+                        ofSetColor(255, 255 * (1.0 - score), 255 * (1.0 - score));
+                    }
+                }
                 ofDrawBitmapString(std::to_string((int) (score * 100)),
                     x + j * width / kNumMaxLabels_,
                     stage_top + stage_height + 56);
@@ -2666,3 +2686,12 @@ void useTrainingDataAdvice(string advice) {
 void useLeaveOneOutScoring(bool enable) {
     ((ofApp *) ofGetAppPtr())->useLeaveOneOutScoring(enable);
 }
+
+void setTruePositiveWarningThreshold(double threshold) {
+    ((ofApp *) ofGetAppPtr())->true_positive_threshold_ = threshold;
+}
+
+void setFalseNegativeWarningThreshold(double threshold) {
+    ((ofApp *) ofGetAppPtr())->false_negative_threshold_ = threshold;
+}
+
