@@ -1862,26 +1862,28 @@ void ofApp::drawTrainingInfo() {
                 double score = training_data_manager_.getSampleClassLikelihoods(
                     label, plot_sample_indices_[i])[j + 1];
                 if (i == j) {
-                    // We highlight if (1) the threshold is not set; (2) the
-                    // threshold is set and the score is smaller
-                    if (true_positive_threshold_ == 0 ||
-                        (true_positive_threshold_ != 0 &&
-                         score < true_positive_threshold_)) {
+                    // We highlight:
+                    // (1) the threshold is not set, use a gradient red;
+                    // (2) the threshold is set and the score is smaller, red
+                    if (true_positive_threshold_ == 0) {
                         // the lower the score => the less likely it is to be
                         // classified correctly => the more red we want to draw
                         // => the less green and blue it should have
                         ofSetColor(255, 255 * score, 255 * score);
+                    } else if (score < true_positive_threshold_) {
+                        ofSetColor(255, 0, 0);
                     }
                 } else {
-                    // We highlight if (1) the threshold is not set; (2) the
-                    // threshold is set and the score is larger
-                    if (false_negative_threshold_ == 0 ||
-                        (false_negative_threshold_ != 0 &&
-                         score > false_negative_threshold_)) {
+                    // We highlight:
+                    // (1) the threshold is not set, use a gradient red;
+                    // (2) the threshold is set and the score is larger, red
+                    if (false_negative_threshold_ == 0) {
                         // the higher the score => the more confused it is with
                         // another class => the more red we want to draw => the
                         // less green and blue it should have
                         ofSetColor(255, 255 * (1.0 - score), 255 * (1.0 - score));
+                    } else if (score > false_negative_threshold_) {
+                        ofSetColor(255, 0, 0);
                     }
                 }
                 ofDrawBitmapString(std::to_string((int) (score * 100)),
