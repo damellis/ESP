@@ -3,7 +3,7 @@
  */
 #include <ESP.h>
 
-OscInputStream stream(8001, "/gyrosc/accel", 3);
+ASCIISerialStream stream(115200, 3);
 GestureRecognitionPipeline pipeline;
 Calibrator calibrator;
 TcpOStream oStream("localhost", 5204);
@@ -111,9 +111,9 @@ void updateTimeout(int new_timeout) {
 void setup()
 {
     stream.setLabelsForAllDimensions({"x", "y", "z"});
-    useInputStream(stream);
+    //useInputStream(stream);
     useOutputStream(oStream);
-    //useStream(stream);
+    useStream(stream);
 
     calibrator.setCalibrateFunction(processAccelerometerData);
     calibrator.addCalibrateProcess("Upright",
