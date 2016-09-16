@@ -135,6 +135,8 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     friend void useTrainingSampleChecker(TrainingSampleChecker checker);
     friend void useTrainingDataAdvice(string advice);
     friend void useLeaveOneOutScoring(bool enable);
+    friend void setTruePositiveWarningThreshold(double threshold);
+    friend void setFalseNegativeWarningThreshold(double threshold);
 
     // This variable is a guard so that code can check its status and made to be
     // executed only once. Because we are loading the user code ::setup()
@@ -402,6 +404,9 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     void scoreTrainingData(bool leaveOneOut);
     void scoreImpactOfTrainingSample(int label, const MatrixDouble &sample);
     bool use_leave_one_out_scoring_ = true;
+
+    double true_positive_threshold_;
+    double false_negative_threshold_;
 
     //========================================================================
     // Utils

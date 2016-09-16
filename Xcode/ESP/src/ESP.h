@@ -201,4 +201,21 @@ void useLeaveOneOutScoring(bool enable = true);
  */
 void setGUIBufferSize(uint32_t buffer_size);
 
+/**
+ @brief Only warn (highlight the confusion score) if the true positive rate is
+ smaller than the threshold. True positive rate is the probability that this
+ sample is correctly classified. When the actual rate is smaller than the
+ threshold, this indicates a sample that is less likely to be considered as this
+ class.
+ */
+void setTruePositiveWarningThreshold(double threshold);
+
+/**
+ @brief Only warn (highlight the confusion score) if the false negative rate is
+ larger than the threshold. False negative rate is the probability that this
+ sample is incorrectly classified as other classes. When the actual rate is
+ larger than the threshold, this sample is likely to be mis-classified.
+ */
+void setFalseNegativeWarningThreshold(double threshold);
+
 using namespace GRT;
