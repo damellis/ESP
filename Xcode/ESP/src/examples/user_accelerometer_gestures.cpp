@@ -139,4 +139,7 @@ void setup()
         "gesture before recognizing another one.", updateTimeout);
 
     useTrainingSampleChecker(checkTrainingSample);
+  
+    setTruePositiveWarningThreshold(0.50);
+    setFalseNegativeWarningThreshold(0.30);
 }
