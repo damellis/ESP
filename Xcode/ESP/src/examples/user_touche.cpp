@@ -16,5 +16,8 @@ void setup()
     pipeline.setClassifier(SVM(SVM::POLY_KERNEL, SVM::C_SVC, false, true, true, 0.1, 1.0, 0, 0.5, 2));
     usePipeline(pipeline);
     
+    setTruePositiveWarningThreshold(0.90);
+    setFalseNegativeWarningThreshold(0.10);
+  
     useLeaveOneOutScoring(false);
 }
