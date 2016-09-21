@@ -110,8 +110,8 @@ bool Plotter::draw(uint32_t x, uint32_t y, uint32_t w, uint32_t h) {
     ofTranslate(x, y);
 
     // Draw the background
+    ofSetColor(background_color_);
     ofFill();
-    ofSetColor(0, 0, 0);
     ofDrawRectangle(0, 0, w, h);
 
     // Draw the selection.
@@ -121,7 +121,7 @@ bool Plotter::draw(uint32_t x, uint32_t y, uint32_t w, uint32_t h) {
     }
 
     // Draw the axis lines
-    ofSetColor(255, 255, 255);
+    ofSetColor(grid_color_);
     ofDrawLine(-5, h, w+5, h); // X Axis
     ofDrawLine(0, -5, 0, h+5); // Y Axis
 
@@ -145,6 +145,7 @@ bool Plotter::draw(uint32_t x, uint32_t y, uint32_t w, uint32_t h) {
     }
 
     // Draw the title
+    ofSetColor(text_color_);
     int ofBitmapFontHeight = 14;
     int textX = 10;
     int textY = ofBitmapFontHeight + 5;

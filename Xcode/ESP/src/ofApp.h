@@ -320,6 +320,138 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     friend class TrainingSampleGuiListener;
 
     //========================================================================
+    // theme
+    //========================================================================
+    void onBackgroundColorPickerEvent(ofxDatGuiColorPickerEvent e) {
+        background_color_ = e.color;
+
+        // Also change every plot background
+        plot_inputs_.setBackgroundColor(background_color_);
+        for (auto& p : plot_live_features_) {
+            p.setBackgroundColor(background_color_);
+        }
+        plot_inputs_snapshot_.setBackgroundColor(background_color_);
+        plot_raw_.setBackgroundColor(background_color_);
+        for (auto& p : plot_calibrators_) {
+            p.setBackgroundColor(background_color_);
+        }
+        for (auto& p : plot_pre_processed_) {
+            p.setBackgroundColor(background_color_);
+        }
+        for (auto& ps : plot_features_) {
+            for (auto& p : ps) {
+                p.setBackgroundColor(background_color_);
+            }
+        }
+        plot_testdata_window_.setBackgroundColor(background_color_);
+        plot_testdata_overview_.setBackgroundColor(background_color_);
+
+        for (auto& p : plot_samples_) {
+            p.setBackgroundColor(background_color_);
+        }
+        for (auto& p : plot_samples_snapshots_) {
+            p.setBackgroundColor(background_color_);
+        }
+        for (auto& ps : plot_sample_features_) {
+            for (auto& p : ps) {
+                p.setBackgroundColor(background_color_);
+            }
+        }
+        plot_class_likelihoods_.setBackgroundColor(background_color_);
+        for (auto& p : plot_class_distances_) {
+            p.setBackgroundColor(background_color_);
+        }
+    }
+    ofColor background_color_;
+
+    void onTextColorPickerEvent(ofxDatGuiColorPickerEvent e) {
+        text_color_ = e.color;
+
+        // Also change every plot text
+        plot_inputs_.setTextColor(text_color_);
+        for (auto& p : plot_live_features_) {
+            p.setTextColor(text_color_);
+        }
+        plot_inputs_snapshot_.setTextColor(text_color_);
+        plot_raw_.setTextColor(text_color_);
+        for (auto& p : plot_calibrators_) {
+            p.setTextColor(text_color_);
+        }
+        for (auto& p : plot_pre_processed_) {
+            p.setTextColor(text_color_);
+        }
+        for (auto& ps : plot_features_) {
+            for (auto& p : ps) {
+                p.setTextColor(text_color_);
+            }
+        }
+        plot_testdata_window_.setTextColor(text_color_);
+        plot_testdata_overview_.setTextColor(text_color_);
+
+        for (auto& p : plot_samples_) {
+            p.setTextColor(text_color_);
+        }
+        for (auto& p : plot_samples_snapshots_) {
+            p.setTextColor(text_color_);
+        }
+        for (auto& ps : plot_sample_features_) {
+            for (auto& p : ps) {
+                p.setTextColor(text_color_);
+            }
+        }
+        plot_class_likelihoods_.setTextColor(text_color_);
+        for (auto& p : plot_class_distances_) {
+            p.setTextColor(text_color_);
+        }
+    }
+    ofColor text_color_;
+
+    void onGridColorPickerEvent(ofxDatGuiColorPickerEvent e) {
+        ofColor grid_color(e.color.r, e.color.g, e.color.b, 0x20);
+
+        // Also change every plot text
+        plot_inputs_.setGridColor(grid_color);
+        for (auto& p : plot_live_features_) {
+            p.setGridColor(grid_color);
+        }
+        plot_inputs_snapshot_.setGridColor(grid_color);
+        plot_raw_.setGridColor(grid_color);
+        for (auto& p : plot_calibrators_) {
+            p.setGridColor(grid_color);
+        }
+        for (auto& p : plot_pre_processed_) {
+            p.setGridColor(grid_color);
+        }
+        for (auto& ps : plot_features_) {
+            for (auto& p : ps) {
+                p.setGridColor(grid_color);
+            }
+        }
+        plot_testdata_window_.setGridColor(grid_color);
+        plot_testdata_overview_.setGridColor(grid_color);
+
+        for (auto& p : plot_samples_) {
+            p.setGridColor(grid_color);
+        }
+        for (auto& p : plot_samples_snapshots_) {
+            p.setGridColor(grid_color);
+        }
+        for (auto& ps : plot_sample_features_) {
+            for (auto& p : ps) {
+                p.setGridColor(grid_color);
+            }
+        }
+        plot_class_likelihoods_.setGridColor(grid_color);
+        for (auto& p : plot_class_distances_) {
+            p.setGridColor(grid_color);
+        }
+    }
+
+    void onLineWidthSliderEvent(ofxDatGuiSliderEvent e) {
+        ofSetLineWidth(e.value);
+    }
+
+    //========================================================================
     // visual: prediction
     //
     // live + likelihood + class_distances

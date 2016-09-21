@@ -489,6 +489,27 @@ void ofApp::setup() {
     save_button->onButtonEvent(this, &ofApp::saveTuneables);
     load_button->onButtonEvent(this, &ofApp::loadTuneables);
 
+    gui_.addBreak()->setHeight(30.0f);
+
+    background_color_ = ofColor(32, 32, 32);
+    ofxDatGuiColorPicker* bg_picker =
+        gui_.addColorPicker("background", background_color_);
+    bg_picker->onColorPickerEvent(this, &ofApp::onBackgroundColorPickerEvent);
+
+    text_color_ = ofColor(0xee, 0xee, 0xee);
+    ofxDatGuiColorPicker* text_picker =
+        gui_.addColorPicker("text color", text_color_);
+    text_picker->onColorPickerEvent(this, &ofApp::onTextColorPickerEvent);
+
+    // initially the same as text color
+    ofxDatGuiColorPicker* grid_picker =
+        gui_.addColorPicker("grid color", text_color_);
+    grid_picker->onColorPickerEvent(this, &ofApp::onGridColorPickerEvent);
+
+    // initially the same as text color
+    ofxDatGuiSlider* line_width_slider = gui_.addSlider("line width", 1, 3);
+    line_width_slider->onSliderEvent(this, &ofApp::onLineWidthSliderEvent);
+
     gui_.addFooter();
     gui_.getFooter()->setLabelWhenExpanded("Click to apply and hide");
     gui_.getFooter()->setLabelWhenCollapsed("Click to open configuration");
@@ -498,8 +519,6 @@ void ofApp::setup() {
     } else {
         gui_.collapse();
     }
-
-    ofBackground(54, 54, 54);
 
     // Register myself as logging observer but disable first.
     GRT::ErrorLog::enableLogging(false);
@@ -1532,6 +1551,9 @@ void ofApp::enableTrainingSampleGUI(bool should_enable) {
 
 //--------------------------------------------------------------
 void ofApp::draw() {
+    ofBackground(background_color_);
+    ofSetColor(text_color_);
+
     // Hacky panel on the top.
     const uint32_t left_margin = 10;
     const uint32_t top_margin = 20;
@@ -2696,4 +2718,3 @@ void setTruePositiveWarningThreshold(double threshold) {
 void setFalseNegativeWarningThreshold(double threshold) {
     ((ofApp *) ofGetAppPtr())->false_negative_threshold_ = threshold;
 }
-

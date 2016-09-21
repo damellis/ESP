@@ -229,6 +229,18 @@ class Plotter : public InteractivePlot {
 
     bool clearData();
 
+    void setBackgroundColor(ofColor color) {
+        background_color_ = color;
+    }
+
+    void setTextColor(ofColor color) {
+        text_color_ = color;
+    }
+
+    void setGridColor(ofColor color) {
+        grid_color_ = color;
+    }
+
   protected:
     virtual uint32_t mouseCoordinateToIndex(uint32_t x) {
         float x_step = w_ * 1.0 / data_.getNumRows();
@@ -248,6 +260,10 @@ class Plotter : public InteractivePlot {
     float minY_, default_minY_;
     float maxY_, default_maxY_;
     GRT::MatrixDouble data_;
+
+    ofColor background_color_ = ofColor(0, 0, 0);
+    ofColor text_color_ = ofColor(0xFF, 0xFF, 0xFF);
+    ofColor grid_color_ = ofColor(0xFF, 0xFF, 0xFF);
 };
 
 class InteractiveTimeSeriesPlot : public ofxGrtTimeseriesPlot,
