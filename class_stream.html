@@ -125,15 +125,17 @@ Inheritance diagram for Stream:</div>
  <div class="center">
   <img src="class_stream.png" usemap="#Stream_map" alt=""/>
   <map id="Stream_map" name="Stream_map">
-<area href="class_input_stream.html" title="Base class for input streams that provide live sensor data to the ESP system. " alt="InputStream" shape="rect" coords="0,56,159,80"/>
+<area href="class_input_stream.html" title="Base class for input streams that provide live sensor data to the ESP system. To use an InputStream i..." alt="InputStream" shape="rect" coords="0,56,159,80"/>
 <area href="class_o_stream.html" title="Base class for output streams that forward ESP prediction results to other systems. " alt="OStream" shape="rect" coords="338,56,497,80"/>
-<area href="class_audio_file_stream.html" title="Input stream for getting the FFT spectrum of an audio file as it plays. " alt="AudioFileStream" shape="rect" coords="169,112,328,136"/>
+<area href="class_audio_file_stream.html" title="Input stream for getting the FFT spectrum of an audio file as it plays. This class plays an audio fil..." alt="AudioFileStream" shape="rect" coords="169,112,328,136"/>
 <area href="class_audio_stream.html" title="Input stream for reading audio from the computer&#39;s microphone. " alt="AudioStream" shape="rect" coords="169,168,328,192"/>
 <area href="class_base_serial_input_stream.html" alt="BaseSerialInputStream" shape="rect" coords="169,224,328,248"/>
-<area href="class_firmata_stream.html" title="Input stream for reading analog data from an Arduino running Firmata. " alt="FirmataStream" shape="rect" coords="169,280,328,304"/>
+<area href="class_firmata_stream.html" title="Input stream for reading analog data from an Arduino running Firmata. To use an FirmataStream in your..." alt="FirmataStream" shape="rect" coords="169,280,328,304"/>
 <area href="class_i_o_stream.html" alt="IOStream" shape="rect" coords="169,336,328,360"/>
 <area href="class_i_o_stream_vector.html" alt="IOStreamVector" shape="rect" coords="169,392,328,416"/>
-<area href="class_serial_stream.html" alt="SerialStream" shape="rect" coords="169,448,328,472"/>
+<area href="class_osc_input_stream.html" title="Listening for data inputs over OSC. " alt="OscInputStream" shape="rect" coords="169,448,328,472"/>
+<area href="class_serial_stream.html" alt="SerialStream" shape="rect" coords="169,504,328,528"/>
+<area href="class_tcp_input_stream.html" title="Listening for data inputs over a TCP socket. " alt="TcpInputStream" shape="rect" coords="169,560,328,584"/>
 <area href="class_i_o_stream.html" alt="IOStream" shape="rect" coords="507,112,666,136"/>
 <area href="class_mac_o_s_keyboard_o_stream.html" title="Emulate keyboard key presses corresponding to prediction results. " alt="MacOSKeyboardOStream" shape="rect" coords="507,168,666,192"/>
 <area href="class_mac_o_s_mouse_o_stream.html" title="Emulate mouse double-clicks at locations corresponding to prediction results. " alt="MacOSMouseOStream" shape="rect" coords="507,224,666,248"/>
@@ -156,8 +158,8 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
-<tr class="memitem:ac14e5cd2f0e1165f1e2d1448a1691bef"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_stream.html#ac14e5cd2f0e1165f1e2d1448a1691bef">has_started_</a></td></tr>
-<tr class="separator:ac14e5cd2f0e1165f1e2d1448a1691bef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae567037412aa6c3554a04e9a0f040287"><td class="memItemLeft" align="right" valign="top">std::atomic_bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_stream.html#ae567037412aa6c3554a04e9a0f040287">has_started_</a></td></tr>
+<tr class="separator:ae567037412aa6c3554a04e9a0f040287"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a8c3f05bd00361ec92627fa41f330a39b"></a>
@@ -229,7 +231,7 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Start the stream. </p>
 
-<p>Reimplemented in <a class="el" href="class_tcp_o_stream.html#a30af284b08149a51651e12df8c2b67ff">TcpOStream</a>, <a class="el" href="class_firmata_stream.html#a028798d961aea59427ed4ea272e95e4e">FirmataStream</a>, <a class="el" href="class_serial_stream.html#afe8f428de53d4c4ca30bc699f1aa2b89">SerialStream</a>, <a class="el" href="class_base_serial_input_stream.html#a78d5a483e4b5066296d315cf17123c69">BaseSerialInputStream</a>, <a class="el" href="class_audio_file_stream.html#a1b1f8259c74f1357dfae19d6cd5cc252">AudioFileStream</a>, and <a class="el" href="class_audio_stream.html#a420fd8324be27f4cd072fdd926bde7f8">AudioStream</a>.</p>
+<p>Reimplemented in <a class="el" href="class_tcp_o_stream.html#a30af284b08149a51651e12df8c2b67ff">TcpOStream</a>, <a class="el" href="class_osc_input_stream.html#abddf58782703ad2cf674d778be630f33">OscInputStream</a>, <a class="el" href="class_tcp_input_stream.html#aaf8d8499505bcd0396748ef7fea13855">TcpInputStream</a>, <a class="el" href="class_firmata_stream.html#a028798d961aea59427ed4ea272e95e4e">FirmataStream</a>, <a class="el" href="class_serial_stream.html#afe8f428de53d4c4ca30bc699f1aa2b89">SerialStream</a>, <a class="el" href="class_base_serial_input_stream.html#a78d5a483e4b5066296d315cf17123c69">BaseSerialInputStream</a>, <a class="el" href="class_audio_file_stream.html#a1b1f8259c74f1357dfae19d6cd5cc252">AudioFileStream</a>, and <a class="el" href="class_audio_stream.html#a420fd8324be27f4cd072fdd926bde7f8">AudioStream</a>.</p>
 
 </div>
 </div>
@@ -254,7 +256,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Reimplemented in <a class="el" href="class_firmata_stream.html#aae1d1172e3049f3bdb97016c8b0110e1">FirmataStream</a>, <a class="el" href="class_serial_stream.html#ab05ab340356431ab2638be923c17e924">SerialStream</a>, <a class="el" href="class_base_serial_input_stream.html#a464e95f5603d193063645a093ae53716">BaseSerialInputStream</a>, <a class="el" href="class_audio_file_stream.html#a05be48ffe19f7868da18fd09a28a08cf">AudioFileStream</a>, and <a class="el" href="class_audio_stream.html#a9b202fb8f50b22515ad09ef54129481b">AudioStream</a>.</p>
+<p>Reimplemented in <a class="el" href="class_osc_input_stream.html#ad7d7bb8094bb6a260c867b9cb19b452f">OscInputStream</a>, <a class="el" href="class_tcp_input_stream.html#a7d085ee43a5638aa70369e4dc6a436a3">TcpInputStream</a>, <a class="el" href="class_firmata_stream.html#aae1d1172e3049f3bdb97016c8b0110e1">FirmataStream</a>, <a class="el" href="class_serial_stream.html#ab05ab340356431ab2638be923c17e924">SerialStream</a>, <a class="el" href="class_base_serial_input_stream.html#a464e95f5603d193063645a093ae53716">BaseSerialInputStream</a>, <a class="el" href="class_audio_file_stream.html#a05be48ffe19f7868da18fd09a28a08cf">AudioFileStream</a>, and <a class="el" href="class_audio_stream.html#a9b202fb8f50b22515ad09ef54129481b">AudioStream</a>.</p>
 
 </div>
 </div>
@@ -282,7 +284,7 @@ Protected Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="ac14e5cd2f0e1165f1e2d1448a1691bef"></a>
+<a class="anchor" id="ae567037412aa6c3554a04e9a0f040287"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -290,7 +292,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool Stream::has_started_</td>
+          <td class="memname">std::atomic_bool Stream::has_started_</td>
         </tr>
       </table>
   </td>

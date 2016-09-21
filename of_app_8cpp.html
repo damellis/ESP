@@ -166,6 +166,12 @@ Functions</h2></td></tr>
 <tr class="memitem:ab46bb5e45fbf6849c64dc46fe5be4fd0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="of_app_8cpp.html#ab46bb5e45fbf6849c64dc46fe5be4fd0">useLeaveOneOutScoring</a> (bool enable)</td></tr>
 <tr class="memdesc:ab46bb5e45fbf6849c64dc46fe5be4fd0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not to do leave-one-out scoring of training data.  <a href="#ab46bb5e45fbf6849c64dc46fe5be4fd0">More...</a><br /></td></tr>
 <tr class="separator:ab46bb5e45fbf6849c64dc46fe5be4fd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f202c7b5e78d4a72b954bbca5d63b65"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="of_app_8cpp.html#a8f202c7b5e78d4a72b954bbca5d63b65">setTruePositiveWarningThreshold</a> (double <a class="el" href="user__accelerometer__walk__detection_8cpp.html#a89a39fb6802608a79f311f8275a04035">threshold</a>)</td></tr>
+<tr class="memdesc:a8f202c7b5e78d4a72b954bbca5d63b65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Only warn (highlight the confusion score) if the true positive rate is smaller than the threshold. True positive rate is the probability that this sample is correctly classified. When the actual rate is smaller than the threshold, this indicates a sample that is less likely to be considered as this class.  <a href="#a8f202c7b5e78d4a72b954bbca5d63b65">More...</a><br /></td></tr>
+<tr class="separator:a8f202c7b5e78d4a72b954bbca5d63b65"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9c16041d928017ad65d3fdc872bdbc0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="of_app_8cpp.html#af9c16041d928017ad65d3fdc872bdbc0">setFalseNegativeWarningThreshold</a> (double <a class="el" href="user__accelerometer__walk__detection_8cpp.html#a89a39fb6802608a79f311f8275a04035">threshold</a>)</td></tr>
+<tr class="memdesc:af9c16041d928017ad65d3fdc872bdbc0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Only warn (highlight the confusion score) if the false negative rate is larger than the threshold. False negative rate is the probability that this sample is incorrectly classified as other classes. When the actual rate is larger than the threshold, this sample is likely to be mis-classified.  <a href="#af9c16041d928017ad65d3fdc872bdbc0">More...</a><br /></td></tr>
+<tr class="separator:af9c16041d928017ad65d3fdc872bdbc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
@@ -249,6 +255,24 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="af9c16041d928017ad65d3fdc872bdbc0"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void setFalseNegativeWarningThreshold </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>threshold</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Only warn (highlight the confusion score) if the false negative rate is larger than the threshold. False negative rate is the probability that this sample is incorrectly classified as other classes. When the actual rate is larger than the threshold, this sample is likely to be mis-classified. </p>
+
+</div>
+</div>
 <a class="anchor" id="a5cda154d459d25e729a3fe2555e0feb3"></a>
 <div class="memitem">
 <div class="memproto">
@@ -263,6 +287,24 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>This will be linked against ofApp::setGUIBufferSize </p>
+
+</div>
+</div>
+<a class="anchor" id="a8f202c7b5e78d4a72b954bbca5d63b65"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void setTruePositiveWarningThreshold </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>threshold</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Only warn (highlight the confusion score) if the true positive rate is smaller than the threshold. True positive rate is the probability that this sample is correctly classified. When the actual rate is smaller than the threshold, this indicates a sample that is less likely to be considered as this class. </p>
 
 </div>
 </div>

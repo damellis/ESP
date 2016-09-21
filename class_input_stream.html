@@ -120,7 +120,7 @@ $(document).ready(function(){initNavTree('class_input_stream.html','');});
 </div><!--header-->
 <div class="contents">
 
-<p>Base class for input streams that provide live sensor data to the ESP system.  
+<p>Base class for input streams that provide live sensor data to the ESP system. To use an <a class="el" href="class_input_stream.html" title="Base class for input streams that provide live sensor data to the ESP system. To use an InputStream i...">InputStream</a> instance in your application, pass it to <a class="el" href="_e_s_p_8h.html#a1aa74be0fb47c0b5b747e64ffaadfb56">useInputStream()</a> in your <a class="el" href="user__accelerometer__gestures_8cpp.html#a4fc01d736fe50cf5b977f755b675f11d">setup()</a> function.  
  <a href="class_input_stream.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="istream_8h_source.html">istream.h</a>&gt;</code></p>
@@ -130,18 +130,16 @@ Inheritance diagram for InputStream:</div>
  <div class="center">
   <img src="class_input_stream.png" usemap="#InputStream_map" alt=""/>
   <map id="InputStream_map" name="InputStream_map">
-<area href="class_stream.html" alt="Stream" shape="rect" coords="531,0,698,24"/>
-<area href="class_audio_file_stream.html" title="Input stream for getting the FFT spectrum of an audio file as it plays. " alt="AudioFileStream" shape="rect" coords="0,112,167,136"/>
-<area href="class_audio_stream.html" title="Input stream for reading audio from the computer&#39;s microphone. " alt="AudioStream" shape="rect" coords="177,112,344,136"/>
-<area href="class_base_serial_input_stream.html" alt="BaseSerialInputStream" shape="rect" coords="354,112,521,136"/>
-<area href="class_firmata_stream.html" title="Input stream for reading analog data from an Arduino running Firmata. " alt="FirmataStream" shape="rect" coords="531,112,698,136"/>
-<area href="class_i_o_stream.html" alt="IOStream" shape="rect" coords="708,112,875,136"/>
-<area href="class_i_o_stream_vector.html" alt="IOStreamVector" shape="rect" coords="885,112,1052,136"/>
-<area href="class_serial_stream.html" alt="SerialStream" shape="rect" coords="1062,112,1229,136"/>
-<area href="class_a_s_c_i_i_serial_stream.html" title="Input stream for reading ASCII data from a (USB) serial port. " alt="ASCIISerialStream" shape="rect" coords="265,168,432,192"/>
-<area href="class_binary_int_array_serial_stream.html" alt="BinaryIntArraySerialStream" shape="rect" coords="442,168,609,192"/>
-<area href="class_a_s_c_i_i_serial_stream.html" title="Input stream for reading ASCII data from a (USB) serial port. " alt="ASCIISerialStream" shape="rect" coords="796,168,963,192"/>
-<area href="class_binary_int_array_serial_stream.html" alt="BinaryIntArraySerialStream" shape="rect" coords="973,168,1140,192"/>
+<area href="class_stream.html" alt="Stream" shape="rect" coords="0,0,139,24"/>
+<area href="class_audio_file_stream.html" title="Input stream for getting the FFT spectrum of an audio file as it plays. This class plays an audio fil..." alt="AudioFileStream" shape="rect" coords="149,112,288,136"/>
+<area href="class_audio_stream.html" title="Input stream for reading audio from the computer&#39;s microphone. " alt="AudioStream" shape="rect" coords="149,168,288,192"/>
+<area href="class_base_serial_input_stream.html" alt="BaseSerialInputStream" shape="rect" coords="149,224,288,248"/>
+<area href="class_firmata_stream.html" title="Input stream for reading analog data from an Arduino running Firmata. To use an FirmataStream in your..." alt="FirmataStream" shape="rect" coords="149,280,288,304"/>
+<area href="class_i_o_stream.html" alt="IOStream" shape="rect" coords="149,336,288,360"/>
+<area href="class_i_o_stream_vector.html" alt="IOStreamVector" shape="rect" coords="149,392,288,416"/>
+<area href="class_osc_input_stream.html" title="Listening for data inputs over OSC. " alt="OscInputStream" shape="rect" coords="149,448,288,472"/>
+<area href="class_serial_stream.html" alt="SerialStream" shape="rect" coords="149,504,288,528"/>
+<area href="class_tcp_input_stream.html" title="Listening for data inputs over a TCP socket. " alt="TcpInputStream" shape="rect" coords="149,560,288,584"/>
 </map>
  </div></div>
 <table class="memberdecls">
@@ -207,12 +205,11 @@ Protected Attributes</h2></td></tr>
 <tr class="memitem:aa244356b89fcaa06f4cf912e56ac5352"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_input_stream.html#af5ddcce77c5c46a5c93b1e42257dffda">vectorNormalizeFunc</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_input_stream.html#aa244356b89fcaa06f4cf912e56ac5352">vectorNormalizer_</a></td></tr>
 <tr class="separator:aa244356b89fcaa06f4cf912e56ac5352"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_class_stream"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_class_stream')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="class_stream.html">Stream</a></td></tr>
-<tr class="memitem:ac14e5cd2f0e1165f1e2d1448a1691bef inherit pro_attribs_class_stream"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_stream.html#ac14e5cd2f0e1165f1e2d1448a1691bef">has_started_</a></td></tr>
-<tr class="separator:ac14e5cd2f0e1165f1e2d1448a1691bef inherit pro_attribs_class_stream"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae567037412aa6c3554a04e9a0f040287 inherit pro_attribs_class_stream"><td class="memItemLeft" align="right" valign="top">std::atomic_bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_stream.html#ae567037412aa6c3554a04e9a0f040287">has_started_</a></td></tr>
+<tr class="separator:ae567037412aa6c3554a04e9a0f040287 inherit pro_attribs_class_stream"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Base class for input streams that provide live sensor data to the ESP system. </p>
-<p>To use an <a class="el" href="class_input_stream.html" title="Base class for input streams that provide live sensor data to the ESP system. ">InputStream</a> instance in your application, pass it to <a class="el" href="_e_s_p_8h.html#a1aa74be0fb47c0b5b747e64ffaadfb56">useInputStream()</a> in your <a class="el" href="user__accelerometer__gestures_8cpp.html#a4fc01d736fe50cf5b977f755b675f11d">setup()</a> function. </p>
+<div class="textblock"><p>Base class for input streams that provide live sensor data to the ESP system. To use an <a class="el" href="class_input_stream.html" title="Base class for input streams that provide live sensor data to the ESP system. To use an InputStream i...">InputStream</a> instance in your application, pass it to <a class="el" href="_e_s_p_8h.html#a1aa74be0fb47c0b5b747e64ffaadfb56">useInputStream()</a> in your <a class="el" href="user__accelerometer__gestures_8cpp.html#a4fc01d736fe50cf5b977f755b675f11d">setup()</a> function. </p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a class="anchor" id="a7980a9f70fe6cd3d202e4d1c59a3c971"></a>
 <div class="memitem">
@@ -327,7 +324,7 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Get the number of dimensions of the data that's provided by the input stream (before it's run through the normalizer, if any). </p>
 
-<p>Implemented in <a class="el" href="class_firmata_stream.html#afdd759e32df8453e589f08f238f46613">FirmataStream</a>, <a class="el" href="class_serial_stream.html#a85a7eee8f1b73aed2d59a0563bac3069">SerialStream</a>, <a class="el" href="class_base_serial_input_stream.html#ae74f8cd0089529b6110cb880b2f2e645">BaseSerialInputStream</a>, <a class="el" href="class_audio_file_stream.html#ae9b1f8cf0c91116b181aad6ec77fa2c0">AudioFileStream</a>, and <a class="el" href="class_audio_stream.html#a374a55bab6de1c331e3899256559a2db">AudioStream</a>.</p>
+<p>Implemented in <a class="el" href="class_osc_input_stream.html#a653ba2d876648404d66353bb5b8b5026">OscInputStream</a>, <a class="el" href="class_tcp_input_stream.html#ab685ed894053e335450ee94c961046ac">TcpInputStream</a>, <a class="el" href="class_firmata_stream.html#afdd759e32df8453e589f08f238f46613">FirmataStream</a>, <a class="el" href="class_serial_stream.html#a85a7eee8f1b73aed2d59a0563bac3069">SerialStream</a>, <a class="el" href="class_base_serial_input_stream.html#ae74f8cd0089529b6110cb880b2f2e645">BaseSerialInputStream</a>, <a class="el" href="class_audio_file_stream.html#ae9b1f8cf0c91116b181aad6ec77fa2c0">AudioFileStream</a>, and <a class="el" href="class_audio_stream.html#a374a55bab6de1c331e3899256559a2db">AudioStream</a>.</p>
 
 </div>
 </div>
@@ -451,7 +448,7 @@ template&lt;typename T1 , typename arg , class T &gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl><dt><b>Examples: </b></dt><dd><a class="el" href="user_accelerometer_gestures_8cpp-example.html#a30">user_accelerometer_gestures.cpp</a>, <a class="el" href="user_accelerometer_poses_8cpp-example.html#a26">user_accelerometer_poses.cpp</a>, <a class="el" href="user_accelerometer_walk_detection_8cpp-example.html#a20">user_accelerometer_walk_detection.cpp</a>, <a class="el" href="user_color_sensor_8cpp-example.html#a12">user_color_sensor.cpp</a>, <a class="el" href="user_speaker_8cpp-example.html#a14">user_speaker.cpp</a>, and <a class="el" href="user_sudden_motion_8cpp-example.html#a13">user_sudden_motion.cpp</a>.</dd>
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="user_accelerometer_gestures_8cpp-example.html#a30">user_accelerometer_gestures.cpp</a>, <a class="el" href="user_accelerometer_gestures_osc_8cpp-example.html#a6">user_accelerometer_gestures_osc.cpp</a>, <a class="el" href="user_accelerometer_poses_8cpp-example.html#a26">user_accelerometer_poses.cpp</a>, <a class="el" href="user_accelerometer_walk_detection_8cpp-example.html#a20">user_accelerometer_walk_detection.cpp</a>, <a class="el" href="user_color_sensor_8cpp-example.html#a12">user_color_sensor.cpp</a>, <a class="el" href="user_speaker_8cpp-example.html#a14">user_speaker.cpp</a>, and <a class="el" href="user_sudden_motion_8cpp-example.html#a13">user_sudden_motion.cpp</a>.</dd>
 </dl>
 </div>
 </div>

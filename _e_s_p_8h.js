@@ -1,6 +1,8 @@
 var _e_s_p_8h =
 [
+    [ "setFalseNegativeWarningThreshold", "_e_s_p_8h.html#af9c16041d928017ad65d3fdc872bdbc0", null ],
     [ "setGUIBufferSize", "_e_s_p_8h.html#a5cda154d459d25e729a3fe2555e0feb3", null ],
+    [ "setTruePositiveWarningThreshold", "_e_s_p_8h.html#a8f202c7b5e78d4a72b954bbca5d63b65", null ],
     [ "useCalibrator", "_e_s_p_8h.html#aa56b17a8db41c36d20d29c360cd4b5bd", null ],
     [ "useInputStream", "_e_s_p_8h.html#a1aa74be0fb47c0b5b747e64ffaadfb56", null ],
     [ "useLeaveOneOutScoring", "_e_s_p_8h.html#ae5880a1863c97b13af34d1518802b051", null ],

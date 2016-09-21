@@ -1,6 +1,7 @@
 var dir_e931c1a3f0014e624d0645a271726ad2 =
 [
     [ "user_accelerometer_gestures.cpp", "user__accelerometer__gestures_8cpp.html", "user__accelerometer__gestures_8cpp" ],
+    [ "user_accelerometer_gestures_osc.cpp", "user__accelerometer__gestures__osc_8cpp.html", "user__accelerometer__gestures__osc_8cpp" ],
     [ "user_accelerometer_poses.cpp", "user__accelerometer__poses_8cpp.html", "user__accelerometer__poses_8cpp" ],
     [ "user_accelerometer_walk_detection.cpp", "user__accelerometer__walk__detection_8cpp.html", "user__accelerometer__walk__detection_8cpp" ],
     [ "user_audio_beat_detection.cpp", "user__audio__beat__detection_8cpp.html", "user__audio__beat__detection_8cpp" ],

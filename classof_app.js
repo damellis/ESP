@@ -20,6 +20,8 @@ var classof_app =
     [ "setup", "classof_app.html#a491a0d6b823e444b3622cbe01fbe4dae", null ],
     [ "update", "classof_app.html#a8680f78f6fa3b5ef74833027b0b80e9b", null ],
     [ "windowResized", "classof_app.html#a0dc7a2bd0a10e38346a7a6e70470664c", null ],
+    [ "setFalseNegativeWarningThreshold", "classof_app.html#af9c16041d928017ad65d3fdc872bdbc0", null ],
+    [ "setTruePositiveWarningThreshold", "classof_app.html#a8f202c7b5e78d4a72b954bbca5d63b65", null ],
     [ "TrainingSampleGuiListener", "classof_app.html#aa9076c44e77ba8045b038405efc2741d", null ],
     [ "useCalibrator", "classof_app.html#aa56b17a8db41c36d20d29c360cd4b5bd", null ],
     [ "useInputStream", "classof_app.html#a1aa74be0fb47c0b5b747e64ffaadfb56", null ],

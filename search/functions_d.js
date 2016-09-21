@@ -10,5 +10,6 @@ var searchData=
   ['onvaluehighlighted',['onValueHighlighted',['../class_interactive_plot.html#af060fee5b4e777d435d62c9d4f2d5f16',1,'InteractivePlot::onValueHighlighted(const onValueHighlightedCallback &amp;cb, void *data=nullptr)'],['../class_interactive_plot.html#a659751c7dc3c5dd6fb1d32b801f96e62',1,'InteractivePlot::onValueHighlighted(T1 *owner, void(T::*listenerMethod)(arg), void *data=nullptr)']]],
   ['operator_3d',['operator=',['../class_g_r_t_1_1_filter.html#a19ce6230f5a89a911647356347318e5e',1,'GRT::Filter::operator=()'],['../class_g_r_t_1_1_m_f_c_c.html#aa1ade8b12d5b9fc73cd04f1ae59c9c62',1,'GRT::MFCC::operator=()'],['../class_g_r_t_1_1_threshold_detection.html#a9389d59fb60df7c4b8e4857d019a3976',1,'GRT::ThresholdDetection::operator=()']]],
   ['operator_3d_3d',['operator==',['../struct_g_r_t_1_1_m_f_c_c_1_1_options.html#abb4a303843b623255efed5994bdf9690',1,'GRT::MFCC::Options']]],
-  ['options',['Options',['../struct_g_r_t_1_1_m_f_c_c_1_1_options.html#a5f2d87d51bf82fa072ffa5c30f897fd0',1,'GRT::MFCC::Options']]]
+  ['options',['Options',['../struct_g_r_t_1_1_m_f_c_c_1_1_options.html#a5f2d87d51bf82fa072ffa5c30f897fd0',1,'GRT::MFCC::Options']]],
+  ['oscinputstream',['OscInputStream',['../class_osc_input_stream.html#a7f71937037b0f3e43ab018ac8ab22d4e',1,'OscInputStream']]]
 ];

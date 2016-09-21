@@ -14,9 +14,12 @@ var class_plotter =
     [ "renameTitleDone", "class_plotter.html#a6487bc2a2cb7c96808b0a969d182b396", null ],
     [ "renameTitleStart", "class_plotter.html#a1365d5dfa4576abbcabccae818d0f6dd", null ],
     [ "reset", "class_plotter.html#afe114c1ace4acbc41c0f86dfa57f76bc", null ],
+    [ "setBackgroundColor", "class_plotter.html#a9ecd46ea26b5a4d79f7474a49258ba63", null ],
     [ "setColorPalette", "class_plotter.html#a969e1dc338ce7e8fe0e0f0dc64740b5e", null ],
     [ "setData", "class_plotter.html#a1d3291a08e0ed55512e39db1d26fd825", null ],
+    [ "setGridColor", "class_plotter.html#a49fe43248e85ac330310ba63dee23bfe", null ],
     [ "setRanges", "class_plotter.html#a5fac765fccef8f5e084e6197e4fe4b3f", null ],
+    [ "setTextColor", "class_plotter.html#adf442ca8a4160c9ceada1908c0459b77", null ],
     [ "setTitle", "class_plotter.html#a243bc6157dcd16034ea1ab3b146d9e2a", null ],
     [ "setup", "class_plotter.html#a0d11789467e92ce6fe4aa6245c38b315", null ]
 ];

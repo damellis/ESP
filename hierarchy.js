@@ -48,7 +48,9 @@ var hierarchy =
           [ "ASCIISerialStream", "class_a_s_c_i_i_serial_stream.html", null ],
           [ "BinaryIntArraySerialStream", "class_binary_int_array_serial_stream.html", null ]
         ] ],
-        [ "SerialStream", "class_serial_stream.html", null ]
+        [ "OscInputStream", "class_osc_input_stream.html", null ],
+        [ "SerialStream", "class_serial_stream.html", null ],
+        [ "TcpInputStream", "class_tcp_input_stream.html", null ]
       ] ],
       [ "OStream", "class_o_stream.html", [
         [ "IOStream", "class_i_o_stream.html", null ],

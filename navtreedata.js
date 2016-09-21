@@ -40,8 +40,9 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "_e_s_p_8h.html",
-"class_palette.html#a7fb1eeb3d8e954dc10c576e40bce2d35",
-"namespacematplotlibcpp_1_1detail.html"
+"class_osc_input_stream.html",
+"matplotlibcpp_8h.html#a19804a8cbd413b15c8d07848d7a5890e",
+"user__sudden__motion_8cpp.html#a2dfd966029091cbf3bc049ece6a957ce"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

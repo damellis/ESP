@@ -117,7 +117,7 @@ $(document).ready(function(){initNavTree('class_audio_file_stream.html','');});
 </div><!--header-->
 <div class="contents">
 
-<p>Input stream for getting the FFT spectrum of an audio file as it plays.  
+<p>Input stream for getting the FFT spectrum of an audio file as it plays. This class plays an audio file and supplies its 1024-sample / 512-bin FFT spectrum as input to the current pipeline. The spectrum is supplied every ~23 milliseconds (i.e. 441000 KHz / 1024 = ~43 Hz).  
  <a href="class_audio_file_stream.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="istream_8h_source.html">istream.h</a>&gt;</code></p>
@@ -127,7 +127,7 @@ Inheritance diagram for AudioFileStream:</div>
  <div class="center">
   <img src="class_audio_file_stream.png" usemap="#AudioFileStream_map" alt=""/>
   <map id="AudioFileStream_map" name="AudioFileStream_map">
-<area href="class_input_stream.html" title="Base class for input streams that provide live sensor data to the ESP system. " alt="InputStream" shape="rect" coords="0,56,105,80"/>
+<area href="class_input_stream.html" title="Base class for input streams that provide live sensor data to the ESP system. To use an InputStream i..." alt="InputStream" shape="rect" coords="0,56,105,80"/>
 <area href="class_stream.html" alt="Stream" shape="rect" coords="0,0,105,24"/>
 </map>
  </div></div>
@@ -194,12 +194,11 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memitem:aa244356b89fcaa06f4cf912e56ac5352 inherit pro_attribs_class_input_stream"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_input_stream.html#af5ddcce77c5c46a5c93b1e42257dffda">vectorNormalizeFunc</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_input_stream.html#aa244356b89fcaa06f4cf912e56ac5352">vectorNormalizer_</a></td></tr>
 <tr class="separator:aa244356b89fcaa06f4cf912e56ac5352 inherit pro_attribs_class_input_stream"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_class_stream"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_class_stream')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="class_stream.html">Stream</a></td></tr>
-<tr class="memitem:ac14e5cd2f0e1165f1e2d1448a1691bef inherit pro_attribs_class_stream"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_stream.html#ac14e5cd2f0e1165f1e2d1448a1691bef">has_started_</a></td></tr>
-<tr class="separator:ac14e5cd2f0e1165f1e2d1448a1691bef inherit pro_attribs_class_stream"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae567037412aa6c3554a04e9a0f040287 inherit pro_attribs_class_stream"><td class="memItemLeft" align="right" valign="top">std::atomic_bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_stream.html#ae567037412aa6c3554a04e9a0f040287">has_started_</a></td></tr>
+<tr class="separator:ae567037412aa6c3554a04e9a0f040287 inherit pro_attribs_class_stream"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Input stream for getting the FFT spectrum of an audio file as it plays. </p>
-<p>This class plays an audio file and supplies its 1024-sample / 512-bin FFT spectrum as input to the current pipeline. The spectrum is supplied every ~23 milliseconds (i.e. 441000 KHz / 1024 = ~43 Hz). </p>
+<div class="textblock"><p>Input stream for getting the FFT spectrum of an audio file as it plays. This class plays an audio file and supplies its 1024-sample / 512-bin FFT spectrum as input to the current pipeline. The spectrum is supplied every ~23 milliseconds (i.e. 441000 KHz / 1024 = ~43 Hz). </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a6cb00dcfd14b4f0ae703cb2f4dd902ba"></a>
 <div class="memitem">

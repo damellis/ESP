@@ -150,8 +150,33 @@ Functions</h2></td></tr>
 <tr class="separator:ae5880a1863c97b13af34d1518802b051"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5cda154d459d25e729a3fe2555e0feb3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_e_s_p_8h.html#a5cda154d459d25e729a3fe2555e0feb3">setGUIBufferSize</a> (uint32_t buffer_size)</td></tr>
 <tr class="separator:a5cda154d459d25e729a3fe2555e0feb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f202c7b5e78d4a72b954bbca5d63b65"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_e_s_p_8h.html#a8f202c7b5e78d4a72b954bbca5d63b65">setTruePositiveWarningThreshold</a> (double <a class="el" href="user__accelerometer__walk__detection_8cpp.html#a89a39fb6802608a79f311f8275a04035">threshold</a>)</td></tr>
+<tr class="memdesc:a8f202c7b5e78d4a72b954bbca5d63b65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Only warn (highlight the confusion score) if the true positive rate is smaller than the threshold. True positive rate is the probability that this sample is correctly classified. When the actual rate is smaller than the threshold, this indicates a sample that is less likely to be considered as this class.  <a href="#a8f202c7b5e78d4a72b954bbca5d63b65">More...</a><br /></td></tr>
+<tr class="separator:a8f202c7b5e78d4a72b954bbca5d63b65"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9c16041d928017ad65d3fdc872bdbc0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_e_s_p_8h.html#af9c16041d928017ad65d3fdc872bdbc0">setFalseNegativeWarningThreshold</a> (double <a class="el" href="user__accelerometer__walk__detection_8cpp.html#a89a39fb6802608a79f311f8275a04035">threshold</a>)</td></tr>
+<tr class="memdesc:af9c16041d928017ad65d3fdc872bdbc0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Only warn (highlight the confusion score) if the false negative rate is larger than the threshold. False negative rate is the probability that this sample is incorrectly classified as other classes. When the actual rate is larger than the threshold, this sample is likely to be mis-classified.  <a href="#af9c16041d928017ad65d3fdc872bdbc0">More...</a><br /></td></tr>
+<tr class="separator:af9c16041d928017ad65d3fdc872bdbc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
+<a class="anchor" id="af9c16041d928017ad65d3fdc872bdbc0"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void setFalseNegativeWarningThreshold </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>threshold</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Only warn (highlight the confusion score) if the false negative rate is larger than the threshold. False negative rate is the probability that this sample is incorrectly classified as other classes. When the actual rate is larger than the threshold, this sample is likely to be mis-classified. </p>
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="user_accelerometer_gestures_8cpp-example.html#a40">user_accelerometer_gestures.cpp</a>, and <a class="el" href="user_touche_8cpp-example.html#a10">user_touche.cpp</a>.</dd>
+</dl>
+</div>
+</div>
 <a class="anchor" id="a5cda154d459d25e729a3fe2555e0feb3"></a>
 <div class="memitem">
 <div class="memproto">
@@ -167,6 +192,25 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>This will be linked against ofApp::setGUIBufferSize </p>
 <dl><dt><b>Examples: </b></dt><dd><a class="el" href="user_speaker_8cpp-example.html#a20">user_speaker.cpp</a>.</dd>
+</dl>
+</div>
+</div>
+<a class="anchor" id="a8f202c7b5e78d4a72b954bbca5d63b65"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void setTruePositiveWarningThreshold </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>threshold</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Only warn (highlight the confusion score) if the true positive rate is smaller than the threshold. True positive rate is the probability that this sample is correctly classified. When the actual rate is smaller than the threshold, this indicates a sample that is less likely to be considered as this class. </p>
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="user_accelerometer_gestures_8cpp-example.html#a39">user_accelerometer_gestures.cpp</a>, and <a class="el" href="user_touche_8cpp-example.html#a9">user_touche.cpp</a>.</dd>
 </dl>
 </div>
 </div>
@@ -210,7 +254,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl><dt><b>Examples: </b></dt><dd><a class="el" href="user_speaker_8cpp-example.html#a16">user_speaker.cpp</a>, and <a class="el" href="user_sudden_motion_8cpp-example.html#a14">user_sudden_motion.cpp</a>.</dd>
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="user_accelerometer_gestures_osc_8cpp-example.html#a7">user_accelerometer_gestures_osc.cpp</a>, <a class="el" href="user_speaker_8cpp-example.html#a16">user_speaker.cpp</a>, and <a class="el" href="user_sudden_motion_8cpp-example.html#a14">user_sudden_motion.cpp</a>.</dd>
 </dl>
 </div>
 </div>
@@ -239,7 +283,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl><dt><b>Examples: </b></dt><dd><a class="el" href="user_speaker_8cpp-example.html#a19">user_speaker.cpp</a>, and <a class="el" href="user_touche_8cpp-example.html#a9">user_touche.cpp</a>.</dd>
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="user_speaker_8cpp-example.html#a19">user_speaker.cpp</a>, and <a class="el" href="user_touche_8cpp-example.html#a11">user_touche.cpp</a>.</dd>
 </dl>
 </div>
 </div>
@@ -265,7 +309,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl><dt><b>Examples: </b></dt><dd><a class="el" href="user_accelerometer_gestures_8cpp-example.html#a32">user_accelerometer_gestures.cpp</a>, <a class="el" href="user_accelerometer_poses_8cpp-example.html#a28">user_accelerometer_poses.cpp</a>, <a class="el" href="user_accelerometer_walk_detection_8cpp-example.html#a22">user_accelerometer_walk_detection.cpp</a>, <a class="el" href="user_color_sensor_8cpp-example.html#a14">user_color_sensor.cpp</a>, <a class="el" href="user_speaker_8cpp-example.html#a17">user_speaker.cpp</a>, and <a class="el" href="user_touche_8cpp-example.html#a7">user_touche.cpp</a>.</dd>
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="user_accelerometer_gestures_8cpp-example.html#a31">user_accelerometer_gestures.cpp</a>, <a class="el" href="user_accelerometer_poses_8cpp-example.html#a28">user_accelerometer_poses.cpp</a>, <a class="el" href="user_accelerometer_walk_detection_8cpp-example.html#a22">user_accelerometer_walk_detection.cpp</a>, <a class="el" href="user_color_sensor_8cpp-example.html#a14">user_color_sensor.cpp</a>, <a class="el" href="user_speaker_8cpp-example.html#a17">user_speaker.cpp</a>, and <a class="el" href="user_touche_8cpp-example.html#a7">user_touche.cpp</a>.</dd>
 </dl>
 </div>
 </div>
@@ -300,7 +344,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Tells the ESP system which machine learning pipeline to use. Call from your <a class="el" href="user__accelerometer__gestures_8cpp.html#a4fc01d736fe50cf5b977f755b675f11d">setup()</a> function. Note that only one pipeline is supported; subsequent calls to <a class="el" href="_e_s_p_8h.html#a4e89d8b7f053b8e3f5855d084164b39a">usePipeline()</a> will replace the previously-specified pipeline.</p>
 <p>The pipeline will be fed with data from the input stream specified using <a class="el" href="_e_s_p_8h.html#aff979b7370726d96aac43c99e3f7af10">useStream()</a> or <a class="el" href="_e_s_p_8h.html#a1aa74be0fb47c0b5b747e64ffaadfb56">useInputStream()</a>, as modified by the calibrators specified using <a class="el" href="_e_s_p_8h.html#aa56b17a8db41c36d20d29c360cd4b5bd" title="Specify the Calibrator to be used by the ESP system. ">useCalibrator()</a>. </p>
-<dl><dt><b>Examples: </b></dt><dd><a class="el" href="user_accelerometer_gestures_8cpp-example.html#a36">user_accelerometer_gestures.cpp</a>, <a class="el" href="user_accelerometer_poses_8cpp-example.html#a32">user_accelerometer_poses.cpp</a>, <a class="el" href="user_accelerometer_walk_detection_8cpp-example.html#a26">user_accelerometer_walk_detection.cpp</a>, <a class="el" href="user_capacitive_sensing_8cpp-example.html#a5">user_capacitive_sensing.cpp</a>, <a class="el" href="user_color_sensor_8cpp-example.html#a15">user_color_sensor.cpp</a>, <a class="el" href="user_speaker_8cpp-example.html#a18">user_speaker.cpp</a>, <a class="el" href="user_sudden_motion_8cpp-example.html#a18">user_sudden_motion.cpp</a>, and <a class="el" href="user_touche_8cpp-example.html#a8">user_touche.cpp</a>.</dd>
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="user_accelerometer_gestures_8cpp-example.html#a36">user_accelerometer_gestures.cpp</a>, <a class="el" href="user_accelerometer_gestures_osc_8cpp-example.html#a8">user_accelerometer_gestures_osc.cpp</a>, <a class="el" href="user_accelerometer_poses_8cpp-example.html#a32">user_accelerometer_poses.cpp</a>, <a class="el" href="user_accelerometer_walk_detection_8cpp-example.html#a26">user_accelerometer_walk_detection.cpp</a>, <a class="el" href="user_capacitive_sensing_8cpp-example.html#a5">user_capacitive_sensing.cpp</a>, <a class="el" href="user_color_sensor_8cpp-example.html#a15">user_color_sensor.cpp</a>, <a class="el" href="user_speaker_8cpp-example.html#a18">user_speaker.cpp</a>, <a class="el" href="user_sudden_motion_8cpp-example.html#a18">user_sudden_motion.cpp</a>, and <a class="el" href="user_touche_8cpp-example.html#a8">user_touche.cpp</a>.</dd>
 </dl>
 </div>
 </div>
@@ -324,7 +368,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl><dt><b>Examples: </b></dt><dd><a class="el" href="user_accelerometer_gestures_8cpp-example.html#a31">user_accelerometer_gestures.cpp</a>, <a class="el" href="user_accelerometer_poses_8cpp-example.html#a27">user_accelerometer_poses.cpp</a>, <a class="el" href="user_accelerometer_walk_detection_8cpp-example.html#a21">user_accelerometer_walk_detection.cpp</a>, <a class="el" href="user_capacitive_sensing_8cpp-example.html#a4">user_capacitive_sensing.cpp</a>, <a class="el" href="user_color_sensor_8cpp-example.html#a13">user_color_sensor.cpp</a>, and <a class="el" href="user_touche_8cpp-example.html#a6">user_touche.cpp</a>.</dd>
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="user_accelerometer_gestures_8cpp-example.html#a32">user_accelerometer_gestures.cpp</a>, <a class="el" href="user_accelerometer_poses_8cpp-example.html#a27">user_accelerometer_poses.cpp</a>, <a class="el" href="user_accelerometer_walk_detection_8cpp-example.html#a21">user_accelerometer_walk_detection.cpp</a>, <a class="el" href="user_capacitive_sensing_8cpp-example.html#a4">user_capacitive_sensing.cpp</a>, <a class="el" href="user_color_sensor_8cpp-example.html#a13">user_color_sensor.cpp</a>, and <a class="el" href="user_touche_8cpp-example.html#a6">user_touche.cpp</a>.</dd>
 </dl>
 </div>
 </div>

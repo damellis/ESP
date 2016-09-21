@@ -126,7 +126,7 @@ Inheritance diagram for BaseSerialInputStream:</div>
  <div class="center">
   <img src="class_base_serial_input_stream.png" usemap="#BaseSerialInputStream_map" alt=""/>
   <map id="BaseSerialInputStream_map" name="BaseSerialInputStream_map">
-<area href="class_input_stream.html" title="Base class for input streams that provide live sensor data to the ESP system. " alt="InputStream" shape="rect" coords="88,56,255,80"/>
+<area href="class_input_stream.html" title="Base class for input streams that provide live sensor data to the ESP system. To use an InputStream i..." alt="InputStream" shape="rect" coords="88,56,255,80"/>
 <area href="class_stream.html" alt="Stream" shape="rect" coords="88,0,255,24"/>
 <area href="class_a_s_c_i_i_serial_stream.html" title="Input stream for reading ASCII data from a (USB) serial port. " alt="ASCIISerialStream" shape="rect" coords="0,168,167,192"/>
 <area href="class_binary_int_array_serial_stream.html" alt="BinaryIntArraySerialStream" shape="rect" coords="177,168,344,192"/>
@@ -201,8 +201,8 @@ Protected Attributes</h2></td></tr>
 <tr class="memitem:aa244356b89fcaa06f4cf912e56ac5352 inherit pro_attribs_class_input_stream"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_input_stream.html#af5ddcce77c5c46a5c93b1e42257dffda">vectorNormalizeFunc</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_input_stream.html#aa244356b89fcaa06f4cf912e56ac5352">vectorNormalizer_</a></td></tr>
 <tr class="separator:aa244356b89fcaa06f4cf912e56ac5352 inherit pro_attribs_class_input_stream"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_class_stream"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_class_stream')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="class_stream.html">Stream</a></td></tr>
-<tr class="memitem:ac14e5cd2f0e1165f1e2d1448a1691bef inherit pro_attribs_class_stream"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_stream.html#ac14e5cd2f0e1165f1e2d1448a1691bef">has_started_</a></td></tr>
-<tr class="separator:ac14e5cd2f0e1165f1e2d1448a1691bef inherit pro_attribs_class_stream"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae567037412aa6c3554a04e9a0f040287 inherit pro_attribs_class_stream"><td class="memItemLeft" align="right" valign="top">std::atomic_bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_stream.html#ae567037412aa6c3554a04e9a0f040287">has_started_</a></td></tr>
+<tr class="separator:ae567037412aa6c3554a04e9a0f040287 inherit pro_attribs_class_stream"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -244,8 +244,7 @@ Additional Inherited Members</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Create an <a class="el" href="class_base_serial_input_stream.html">BaseSerialInputStream</a> instance.</p>
-<dl class="params"><dt>Parameters</dt><dd>
+<p>Create an <a class="el" href="class_base_serial_input_stream.html">BaseSerialInputStream</a> instance. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">port</td><td>the index of the (USB) serial port to use. </td></tr>
     <tr><td class="paramname">baud</td><td>the baud rate at which to communicate with the serial port </td></tr>
@@ -279,9 +278,7 @@ Additional Inherited Members</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Create an <a class="el" href="class_base_serial_input_stream.html">BaseSerialInputStream</a> instance.</p>
-<p>This constructor doesn't require USB port so users will be asked to select them at runtime.</p>
-<dl class="params"><dt>Parameters</dt><dd>
+<p>Create an <a class="el" href="class_base_serial_input_stream.html">BaseSerialInputStream</a> instance. This constructor doesn't require USB port so users will be asked to select them at runtime. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">baud</td><td>the baud rate at which to communicate with the serial port </td></tr>
     <tr><td class="paramname">numDimensions</td><td>the number of dimensions in the data that will come from the serial port (i.e. the number of numbers in each line of data). </td></tr>

@@ -1,0 +1,27 @@
+var NAVTREEINDEX3 =
+{
+"user__sudden__motion_8cpp.html#a2dfd966029091cbf3bc049ece6a957ce":[3,0,0,0,9,3],
+"user__sudden__motion_8cpp.html#a4fc01d736fe50cf5b977f755b675f11d":[3,0,0,0,9,2],
+"user__sudden__motion_8cpp.html#a58737b46106674529b0323b6d04cdb99":[3,0,0,0,9,4],
+"user__sudden__motion_8cpp.html#a6423f81bc2d048133f946ad3c0c22aaf":[3,0,0,0,9,5],
+"user__sudden__motion_8cpp.html#aa0c0eb30458e60c0433f27b43a4c603e":[3,0,0,0,9,7],
+"user__sudden__motion_8cpp.html#ad04a77e9fb154385d1f97731437390e4":[3,0,0,0,9,6],
+"user__sudden__motion_8cpp.html#ad5dcfc15f7ade75a4d1ee00ff9bbf4c4":[3,0,0,0,9,1],
+"user__sudden__motion_8cpp.html#add00571ce8cfd3623ea0967ad8b24b89":[3,0,0,0,9,0],
+"user__sudden__motion_8cpp.html#addc7ddd3b45227e1cd1b2c862a63534a":[3,0,0,0,9,8],
+"user__touche_8cpp.html":[3,0,0,0,10],
+"user__touche_8cpp.html#a03d2e0d3fbf91d8bffad36160f3d0d7a":[3,0,0,0,10,1],
+"user__touche_8cpp.html#a182f133e59316c95ee0615d1dad9b79e":[3,0,0,0,10,3],
+"user__touche_8cpp.html#a4fc01d736fe50cf5b977f755b675f11d":[3,0,0,0,10,0],
+"user__touche_8cpp.html#ad04a77e9fb154385d1f97731437390e4":[3,0,0,0,10,2],
+"user_accelerometer_gestures_8cpp-example.html":[4,1],
+"user_accelerometer_gestures_osc_8cpp-example.html":[4,2],
+"user_accelerometer_poses_8cpp-example.html":[4,3],
+"user_accelerometer_walk_detection_8cpp-example.html":[4,4],
+"user_audio_beat_8cpp-example.html":[4,5],
+"user_capacitive_sensing_8cpp-example.html":[4,6],
+"user_color_sensor_8cpp-example.html":[4,7],
+"user_speaker_8cpp-example.html":[4,8],
+"user_sudden_motion_8cpp-example.html":[4,9],
+"user_touche_8cpp-example.html":[4,10]
+};
