@@ -10,7 +10,6 @@
 
 #include "GRT/GRT.h"
 #include "ofMain.h"
-#include "ofxNetwork.h"
 #include "ofxOsc.h"
 #include "stream.h"
 
@@ -265,7 +264,7 @@ class TcpInputStream : public InputStream {
 
   private:
     void parseInput(const string& buffer);
-    ofxTCPServer server_;
+    ofxTCPServer* server_;
     unique_ptr<std::thread> reading_thread_;
     int port_num_;
     int dim_;
