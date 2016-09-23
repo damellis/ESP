@@ -157,6 +157,8 @@ ofApp::ofApp() : fragment_(TRAINING),
 
 //--------------------------------------------------------------
 void ofApp::setup() {
+    ofSetEscapeQuitsApp(false);
+
 #if __APPLE__ || __linux__
     // Expand ~ to /Users/JohnDoe or /home/johndoe
     char const* home = getenv("HOME");
@@ -1092,9 +1094,6 @@ void ofApp::renameTrainingSample(int num) {
 
     state_ = AppState::kTrainingRenaming;
 
-    // In renaming, do not exit when pressing ESC
-    ofSetEscapeQuitsApp(false);
-
     rename_target_ = label;
     display_title_ = rename_title_;
     plot_samples_[rename_target_ - 1].renameTitleStart();
@@ -1107,7 +1106,6 @@ void ofApp::renameTrainingSampleDone() {
 
     assert(state_ == AppState::kTrainingRenaming);
     state_ = AppState::kTraining;
-    ofSetEscapeQuitsApp(true);
 
     plot_samples_[rename_target_ - 1].setTitle(rename_title_);
     plot_samples_[rename_target_ - 1].renameTitleDone();
@@ -1216,9 +1214,6 @@ void ofApp::relabelTrainingSample(int num) {
     // After this button is pressed, we enter relabel_mode
     state_ = AppState::kTrainingRelabelling;
 
-    // In relabel, do not exit when pressing ESC
-    ofSetEscapeQuitsApp(false);
-
     relabel_source_ = num + 1;
     relabel_source_title_ = plot_samples_[num].getTitle();
     display_title_ = relabel_source_title_;
@@ -1229,9 +1224,6 @@ void ofApp::doRelabelTrainingSample(uint32_t source, uint32_t target) {
     // Handle UI updates first
     ofRemoveListener(ofEvents().update, this, &ofApp::updateEventReceived);
     plot_samples_[source - 1].setTitle(relabel_source_title_);
-
-    // Enable ESC
-    ofSetEscapeQuitsApp(true);
 
     if (source == target) {
         return;
@@ -1317,9 +1309,6 @@ void ofApp::update() {
 
             last_state_ = state_;
             state_ = AppState::kConfiguration;
-
-            // ESC should close the configuration instead of exiting the app
-            ofSetEscapeQuitsApp(false);
         }
     } else {
         if (state_ == AppState::kConfiguration) {
@@ -1331,7 +1320,6 @@ void ofApp::update() {
             } else {
                 state_ = last_state_;
             }
-            ofSetEscapeQuitsApp(true);
         }
     }
 
