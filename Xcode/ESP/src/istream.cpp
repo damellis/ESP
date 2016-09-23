@@ -1,8 +1,23 @@
+#if defined( __WIN32__ ) || defined( _WIN32 )
+#ifndef _WINSOCKAPI_
+#define _WINSOCKAPI_
+#endif
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN
+#endif
+#include <WinSock2.h>
+#include <WS2tcpip.h>
+#endif
+
 #include "istream.h"
 
 #include <GRT/GRT.h>
 #include <chrono>         // std::chrono::milliseconds
 #include <thread>         // std::this_thread::sleep_for
+
+
+#include "ofxNetwork.h"  
+
 
 InputStream::InputStream() : data_ready_callback_(nullptr) {}
 
@@ -326,8 +341,9 @@ void FirmataStream::update() {
 }
 
 bool TcpInputStream::start() {
-    server_.setup(port_num_);
-    server_.setMessageDelimiter("\n");
+	server_ = new ofxTCPServer();
+    server_->setup(port_num_);
+    server_->setMessageDelimiter("\n");
     has_started_ = true;
 
     reading_thread_.reset(new std::thread([this]() {
@@ -335,9 +351,9 @@ bool TcpInputStream::start() {
         ofLog() << "TCP inputs are checked every " << sleep_time << " ms";
         while (has_started_) {
             std::this_thread::sleep_for(std::chrono::milliseconds(sleep_time));
-            for (int i = 0; i < server_.getLastID(); i++) {
-                if (server_.isClientConnected(i)) {
-                    string str = server_.receive(i);
+            for (int i = 0; i < server_->getLastID(); i++) {
+                if (server_->isClientConnected(i)) {
+                    string str = server_->receive(i);
                     if (str != "") {
                         parseInput(str);
                     }
@@ -370,7 +386,7 @@ void TcpInputStream::parseInput(const string& buffer) {
 
 void TcpInputStream::stop() {
     has_started_.store(false);
-    server_.close();
+    server_->close();
     if (reading_thread_ != nullptr && reading_thread_->joinable()) {
         reading_thread_->join();
     }
@@ -379,8 +395,6 @@ void TcpInputStream::stop() {
 int TcpInputStream::getNumInputDimensions() {
     return dim_;
 }
-
-
 
 bool OscInputStream::start() {
     receiver_.setup(port_num_);
