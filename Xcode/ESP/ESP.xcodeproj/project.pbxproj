@@ -35,6 +35,7 @@
 		743B450E16FD9E34D6574B82 /* MFCC.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 025A192361B62C1398A89AC2 /* MFCC.cpp */; };
 		75989DA00FE8F8F84C7B9FB5 /* OscOutboundPacketStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1B4699CC697947F16CFA0294 /* OscOutboundPacketStream.cpp */; };
 		798434EF9EE5EE2E41E2F0DE /* ofxGrtTimeseriesPlot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3016C29D8E0735FBAEF55DFA /* ofxGrtTimeseriesPlot.cpp */; };
+		812465E91D95D8FA007C6203 /* libgrt.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 495B69A01D82649B006C9620 /* libgrt.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		8C170DE225C52C54E3B3C420 /* user.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4E558FCEC58D89764E586787 /* user.cpp */; };
 		9A78D84046A782AAD5A9BE9F /* UdpSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92F6DC616909431703CE88BE /* UdpSocket.cpp */; };
 		9E339FEC563CF250C60DBD84 /* ofxDatGui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8B699EEC2E838CB52082554A /* ofxDatGui.cpp */; };
@@ -81,6 +82,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				812465E91D95D8FA007C6203 /* libgrt.dylib in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
