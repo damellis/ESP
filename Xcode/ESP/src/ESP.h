@@ -27,6 +27,10 @@
  useTrainingDataAdvice().
  \li Whether or not to use leave-one-out scoring of training samples,
  specified using useLeaveOneOutScoring().
+ \li Optional thresholds to use for deciding whether or not to warn the user
+ about the quality of their training samples (based on their confusion with
+ other classes), specified using setTruePositiveWarningThreshold() and
+ setFalseNegativeWarningThreshold().
 
  When compiled against the ESP framework and run, these examples generate a
  graphical interface that allows the user to visualize live sensor data,
