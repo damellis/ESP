@@ -46,8 +46,7 @@ CalibrateResult calibrate(const MatrixDouble& data) {
         stddev[1] / r > 0.05 ||
         stddev[2] / r > 0.05)
         result = CalibrateResult(CalibrateResult::WARNING,
-            "Accelerometer seemed to be moving; consider recollecting the "
-            "calibration sample.");
+            "Accelerometer data is noisy. Check circuit.");
 
     // If we have both samples, do the actual calibration.
 
@@ -111,9 +110,8 @@ void updateTimeout(int new_timeout) {
 void setup()
 {
     stream.setLabelsForAllDimensions({"x", "y", "z"});
-    //useInputStream(stream);
-    useOutputStream(oStream);
     useStream(stream);
+    useOutputStream(oStream);
 
     calibrator.setCalibrateFunction(processAccelerometerData);
     calibrator.addCalibrateProcess("Upright",
