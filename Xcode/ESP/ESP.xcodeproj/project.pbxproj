@@ -35,24 +35,17 @@
 		743B450E16FD9E34D6574B82 /* MFCC.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 025A192361B62C1398A89AC2 /* MFCC.cpp */; };
 		75989DA00FE8F8F84C7B9FB5 /* OscOutboundPacketStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1B4699CC697947F16CFA0294 /* OscOutboundPacketStream.cpp */; };
 		798434EF9EE5EE2E41E2F0DE /* ofxGrtTimeseriesPlot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3016C29D8E0735FBAEF55DFA /* ofxGrtTimeseriesPlot.cpp */; };
-<<<<<<< HEAD
-		811B7BF71CF51D830078CD0A /* Filter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 811B7BF51CF51D830078CD0A /* Filter.cpp */; };
 		812173921D75051C00ED6CCB /* libgdp.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 812173911D75051C00ED6CCB /* libgdp.dylib */; };
 		812173941D75053300ED6CCB /* libep.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 812173931D75053300ED6CCB /* libep.dylib */; };
-		812173971D750FC800ED6CCB /* libep.so.3.0 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 812173951D750FC800ED6CCB /* libep.so.3.0 */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		812173981D750FC800ED6CCB /* libgdp.so.0.7 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 812173961D750FC800ED6CCB /* libgdp.so.0.7 */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		812188581D525F720088AAB1 /* ofYesNoDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 812188571D525F720088AAB1 /* ofYesNoDialog.cpp */; };
-		8144865B1D5D2AF5009A3FAA /* ofConsoleFileLoggerChannel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8144865A1D5D2AF5009A3FAA /* ofConsoleFileLoggerChannel.cpp */; };
-		814E133B1D1A072800774F7B /* training.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 814E133A1D1A072800774F7B /* training.cpp */; };
-		8164C6761CD927F900DFEF70 /* iostream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8164C6751CD927F900DFEF70 /* iostream.cpp */; };
-		817BE7751CCB063E00FE581B /* libgrt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 817BE7741CCB063E00FE581B /* libgrt.dylib */; };
-		817BE7761CCB067800FE581B /* libgrt.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 817BE7741CCB063E00FE581B /* libgrt.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		8198B90A1CF7A8C60092C7CA /* ThresholdDetection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8198B9081CF7A8C60092C7CA /* ThresholdDetection.cpp */; };
-=======
 		812465E91D95D8FA007C6203 /* libgrt.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 495B69A01D82649B006C9620 /* libgrt.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		81FF4CE91D99BC8700F3C7A9 /* libgdp.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 812173911D75051C00ED6CCB /* libgdp.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		81FF4CEA1D99BC8700F3C7A9 /* libep.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 812173931D75053300ED6CCB /* libep.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		81FF4CED1D99BCA600F3C7A9 /* libep.3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 81FF4CEB1D99BCA600F3C7A9 /* libep.3.0.dylib */; };
+		81FF4CEE1D99BCA600F3C7A9 /* libgdp.0.7.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 81FF4CEC1D99BCA600F3C7A9 /* libgdp.0.7.dylib */; };
+		81FF4CEF1D99BCB200F3C7A9 /* libep.3.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 81FF4CEB1D99BCA600F3C7A9 /* libep.3.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		81FF4CF01D99BCB200F3C7A9 /* libgdp.0.7.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 81FF4CEC1D99BCA600F3C7A9 /* libgdp.0.7.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		8C170DE225C52C54E3B3C420 /* user.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4E558FCEC58D89764E586787 /* user.cpp */; };
 		9A78D84046A782AAD5A9BE9F /* UdpSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92F6DC616909431703CE88BE /* UdpSocket.cpp */; };
->>>>>>> master
 		9E339FEC563CF250C60DBD84 /* ofxDatGui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8B699EEC2E838CB52082554A /* ofxDatGui.cpp */; };
 		A92BE85164A932C3A5F50A5D /* ofxTCPServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CEC6C6144D8BAECBF2EBF24 /* ofxTCPServer.cpp */; };
 		A9F16933D69101A8B2D7DC24 /* ofxBaseGui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B29062C5077E0EBE48BC1E5E /* ofxBaseGui.cpp */; };
@@ -97,13 +90,11 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-<<<<<<< HEAD
-				812173971D750FC800ED6CCB /* libep.so.3.0 in CopyFiles */,
-				812173981D750FC800ED6CCB /* libgdp.so.0.7 in CopyFiles */,
-				817BE7761CCB067800FE581B /* libgrt.dylib in CopyFiles */,
-=======
+				81FF4CEF1D99BCB200F3C7A9 /* libep.3.0.dylib in CopyFiles */,
+				81FF4CF01D99BCB200F3C7A9 /* libgdp.0.7.dylib in CopyFiles */,
+				81FF4CE91D99BC8700F3C7A9 /* libgdp.dylib in CopyFiles */,
+				81FF4CEA1D99BC8700F3C7A9 /* libep.dylib in CopyFiles */,
 				812465E91D95D8FA007C6203 /* libgrt.dylib in CopyFiles */,
->>>>>>> master
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -180,33 +171,16 @@
 		7ACE6957882556257F46BB94 /* ofxGrtMatrixPlot.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxGrtMatrixPlot.cpp; path = "../../third-party/openFrameworks/addons/ofxGrt/src/ofxGrtMatrixPlot.cpp"; sourceTree = SOURCE_ROOT; };
 		7DCB1F9D3560D19E614EEA45 /* ofxDatGuiButton.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxDatGuiButton.h; path = "../../third-party/openFrameworks/addons/ofxDatGui/src/components/ofxDatGuiButton.h"; sourceTree = SOURCE_ROOT; };
 		806F715C55B9B786D65F7B33 /* ofxDatGuiSlider.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxDatGuiSlider.h; path = "../../third-party/openFrameworks/addons/ofxDatGui/src/components/ofxDatGuiSlider.h"; sourceTree = SOURCE_ROOT; };
-<<<<<<< HEAD
-		811B7BF51CF51D830078CD0A /* Filter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Filter.cpp; sourceTree = "<group>"; };
-		811B7BF61CF51D830078CD0A /* Filter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Filter.h; sourceTree = "<group>"; };
-		812173911D75051C00ED6CCB /* libgdp.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libgdp.dylib; path = "../../third-party/gdp/libs/libgdp.dylib"; sourceTree = "<group>"; };
-		812173931D75053300ED6CCB /* libep.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libep.dylib; path = "../../third-party/gdp/libs/libep.dylib"; sourceTree = "<group>"; };
-		812173951D750FC800ED6CCB /* libep.so.3.0 */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libep.so.3.0; path = "../../third-party/gdp/libs/libep.so.3.0"; sourceTree = "<group>"; };
-		812173961D750FC800ED6CCB /* libgdp.so.0.7 */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libgdp.so.0.7; path = "../../third-party/gdp/libs/libgdp.so.0.7"; sourceTree = "<group>"; };
-		812188571D525F720088AAB1 /* ofYesNoDialog.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = ofYesNoDialog.cpp; sourceTree = "<group>"; };
-		812188591D525FA90088AAB1 /* ofYesNoDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofYesNoDialog.h; sourceTree = "<group>"; };
-		814486591D5D2A56009A3FAA /* ofConsoleFileLoggerChannel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofConsoleFileLoggerChannel.h; sourceTree = "<group>"; };
-		8144865A1D5D2AF5009A3FAA /* ofConsoleFileLoggerChannel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofConsoleFileLoggerChannel.cpp; sourceTree = "<group>"; };
-		814E13391D1A037100774F7B /* training.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = training.h; sourceTree = "<group>"; };
-		814E133A1D1A072800774F7B /* training.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = training.cpp; sourceTree = "<group>"; };
-		8164C6731CD924EC00DFEF70 /* stream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stream.h; sourceTree = "<group>"; };
-		8164C6741CD9274100DFEF70 /* iostream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iostream.h; sourceTree = "<group>"; };
-		8164C6751CD927F900DFEF70 /* iostream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = iostream.cpp; sourceTree = "<group>"; };
-		817BE7741CCB063E00FE581B /* libgrt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libgrt.dylib; sourceTree = "<group>"; };
-		8198B9081CF7A8C60092C7CA /* ThresholdDetection.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ThresholdDetection.cpp; sourceTree = "<group>"; };
-		8198B9091CF7A8C60092C7CA /* ThresholdDetection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThresholdDetection.h; sourceTree = "<group>"; };
-=======
 		80C6A5328E1B1427512111BE /* Filter.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = Filter.cpp; path = src/Filter.cpp; sourceTree = SOURCE_ROOT; };
 		81138735982711ADFE03B269 /* ofxOscReceiver.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxOscReceiver.h; path = "../../third-party/openFrameworks/addons/ofxOsc/src/ofxOscReceiver.h"; sourceTree = SOURCE_ROOT; };
+		812173911D75051C00ED6CCB /* libgdp.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libgdp.dylib; path = "../../third-party/gdp/libs/libgdp.dylib"; sourceTree = "<group>"; };
+		812173931D75053300ED6CCB /* libep.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libep.dylib; path = "../../third-party/gdp/libs/libep.dylib"; sourceTree = "<group>"; };
 		81C472C0D9D4AB03D8ABB14F /* ThresholdDetection.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ThresholdDetection.cpp; path = src/ThresholdDetection.cpp; sourceTree = SOURCE_ROOT; };
+		81FF4CEB1D99BCA600F3C7A9 /* libep.3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libep.3.0.dylib; path = "../../third-party/gdp/libs/libep.3.0.dylib"; sourceTree = "<group>"; };
+		81FF4CEC1D99BCA600F3C7A9 /* libgdp.0.7.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libgdp.0.7.dylib; path = "../../third-party/gdp/libs/libgdp.0.7.dylib"; sourceTree = "<group>"; };
 		851F2A124F97830C990DE306 /* ESP.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ESP.h; path = src/ESP.h; sourceTree = SOURCE_ROOT; };
 		85D7DD51DF76FF80A0A56692 /* ofxTCPServer.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxTCPServer.h; path = "../../third-party/openFrameworks/addons/ofxNetwork/src/ofxTCPServer.h"; sourceTree = SOURCE_ROOT; };
 		865FC8E136AE2D537FCE53FA /* plotter.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = plotter.cpp; path = src/plotter.cpp; sourceTree = SOURCE_ROOT; };
->>>>>>> master
 		879E8BE84F6F719ED42446C3 /* ofxDatGuiTextInput.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxDatGuiTextInput.h; path = "../../third-party/openFrameworks/addons/ofxDatGui/src/components/ofxDatGuiTextInput.h"; sourceTree = SOURCE_ROOT; };
 		8A654DCC198B35C5AF3ECACD /* OscReceivedElements.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = OscReceivedElements.h; path = "../../third-party/openFrameworks/addons/ofxOsc/libs/oscpack/src/osc/OscReceivedElements.h"; sourceTree = SOURCE_ROOT; };
 		8B699EEC2E838CB52082554A /* ofxDatGui.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxDatGui.cpp; path = "../../third-party/openFrameworks/addons/ofxDatGui/src/ofxDatGui.cpp"; sourceTree = SOURCE_ROOT; };
@@ -270,14 +244,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-<<<<<<< HEAD
 				812173941D75053300ED6CCB /* libep.dylib in Frameworks */,
+				81FF4CED1D99BCA600F3C7A9 /* libep.3.0.dylib in Frameworks */,
 				812173921D75051C00ED6CCB /* libgdp.dylib in Frameworks */,
-				817BE7751CCB063E00FE581B /* libgrt.dylib in Frameworks */,
-=======
 				495B69A11D82649B006C9620 /* libgrt.dylib in Frameworks */,
->>>>>>> master
 				E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */,
+				81FF4CEE1D99BCA600F3C7A9 /* libgdp.0.7.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -572,15 +544,11 @@
 		E4B69B4A0A3A1720003C02F2 = {
 			isa = PBXGroup;
 			children = (
-<<<<<<< HEAD
-				812173951D750FC800ED6CCB /* libep.so.3.0 */,
-				812173961D750FC800ED6CCB /* libgdp.so.0.7 */,
-				817BE7741CCB063E00FE581B /* libgrt.dylib */,
+				81FF4CEB1D99BCA600F3C7A9 /* libep.3.0.dylib */,
+				81FF4CEC1D99BCA600F3C7A9 /* libgdp.0.7.dylib */,
 				812173911D75051C00ED6CCB /* libgdp.dylib */,
 				812173931D75053300ED6CCB /* libep.dylib */,
-=======
 				495B69A01D82649B006C9620 /* libgrt.dylib */,
->>>>>>> master
 				E4B6FCAD0C3E899E008CF71C /* openFrameworks-Info.plist */,
 				E4EB6923138AFD0F00A09F29 /* Project.xcconfig */,
 				E4B69E1C0A3A1BDC003C02F2 /* src */,

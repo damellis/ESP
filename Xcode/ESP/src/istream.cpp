@@ -15,7 +15,6 @@
 #include <chrono>         // std::chrono::milliseconds
 #include <thread>         // std::this_thread::sleep_for
 
-<<<<<<< HEAD
 extern "C" {
 #include <ep/ep.h>
 #include <ep/ep_dbg.h>
@@ -24,11 +23,8 @@ extern "C" {
 #include <gdp/gdp.h>
 #include <event2/buffer.h>
 }
-=======
 
 #include "ofxNetwork.h"  
-
->>>>>>> master
 
 InputStream::InputStream() : data_ready_callback_(nullptr) {}
 
@@ -351,8 +347,7 @@ void FirmataStream::update() {
     }
 }
 
-<<<<<<< HEAD
-GDPStream::GDPStream(char *log_name) {
+GDPStream::GDPStream(const char *log_name) {
         gdp_name_t gclname;
         gdp_iomode_t open_mode = GDP_MODE_RO;
         gdp_gcl_t *gcl;
@@ -392,7 +387,7 @@ GDPStream::GDPStream(char *log_name) {
 		return;
 	}
 }
-=======
+
 bool TcpInputStream::start() {
 	server_ = new ofxTCPServer();
     server_->setup(port_num_);
@@ -492,4 +487,3 @@ void OscInputStream::stop() {
 int OscInputStream::getNumInputDimensions() {
     return dim_;
 }
->>>>>>> master

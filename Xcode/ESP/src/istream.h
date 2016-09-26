@@ -246,13 +246,12 @@ class FirmataStream : public InputStream {
     void update();
 };
 
-<<<<<<< HEAD
 class GDPStream : public InputStream {
   public:
-    GDPStream(char *);
+    GDPStream(const char *);
     virtual int getNumInputDimensions() { return 1; }
 };
-=======
+
 // Forward declaration.
 class ofxTCPServer;
 
@@ -299,4 +298,3 @@ class OscInputStream : public InputStream {
     string addr_;
     int dim_;
 };
->>>>>>> master
