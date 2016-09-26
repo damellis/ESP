@@ -27,6 +27,10 @@
  useTrainingDataAdvice().
  \li Whether or not to use leave-one-out scoring of training samples,
  specified using useLeaveOneOutScoring().
+ \li Optional thresholds to use for deciding whether or not to warn the user
+ about the quality of their training samples (based on their confusion with
+ other classes), specified using setTruePositiveWarningThreshold() and
+ setFalseNegativeWarningThreshold().
 
  When compiled against the ESP framework and run, these examples generate a
  graphical interface that allows the user to visualize live sensor data,
@@ -200,5 +204,22 @@ void useLeaveOneOutScoring(bool enable = true);
  This will be linked against ofApp::setGUIBufferSize
  */
 void setGUIBufferSize(uint32_t buffer_size);
+
+/**
+ @brief Only warn (highlight the confusion score) if the true positive rate is
+ smaller than the threshold. True positive rate is the probability that this
+ sample is correctly classified. When the actual rate is smaller than the
+ threshold, this indicates a sample that is less likely to be considered as this
+ class.
+ */
+void setTruePositiveWarningThreshold(double threshold);
+
+/**
+ @brief Only warn (highlight the confusion score) if the false negative rate is
+ larger than the threshold. False negative rate is the probability that this
+ sample is incorrectly classified as other classes. When the actual rate is
+ larger than the threshold, this sample is likely to be mis-classified.
+ */
+void setFalseNegativeWarningThreshold(double threshold);
 
 using namespace GRT;

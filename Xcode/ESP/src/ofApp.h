@@ -20,6 +20,7 @@
 #define ESP_EVENT(s)                                                \
     ofLogVerbose() << "[" << ofGetTimestampString() << "] " << (s)
 
+
 class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
   public:
     ofApp();
@@ -106,6 +107,8 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     }
 
     void drawInputs(uint32_t, uint32_t, uint32_t, uint32_t);
+    void drawLiveFeatures(uint32_t, uint32_t, uint32_t, uint32_t);
+
     void drawCalibration();
     void drawLivePipeline();
     void drawTrainingInfo();
@@ -133,6 +136,8 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     friend void useTrainingSampleChecker(TrainingSampleChecker checker);
     friend void useTrainingDataAdvice(string advice);
     friend void useLeaveOneOutScoring(bool enable);
+    friend void setTruePositiveWarningThreshold(double threshold);
+    friend void setFalseNegativeWarningThreshold(double threshold);
 
     // This variable is a guard so that code can check its status and made to be
     // executed only once. Because we are loading the user code ::setup()
@@ -153,9 +158,17 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     // Pipeline, tuneables and all data
     //========================================================================
     GRT::GestureRecognitionPipeline *pipeline_;
-    // The number of pipeline stages, this will control the UI layout. The
-    // number is obtained during setup() and used in draw().
+
+    // The number of pipeline stages will control the UI layout. The number is
+    // obtained during setup() and used in draw().
     uint32_t num_pipeline_stages_;
+
+    // These two variables just track the number of pre-processing modules and
+    // feature extraction modules so that we can control what data to read for
+    // getLastStageProcessedData.
+    uint32_t num_preprocessing_modules_;
+    uint32_t num_feature_modules_;
+    vector<double> getLastStageProcessedData() const;
 
     vector<Tuneable*> tuneable_parameters_;
     Calibrator* calibrator_;
@@ -202,6 +215,9 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
                          // set and data will be added to sample_data_.
     bool enable_history_recording_ = false;
     bool is_in_feature_view_ = false;
+    
+    void pauseResume();
+    void pauseResume(ofxDatGuiButtonEvent e) { pauseResume(); }
 
     //========================================================================
     // rename
@@ -227,6 +243,10 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     }
 
     ofxDatGui gui_;
+    ofxDatGuiFolder *save_load_folder_;
+    ofxDatGuiButton *pause_button_;
+    ofxDatGuiButton *train_model_button_;
+    ofxDatGuiButton *toggle_features_button_;
 
     //========================================================================
     // visual: input stream
@@ -238,6 +258,7 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     // visual: live plots are across all tabs
     //========================================================================
     InteractiveTimeSeriesPlot plot_inputs_;
+    vector<ofxGrtTimeseriesPlot> plot_live_features_;  // live features
     ofxGrtTimeseriesPlot plot_inputs_snapshot_;  // a spectrum of the most
                                                  // recent input vector, shown
                                                  // only if the number of input
@@ -288,6 +309,7 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
 
     bool is_final_features_too_many_ = false;
     vector<vector<Plotter>> plot_sample_features_;
+    void toggleFeatureView(ofxDatGuiButtonEvent e) { toggleFeatureView(); }
     void toggleFeatureView();
     void populateSampleFeatures(uint32_t sample_index);
     vector<pair<double, double>> sample_feature_ranges_;
@@ -305,6 +327,138 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     void deleteAllTrainingSamples(int num);
     void doRelabelTrainingSample(uint32_t from, uint32_t to);
     friend class TrainingSampleGuiListener;
+
+    //========================================================================
+    // theme
+    //========================================================================
+    void onBackgroundColorPickerEvent(ofxDatGuiColorPickerEvent e) {
+        background_color_ = e.color;
+
+        // Also change every plot background
+        plot_inputs_.setBackgroundColor(background_color_);
+        for (auto& p : plot_live_features_) {
+            p.setBackgroundColor(background_color_);
+        }
+        plot_inputs_snapshot_.setBackgroundColor(background_color_);
+        plot_raw_.setBackgroundColor(background_color_);
+        for (auto& p : plot_calibrators_) {
+            p.setBackgroundColor(background_color_);
+        }
+        for (auto& p : plot_pre_processed_) {
+            p.setBackgroundColor(background_color_);
+        }
+        for (auto& ps : plot_features_) {
+            for (auto& p : ps) {
+                p.setBackgroundColor(background_color_);
+            }
+        }
+        plot_testdata_window_.setBackgroundColor(background_color_);
+        plot_testdata_overview_.setBackgroundColor(background_color_);
+
+        for (auto& p : plot_samples_) {
+            p.setBackgroundColor(background_color_);
+        }
+        for (auto& p : plot_samples_snapshots_) {
+            p.setBackgroundColor(background_color_);
+        }
+        for (auto& ps : plot_sample_features_) {
+            for (auto& p : ps) {
+                p.setBackgroundColor(background_color_);
+            }
+        }
+        plot_class_likelihoods_.setBackgroundColor(background_color_);
+        for (auto& p : plot_class_distances_) {
+            p.setBackgroundColor(background_color_);
+        }
+    }
+    ofColor background_color_;
+
+    void onTextColorPickerEvent(ofxDatGuiColorPickerEvent e) {
+        text_color_ = e.color;
+
+        // Also change every plot text
+        plot_inputs_.setTextColor(text_color_);
+        for (auto& p : plot_live_features_) {
+            p.setTextColor(text_color_);
+        }
+        plot_inputs_snapshot_.setTextColor(text_color_);
+        plot_raw_.setTextColor(text_color_);
+        for (auto& p : plot_calibrators_) {
+            p.setTextColor(text_color_);
+        }
+        for (auto& p : plot_pre_processed_) {
+            p.setTextColor(text_color_);
+        }
+        for (auto& ps : plot_features_) {
+            for (auto& p : ps) {
+                p.setTextColor(text_color_);
+            }
+        }
+        plot_testdata_window_.setTextColor(text_color_);
+        plot_testdata_overview_.setTextColor(text_color_);
+
+        for (auto& p : plot_samples_) {
+            p.setTextColor(text_color_);
+        }
+        for (auto& p : plot_samples_snapshots_) {
+            p.setTextColor(text_color_);
+        }
+        for (auto& ps : plot_sample_features_) {
+            for (auto& p : ps) {
+                p.setTextColor(text_color_);
+            }
+        }
+        plot_class_likelihoods_.setTextColor(text_color_);
+        for (auto& p : plot_class_distances_) {
+            p.setTextColor(text_color_);
+        }
+    }
+    ofColor text_color_;
+
+    void onGridColorPickerEvent(ofxDatGuiColorPickerEvent e) {
+        ofColor grid_color(e.color.r, e.color.g, e.color.b, 0x20);
+
+        // Also change every plot text
+        plot_inputs_.setGridColor(grid_color);
+        for (auto& p : plot_live_features_) {
+            p.setGridColor(grid_color);
+        }
+        plot_inputs_snapshot_.setGridColor(grid_color);
+        plot_raw_.setGridColor(grid_color);
+        for (auto& p : plot_calibrators_) {
+            p.setGridColor(grid_color);
+        }
+        for (auto& p : plot_pre_processed_) {
+            p.setGridColor(grid_color);
+        }
+        for (auto& ps : plot_features_) {
+            for (auto& p : ps) {
+                p.setGridColor(grid_color);
+            }
+        }
+        plot_testdata_window_.setGridColor(grid_color);
+        plot_testdata_overview_.setGridColor(grid_color);
+
+        for (auto& p : plot_samples_) {
+            p.setGridColor(grid_color);
+        }
+        for (auto& p : plot_samples_snapshots_) {
+            p.setGridColor(grid_color);
+        }
+        for (auto& ps : plot_sample_features_) {
+            for (auto& p : ps) {
+                p.setGridColor(grid_color);
+            }
+        }
+        plot_class_likelihoods_.setGridColor(grid_color);
+        for (auto& p : plot_class_distances_) {
+            p.setGridColor(grid_color);
+        }
+    }
+
+    void onLineWidthSliderEvent(ofxDatGuiSliderEvent e) {
+        ofSetLineWidth(e.value);
+    }
 
     //========================================================================
     // visual: prediction
@@ -331,6 +485,8 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     bool should_save_tuneables_;
 
     // Pipeline (including trained model)
+    void savePipeline(ofxDatGuiButtonEvent e) { save_load_folder_->collapse(); savePipelineWithPrompt(); }
+    void loadPipeline(ofxDatGuiButtonEvent e) { save_load_folder_->collapse(); loadPipelineWithPrompt(); }
     bool savePipelineWithPrompt();
     bool savePipeline(const string& filename);
     bool loadPipelineWithPrompt();
@@ -338,6 +494,8 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     bool should_save_pipeline_;
 
     // Calibration data
+    void saveCalibrationData(ofxDatGuiButtonEvent e) { save_load_folder_->collapse(); saveCalibrationDataWithPrompt(); }
+    void loadCalibrationData(ofxDatGuiButtonEvent e) { save_load_folder_->collapse(); loadCalibrationDataWithPrompt(); }
     bool saveCalibrationDataWithPrompt();
     bool saveCalibrationData(const string& filename);
     bool loadCalibrationDataWithPrompt();
@@ -345,6 +503,8 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     // Prompts to ask the user to save the calibration data if changed.
     bool should_save_calibration_data_;
 
+    void saveTrainingData(ofxDatGuiButtonEvent e) { save_load_folder_->collapse(); saveTrainingDataWithPrompt(); }
+    void loadTrainingData(ofxDatGuiButtonEvent e) { save_load_folder_->collapse(); loadTrainingDataWithPrompt(); }
     bool saveTrainingDataWithPrompt();
     bool saveTrainingData(const string& filename);
     bool loadTrainingDataWithPrompt();
@@ -352,6 +512,8 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     // Prompts to ask the user to save the training data if changed.
     bool should_save_training_data_;
 
+    void saveTestData(ofxDatGuiButtonEvent e) { save_load_folder_->collapse(); saveTestDataWithPrompt(); }
+    void loadTestData(ofxDatGuiButtonEvent e) { save_load_folder_->collapse(); loadTestDataWithPrompt(); }
     bool saveTestDataWithPrompt();
     bool saveTestData(const string& filename);
     bool loadTestDataWithPrompt();
@@ -371,6 +533,9 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     string save_path_ = "";
 
     // Load all and save all
+    void loadAll(ofxDatGuiButtonEvent e) { save_load_folder_->collapse(); loadAll(); }
+    void saveAllEvent(ofxDatGuiButtonEvent e) { save_load_folder_->collapse(); saveAll(); }
+    void saveAsEvent(ofxDatGuiButtonEvent e) { save_load_folder_->collapse(); saveAll(true); }
     void loadAll();
     void saveAll(bool saveAs = false);
 
@@ -380,6 +545,8 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     std::thread training_thread_;
     bool is_training_scheduled_;
     std::uint64_t schedule_time_;
+
+    void trainModel(ofxDatGuiButtonEvent e) { beginTrainModel(); }
 
     void beginTrainModel();
     void trainModel();
@@ -391,6 +558,9 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     void scoreTrainingData(bool leaveOneOut);
     void scoreImpactOfTrainingSample(int label, const MatrixDouble &sample);
     bool use_leave_one_out_scoring_ = true;
+
+    double true_positive_threshold_;
+    double false_negative_threshold_;
 
     //========================================================================
     // Utils

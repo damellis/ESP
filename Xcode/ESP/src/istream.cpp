@@ -1,9 +1,21 @@
+#if defined( __WIN32__ ) || defined( _WIN32 )
+#ifndef _WINSOCKAPI_
+#define _WINSOCKAPI_
+#endif
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN
+#endif
+#include <WinSock2.h>
+#include <WS2tcpip.h>
+#endif
+
 #include "istream.h"
 
 #include <GRT/GRT.h>
 #include <chrono>         // std::chrono::milliseconds
 #include <thread>         // std::this_thread::sleep_for
 
+<<<<<<< HEAD
 extern "C" {
 #include <ep/ep.h>
 #include <ep/ep_dbg.h>
@@ -12,6 +24,11 @@ extern "C" {
 #include <gdp/gdp.h>
 #include <event2/buffer.h>
 }
+=======
+
+#include "ofxNetwork.h"  
+
+>>>>>>> master
 
 InputStream::InputStream() : data_ready_callback_(nullptr) {}
 
@@ -334,6 +351,7 @@ void FirmataStream::update() {
     }
 }
 
+<<<<<<< HEAD
 GDPStream::GDPStream(char *log_name) {
         gdp_name_t gclname;
         gdp_iomode_t open_mode = GDP_MODE_RO;
@@ -374,3 +392,104 @@ GDPStream::GDPStream(char *log_name) {
 		return;
 	}
 }
+=======
+bool TcpInputStream::start() {
+	server_ = new ofxTCPServer();
+    server_->setup(port_num_);
+    server_->setMessageDelimiter("\n");
+    has_started_ = true;
+
+    reading_thread_.reset(new std::thread([this]() {
+        int sleep_time = 10;
+        ofLog() << "TCP inputs are checked every " << sleep_time << " ms";
+        while (has_started_) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(sleep_time));
+            for (int i = 0; i < server_->getLastID(); i++) {
+                if (server_->isClientConnected(i)) {
+                    string str = server_->receive(i);
+                    if (str != "") {
+                        parseInput(str);
+                    }
+                }
+            }
+        }
+    }));
+    return true;
+}
+
+void TcpInputStream::parseInput(const string& buffer) {
+    if (data_ready_callback_ != nullptr) {
+        istringstream iss(buffer);
+        vector<double> data;
+        double d;
+
+        while (iss >> d)
+            data.push_back(d);
+
+        if (data.size() > 0) {
+            data = normalize(data);
+
+            GRT::MatrixDouble matrix;
+            matrix.push_back(data);
+
+            data_ready_callback_(matrix);
+        }
+    }
+}
+
+void TcpInputStream::stop() {
+    has_started_.store(false);
+    server_->close();
+    if (reading_thread_ != nullptr && reading_thread_->joinable()) {
+        reading_thread_->join();
+    }
+}
+
+int TcpInputStream::getNumInputDimensions() {
+    return dim_;
+}
+
+bool OscInputStream::start() {
+    receiver_.setup(port_num_);
+    has_started_ = true;
+
+    reading_thread_.reset(new std::thread([this]() {
+        int sleep_time = 10;
+        ofLog() << "OSC inputs are checked every " << sleep_time << " ms";
+        while (has_started_) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(sleep_time));
+
+            ofxOscMessage m;
+            while (receiver_.hasWaitingMessages()) {
+                receiver_.getNextMessage(m);
+                handleMessage(m);
+            }
+        }
+    }));
+    return true;
+}
+
+void OscInputStream::handleMessage(ofxOscMessage& m) {
+    // check for mouse moved message
+    if (data_ready_callback_ != nullptr && m.getAddress() == addr_) {
+        vector<double> data;
+        GRT::MatrixDouble matrix;
+        for (int i = 0; i < dim_; i++) {
+            data.push_back(m.getArgAsFloat(i));
+        }
+        matrix.push_back(data);
+        data_ready_callback_(matrix);
+    }
+}
+
+void OscInputStream::stop() {
+    has_started_.store(false);
+    if (reading_thread_ != nullptr && reading_thread_->joinable()) {
+        reading_thread_->join();
+    }
+}
+
+int OscInputStream::getNumInputDimensions() {
+    return dim_;
+}
+>>>>>>> master

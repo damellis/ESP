@@ -21,7 +21,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "ofxNetwork.h"
+#include "ofMain.h"
 #include "stream.h"
 
 const uint64_t kGracePeriod = 500; // 0.5 second

@@ -5,14 +5,12 @@ matrix:
     - os: linux
       dist: trusty
       env:
-        - BUILD_TOOL=CMake
-        - OS=Linux
+        - BUILD_TOOL=CMake OS=Linux
       sudo: require
     - os: osx
       osx_image: xcode7.3
       env:
-        - BUILD_TOOL=Xcode
-        - OS=OSX
+        - BUILD_TOOL=Xcode OS=OSX
   exclude:
     - compiler: clang
 

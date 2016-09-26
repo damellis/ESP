@@ -67,6 +67,14 @@ mkdir -p openFrameworks
 rm -rf of_v0.9.3_$PLATFORM\_release/
 cd ..
 
+case $PLATFORM in
+    osx)
+        ## Remove files that depend on QuickTime.h, which isn't in Sierra.
+        grep -vi 'ofQt' third-party/openFrameworks/libs/openFrameworksCompiled/project/osx/openFrameworksLib.xcodeproj/project.pbxproj > project.pbxproj
+        mv project.pbxproj third-party/openFrameworks/libs/openFrameworksCompiled/project/osx/openFrameworksLib.xcodeproj/project.pbxproj
+        ;;
+esac
+
 git submodule init
 git submodule update
 
