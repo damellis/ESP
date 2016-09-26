@@ -1,6 +1,6 @@
 #include <ESP.h>
 
-GDPStream input("edu.berkeley.eecs.swarmlab.device.c098e5900019");
+GDPStream input("edu.berkeley.eecs.bid.mellis.arduino101");
 GestureRecognitionPipeline pipeline;
 
 void setup()

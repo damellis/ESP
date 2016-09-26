@@ -347,6 +347,18 @@ void FirmataStream::update() {
     }
 }
 
+void gdp_callback(gdp_event_t *gev) {
+	cout << "Got GDP event of type " << gdp_event_gettype(gev) << endl;
+	gdp_datum_t *datum = gdp_event_getdatum(gev);
+	EP_TIME_SPEC ts;
+	gdp_datum_getts(datum, &ts);
+	cout << "Datum: #" << gdp_datum_getrecno(datum) << " at "
+	     << ts.tv_sec << endl;
+	gdp_buf_t *buf = gdp_datum_getbuf(datum);
+	gdp_datum_print(datum, stdout, GDP_DATUM_PRTEXT);
+	gdp_event_free(gev);
+}
+
 GDPStream::GDPStream(const char *log_name) {
         gdp_name_t gclname;
         gdp_iomode_t open_mode = GDP_MODE_RO;
@@ -386,6 +398,10 @@ GDPStream::GDPStream(const char *log_name) {
 				ep_stat_tostr(estat, sbuf, sizeof sbuf));
 		return;
 	}
+	
+	EP_TIME_SPEC now;
+	
+	gdp_gcl_subscribe(gcl, 1, 0, NULL, gdp_callback, (void *)this);
 }
 
 bool TcpInputStream::start() {
