@@ -1,0 +1,15 @@
+{
+  "name": "serial-to-gdp",
+  "version": "1.0.0",
+  "description": "Reads data from a serial port and writes it to the GDP (Global Data Plane).",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "David Mellis",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@terraswarm/gdp": "^0.7.13",
+    "serialport": "^4.0.1"
+  }
+}
