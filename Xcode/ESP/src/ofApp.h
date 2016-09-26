@@ -20,6 +20,7 @@
 #define ESP_EVENT(s)                                                \
     ofLogVerbose() << "[" << ofGetTimestampString() << "] " << (s)
 
+
 class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
   public:
     ofApp();
@@ -214,6 +215,9 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
                          // set and data will be added to sample_data_.
     bool enable_history_recording_ = false;
     bool is_in_feature_view_ = false;
+    
+    void pauseResume();
+    void pauseResume(ofxDatGuiButtonEvent e) { pauseResume(); }
 
     //========================================================================
     // rename
@@ -239,6 +243,10 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     }
 
     ofxDatGui gui_;
+    ofxDatGuiFolder *save_load_folder_;
+    ofxDatGuiButton *pause_button_;
+    ofxDatGuiButton *train_model_button_;
+    ofxDatGuiButton *toggle_features_button_;
 
     //========================================================================
     // visual: input stream
@@ -301,6 +309,7 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
 
     bool is_final_features_too_many_ = false;
     vector<vector<Plotter>> plot_sample_features_;
+    void toggleFeatureView(ofxDatGuiButtonEvent e) { toggleFeatureView(); }
     void toggleFeatureView();
     void populateSampleFeatures(uint32_t sample_index);
     vector<pair<double, double>> sample_feature_ranges_;
@@ -476,6 +485,8 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     bool should_save_tuneables_;
 
     // Pipeline (including trained model)
+    void savePipeline(ofxDatGuiButtonEvent e) { save_load_folder_->collapse(); savePipelineWithPrompt(); }
+    void loadPipeline(ofxDatGuiButtonEvent e) { save_load_folder_->collapse(); loadPipelineWithPrompt(); }
     bool savePipelineWithPrompt();
     bool savePipeline(const string& filename);
     bool loadPipelineWithPrompt();
@@ -483,6 +494,8 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     bool should_save_pipeline_;
 
     // Calibration data
+    void saveCalibrationData(ofxDatGuiButtonEvent e) { save_load_folder_->collapse(); saveCalibrationDataWithPrompt(); }
+    void loadCalibrationData(ofxDatGuiButtonEvent e) { save_load_folder_->collapse(); loadCalibrationDataWithPrompt(); }
     bool saveCalibrationDataWithPrompt();
     bool saveCalibrationData(const string& filename);
     bool loadCalibrationDataWithPrompt();
@@ -490,6 +503,8 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     // Prompts to ask the user to save the calibration data if changed.
     bool should_save_calibration_data_;
 
+    void saveTrainingData(ofxDatGuiButtonEvent e) { save_load_folder_->collapse(); saveTrainingDataWithPrompt(); }
+    void loadTrainingData(ofxDatGuiButtonEvent e) { save_load_folder_->collapse(); loadTrainingDataWithPrompt(); }
     bool saveTrainingDataWithPrompt();
     bool saveTrainingData(const string& filename);
     bool loadTrainingDataWithPrompt();
@@ -497,6 +512,8 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     // Prompts to ask the user to save the training data if changed.
     bool should_save_training_data_;
 
+    void saveTestData(ofxDatGuiButtonEvent e) { save_load_folder_->collapse(); saveTestDataWithPrompt(); }
+    void loadTestData(ofxDatGuiButtonEvent e) { save_load_folder_->collapse(); loadTestDataWithPrompt(); }
     bool saveTestDataWithPrompt();
     bool saveTestData(const string& filename);
     bool loadTestDataWithPrompt();
@@ -516,6 +533,9 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     string save_path_ = "";
 
     // Load all and save all
+    void loadAll(ofxDatGuiButtonEvent e) { save_load_folder_->collapse(); loadAll(); }
+    void saveAllEvent(ofxDatGuiButtonEvent e) { save_load_folder_->collapse(); saveAll(); }
+    void saveAsEvent(ofxDatGuiButtonEvent e) { save_load_folder_->collapse(); saveAll(true); }
     void loadAll();
     void saveAll(bool saveAs = false);
 
@@ -525,6 +545,8 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     std::thread training_thread_;
     bool is_training_scheduled_;
     std::uint64_t schedule_time_;
+
+    void trainModel(ofxDatGuiButtonEvent e) { beginTrainModel(); }
 
     void beginTrainModel();
     void trainModel();

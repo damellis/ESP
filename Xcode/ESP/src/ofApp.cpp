@@ -21,28 +21,19 @@ const uint32_t kDelayBeforeTraining = 50;  // milliseconds
 // Instructions for each tab.
 static const char* kCalibrateInstruction =
     "Calibration: Use key 1-9 to record calibration samples (required for "
-    "training), `S` and `L` to save/load calibration data only.\n"
-    "Press `s` to save session, `a` to save as, `l` to load session.";
+    "training)";
 
 static const char* kPipelineInstruction =
-    "Pipeline: press `p` to pause or resume. `S` and `L` to save/load pipeline "
-    "only.\n"
-    "Press `s` to save session, `a` to save as, `l` to load session.";
+    "Pipeline.";
 
 static const char* kTrainingInstruction =
-    "Training: Hold 1-9 to record samples. Press `t` to train model, `f` to "
-    "show features."
-    " `S` and `L` to save/load training data only. \n"
-    "Press `s` to save session, `a` to save as, `l` to load session.";
+    "Training: Hold 1-9 to record samples.";
 
 static const char* kAnalysisInstruction =
-    "Analysis: Hold `r` to record test data. "
-    "`S` and `L` to save/load test data only.\n"
-    "Press `s` to save session, `a` to save as, `l` to load session.";
+    "Analysis: Hold `r` to record test data. ";
 
 static const char* kPredictionInstruction =
-    "Prediction: Press `p` to pause or resume.\n"
-    "Press `s` to save session, `a` to save as, `l` to load session.";
+    "Prediction.";
 
 const double kPipelineHeightWeight = 0.3;
 const ofColor kSerialSelectionColor = ofColor::fromHex(0x00FF00);
@@ -521,6 +512,34 @@ void ofApp::setup() {
     } else {
         gui_.collapse();
     }
+  
+    save_load_folder_ = new ofxDatGuiFolder("Save / Load");
+    save_load_folder_->addButton("Save")->onButtonEvent(this, &ofApp::saveAllEvent);
+    save_load_folder_->addButton("Save as...")->onButtonEvent(this, &ofApp::saveAsEvent);
+    save_load_folder_->addButton("Load...")->onButtonEvent(this, &ofApp::loadAll);
+    save_load_folder_->addButton("Save calibration data...")->onButtonEvent(this, &ofApp::saveCalibrationData);
+    save_load_folder_->addButton("Load calibration data...")->onButtonEvent(this, &ofApp::loadCalibrationData);
+    save_load_folder_->addButton("Save training data...")->onButtonEvent(this, &ofApp::saveTrainingData);
+    save_load_folder_->addButton("Load training data...")->onButtonEvent(this, &ofApp::loadTrainingData);
+    save_load_folder_->addButton("Save test data...")->onButtonEvent(this, &ofApp::saveTestData);
+    save_load_folder_->addButton("Load test data...")->onButtonEvent(this, &ofApp::loadTestData);
+    save_load_folder_->addButton("Save tuneables...")->onButtonEvent(this, &ofApp::saveTuneables);
+    save_load_folder_->addButton("Load tuneables...")->onButtonEvent(this, &ofApp::loadTuneables);
+    save_load_folder_->setPosition(10, 0);
+    save_load_folder_->setWidth(save_load_folder_->getWidth() * 0.66);
+    pause_button_ = new ofxDatGuiButton("Pause / Resume");
+    pause_button_->onButtonEvent(this, &ofApp::pauseResume);
+    pause_button_->setPosition(save_load_folder_->getX() + save_load_folder_->getWidth() + 5, save_load_folder_->getY());
+    pause_button_->setWidth(pause_button_->getWidth() / 2);
+    train_model_button_ = new ofxDatGuiButton("Train Model");
+    train_model_button_->onButtonEvent(this, &ofApp::trainModel);
+    train_model_button_->setPosition(pause_button_->getX() + pause_button_->getWidth() + 5, pause_button_->getY());
+    train_model_button_->setWidth(train_model_button_->getWidth() / 2);
+    toggle_features_button_ = new ofxDatGuiButton("Toggle Features");
+    toggle_features_button_->onButtonEvent(this, &ofApp::toggleFeatureView);
+    toggle_features_button_->setPosition(train_model_button_->getX() + train_model_button_->getWidth() + 5, train_model_button_->getY());
+    toggle_features_button_->setWidth(toggle_features_button_->getWidth() / 2);
+    
 
     // Register myself as logging observer but disable first.
     GRT::ErrorLog::enableLogging(false);
@@ -1293,6 +1312,11 @@ string ofApp::getTrainingDataAdvice() {
 
 //--------------------------------------------------------------
 void ofApp::update() {
+    save_load_folder_->update();
+    pause_button_->update();
+    train_model_button_->update();
+    toggle_features_button_->update();
+
     // There doesn't seem to be a callback API for when the configuration window
     // is opened (expanded/collapsed). As a simple approach, we query
     // `getExpanded`.
@@ -1544,16 +1568,16 @@ void ofApp::draw() {
 
     // Hacky panel on the top.
     const uint32_t left_margin = 10;
-    const uint32_t top_margin = 20;
+    const uint32_t top_margin = 45;
     const uint32_t margin = 20;
 
     if (pipeline_->getClassifier() != nullptr) {
         ofDrawBitmapString(
             "Calibration\tPipeline\tAnalysis\tTraining\tPrediction",
-            left_margin, top_margin);
+            left_margin * 2, top_margin);
     } else {
         ofDrawBitmapString("Calibration\tPipeline\tAnalysis",
-                           left_margin, top_margin);
+                           left_margin * 2, top_margin);
     }
 
     ofDrawBitmapString(getAppStateInstruction(), left_margin,
@@ -1566,20 +1590,20 @@ void ofApp::draw() {
     switch (fragment_) {
         case CALIBRATION:
             ofDrawColoredBitmapString(red, "Calibration\t",
-                                      left_margin, top_margin);
+                                      left_margin * 2, top_margin);
             drawCalibration();
             enableTrainingSampleGUI(false);
             break;
         case PIPELINE:
             ofDrawColoredBitmapString(red, "\t\tPipeline\t",
-                                      left_margin, top_margin);
+                                      left_margin * 2, top_margin);
             drawLivePipeline();
             enableTrainingSampleGUI(false);
             tab_start += kTabWidth;
             break;
         case ANALYSIS:
             ofDrawColoredBitmapString(red, "\t\t\t\tAnalysis",
-                                      left_margin, top_margin);
+                                      left_margin * 2, top_margin);
             drawAnalysis();
             enableTrainingSampleGUI(false);
             tab_start += 2 * kTabWidth;
@@ -1587,7 +1611,7 @@ void ofApp::draw() {
         case TRAINING:
             if (pipeline_->getClassifier() == nullptr) { break; }
             ofDrawColoredBitmapString(red, "\t\t\t\t\t\tTraining",
-                                      left_margin, top_margin);
+                                      left_margin * 2, top_margin);
             drawTrainingInfo();
             enableTrainingSampleGUI(true);
             tab_start += 3 * kTabWidth;
@@ -1595,7 +1619,7 @@ void ofApp::draw() {
         case PREDICTION:
             if (pipeline_->getClassifier() == nullptr) { break; }
             ofDrawColoredBitmapString(red, "\t\t\t\t\t\t\t\tPrediction",
-                                      left_margin, top_margin);
+                                      left_margin * 2, top_margin);
             drawPrediction();
             enableTrainingSampleGUI(false);
             tab_start += 4 * kTabWidth;
@@ -1609,7 +1633,8 @@ void ofApp::draw() {
     //          ______
     // ________|     |____________
     uint32_t bottom = top_margin + 5;
-    uint32_t ceiling = 5;
+    uint32_t ceiling = 30;
+    tab_start += left_margin;
     ofDrawLine(0, bottom, tab_start, bottom);
     ofDrawLine(tab_start, bottom, tab_start, ceiling);
     ofDrawLine(tab_start, ceiling, tab_start + kTabWidth, ceiling);
@@ -1619,7 +1644,11 @@ void ofApp::draw() {
     // Status text at the bottom
     ofDrawBitmapString(status_text_, left_margin, ofGetHeight() - 20);
 
-    gui_.draw();
+    save_load_folder_->draw();
+    pause_button_->draw();
+    train_model_button_->draw();
+    toggle_features_button_->draw();
+    gui_.draw();    
 }
 
 void ofApp::drawInputs(uint32_t stage_left, uint32_t stage_top,
@@ -1668,7 +1697,7 @@ void ofApp::drawLiveFeatures(uint32_t stage_left, uint32_t stage_top,
 void ofApp::drawCalibration() {
     uint32_t margin = 30;
     uint32_t stage_left = 10;
-    uint32_t stage_top = 70;
+    uint32_t stage_top = 80;
     uint32_t stage_height = (ofGetHeight() - stage_top - margin * 3) / 2;
     uint32_t stage_width = ofGetWidth() - margin;
 
@@ -1699,7 +1728,7 @@ void ofApp::drawLivePipeline() {
     // draw the pipeline information.
     uint32_t margin = 30;
     uint32_t stage_left = 10;
-    uint32_t stage_top = 70;
+    uint32_t stage_top = 80;
     uint32_t stage_height = // Hacky math for dimensions.
             (ofGetHeight() - margin - stage_top) / (num_pipeline_stages_ + 1) - margin;
     uint32_t stage_width = ofGetWidth() - margin;
@@ -1737,7 +1766,7 @@ void ofApp::drawLivePipeline() {
 
 void ofApp::drawTrainingInfo() {
     uint32_t margin_left = 10;
-    uint32_t margin_top = 70;
+    uint32_t margin_top = 80;
     uint32_t margin = 30;
     uint32_t stage_left = margin_left;
     uint32_t stage_top = margin_top;
@@ -1916,7 +1945,7 @@ void ofApp::drawTrainingInfo() {
 
 void ofApp::drawAnalysis() {
     uint32_t margin_left = 10;
-    uint32_t margin_top = 70;
+    uint32_t margin_top = 80;
     uint32_t margin = 30;
     uint32_t stage_left = margin_left;
     uint32_t stage_top = margin_top;
@@ -1945,7 +1974,7 @@ void ofApp::drawAnalysis() {
 
 void ofApp::drawPrediction() {
     uint32_t margin_left = 10;
-    uint32_t margin_top = 70;
+    uint32_t margin_top = 80;
     uint32_t margin = 30;
     uint32_t stage_left = margin_left;
     uint32_t stage_top = margin_top;
@@ -2020,6 +2049,18 @@ void ofApp::exit() {
 void ofApp::onDataIn(GRT::MatrixDouble input) {
     std::lock_guard<std::mutex> guard(input_data_mutex_);
     input_data_ = input;
+}
+
+void ofApp::pauseResume() {
+    istream_->toggle();
+    enable_history_recording_ = !enable_history_recording_;
+    if (!enable_history_recording_) {
+        class_likelihood_values_.resize(0);
+        class_distance_values_.resize(0);
+    }
+    input_data_.clear();
+
+    ESP_EVENT("Toggle streaming");
 }
 
 //--------------------------------------------------------------
@@ -2277,18 +2318,7 @@ void ofApp::keyPressed(int key) {
             else if (fragment_ == PIPELINE) loadPipelineWithPrompt();
             else if (fragment_ == ANALYSIS) loadTestDataWithPrompt();
             break;
-        case 'p': {
-            istream_->toggle();
-            enable_history_recording_ = !enable_history_recording_;
-            if (!enable_history_recording_) {
-                class_likelihood_values_.resize(0);
-                class_distance_values_.resize(0);
-            }
-            input_data_.clear();
-
-            ESP_EVENT("Toggle streaming");
-            break;
-        }
+        case 'p': pauseResume(); break;
         case 'a': saveAll(true); break;
         case 's': saveAll(); break;
         case 'S':
@@ -2530,7 +2560,7 @@ void ofApp::mouseReleased(int x, int y, int button) {
 
     // Tab click detection
     const uint32_t left_margin = 10;
-    const uint32_t top_margin = 20;
+    const uint32_t top_margin = 45;
     const uint32_t tab_width = 120;
 
     // Potential new state will be updated if tab switch is invoked. Record it
@@ -2538,7 +2568,7 @@ void ofApp::mouseReleased(int x, int y, int button) {
     // function.
     AppState potential_new_state = state_;
     Fragment potential_new_fragment = fragment_;
-    if (x > left_margin && y < top_margin + 5) {
+    if (x > left_margin && y > 25 && y < top_margin + 5) {
         if (x < left_margin + tab_width) {
             potential_new_state = AppState::kCalibration;
             potential_new_fragment = CALIBRATION;
