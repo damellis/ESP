@@ -362,13 +362,13 @@ void gdp_callback(gdp_event_t *gev) {
         }
         size_t n = gdp_buf_read(buf, s, gdp_buf_getlength(buf));
         s[n] = 0;
-        GDPStream *gdp_stream = (GDPStream *) gdp_event_getudata(gev);
+        GDPInputStream *gdp_stream = (GDPInputStream *) gdp_event_getudata(gev);
         gdp_stream->stringReceived(s);
         free(s);
 	gdp_event_free(gev);
 }
 
-GDPStream::GDPStream(const char *log_name, int dimension) {
+GDPInputStream::GDPInputStream(const char *log_name, int dimension) {
         dim_ = dimension;
 
         gdp_name_t gclname;
@@ -415,7 +415,7 @@ GDPStream::GDPStream(const char *log_name, int dimension) {
 	gdp_gcl_subscribe(gcl, 0, 0, NULL, gdp_callback, (void *)this);
 }
 
-void GDPStream::stringReceived(const char *s) {
+void GDPInputStream::stringReceived(const char *s) {
     if (data_ready_callback_ != nullptr) {
         istringstream iss(s);
         vector<double> data;

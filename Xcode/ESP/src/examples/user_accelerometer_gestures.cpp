@@ -3,11 +3,12 @@
  */
 #include <ESP.h>
 
-//ASCIISerialStream stream(115200, 3);
-GDPStream stream("edu.berkeley.eecs.bid.mellis.arduino101", 3);
+ASCIISerialStream stream(115200, 3);
+//GDPInputStream stream("edu.berkeley.eecs.bid.mellis.arduino101", 3);
 GestureRecognitionPipeline pipeline;
 Calibrator calibrator;
 TcpOStream oStream("localhost", 5204);
+GDPOutputStream oStream2("edu.berkeley.eecs.bid.mellis.esp2");
 
 MatrixDouble uprightData, upsideDownData;
 bool haveUprightData = false, haveUpsideDownData = false;
@@ -113,6 +114,7 @@ void setup()
     stream.setLabelsForAllDimensions({"x", "y", "z"});
     useInputStream(stream);
     useOutputStream(oStream);
+    useOutputStream(oStream2);
 
     calibrator.setCalibrateFunction(processAccelerometerData);
     calibrator.addCalibrateProcess("Upright",

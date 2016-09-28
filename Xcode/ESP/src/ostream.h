@@ -62,6 +62,18 @@ class OStreamVector : public OStream {
     virtual void onReceive(vector<double>) = 0;
 };
 
+typedef struct gdp_gcl gdp_gcl_t;
+class GDPOutputStream : public OStream {
+  public:
+    GDPOutputStream(const char *, bool asynch = false);
+    virtual bool start();
+    virtual void onReceive(uint32_t label);
+  private:
+    const char *log_name_;
+    bool asynch_;
+    gdp_gcl_t *gcl;
+};
+
 /**
  @brief Emulate keyboard key presses corresponding to prediction results.
 

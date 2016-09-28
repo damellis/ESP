@@ -12,9 +12,148 @@
 #include <thread>
 #include "ofxTCPClient.h"
 
+extern "C" {
+#include <ep/ep.h>
+#include <ep/ep_dbg.h>
+#include <ep/ep_app.h>
+#include <ep/ep_time.h>
+#include <gdp/gdp.h>
+#include <event2/buffer.h>
+}
+
 #if __APPLE__
 #include <ApplicationServices/ApplicationServices.h>
 #endif
+
+GDPOutputStream::GDPOutputStream(const char *log_name, bool asynch) :
+    log_name_(log_name), asynch_(asynch) {}
+
+bool GDPOutputStream::start()
+{
+    gdp_name_t gcliname;
+    int opt;
+    EP_STAT estat;
+    char *gdpd_addr = NULL;
+    bool show_usage = false;
+    bool one_record = false;
+    char *log_file_name = NULL;
+    char *signing_key_file = NULL;
+    gdp_gcl_open_info_t *info;
+
+    // initialize the GDP library
+    estat = gdp_init(gdpd_addr);
+    if (!EP_STAT_ISOK(estat))
+    {
+        ep_app_error("GDP Initialization failed");
+        goto fail0;
+    }
+
+    // allow thread to settle to avoid interspersed debug output
+    ep_time_nanosleep(INT64_C(100000000));
+
+    // set up any open information
+    info = gdp_gcl_open_info_new();
+
+    // open a GCL with the provided name
+    gdp_parse_name(log_name_, gcliname);
+    estat = gdp_gcl_open(gcliname, GDP_MODE_AO, info, &gcl);
+    EP_STAT_CHECK(estat, goto fail1);
+
+    gdp_pname_t pname;
+
+    // dump the internal version of the GCL to facilitate testing
+    ofLogNotice() << "GDPname: "
+        << gdp_printable_name(*gdp_gcl_getname(gcl), pname)
+        << " (" << gdp_gcl_getnrecs(gcl) << " recs)";
+fail1:
+    if (info != NULL)
+            gdp_gcl_open_info_free(info);
+
+fail0:
+    has_started_ = true;
+    if (!EP_STAT_ISOK(estat))
+    {
+        char buf[200];
+
+        ofLogWarning() << "Error connecting to GDP: " <<
+            ep_stat_tostr(estat, buf, sizeof buf);
+        has_started_ = false;
+    }
+
+    return has_started_;
+}
+
+static const char	*EventTypes[] =
+{
+    "Free (internal use)",
+    "Data",
+    "End of Subscription",
+    "Shutdown",
+    "Asynchronous Status",
+};
+
+void
+showstat(gdp_event_t *gev)
+{
+    int evtype = gdp_event_gettype(gev);
+    EP_STAT estat = gdp_event_getstat(gev);
+    gdp_datum_t *d = gdp_event_getdatum(gev);
+    char ebuf[100];
+    char tbuf[20];
+    const char *evname;
+
+    if (evtype < 0 || evtype >= sizeof EventTypes / sizeof EventTypes[0])
+    {
+        snprintf(tbuf, sizeof tbuf, "%d", evtype);
+        evname = tbuf;
+    }
+    else
+    {
+        evname = EventTypes[evtype];
+    }
+
+    ofLogVerbose("[GDP]", "Asynchronous event type %s:\n"
+                    "\trecno %" PRIgdp_recno ", stat %s\n",
+                    evname,
+                    gdp_datum_getrecno(d),
+                    ep_stat_tostr(estat, ebuf, sizeof ebuf));
+
+    gdp_event_free(gev);
+}
+
+void GDPOutputStream::onReceive(uint32_t label) {
+    if (!has_started_) return;
+
+    char buf[100];
+    int n = snprintf(buf, 100, "%u", label);
+  
+    // we need a place to buffer the input
+    gdp_datum_t *datum = gdp_datum_new();
+    gdp_buf_write(gdp_datum_getbuf(datum), buf, n);
+    EP_STAT estat;
+    
+    if (asynch_)
+    {
+        estat = gdp_gcl_append_async(gcl, datum, showstat, NULL);
+        EP_STAT_CHECK(estat, ofLogWarning("[GDP]", "Error writing to log asynchronously"));
+
+        // return value will be printed asynchronously
+    }
+    else
+    {
+        estat = gdp_gcl_append(gcl, datum);
+
+        if (!EP_STAT_ISOK(estat))
+        {
+            char ebuf[100];
+            ofLogWarning("[GDP]", "Append error: %s",
+                                    ep_stat_tostr(estat, ebuf, sizeof ebuf));
+        }
+    }
+    
+    // OK, all done.  Free our resources and exit
+    gdp_datum_free(datum);
+}
 
 void MacOSKeyboardOStream::sendKey(char c) {
 #if __APPLE__
