@@ -356,10 +356,21 @@ void gdp_callback(gdp_event_t *gev) {
 	     << ts.tv_sec << endl;
 	gdp_buf_t *buf = gdp_datum_getbuf(datum);
 	gdp_datum_print(datum, stdout, GDP_DATUM_PRTEXT);
+        char *s = (char *) malloc(gdp_buf_getlength(buf) + 1);
+        if (s == NULL) {
+          cerr << "Error allocating space to read incoming data." << endl;
+        }
+        size_t n = gdp_buf_read(buf, s, gdp_buf_getlength(buf));
+        s[n] = 0;
+        GDPStream *gdp_stream = (GDPStream *) gdp_event_getudata(gev);
+        gdp_stream->stringReceived(s);
+        free(s);
 	gdp_event_free(gev);
 }
 
-GDPStream::GDPStream(const char *log_name) {
+GDPStream::GDPStream(const char *log_name, int dimension) {
+        dim_ = dimension;
+
         gdp_name_t gclname;
         gdp_iomode_t open_mode = GDP_MODE_RO;
         gdp_gcl_t *gcl;
@@ -401,7 +412,27 @@ GDPStream::GDPStream(const char *log_name) {
 	
 	EP_TIME_SPEC now;
 	
-	gdp_gcl_subscribe(gcl, 1, 0, NULL, gdp_callback, (void *)this);
+	gdp_gcl_subscribe(gcl, 0, 0, NULL, gdp_callback, (void *)this);
+}
+
+void GDPStream::stringReceived(const char *s) {
+    if (data_ready_callback_ != nullptr) {
+        istringstream iss(s);
+        vector<double> data;
+        double d;
+
+        while (iss >> d)
+            data.push_back(d);
+
+        if (data.size() > 0) {
+            data = normalize(data);
+
+            GRT::MatrixDouble matrix;
+            matrix.push_back(data);
+
+            data_ready_callback_(matrix);
+        }
+    }
 }
 
 bool TcpInputStream::start() {

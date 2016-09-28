@@ -3,7 +3,8 @@
  */
 #include <ESP.h>
 
-ASCIISerialStream stream(115200, 3);
+//ASCIISerialStream stream(115200, 3);
+GDPStream stream("edu.berkeley.eecs.bid.mellis.arduino101", 3);
 GestureRecognitionPipeline pipeline;
 Calibrator calibrator;
 TcpOStream oStream("localhost", 5204);
@@ -110,7 +111,7 @@ void updateTimeout(int new_timeout) {
 void setup()
 {
     stream.setLabelsForAllDimensions({"x", "y", "z"});
-    useStream(stream);
+    useInputStream(stream);
     useOutputStream(oStream);
 
     calibrator.setCalibrateFunction(processAccelerometerData);

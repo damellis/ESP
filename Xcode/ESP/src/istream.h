@@ -246,10 +246,17 @@ class FirmataStream : public InputStream {
     void update();
 };
 
+typedef struct gdp_event gdp_event_t;
+void gdp_callback(gdp_event_t *gev);
 class GDPStream : public InputStream {
   public:
-    GDPStream(const char *);
-    virtual int getNumInputDimensions() { return 1; }
+    GDPStream(const char *, int dimension);
+    virtual int getNumInputDimensions() { return dim_; }
+  private:
+    void stringReceived(const char *s);
+    int dim_;
+  
+    friend void gdp_callback(gdp_event_t *gev);
 };
 
 // Forward declaration.
