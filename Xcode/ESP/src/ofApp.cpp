@@ -20,19 +20,19 @@ const uint32_t kDelayBeforeTraining = 50;  // milliseconds
 
 // Instructions for each tab.
 static const char* kCalibrateInstruction =
-    "Collect the specified samples to calibrate your sensor. Must be completed before using the rest of the system.";
+    "Collect the specified samples to calibrate ESP to your sensor. Must be completed before using the rest of the system.";
 
 static const char* kPipelineInstruction =
-    "Pipeline.";
+    "Live data at each stage of the machine learning pipeline. Classifier uses the data (\"features\") from the last stage.";
 
 static const char* kTrainingInstruction =
-    "Training: Hold 1-9 to record samples.";
+    "Press and hold keys `1` to `9` to collect examples of the classes of phenomena you want to classify.";
 
 static const char* kAnalysisInstruction =
-    "Analysis: Hold `r` to record test data. ";
+    "Press and hold `r` to record test data, which will be re-classified every time you retrain the classifier.";
 
 static const char* kPredictionInstruction =
-    "Prediction.";
+    "The relative likelihood of each class of training data and the \"distance\" to each class of training data.";
 
 const double kPipelineHeightWeight = 0.3;
 const ofColor kSerialSelectionColor = ofColor::fromHex(0x00FF00);
