@@ -20,8 +20,7 @@ const uint32_t kDelayBeforeTraining = 50;  // milliseconds
 
 // Instructions for each tab.
 static const char* kCalibrateInstruction =
-    "Calibration: Use key 1-9 to record calibration samples (required for "
-    "training)";
+    "Collect the specified samples to calibrate your sensor. Must be completed before using the rest of the system.";
 
 static const char* kPipelineInstruction =
     "Pipeline.";
@@ -348,7 +347,9 @@ void ofApp::setup() {
         for (uint32_t i = 0; i < calibrators.size(); i++) {
             uint32_t label_dim = istream_->getNumOutputDimensions();
             Plotter plot;
-            plot.setup(label_dim, calibrators[i].getName(), calibrators[i].getDescription());
+            plot.setup(label_dim, calibrators[i].getName(),
+                calibrators[i].getDescription() + "\nPress and hold `" +
+                std::to_string(i + 1) + "` to record.");
             plot.setColorPalette(color_palette.generate(label_dim));
             plot_calibrators_.push_back(plot);
         }
