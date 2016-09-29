@@ -27,42 +27,16 @@ This will clone the relevant git submodules and create some symbolic links.
 
 The main application is an openFrameworks-based GUI application named,
 unsurprisingly, ESP. Below are instructions to run on different platform
-(currently we support Linux and OS X).
+(we support Mac OS X, Windows, and Linux).
+
+Choose the ESP example you want to run by uncommenting the corresponding line at
+[user.cpp](https://github.com/damellis/ESP/blob/master/Xcode/ESP/src/user.cpp). See below for a list of available examples.
 
 Arduino Project Hub has a more comprehensive [tutorial](https://create.arduino.cc/projecthub/mellis/gesture-recognition-using-accelerometer-and-esp-mac-only-71faa1) on how to use the software.
 
 ### OS X
 
-Use Xcode to open the project at `Xcode/ESP/ESP.xcodeproj`. You can choose an
-example by uncommenting the corresponding line at
-[user.cpp](https://github.com/damellis/ESP/blob/master/Xcode/ESP/src/user.cpp). Many
-of these examples expect an Arduino board to be connected to the computer and
-running an appropriate sketch. Some of the sketches are hosted in this
-repository as well (see `Arduino` folder). Some examples are:
-
-- [user_audio_beat.cpp](http://damellis.github.io/ESP/user\_audio\_beat\_8cpp-example.html):
-  recognizes periodic sounds (e.g. dialtones, bells ringing, whistling) using an
-  FFT and support vector machines algorithm. Works with your computer's built-in
-  microphone.
-
-- [user_color_sensor.cpp](http://damellis.github.io/ESP/user\_color\_sensor\_8cpp-example.html):
-  detects objects by color using a naive Bayes classifier.  Works with either
-  the [Adafruit TCS34725 breakout](https://www.adafruit.com/products/1334)
-  (using the sketch in Arduino/ColorSensor) or the
-  [SparkFun ISL29125 breakout](https://www.sparkfun.com/products/12829) (using
-  the sketch in Arduino/ColorSensor_SparkFun_ISL29125). See documentation for
-  the sensors for hookup information.
-
-- [user_accelerometer_gesture.cpp](http://damellis.github.io/ESP/user\_accelerometer\_gestures\_8cpp-example.html):
-  recognizes gestures using a dynamic time warping algorith. Works with either
-  an [ADXL335 accelerometer](https://www.adafruit.com/products/163) (using the
-  Arduino/ADXL335 sketch) or the built-in accelerometer on an
-  [Arduino 101](http://www.arduino.cc/en/Main/ArduinoBoard101) (using the
-  Arduino/Arduino101_Accelerometer sketch).
-
-- [user_accelerometer_poses.cpp](http://damellis.github.io/ESP/user\_accelerometer\_poses\_8cpp-example.html):
-  recognizes the orientations of an object using a naive Bayes classifier. Works
-  with accelerometers as for the `user_accelerometer_gesture.cpp` example.
+Use Xcode to open the project at `Xcode/ESP/ESP.xcodeproj`. Select either the "ESP Debug" or "ESP Release" scheme (not "openFrameworks").
 
 We also support using `CMake` on OS X to compile the project:
 ```sh
@@ -110,6 +84,36 @@ make -j4
 
 See this [setup guide](https://github.com/damellis/ESP/wiki/Windows-Setup-Guide)
 
+## Examples
+
+Many of these examples expect an Arduino board to be connected to the computer and
+running an appropriate sketch. Some of the sketches are hosted in this
+repository as well (see `Arduino` folder). Some examples are:
+
+- [user_audio_beat.cpp](http://damellis.github.io/ESP/user\_audio\_beat\_8cpp-example.html):
+  recognizes periodic sounds (e.g. dialtones, bells ringing, whistling) using an
+  FFT and support vector machines algorithm. Works with your computer's built-in
+  microphone.
+
+- [user_color_sensor.cpp](http://damellis.github.io/ESP/user\_color\_sensor\_8cpp-example.html):
+  detects objects by color using a naive Bayes classifier.  Works with either
+  the [Adafruit TCS34725 breakout](https://www.adafruit.com/products/1334)
+  (using the sketch in Arduino/ColorSensor) or the
+  [SparkFun ISL29125 breakout](https://www.sparkfun.com/products/12829) (using
+  the sketch in Arduino/ColorSensor_SparkFun_ISL29125). See documentation for
+  the sensors for hookup information.
+
+- [user_accelerometer_gesture.cpp](http://damellis.github.io/ESP/user\_accelerometer\_gestures\_8cpp-example.html):
+  recognizes gestures using a dynamic time warping algorith. Works with either
+  an [ADXL335 accelerometer](https://www.adafruit.com/products/163) (using the
+  Arduino/ADXL335 sketch) or the built-in accelerometer on an
+  [Arduino 101](http://www.arduino.cc/en/Main/ArduinoBoard101) (using the
+  Arduino/Arduino101_Accelerometer sketch).
+
+- [user_accelerometer_poses.cpp](http://damellis.github.io/ESP/user\_accelerometer\_poses\_8cpp-example.html):
+  recognizes the orientations of an object using a naive Bayes classifier. Works
+  with accelerometers as for the `user_accelerometer_gesture.cpp` example.
+
 ## API
 
 See the [online documentation of the ESP API](http://damellis.github.io/ESP/).
@@ -129,6 +133,10 @@ These should be automatically installed by the setup script:
 - [ofxGrt](https://github.com/nickgillian/ofxGrt), an openFrameworks extension
   for the Gesture Recognition Toolkit (GRT). Specifically
   [our fork of the ofxGrt repository](https://github.com/nebgnahz/ofxGrt/tree/snapshot-for-sensors).
+  
+- [ofxDatGui](https://braitsch.github.io/ofxDatGui/), a framework for building GUIs in openFrameworks. Specifically [our fork of the repository](https://github.com/nebgnahz/ofxDatGui/).
+
+- [ofxParagraph](https://github.com/braitsch/ofxParagraph), for rendering multi-line text.
 
 ## License
 
