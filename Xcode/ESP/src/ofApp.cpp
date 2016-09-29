@@ -1574,7 +1574,7 @@ void ofApp::draw() {
 
     if (pipeline_->getClassifier() != nullptr) {
         ofDrawBitmapString(
-            "Calibration\tPipeline\tAnalysis\tTraining\tPrediction",
+            "Calibration\tPipeline\tTraining\tPrediction\tAnalysis",
             left_margin * 2, top_margin);
     } else {
         ofDrawBitmapString("Calibration\tPipeline\tAnalysis",
@@ -1603,27 +1603,31 @@ void ofApp::draw() {
             tab_start += kTabWidth;
             break;
         case ANALYSIS:
-            ofDrawColoredBitmapString(red, "\t\t\t\tAnalysis",
+            ofDrawColoredBitmapString(red,
+                                      (pipeline_->getClassifier() == nullptr ?
+                                       "\t\t\t\tAnalysis" :
+                                       "\t\t\t\t\t\t\t\tAnalysis"),
                                       left_margin * 2, top_margin);
             drawAnalysis();
             enableTrainingSampleGUI(false);
-            tab_start += 2 * kTabWidth;
+            tab_start += (pipeline_->getClassifier() == nullptr ?
+                          2 * kTabWidth : 4 * kTabWidth);
             break;
         case TRAINING:
             if (pipeline_->getClassifier() == nullptr) { break; }
-            ofDrawColoredBitmapString(red, "\t\t\t\t\t\tTraining",
+            ofDrawColoredBitmapString(red, "\t\t\t\tTraining",
                                       left_margin * 2, top_margin);
             drawTrainingInfo();
             enableTrainingSampleGUI(true);
-            tab_start += 3 * kTabWidth;
+            tab_start += 2 * kTabWidth;
             break;
         case PREDICTION:
             if (pipeline_->getClassifier() == nullptr) { break; }
-            ofDrawColoredBitmapString(red, "\t\t\t\t\t\t\t\tPrediction",
+            ofDrawColoredBitmapString(red, "\t\t\t\t\t\tPrediction",
                                       left_margin * 2, top_margin);
             drawPrediction();
             enableTrainingSampleGUI(false);
-            tab_start += 4 * kTabWidth;
+            tab_start += 3 * kTabWidth;
             break;
         default:
             ofLog(OF_LOG_ERROR) << "Unknown tag!";
@@ -2562,7 +2566,7 @@ void ofApp::mouseReleased(int x, int y, int button) {
     // Tab click detection
     const uint32_t left_margin = 10;
     const uint32_t top_margin = 45;
-    const uint32_t tab_width = 120;
+    const uint32_t tab_width = 126;
 
     // Potential new state will be updated if tab switch is invoked. Record it
     // with the current state and assign its value back at the end of this
@@ -2578,20 +2582,22 @@ void ofApp::mouseReleased(int x, int y, int button) {
             potential_new_state = AppState::kPipeline;
             potential_new_fragment = PIPELINE;
             ESP_EVENT("Jump to PIPELINE tab (mouse)");
-        } else if (x < left_margin + 3 * tab_width) {
-            potential_new_state = AppState::kAnalysis;
-            potential_new_fragment = ANALYSIS;
-            ESP_EVENT("Jump to ANALYSIS tab (mouse)");
-        } else if (x < left_margin + 4 * tab_width
+        } else if (x < left_margin + 3 * tab_width
                    && pipeline_->getClassifier() != nullptr) {
             potential_new_state = AppState::kTraining;
             potential_new_fragment = TRAINING;
             ESP_EVENT("Jump to TRAINING tab (mouse)");
-        } else if (x < left_margin + 5 * tab_width
+        } else if (x < left_margin + 4 * tab_width
                    && pipeline_->getClassifier() != nullptr) {
             potential_new_state = AppState::kPrediction;
             potential_new_fragment = PREDICTION;
             ESP_EVENT("Jump to PREDICTION tab (mouse)");
+        } else if (x < left_margin + 5 * tab_width ||
+                   (x < left_margin + 3 * tab_width
+                    && pipeline_->getClassifier() == nullptr)) {
+            potential_new_state = AppState::kAnalysis;
+            potential_new_fragment = ANALYSIS;
+            ESP_EVENT("Jump to ANALYSIS tab (mouse)");
         }
     }
 
