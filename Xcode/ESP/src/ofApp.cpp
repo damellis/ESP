@@ -1795,7 +1795,7 @@ void ofApp::drawTrainingInfo() {
     uint32_t stage_height =
         (ofGetHeight() - margin_top
          - margin // between the two plots
-         - 72 // indices (1 / 3) and scores for training samples
+         - 70 // indices (1 / 3) and scores for training samples
          - 35 // bottom margin and status message
          - training_sample_guis_[0]->getHeight()) / 2;
 
@@ -1827,34 +1827,11 @@ void ofApp::drawTrainingInfo() {
         stage_top += paragraph.getHeight();
     }
 
-    // 3. Draw prediction related (likelihood/distance)
+    // 3. Draw samples (with features if requested).
     uint32_t width = stage_width / kNumMaxLabels_;
     float minY = plot_inputs_.getRanges().first;
     float maxY = plot_inputs_.getRanges().second;
 
-    for (int i = 0; i < predicted_class_distances_.size() &&
-                    i < predicted_class_likelihoods_.size(); i++) {
-        ofColor backgroundColor, textColor;
-        UINT label = predicted_class_labels_[i];
-        uint32_t x = stage_left + (label - 1) * width;
-        if (predicted_label_ == label) {
-            backgroundColor = ofColor(255);
-            textColor = ofColor(0);
-        } else {
-            backgroundColor = ofGetBackgroundColor();
-            textColor = ofColor(255);
-        }
-        double likelihood = predicted_class_likelihoods_[i];
-        double distance = predicted_class_distances_[i];
-        ofDrawBitmapString(
-            std::to_string((int) (likelihood * 100)) + "% (" +
-            std::to_string(distance).substr(0,4) + ")",
-            x, stage_top);
-    }
-
-    stage_top += 12;
-
-    // 4. Draw samples (with features if requested).
     for (uint32_t i = 0; i < kNumMaxLabels_; i++) {
         uint32_t label = i + 1;
         uint32_t x = stage_left + i * width;
@@ -1910,55 +1887,66 @@ void ofApp::drawTrainingInfo() {
         plot_sample_button_locations_[i].second.set(
             x + width - 20, stage_top + stage_height, 20, 20);
 
-        ofDrawBitmapString("Closeness To:", x, stage_top + stage_height + 32);
+        ofDrawBitmapString("Score: ", x, stage_top + stage_height + 32);
+        if (training_data_manager_.hasSampleClassLikelihoods(
+                label, plot_sample_indices_[i])) {
+            double score = training_data_manager_.getSampleClassLikelihoods(
+                label, plot_sample_indices_[i])[i + 1];
+            // We highlight:
+            // (1) the threshold is not set, use a gradient red;
+            // (2) the threshold is set and the score is smaller, red
+            if (true_positive_threshold_ == 0) {
+                // the lower the score => the less likely it is to be
+                // classified correctly => the more red we want to draw
+                // => the less green and blue it should have
+                ofSetColor(255, 255 * score, 255 * score);
+            } else if (score < true_positive_threshold_) {
+                ofSetColor(255, 0, 0);
+            }
+            ofDrawBitmapString(std::to_string((int) (score * 100)) + string("%"),
+                x + 8 * strlen("Score: "), stage_top + stage_height + 32);
+            ofSetColor(255);
+        } else {
+            ofDrawBitmapString("-",
+                x + 8 * strlen("Score: "), stage_top + stage_height + 32);
+        }
+        ofDrawBitmapString("Confusion (%)",
+            x, stage_top + stage_height + 44);
 
         for (int j = 0; j < kNumMaxLabels_; j++) {
+            if (i == j) continue;
             ofDrawBitmapString(std::to_string(j + 1),
                                x + j * width / kNumMaxLabels_,
-                               stage_top + stage_height + 44);
+                               stage_top + stage_height + 56);
 
             if (training_data_manager_.hasSampleClassLikelihoods(
                     label, plot_sample_indices_[i])) {
                 double score = training_data_manager_.getSampleClassLikelihoods(
                     label, plot_sample_indices_[i])[j + 1];
-                if (i == j) {
-                    // We highlight:
-                    // (1) the threshold is not set, use a gradient red;
-                    // (2) the threshold is set and the score is smaller, red
-                    if (true_positive_threshold_ == 0) {
-                        // the lower the score => the less likely it is to be
-                        // classified correctly => the more red we want to draw
-                        // => the less green and blue it should have
-                        ofSetColor(255, 255 * score, 255 * score);
-                    } else if (score < true_positive_threshold_) {
-                        ofSetColor(255, 0, 0);
-                    }
-                } else {
-                    // We highlight:
-                    // (1) the threshold is not set, use a gradient red;
-                    // (2) the threshold is set and the score is larger, red
-                    if (false_negative_threshold_ == 0) {
-                        // the higher the score => the more confused it is with
-                        // another class => the more red we want to draw => the
-                        // less green and blue it should have
-                        ofSetColor(255, 255 * (1.0 - score), 255 * (1.0 - score));
-                    } else if (score > false_negative_threshold_) {
-                        ofSetColor(255, 0, 0);
-                    }
+                // We highlight:
+                // (1) the threshold is not set, use a gradient red;
+                // (2) the threshold is set and the score is larger, red
+                if (false_negative_threshold_ == 0) {
+                    // the higher the score => the more confused it is with
+                    // another class => the more red we want to draw => the
+                    // less green and blue it should have
+                    ofSetColor(255, 255 * (1.0 - score), 255 * (1.0 - score));
+                } else if (score > false_negative_threshold_) {
+                    ofSetColor(255, 0, 0);
                 }
                 ofDrawBitmapString(std::to_string((int) (score * 100)),
                     x + j * width / kNumMaxLabels_,
-                    stage_top + stage_height + 56);
+                    stage_top + stage_height + 68);
                 ofSetColor(255);
             } else {
                 ofDrawBitmapString("-", x + j * width / kNumMaxLabels_,
-                    stage_top + stage_height + 56);
+                    stage_top + stage_height + 68);
             }
         }
 
         // TODO(dmellis): only update these values when the screen size changes.
         training_sample_guis_[i]->setPosition(x + margin / 8,
-                                              stage_top + stage_height + 60);
+                                              stage_top + stage_height + 72);
         training_sample_guis_[i]->setWidth(width - margin / 4);
         training_sample_guis_[i]->draw();
     }
