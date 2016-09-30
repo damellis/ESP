@@ -23,8 +23,6 @@
  \li Zero or one training samples checkers, to provide the user with feedback
  on the quality of their training data. Specified by a call to
  useTrainingSampleChecker().
- \li Optional advice to the user on the collection of training data, using
- useTrainingDataAdvice().
  \li Whether or not to use leave-one-out scoring of training samples,
  specified using useLeaveOneOutScoring().
  \li Optional thresholds to use for deciding whether or not to warn the user
@@ -152,31 +150,6 @@ void useCalibrator(Calibrator &calibrator);
  @param checker the function to be called on the user's training samples
  */
 void useTrainingSampleChecker(TrainingSampleChecker checker);
-
-/**
- @brief Provide the user with custom advice on collecting training data.
-
- This advice will be shown in the training tab of the interface. If supplied,
- it will override the default, per-classifier advice provided by ESP.
-
- You may want to provide advice on:
-   - the amount of training data required
-   - the effect of gathering additional training data
-   - the effect of individual bad training samples
-   - what good sample look like (although see useTrainingSampleChecker() for
-     a programmatic means of providing the user with feedback on the quality of
-     individual training samples)
-   - etc.
-
- On the other hand, try to keep the advice relatively brief, as it will take up
- space on the training tab of the ESP interface.
-
- The string will be automatically wrapped at the edge of the screen. No markup
- or formatting (including explicit line breaks) supported.
-
- @param advice the advice to show to the user
- */
-void useTrainingDataAdvice(string advice);
 
 /**
  @brief Whether or not to do leave-one-out scoring of training data.

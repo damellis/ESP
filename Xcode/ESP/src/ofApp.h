@@ -122,7 +122,6 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     void useOStream(OStream& stream);
     void useOStream(OStreamVector& stream);
     void useTrainingSampleChecker(TrainingSampleChecker checker);
-    void useTrainingDataAdvice(string advice);
     void useLeaveOneOutScoring(bool enable) {
         use_leave_one_out_scoring_ = enable;}
 
@@ -134,7 +133,6 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     friend void useStream(IOStream &stream);
     friend void useStream(IOStreamVector &stream);
     friend void useTrainingSampleChecker(TrainingSampleChecker checker);
-    friend void useTrainingDataAdvice(string advice);
     friend void useLeaveOneOutScoring(bool enable);
     friend void setTruePositiveWarningThreshold(double threshold);
     friend void setFalseNegativeWarningThreshold(double threshold);
@@ -565,9 +563,6 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     //========================================================================
     // Utils
     //========================================================================
-    string getTrainingDataAdvice();
-    string training_data_advice_ = "";
-
     void updateEventReceived(ofEventArgs& arg);  // For renaming
     uint32_t update_counter_ = 0;
     std::shared_ptr<ofConsoleFileLoggerChannel> logger_;
