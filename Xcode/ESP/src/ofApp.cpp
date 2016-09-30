@@ -1580,13 +1580,29 @@ void ofApp::draw() {
         ofDrawBitmapString("Calibration\tPipeline\tAnalysis",
                            left_margin * 2, top_margin);
     }
-
+    
     ofDrawBitmapString(getAppStateInstruction(), left_margin,
                        top_margin + margin);
 
     ofColor red = ofColor(0xFF, 0, 0);
     uint32_t tab_start = 0;
     uint32_t kTabWidth = 126;
+    
+    string classifier = (pipeline_->getClassifier() == nullptr ? "none" :
+                         pipeline_->getClassifier()->getClassifierType());
+    ofDrawBitmapString("Classifier: ",
+                       left_margin * 2 + kTabWidth * 5 + 50, top_margin);
+    ofPushStyle();
+    ofSetColor(ofColor(0x40, 0x40, 0xFF));
+    ofDrawBitmapString(classifier,
+                       left_margin * 2 + kTabWidth * 5 + 50 + 8 * strlen("Classifier: "),
+                       top_margin);
+    ofDrawLine(left_margin * 2 + kTabWidth * 5 + 50 + 8 * strlen("Classifier: "),
+               top_margin + 2,
+               left_margin * 2 + kTabWidth * 5 + 50 + 8 * strlen("Classifier: ") +
+                 8 * classifier.size(),
+               top_margin + 2);
+    ofPopStyle();
 
     switch (fragment_) {
         case CALIBRATION:
@@ -2573,31 +2589,38 @@ void ofApp::mouseReleased(int x, int y, int button) {
     // function.
     AppState potential_new_state = state_;
     Fragment potential_new_fragment = fragment_;
-    if (x > left_margin && y > 25 && y < top_margin + 5) {
-        if (x < left_margin + tab_width) {
+    if (x > 2 * left_margin && y > 25 && y < top_margin + 5) {
+        if (x < 2 * left_margin + tab_width) {
             potential_new_state = AppState::kCalibration;
             potential_new_fragment = CALIBRATION;
             ESP_EVENT("Jump to CALIBRATION tab (mouse)");
-        } else if (x < left_margin + 2 * tab_width) {
+        } else if (x < 2 * left_margin + 2 * tab_width) {
             potential_new_state = AppState::kPipeline;
             potential_new_fragment = PIPELINE;
             ESP_EVENT("Jump to PIPELINE tab (mouse)");
-        } else if (x < left_margin + 3 * tab_width
+        } else if (x < 2 * left_margin + 3 * tab_width
                    && pipeline_->getClassifier() != nullptr) {
             potential_new_state = AppState::kTraining;
             potential_new_fragment = TRAINING;
             ESP_EVENT("Jump to TRAINING tab (mouse)");
-        } else if (x < left_margin + 4 * tab_width
+        } else if (x < 2 * left_margin + 4 * tab_width
                    && pipeline_->getClassifier() != nullptr) {
             potential_new_state = AppState::kPrediction;
             potential_new_fragment = PREDICTION;
             ESP_EVENT("Jump to PREDICTION tab (mouse)");
-        } else if (x < left_margin + 5 * tab_width ||
-                   (x < left_margin + 3 * tab_width
+        } else if (x < 2 * left_margin + 5 * tab_width ||
+                   (x < 2 * left_margin + 3 * tab_width
                     && pipeline_->getClassifier() == nullptr)) {
             potential_new_state = AppState::kAnalysis;
             potential_new_fragment = ANALYSIS;
             ESP_EVENT("Jump to ANALYSIS tab (mouse)");
+        } else if (pipeline_->getClassifier() != nullptr
+                   && x > 2 * left_margin + 5 * tab_width + 50 + 8 * strlen("Classifier: ")
+                   && x < 2 * left_margin + 5 * tab_width + 50 + 8 * strlen("Classifier: ") +
+                      8 * pipeline_->getClassifier()->getClassifierType().size()
+                   && state_ != AppState::kConfiguration) {
+            ofLaunchBrowser("http://www.nickgillian.com/wiki/pmwiki.php/GRT/" +
+                            pipeline_->getClassifier()->getClassifierType());
         }
     }
 
