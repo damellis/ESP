@@ -52,51 +52,6 @@ static std::string kLogDirectory = "%APPDATA%/ESP/";
 string encodeName(const string &name);
 string decodeName(const string &name);
 
-class Palette {
-  public:
-    vector<ofColor> generate(uint32_t n) {
-        // TODO(benzh) fill instead of re-generate.
-        if (n > size) {
-            size = n;
-            do_generate(size);
-        }
-
-        std::vector<ofColor> sliced(colors.begin(), colors.begin() + n);
-        return sliced;
-    }
-
-    Palette() : size(256) {
-        do_generate(size);
-    }
-  private:
-    void do_generate(uint32_t n) {
-        uint32_t numDimensions = n;
-        // Code snippet from ofxGrtTimeseriesPlot.cpp
-
-        colors.resize(n);
-        // Setup the default colors
-        if( numDimensions >= 1 ) colors[0] = ofColor(255,0,0); //red
-        if( numDimensions >= 2 ) colors[1] = ofColor(0,255,0); //green
-        if( numDimensions >= 3 ) colors[2] = ofColor(0,0,255); //blue
-        if( numDimensions >= 4 ) colors[3] = ofColor::orange;
-        if( numDimensions >= 5 ) colors[4] = ofColor::purple;
-        if( numDimensions >= 6 ) colors[5] = ofColor::brown;
-        if( numDimensions >= 7 ) colors[6] = ofColor::pink;
-        if( numDimensions >= 8 ) colors[7] = ofColor::grey;
-        if( numDimensions >= 9 ) colors[8] = ofColor::cyan;
-
-        //Randomize the remaining colors
-        for(unsigned int n=9; n<numDimensions; n++){
-            colors[n][0] = ofRandom(50,255);
-            colors[n][1] = ofRandom(50,255);
-            colors[n][2] = ofRandom(50,255);
-        }
-    }
-
-    uint32_t size;
-    std::vector<ofColor> colors;
-};
-
 void ofApp::useCalibrator(Calibrator &calibrator) {
     calibrator_ = &calibrator;
 }
@@ -214,8 +169,6 @@ void ofApp::setup() {
 
     istream_->onDataReadyEvent(this, &ofApp::onDataIn);
 
-    Palette color_palette;
-
     predicted_label_buffer_.resize(buffer_size_);
     predicted_class_labels_buffer_.resize(buffer_size_);
     predicted_class_distances_buffer_.resize(buffer_size_);
@@ -226,12 +179,18 @@ void ofApp::setup() {
     plot_raw_.setDrawGrid(true);
     plot_raw_.setDrawInfoText(true);
     plot_raw_.setChannelNames(istream_labels);
+    plot_raw_.setAxisTitle("Time", "");
+    plot_raw_.setChannelColors(color_palette_.generate(istream_->getNumOutputDimensions()));
+    plot_raw_.setLinkRanges(true);
     plot_inputs_.setup(buffer_size_, istream_->getNumOutputDimensions(), "Input");
     plot_inputs_.setDrawGrid(true);
     plot_inputs_.setDrawInfoText(true);
     plot_inputs_.setChannelNames(istream_labels);
     plot_inputs_.onRangeSelected(this, &ofApp::onInputPlotRangeSelection, NULL);
     plot_inputs_.onValueHighlighted(this, &ofApp::onInputPlotValueSelection, NULL);
+    plot_inputs_.setAxisTitle("Time", "");
+    plot_inputs_.setChannelColors(color_palette_.generate(istream_->getNumOutputDimensions()));
+    plot_inputs_.setLinkRanges(true);
     if (istream_->getNumOutputDimensions() >= kTooManyFeaturesThreshold) {
         plot_inputs_snapshot_.setup(istream_->getNumOutputDimensions(), 1, "Snapshot");
         plot_inputs_.setDrawInfoText(false); // this will be too long to show
@@ -240,21 +199,30 @@ void ofApp::setup() {
     plot_testdata_window_.setup(buffer_size_, istream_->getNumOutputDimensions(), "Test Data");
     plot_testdata_window_.setDrawGrid(true);
     plot_testdata_window_.setDrawInfoText(true);
+    plot_testdata_window_.setChannelColors(color_palette_.generate(istream_->getNumOutputDimensions()));
 
     plot_testdata_overview_.setup(istream_->getNumOutputDimensions(), "Overview");
     plot_testdata_overview_.onRangeSelected(this, &ofApp::onTestOverviewPlotSelection, NULL);
 
     plot_class_likelihoods_.setup(buffer_size_, kNumMaxLabels_, "Class Likelihoods");
     plot_class_likelihoods_.setDrawInfoText(true);
-    // plot_class_likelihoods_.setColorPalette(color_palette.generate(kNumMaxLabels_));
+    plot_class_likelihoods_.setChannelColors(color_palette_.generate(kNumMaxLabels_));
     plot_class_likelihoods_.onValueHighlighted(this, &ofApp::onClassLikelihoodsPlotValueHighlight, NULL);
+    plot_class_likelihoods_.setAxisTitle("Time", "Likelihood (%)");
+    plot_class_likelihoods_.setLinkRanges(true);
 
     plot_class_distances_.resize(kNumMaxLabels_);
     for (int i = 0; i < kNumMaxLabels_; i++) {
-        InteractiveTimeSeriesPlot &plot = plot_class_distances_[i];
-        plot.setup(buffer_size_, 2, std::to_string(i + 1));
-        plot.setChannelNames({ "Threshold", "Actual" });
-        plot.onValueHighlighted(this, &ofApp::onClassDistancePlotValueHighlight, NULL);
+        InteractiveTimeSeriesPlot *plot = plot_class_distances_[i] = new InteractiveTimeSeriesPlot();
+        plot->setup(buffer_size_, 2, std::to_string(i + 1));
+        plot->setChannelNames({ "Threshold", "Actual" });
+        plot->onValueHighlighted(this, &ofApp::onClassDistancePlotValueHighlight, NULL);
+        plot->setDrawInfoText(true);
+        plot->setDrawPlotValue(false);
+        plot->setDrawGrid(false);
+        plot->setAxisTitle("", "");
+        plot->setChannelColors({ofColor(0, 255, 0), ofColor(255,255,255)});
+        plot->setLinkRanges(true);
     }
 
     // Parse the user supplied pipeline and extract information:
@@ -270,11 +238,11 @@ void ofApp::setup() {
     for (int i = 0; i < num_preprocessing_modules_; i++) {
         PreProcessing* pp = pipeline_->getPreProcessingModule(i);
         uint32_t dim = pp->getNumOutputDimensions();
-        ofxGrtTimeseriesPlot plot;
-        plot.setup(buffer_size_, dim, "PreProcessing Stage " + std::to_string(i));
-        plot.setDrawGrid(true);
-        plot.setDrawInfoText(true);
-        // plot.setColorPalette(color_palette.generate(dim));
+        ofxGrtTimeseriesPlot *plot = new ofxGrtTimeseriesPlot();
+        plot->setup(buffer_size_, dim, "PreProcessing Stage " + std::to_string(i));
+        plot->setDrawGrid(true);
+        plot->setDrawInfoText(true);
+        // plot.setColorPalette(color_palette_.generate(dim));
         plot_pre_processed_.push_back(plot);
 
         // the final stage pre-processing can be used as the live feature plots
@@ -290,17 +258,20 @@ void ofApp::setup() {
     // 2. Parse features.
     num_feature_modules_ = pipeline_->getNumFeatureExtractionModules();
     for (int i = 0; i < num_feature_modules_; i++) {
-        vector<ofxGrtTimeseriesPlot> feature_at_stage_i;
+        vector<ofxGrtTimeseriesPlot *> feature_at_stage_i;
 
         FeatureExtraction* fe = pipeline_->getFeatureExtractionModule(i);
         uint32_t feature_dim = fe->getNumOutputDimensions();
 
         if (feature_dim < kTooManyFeaturesThreshold) {
             for (int i = 0; i < feature_dim; i++) {
-                ofxGrtTimeseriesPlot plot;
-                plot.setup(buffer_size_, 1, "Feature " + std::to_string(i));
-                plot.setDrawInfoText(true);
-                // plot.setColorPalette(color_palette.generate(feature_dim));
+                ofxGrtTimeseriesPlot *plot = new ofxGrtTimeseriesPlot();
+                plot->setup(buffer_size_, 1, "Feature " + std::to_string(i));
+                plot->setDrawGrid(false);
+                plot->setDrawInfoText(true);
+                plot->setDrawPlotValue(false);
+                plot->setAxisTitle("", "");
+                // plot.setColorPalette(color_palette_.generate(feature_dim));
                 feature_at_stage_i.push_back(plot);
             }
             // Each feature will be draw with a height of stage_height *
@@ -309,11 +280,13 @@ void ofApp::setup() {
             num_pipeline_stages_ += ceil(feature_dim * kPipelineHeightWeight);
         } else {
             // We will have only one here.
-            ofxGrtTimeseriesPlot plot;
-            plot.setup(feature_dim, 1, "Feature");
-            plot.setDrawGrid(true);
-            plot.setDrawInfoText(true);
-            // plot.setColorPalette(color_palette.generate(feature_dim));
+            ofxGrtTimeseriesPlot *plot = new ofxGrtTimeseriesPlot();
+            plot->setup(feature_dim, 1, "Feature");
+            plot->setDrawGrid(true);
+            plot->setDrawInfoText(true);
+            plot->setDrawPlotValue(false);
+            plot->setAxisTitle("Dimension", "");
+            // plot.setColorPalette(color_palette_.generate(feature_dim));
             feature_at_stage_i.push_back(plot);
 
             // Since we will be drawing each feature in a separate plot, count them
@@ -343,7 +316,7 @@ void ofApp::setup() {
             plot.setup(label_dim, calibrators[i].getName(),
                 calibrators[i].getDescription() + "\nPress and hold `" +
                 std::to_string(i + 1) + "` to record.");
-            plot.setColorPalette(color_palette.generate(label_dim));
+            plot.setColorPalette(color_palette_.generate(label_dim));
             plot_calibrators_.push_back(plot);
         }
     }
@@ -352,7 +325,7 @@ void ofApp::setup() {
         uint32_t label_dim = istream_->getNumOutputDimensions();
         Plotter plot;
         plot.setup(label_dim, training_data_manager_.getLabelName(i + 1));
-        plot.setColorPalette(color_palette.generate(label_dim));
+        plot.setColorPalette(color_palette_.generate(label_dim));
         plot_samples_.push_back(plot);
 
         if (istream_->getNumOutputDimensions() >= kTooManyFeaturesThreshold) {
@@ -367,7 +340,7 @@ void ofApp::setup() {
             for (int j = 0; j < num_final_features; j++) {
                 Plotter plot;
                 plot.setup(1, "Feature " + std::to_string(j + 1));
-                plot.setColorPalette(color_palette.generate(label_dim));
+                plot.setColorPalette(color_palette_.generate(label_dim));
                 feature_plots.push_back(plot);
             }
         } else {
@@ -376,7 +349,7 @@ void ofApp::setup() {
             // The case of many features (like FFT), draw a single plot.
             Plotter plot;
             plot.setup(1, "Feature");
-            plot.setColorPalette(color_palette.generate(label_dim));
+            plot.setColorPalette(color_palette_.generate(label_dim));
             feature_plots.push_back(plot);
         }
         plot_sample_features_.push_back(feature_plots);
@@ -689,6 +662,7 @@ void ofApp::updateTestWindowPlot() {
     plot_testdata_window_.reset();
     for (int i = start; i < end; i++) {
         plot_testdata_window_.setup(end - start, istream_->getNumInputDimensions(), "Test Data");
+        plot_testdata_window_.setChannelColors(color_palette_.generate(istream_->getNumOutputDimensions()));
         for (int i = start; i < end; i++) {
             if (pipeline_->getTrained()) {
                 int predicted_label = test_data_predicted_class_labels_[i];
@@ -1386,7 +1360,7 @@ void ofApp::update() {
                     getSupportsClassDistanceToNullRejectionCoefficient()) {
                     double nullRejectionCoeff =
                         pipeline_->getClassifier()->getNullRejectionCoeff();
-                    plot_class_distances_[predicted_class_labels_[i] - 1].update(
+                    plot_class_distances_[predicted_class_labels_[i] - 1]->update(
                         vector<double>{
                             nullRejectionCoeff,
                             predicted_class_distances_[i]
@@ -1394,7 +1368,7 @@ void ofApp::update() {
                         "");
                 } else {
                     vector<double> thresholds = pipeline_->getClassifier()->getNullRejectionThresholds();
-                    plot_class_distances_[predicted_class_labels_[i] - 1].update(
+                    plot_class_distances_[predicted_class_labels_[i] - 1]->update(
                         vector<double>{
                             (thresholds.size() > i ? thresholds[i] : 0.0),
                             predicted_class_distances_[i]
@@ -1425,11 +1399,11 @@ void ofApp::update() {
             if (data.size() < kTooManyFeaturesThreshold) {
                 for (int k = 0; k < data.size(); k++) {
                     vector<double> v = {data[k]};
-                    plot_live_features_[k].update(v);
+                    plot_live_features_[k]->update(v);
                 }
             } else {
                 assert(plot_live_features_.size() == 1);
-                plot_live_features_[0].setData(data);
+                plot_live_features_[0]->setData(data);
             }
         }
 
@@ -1441,25 +1415,30 @@ void ofApp::update() {
             // Till this point, either `pipeline_->predict` or
             // `pipeline->preProcessData` has been called. It's safe to directly
             // get the data and update the plots in the PIPELINE tab.
+            
+            // don't update the last plot, because it's already being updated
+            // via plot_live_features_.
 
             // Pre-processed data
-            for (j = 0; j < pipeline_->getNumPreProcessingModules(); j++) {
+            for (j = 0;
+                 j + (pipeline_->getNumFeatureExtractionModules() == 0 ? 1 : 0)
+                   < pipeline_->getNumPreProcessingModules(); j++) {
                 data = pipeline_->getPreProcessedData(j);
-                plot_pre_processed_[j].update(data);
+                plot_pre_processed_[j]->update(data);
             }
 
             // feature data
-            for (j = 0; j < pipeline_->getNumFeatureExtractionModules(); j++) {
+            for (j = 0; j + 1 < pipeline_->getNumFeatureExtractionModules(); j++) {
                 // Working on j-th stage.
                 data = pipeline_->getFeatureExtractionData(j);
                 if (data.size() < kTooManyFeaturesThreshold) {
                     for (int k = 0; k < data.size(); k++) {
                         vector<double> v = { data[k] };
-                        plot_features_[j][k].update(v);
+                        plot_features_[j][k]->update(v);
                     }
                 } else {
                     assert(plot_features_[j].size() == 1);
-                    plot_features_[j][0].setData(data);
+                    plot_features_[j][0]->setData(data);
                 }
             }
 
@@ -1625,6 +1604,7 @@ void ofApp::draw() {
     uint32_t bottom = top_margin + 5;
     uint32_t ceiling = 30;
     tab_start += left_margin;
+    ofSetColor(text_color_);
     ofDrawLine(0, bottom, tab_start, bottom);
     ofDrawLine(tab_start, bottom, tab_start, ceiling);
     ofDrawLine(tab_start, ceiling, tab_start + kTabWidth, ceiling);
@@ -1679,7 +1659,7 @@ void ofApp::drawLiveFeatures(uint32_t stage_left, uint32_t stage_top,
     uint32_t height = stage_height / plot_live_features_.size();
 
     for (int j = 0; j < plot_live_features_.size(); j++) {
-        plot_live_features_[j].draw(stage_left, stage_top, stage_width, height);
+        plot_live_features_[j]->draw(stage_left, stage_top, stage_width, height);
         stage_top += height;
     }
 }
@@ -1733,7 +1713,7 @@ void ofApp::drawLivePipeline() {
     for (int i = 0; i < pipeline_->getNumPreProcessingModules(); i++) {
         // working on pre-processing stage i.
         ofPushStyle();
-        plot_pre_processed_[i].
+        plot_pre_processed_[i]->
                 draw(stage_left, stage_top, stage_width, stage_height);
         ofPopStyle();
         stage_top += stage_height + margin;
@@ -1746,7 +1726,7 @@ void ofApp::drawLivePipeline() {
         uint32_t height = plot_features_[i].size() == 1 ?
                 stage_height : stage_height * kPipelineHeightWeight;
         for (int j = 0; j < plot_features_[i].size(); j++) {
-            plot_features_[i][j].draw(stage_left, stage_top, stage_width, height);
+            plot_features_[i][j]->draw(stage_left, stage_top, stage_width, height);
             stage_top += height;
         }
         ofPopStyle();
@@ -1977,7 +1957,7 @@ void ofApp::drawPrediction() {
     uint32_t height = stage_height / kNumMaxLabels_;
     double minDistance = 0.0, maxDistance = 1.0;
     for (int i = 0; i < kNumMaxLabels_; i++) {
-        plot_class_distances_[i].draw(stage_left, stage_top, stage_width, height);
+        plot_class_distances_[i]->draw(stage_left, stage_top, stage_width, height);
         stage_top += height;
     }
 }
@@ -2106,7 +2086,7 @@ void ofApp::afterTrainModel() {
     updateTestWindowPlot();
     pipeline_->reset();
     for (int i = 0; i < plot_class_distances_.size(); i++)
-        plot_class_distances_[i].reset();
+        plot_class_distances_[i]->reset();
 }
 
 void ofApp::scoreTrainingData(bool leaveOneOut) {
