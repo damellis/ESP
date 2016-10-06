@@ -138,6 +138,6 @@ void setup()
 
     useTrainingSampleChecker(checkTrainingSample);
   
-    setTruePositiveWarningThreshold(0.50);
+    setTruePositiveWarningThreshold(0.60);
     setFalseNegativeWarningThreshold(0.30);
 }

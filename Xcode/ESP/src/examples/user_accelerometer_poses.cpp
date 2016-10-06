@@ -121,4 +121,7 @@ void setup()
          "How different from the training data a new gesture can be and "
          "still be considered the same gesture. The higher the number, the more "
          "different it can be.", updateVariability);
+  
+    setTruePositiveWarningThreshold(0.90);
+    setFalseNegativeWarningThreshold(0.10);
 }
