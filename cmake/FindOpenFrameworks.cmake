@@ -10,18 +10,18 @@
 # =============================================================
 #   Populate necessary variables PLATFORM and LIB_PREFIX
 # =============================================================
+set(LIB_PREFIX "lib")
 if(APPLE)
   set(PLATFORM "osx")
   set(LIB_PREFIX "")
 elseif(UNIX AND ${ARCH} STREQUAL "x86_64")
   set(PLATFORM "linux64")
-  set(LIB_PREFIX "lib")
 elseif(UNIX AND ${ARCH} STREQUAL "x86_32")
   set(PLATFORM "linux")
-  set(LIB_PREFIX "lib")
 elseif(UNIX AND ${ARCH} STREQUAL "armv6")
   set(PLATFORM "linuxarmv6l")
-  set(LIB_PREFIX "lib")
+elseif(UNIX AND ${ARCH} STREQUAL "armv7")
+  set(PLATFORM "linuxarmv6l")
 elseif(MSVC)
   set(PLATFORM "windows")
 endif()
