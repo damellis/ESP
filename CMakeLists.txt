@@ -1,7 +1,7 @@
 set(PROJECT ESP)
 
 project(${PROJECT})
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.1)
 
 # =============================================================
 #   Project configuration
