@@ -1,43 +1,35 @@
-# Adapted from github.com/flv0/openFrameworks branch feature-cmake-config
-get_filename_component(openFrameworksRoot
-  "${CMAKE_CURRENT_LIST_DIR}/third-party/openFrameworks"
-  ABSOLUTE
-  )
+# Adapted from github.com/flv0/openFrameworks branch feature-cmake-config.
+#
+# Prerequisite: assume the variable ${openFrameworksRoot} is configured and we
+#     can use the variable ${ARCH} for the architecture.
+#
+# Effect: This will configure ${openFrameworks_INCLUDE_DIRS} and
+#     ${openFrameworks_LIBRARIES}.
+#
 
-# Use $ROOT/cmake/ as custom module path
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/")
-
-set(LIB_PREFIX)
-# Having to make the following distinction is a result of openFrameworks being
-# not properly deployed into standard lib/include paths as of yet, but this is
-# subject to change.
-if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-  if(${CMAKE_SIZEOF_VOID_P} EQUAL 8)
-    set(PLATFORM "linux64")
-  else()
-    set(PLATFORM "linux")
-  endif()
-  set(LIB_PREFIX "lib")
-elseif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+# =============================================================
+#   Populate necessary variables PLATFORM and LIB_PREFIX
+# =============================================================
+if(APPLE)
   set(PLATFORM "osx")
-elseif(${WIN32})
-  set(PLATFORM "vs")
+  set(LIB_PREFIX "")
+elseif(UNIX AND ${ARCH} STREQUAL "x86_64")
+  set(PLATFORM "linux64")
+  set(LIB_PREFIX "lib")
+elseif(UNIX AND ${ARCH} STREQUAL "x86_32")
+  set(PLATFORM "linux")
+  set(LIB_PREFIX "lib")
+elseif(UNIX AND ${ARCH} STREQUAL "armv6")
+  set(PLATFORM "linuxarmv6l")
+  set(LIB_PREFIX "lib")
+elseif(MSVC)
+  set(PLATFORM "windows")
 endif()
 
-if("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU")
-  execute_process(
-    COMMAND ${CMAKE_CXX_COMPILER} -dumpversion OUTPUT_VARIABLE GCC_VERSION)
-  if ((GCC_VERSION VERSION_GREATER 4.3 OR GCC_VERSION VERSION_EQUAL 4.3))
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-  else ()
-    message(FATAL_ERROR
-      "openFrameworks requires >=gcc-4.3 for C++11 support.")
-  endif()
-elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-endif()
-
-if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+# =============================================================
+#   Get platform-dependent library right
+# =============================================================
+if(${PLATFORM} STREQUAL "osx")
   set(CAIRO_INCLUDE_DIRS ${openFrameworksRoot}/libs/cairo/include/cairo)
   set(CAIRO_LIBRARIES
     ${openFrameworksRoot}/libs/cairo/lib/${PLATFORM}/${LIB_PREFIX}cairo-script-interpreter.a
@@ -80,7 +72,10 @@ else(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
   find_package(RtAudio REQUIRED)
 endif()
 
-set(openFrameworks_INCLUDES
+# =============================================================
+#   Configure include directories
+# =============================================================
+set(openFrameworks_INCLUDE_DIRS
   # oF include directories
   ${openFrameworksRoot}/libs/openFrameworks
   ${openFrameworksRoot}/libs/openFrameworks/3d
@@ -118,6 +113,10 @@ set(openFrameworks_INCLUDES
   /usr/include
   )
 
+# =============================================================
+#   Configure openFrameworks static library
+#   Prefer to use release to debug library
+# =============================================================
 if(EXISTS "${openFrameworksRoot}/libs/openFrameworksCompiled/lib/${PLATFORM}/${LIB_PREFIX}openFrameworks.a")
   set(openFrameworks_STATIC
     ${openFrameworksRoot}/libs/openFrameworksCompiled/lib/${PLATFORM}/${LIB_PREFIX}openFrameworks.a)
@@ -126,6 +125,9 @@ else()
     ${openFrameworksRoot}/libs/openFrameworksCompiled/lib/${PLATFORM}/${LIB_PREFIX}openFrameworksDebug.a)
 endif()
 
+# =============================================================
+#   Configure openFrameworks_LIBRARIES
+# =============================================================
 set(openFrameworks_LIBRARIES
   # openFrameworks
   ${openFrameworks_STATIC}
@@ -160,7 +162,32 @@ set(openFrameworks_LIBRARIES
   -L${openFrameworksRoot}/libs/poco/lib/${PLATFORM}
   )
 
-if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+# =============================================================
+#   Final touch to update more libraries
+# =============================================================
+if(APPLE)
+  # osx-specific
+
+  # fmodex dylib
+  set(fmodex_LIBRARY ${openFrameworksRoot}/libs/fmodex/lib/${PLATFORM}/libfmodex.dylib)
+
+  # All includes
+  set(openFrameworks_INCLUDES
+    ${openFrameworks_INCLUDES}
+    ${openFrameworksRoot}/libs/fmodex/include
+    )
+
+  # All libraries
+  set(openFrameworks_LIBRARIES
+    ${openFrameworks_LIBRARIES}
+    ${fmodex_LIBRARY}
+    "-framework Accelerate -framework QTKit -framework GLUT -framework AGL"
+    "-framework ApplicationServices -framework AudioToolbox -framework CoreAudio"
+    "-framework CoreFoundation -framework CoreServices -framework OpenGL"
+    "-framework IOKit -framework Cocoa -framework CoreVideo"
+    "-framework AVFoundation -framework CoreMedia -framework QuartzCore"
+    )
+elseif(UNIX)
   # Linux Specific
   find_library(X11_LIB X11)
   find_library(PTHREAD_LIB pthread)
@@ -186,29 +213,6 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
     "-lgrt -lboost_filesystem -lboost_system"
     "-lPocoCrypto -lPocoData -lPocoFoundation -lPocoJSON"
     "-lPocoNet -lPocoUtil -lPocoXML -lPocoZip"
-    )
-
-elseif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-  # osx-specific
-
-  # fmodex dylib
-  set(fmodex_LIBRARY ${openFrameworksRoot}/libs/fmodex/lib/${PLATFORM}/libfmodex.dylib)
-
-  # All includes
-  set(openFrameworks_INCLUDES
-    ${openFrameworks_INCLUDES}
-    ${openFrameworksRoot}/libs/fmodex/include
-    )
-
-  # All libraries
-  set(openFrameworks_LIBRARIES
-    ${openFrameworks_LIBRARIES}
-    ${fmodex_LIBRARY}
-    "-framework Accelerate -framework QTKit -framework GLUT -framework AGL"
-    "-framework ApplicationServices -framework AudioToolbox -framework CoreAudio"
-    "-framework CoreFoundation -framework CoreServices -framework OpenGL"
-    "-framework IOKit -framework Cocoa -framework CoreVideo"
-    "-framework AVFoundation -framework CoreMedia -framework QuartzCore"
     )
 endif()
 

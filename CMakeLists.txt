@@ -4,16 +4,26 @@ project(${PROJECT})
 cmake_minimum_required(VERSION 3.0)
 
 # =============================================================
-#   openFrameworks
+#   Project configuration
 # =============================================================
-set(OF_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/third-party/openFrameworks)
-set(openFrameworks_DIR ${CMAKE_CURRENT_SOURCE_DIR})
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/")
+include(DetectArch)
+# This will populate the variable ${ARCH}
+detect_arch()
+set(CMAKE_CXX_STANDARD 11)
+
+# =============================================================
+#   Find openFrameworks, this script will populate:
+#    - ${openFrameworks_INCLUDE_DIRS}
+#    - ${openFrameworks_LIBRARIES}
+# =============================================================
+set(openFrameworksRoot ${CMAKE_CURRENT_SOURCE_DIR}/third-party/openFrameworks)
 find_package(openFrameworks REQUIRED)
 
 # =============================================================
 #   Add-ons
 # =============================================================
-set(ADDONS_PATH ${OF_ROOT}/addons)
+set(ADDONS_PATH ${openFrameworksRoot}/addons)
 
 set(OFX_DATGUI_SRC
   ${ADDONS_PATH}/ofxDatGui/src/core/ofxDatGuiComponent.cpp
@@ -99,15 +109,14 @@ set(ESP_SRC
 
 set(ESP_MAIN ${ESP_PATH}/src/main.cpp)
 
-if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+## OS dependent library configuration
+if(APPLE)
   set(OBJECTIVE_CPP_SRC ${ESP_PATH}/src/ofYesNoDialog.cpp)
   set_source_files_properties(${OBJECTIVE_CPP_SRC} PROPERTIES COMPILE_FLAGS "-x objective-c++")
   set(GRT_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/third-party/grt/)
   set(GRT_LIBRARY ${CMAKE_CURRENT_SOURCE_DIR}/Xcode/ESP/libgrt.dylib)
   set(SYS_LIBS "-lobjc")
-else()  # Linux
-  set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/")
-
+elseif(UNIX)
   find_package(Grt REQUIRED)
   if(GRT_FOUND)
     message("-- GRT found")
@@ -129,7 +138,7 @@ string(TOLOWER ${PROJECT} LIB_NAME)  ## use libesp.a instead of libESP.a
 set_target_properties(${PROJECT} PROPERTIES OUTPUT_NAME ${LIB_NAME})
 
 target_include_directories(${PROJECT} PUBLIC
-  ${openFrameworks_INCLUDES}
+  ${openFrameworks_INCLUDE_DIRS}
   ${ADDONS_INCLUDE_PATH}
   ${ESP_PATH}/src
   ${GRT_INCLUDE_DIR}
@@ -236,37 +245,4 @@ if(test)
     )
 
   add_test(esp-test runUnitTests)
-endif()
-
-# =============================================================
-#  esp-cli
-# =============================================================
-option(WITH_CLI "Build command line program" OFF)
-if(WITH_CLI)
-  set(CLI esp-cli)
-
-  set(CLI_SRC
-    ${ESP_PATH}/src/Filter.cpp
-    ${ESP_PATH}/src/MFCC.cpp
-    ${ESP_PATH}/src/ThresholdDetection.cpp
-    ${ESP_PATH}/src/training-data-manager.cpp
-    )
-
-  set(CLI_MAIN ${ESP_PATH}/src/cli.cpp)
-  add_executable(${CLI} ${CLI_SRC} ${CLI_MAIN})
-
-  target_include_directories(${CLI} PUBLIC
-    ${ESP_PATH}/src
-    ${GRT_INCLUDE_DIR}
-    )
-
-  target_link_libraries(${CLI} PUBLIC
-    ${GRT_LIBRARY}
-    ${SYS_LIBS}
-    "-framework Accelerate"
-    "-lpython2.7"
-    )
-
-  set_target_properties(${CLI} PROPERTIES COMPILE_FLAGS
-    "-Wno-unused-value -Wno-deprecated-declarations")
 endif()
