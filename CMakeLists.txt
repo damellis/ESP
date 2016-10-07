@@ -18,7 +18,7 @@ set(CMAKE_CXX_STANDARD 11)
 #    - ${openFrameworks_LIBRARIES}
 # =============================================================
 set(openFrameworksRoot ${CMAKE_CURRENT_SOURCE_DIR}/third-party/openFrameworks)
-find_package(openFrameworks REQUIRED)
+find_package(OpenFrameworks REQUIRED)
 
 # =============================================================
 #   Add-ons
