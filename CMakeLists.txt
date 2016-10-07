@@ -154,7 +154,7 @@ target_link_libraries(${PROJECT} PUBLIC
 set(APP "ESP-bin")
 add_executable(${APP} ${ESP_MAIN})
 ## Use the same name for the application (ESP.app on Mac OS)
-set_target_properties(${APP} PROPERTIES OUTPUT_NAME ${LIB_NAME})
+set_target_properties(${APP} PROPERTIES OUTPUT_NAME ${PROJECT})
 
 target_include_directories(${APP} PUBLIC
   ${ADDONS_INCLUDE_PATH}
