@@ -124,7 +124,9 @@ endif()
 # =============================================================
 #   Create library and executables
 # =============================================================
-add_executable(${PROJECT} ${ADDONS_SRC} ${ESP_SRC} ${ESP_MAIN})
+add_library(${PROJECT} STATIC ${ADDONS_SRC} ${ESP_SRC})
+string(TOLOWER ${PROJECT} LIB_NAME)  ## use libesp.a instead of libESP.a
+set_target_properties(${PROJECT} PROPERTIES OUTPUT_NAME ${LIB_NAME})
 
 target_include_directories(${PROJECT} PUBLIC
   ${openFrameworks_INCLUDES}
@@ -140,10 +142,25 @@ target_link_libraries(${PROJECT} PUBLIC
   ${SYS_LIBS}
   )
 
+set(APP "ESP-bin")
+add_executable(${APP} ${ESP_MAIN})
+## Use the same name for the application (ESP.app on Mac OS)
+set_target_properties(${APP} PROPERTIES OUTPUT_NAME ${LIB_NAME})
+
+target_include_directories(${APP} PUBLIC
+  ${ADDONS_INCLUDE_PATH}
+  ${ESP_PATH}/src
+  )
+
+target_link_libraries(${APP} PUBLIC ${PROJECT})
+
 # =============================================================
 #   Additional Flags (supress warnings)
 # =============================================================
 set_target_properties(${PROJECT} PROPERTIES COMPILE_FLAGS
+  "-Wno-unused-value -Wno-deprecated-declarations")
+
+set_target_properties(${APP} PROPERTIES COMPILE_FLAGS
   "-Wno-unused-value -Wno-deprecated-declarations")
 
 set_source_files_properties(
@@ -154,16 +171,16 @@ set_source_files_properties(
   )
 
 # =============================================================
-#   Package and copy dylib/assets (OS dependent)
+#   Package the application (copy dylib/assets, OS dependent)
 # =============================================================
-set_target_properties(${PROJECT} PROPERTIES
+set_target_properties(${APP} PROPERTIES
   MACOSX_BUNDLE TRUE
   MACOSX_BUNDLE_INFO_PLIST ${ESP_PATH}/Info.plist
   )
 
 set(OFX_ASSETS ${ADDONS_PATH}/ofxDatGui/ofxbraitsch)
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-  message( STATUS "" ${PROJECT}.app/Contents)
+  message(STATUS "" ${PROJECT}.app/Contents)
   FILE(COPY ${fmodex_LIBRARY} DESTINATION ${PROJECT}.app/Contents/MacOS)
   FILE(COPY ${OFX_ASSETS} DESTINATION ${PROJECT}.app/Contents/Resources/data/)
 elseif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
