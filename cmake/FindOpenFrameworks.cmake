@@ -142,10 +142,8 @@ set(openFrameworks_LIBRARIES
   ${GLFW3_LIB}
   ${openFrameworksRoot}/libs/poco/lib/${PLATFORM}/${LIB_PREFIX}PocoCrypto.a
   ${openFrameworksRoot}/libs/poco/lib/${PLATFORM}/${LIB_PREFIX}PocoData.a
-  ${openFrameworksRoot}/libs/poco/lib/${PLATFORM}/${LIB_PREFIX}PocoDataSQLite.a
   ${openFrameworksRoot}/libs/poco/lib/${PLATFORM}/${LIB_PREFIX}PocoFoundation.a
   ${openFrameworksRoot}/libs/poco/lib/${PLATFORM}/${LIB_PREFIX}PocoJSON.a
-  ${openFrameworksRoot}/libs/poco/lib/${PLATFORM}/${LIB_PREFIX}PocoMongoDB.a
   ${openFrameworksRoot}/libs/poco/lib/${PLATFORM}/${LIB_PREFIX}PocoNet.a
   ${openFrameworksRoot}/libs/poco/lib/${PLATFORM}/${LIB_PREFIX}PocoNetSSL.a
   ${openFrameworksRoot}/libs/poco/lib/${PLATFORM}/${LIB_PREFIX}PocoUtil.a
