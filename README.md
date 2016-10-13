@@ -2,18 +2,15 @@
 
 [![Build Status](https://travis-ci.org/damellis/ESP.svg?branch=master)](https://travis-ci.org/damellis/ESP)
 
-This project aims to help novices make sophisticated use of sensors in
-interactive projects through the application of machine learning.
-
-## Pre-requisites
-
-At the moment, this project runs on OS X and Linux. You'll need Xcode
-and git (to clone this repository and its submodules). You can also build
-the project for Windows, but not all examples are supported yet.
+This project aims to help novices make sophisticated use of sensors in interactive projects through the application of machine learning. It works on Mac OS X, Windows, and Linux.
 
 ## Installation
 
-To install, first clone this repository, then run the setup script:
+The easiest way to use ESP is through the [Processing](http://processing.org) Development Environment (PDE). See the [Processing ESP mode](https://github.com/damellis/processing-esp-mode) for details.
+
+## Installation for Developers
+
+Pre-requisites: you'll need git plus Xcode on Mac OS X, Visual Studio on Windows, and CMake on Linux. To install, first clone this repository, then run the setup script:
 
 ```
 git clone https://github.com/damellis/ESP.git
