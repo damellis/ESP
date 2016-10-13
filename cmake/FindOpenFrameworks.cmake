@@ -10,18 +10,18 @@
 # =============================================================
 #   Populate necessary variables PLATFORM and LIB_PREFIX
 # =============================================================
+set(LIB_PREFIX "lib")
 if(APPLE)
   set(PLATFORM "osx")
   set(LIB_PREFIX "")
 elseif(UNIX AND ${ARCH} STREQUAL "x86_64")
   set(PLATFORM "linux64")
-  set(LIB_PREFIX "lib")
 elseif(UNIX AND ${ARCH} STREQUAL "x86_32")
   set(PLATFORM "linux")
-  set(LIB_PREFIX "lib")
 elseif(UNIX AND ${ARCH} STREQUAL "armv6")
   set(PLATFORM "linuxarmv6l")
-  set(LIB_PREFIX "lib")
+elseif(UNIX AND ${ARCH} STREQUAL "armv7")
+  set(PLATFORM "linuxarmv6l")
 elseif(MSVC)
   set(PLATFORM "windows")
 endif()
@@ -128,17 +128,22 @@ endif()
 # =============================================================
 #   Configure openFrameworks_LIBRARIES
 # =============================================================
+
+set(GLFW3_LIB ${openFrameworksRoot}/libs/glfw/lib/${PLATFORM}/${LIB_PREFIX}glfw3.a)
+if(${PLATFORM} STREQUAL "linuxarmv6l")
+  # overwrite the ${PLATFORM} linuxarmv6l to linux64
+  set(GLFW3_LIB ${openFrameworksRoot}/libs/glfw/lib/linux64/${LIB_PREFIX}glfw3.a)
+endif()
+
 set(openFrameworks_LIBRARIES
   # openFrameworks
   ${openFrameworks_STATIC}
   # oF-supplied libraries
-  ${openFrameworksRoot}/libs/glfw/lib/${PLATFORM}/${LIB_PREFIX}glfw3.a
+  ${GLFW3_LIB}
   ${openFrameworksRoot}/libs/poco/lib/${PLATFORM}/${LIB_PREFIX}PocoCrypto.a
   ${openFrameworksRoot}/libs/poco/lib/${PLATFORM}/${LIB_PREFIX}PocoData.a
-  ${openFrameworksRoot}/libs/poco/lib/${PLATFORM}/${LIB_PREFIX}PocoDataSQLite.a
   ${openFrameworksRoot}/libs/poco/lib/${PLATFORM}/${LIB_PREFIX}PocoFoundation.a
   ${openFrameworksRoot}/libs/poco/lib/${PLATFORM}/${LIB_PREFIX}PocoJSON.a
-  ${openFrameworksRoot}/libs/poco/lib/${PLATFORM}/${LIB_PREFIX}PocoMongoDB.a
   ${openFrameworksRoot}/libs/poco/lib/${PLATFORM}/${LIB_PREFIX}PocoNet.a
   ${openFrameworksRoot}/libs/poco/lib/${PLATFORM}/${LIB_PREFIX}PocoNetSSL.a
   ${openFrameworksRoot}/libs/poco/lib/${PLATFORM}/${LIB_PREFIX}PocoUtil.a
@@ -213,6 +218,13 @@ elseif(UNIX)
     "-lgrt -lboost_filesystem -lboost_system"
     "-lPocoCrypto -lPocoData -lPocoFoundation -lPocoJSON"
     "-lPocoNet -lPocoUtil -lPocoXML -lPocoZip"
+    )
+endif()
+
+if(${PLATFORM} STREQUAL "linuxarmv6l")
+  list(APPEND openFrameworks_LIBRARIES
+    "-ldl -lEGL -lGLESv2 -ludev"
+    "-L/opt/vc/lib/ -lbcm_host"
     )
 endif()
 
