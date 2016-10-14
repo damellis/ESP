@@ -21,6 +21,51 @@
     ofLogVerbose() << "[" << ofGetTimestampString() << "] " << (s)
 
 
+class Palette {
+  public:
+    vector<ofColor> generate(uint32_t n) {
+        // TODO(benzh) fill instead of re-generate.
+        if (n > size) {
+            size = n;
+            do_generate(size);
+        }
+
+        std::vector<ofColor> sliced(colors.begin(), colors.begin() + n);
+        return sliced;
+    }
+
+    Palette() : size(256) {
+        do_generate(size);
+    }
+  private:
+    void do_generate(uint32_t n) {
+        uint32_t numDimensions = n;
+        // Code snippet from ofxGrtTimeseriesPlot.cpp
+
+        colors.resize(n);
+        // Setup the default colors
+        if( numDimensions >= 1 ) colors[0] = ofColor(255,0,0); //red
+        if( numDimensions >= 2 ) colors[1] = ofColor(0,255,0); //green
+        if( numDimensions >= 3 ) colors[2] = ofColor(0,0,255); //blue
+        if( numDimensions >= 4 ) colors[3] = ofColor::orange;
+        if( numDimensions >= 5 ) colors[4] = ofColor::purple;
+        if( numDimensions >= 6 ) colors[5] = ofColor::brown;
+        if( numDimensions >= 7 ) colors[6] = ofColor::pink;
+        if( numDimensions >= 8 ) colors[7] = ofColor::grey;
+        if( numDimensions >= 9 ) colors[8] = ofColor::cyan;
+
+        //Randomize the remaining colors
+        for(unsigned int n=9; n<numDimensions; n++){
+            colors[n][0] = ofRandom(50,255);
+            colors[n][1] = ofRandom(50,255);
+            colors[n][2] = ofRandom(50,255);
+        }
+    }
+
+    uint32_t size;
+    std::vector<ofColor> colors;
+};
+
 class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
   public:
     ofApp();
@@ -122,7 +167,6 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     void useOStream(OStream& stream);
     void useOStream(OStreamVector& stream);
     void useTrainingSampleChecker(TrainingSampleChecker checker);
-    void useTrainingDataAdvice(string advice);
     void useLeaveOneOutScoring(bool enable) {
         use_leave_one_out_scoring_ = enable;}
 
@@ -134,7 +178,6 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     friend void useStream(IOStream &stream);
     friend void useStream(IOStreamVector &stream);
     friend void useTrainingSampleChecker(TrainingSampleChecker checker);
-    friend void useTrainingDataAdvice(string advice);
     friend void useLeaveOneOutScoring(bool enable);
     friend void setTruePositiveWarningThreshold(double threshold);
     friend void setFalseNegativeWarningThreshold(double threshold);
@@ -258,7 +301,7 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     // visual: live plots are across all tabs
     //========================================================================
     InteractiveTimeSeriesPlot plot_inputs_;
-    vector<ofxGrtTimeseriesPlot> plot_live_features_;  // live features
+    vector<ofxGrtTimeseriesPlot *> plot_live_features_;  // live features
     ofxGrtTimeseriesPlot plot_inputs_snapshot_;  // a spectrum of the most
                                                  // recent input vector, shown
                                                  // only if the number of input
@@ -281,8 +324,8 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     //
     // live data (above) + pre_processed + features
     //========================================================================
-    vector<ofxGrtTimeseriesPlot> plot_pre_processed_;
-    vector<vector<ofxGrtTimeseriesPlot>> plot_features_;
+    vector<ofxGrtTimeseriesPlot *> plot_pre_processed_;
+    vector<vector<ofxGrtTimeseriesPlot *>> plot_features_;
 
     //========================================================================
     // visual: test
@@ -331,13 +374,15 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     //========================================================================
     // theme
     //========================================================================
+    Palette color_palette_;
+
     void onBackgroundColorPickerEvent(ofxDatGuiColorPickerEvent e) {
         background_color_ = e.color;
 
         // Also change every plot background
         plot_inputs_.setBackgroundColor(background_color_);
         for (auto& p : plot_live_features_) {
-            p.setBackgroundColor(background_color_);
+            p->setBackgroundColor(background_color_);
         }
         plot_inputs_snapshot_.setBackgroundColor(background_color_);
         plot_raw_.setBackgroundColor(background_color_);
@@ -345,11 +390,11 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
             p.setBackgroundColor(background_color_);
         }
         for (auto& p : plot_pre_processed_) {
-            p.setBackgroundColor(background_color_);
+            p->setBackgroundColor(background_color_);
         }
         for (auto& ps : plot_features_) {
             for (auto& p : ps) {
-                p.setBackgroundColor(background_color_);
+                p->setBackgroundColor(background_color_);
             }
         }
         plot_testdata_window_.setBackgroundColor(background_color_);
@@ -368,92 +413,92 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
         }
         plot_class_likelihoods_.setBackgroundColor(background_color_);
         for (auto& p : plot_class_distances_) {
-            p.setBackgroundColor(background_color_);
+            p->setBackgroundColor(background_color_);
         }
     }
     ofColor background_color_;
 
     void onTextColorPickerEvent(ofxDatGuiColorPickerEvent e) {
-        text_color_ = e.color;
-
-        // Also change every plot text
-        plot_inputs_.setTextColor(text_color_);
-        for (auto& p : plot_live_features_) {
-            p.setTextColor(text_color_);
-        }
-        plot_inputs_snapshot_.setTextColor(text_color_);
-        plot_raw_.setTextColor(text_color_);
-        for (auto& p : plot_calibrators_) {
-            p.setTextColor(text_color_);
-        }
-        for (auto& p : plot_pre_processed_) {
-            p.setTextColor(text_color_);
-        }
-        for (auto& ps : plot_features_) {
-            for (auto& p : ps) {
-                p.setTextColor(text_color_);
-            }
-        }
-        plot_testdata_window_.setTextColor(text_color_);
-        plot_testdata_overview_.setTextColor(text_color_);
-
-        for (auto& p : plot_samples_) {
-            p.setTextColor(text_color_);
-        }
-        for (auto& p : plot_samples_snapshots_) {
-            p.setTextColor(text_color_);
-        }
-        for (auto& ps : plot_sample_features_) {
-            for (auto& p : ps) {
-                p.setTextColor(text_color_);
-            }
-        }
-        plot_class_likelihoods_.setTextColor(text_color_);
-        for (auto& p : plot_class_distances_) {
-            p.setTextColor(text_color_);
-        }
+//        text_color_ = e.color;
+//
+//        // Also change every plot text
+//        plot_inputs_.setTextColor(text_color_);
+//        for (auto& p : plot_live_features_) {
+//            p.setTextColor(text_color_);
+//        }
+//        plot_inputs_snapshot_.setTextColor(text_color_);
+//        plot_raw_.setTextColor(text_color_);
+//        for (auto& p : plot_calibrators_) {
+//            p.setTextColor(text_color_);
+//        }
+//        for (auto& p : plot_pre_processed_) {
+//            p.setTextColor(text_color_);
+//        }
+//        for (auto& ps : plot_features_) {
+//            for (auto& p : ps) {
+//                p.setTextColor(text_color_);
+//            }
+//        }
+//        plot_testdata_window_.setTextColor(text_color_);
+//        plot_testdata_overview_.setTextColor(text_color_);
+//
+//        for (auto& p : plot_samples_) {
+//            p.setTextColor(text_color_);
+//        }
+//        for (auto& p : plot_samples_snapshots_) {
+//            p.setTextColor(text_color_);
+//        }
+//        for (auto& ps : plot_sample_features_) {
+//            for (auto& p : ps) {
+//                p.setTextColor(text_color_);
+//            }
+//        }
+//        plot_class_likelihoods_.setTextColor(text_color_);
+//        for (auto& p : plot_class_distances_) {
+//            p.setTextColor(text_color_);
+//        }
     }
     ofColor text_color_;
 
     void onGridColorPickerEvent(ofxDatGuiColorPickerEvent e) {
-        ofColor grid_color(e.color.r, e.color.g, e.color.b, 0x20);
-
-        // Also change every plot text
-        plot_inputs_.setGridColor(grid_color);
-        for (auto& p : plot_live_features_) {
-            p.setGridColor(grid_color);
-        }
-        plot_inputs_snapshot_.setGridColor(grid_color);
-        plot_raw_.setGridColor(grid_color);
-        for (auto& p : plot_calibrators_) {
-            p.setGridColor(grid_color);
-        }
-        for (auto& p : plot_pre_processed_) {
-            p.setGridColor(grid_color);
-        }
-        for (auto& ps : plot_features_) {
-            for (auto& p : ps) {
-                p.setGridColor(grid_color);
-            }
-        }
-        plot_testdata_window_.setGridColor(grid_color);
-        plot_testdata_overview_.setGridColor(grid_color);
-
-        for (auto& p : plot_samples_) {
-            p.setGridColor(grid_color);
-        }
-        for (auto& p : plot_samples_snapshots_) {
-            p.setGridColor(grid_color);
-        }
-        for (auto& ps : plot_sample_features_) {
-            for (auto& p : ps) {
-                p.setGridColor(grid_color);
-            }
-        }
-        plot_class_likelihoods_.setGridColor(grid_color);
-        for (auto& p : plot_class_distances_) {
-            p.setGridColor(grid_color);
-        }
+//        ofColor grid_color(e.color.r, e.color.g, e.color.b, 0x20);
+//
+//        // Also change every plot text
+//        plot_inputs_.setGridColor(grid_color);
+//        for (auto& p : plot_live_features_) {
+//            p.setGridColor(grid_color);
+//        }
+//        plot_inputs_snapshot_.setGridColor(grid_color);
+//        plot_raw_.setGridColor(grid_color);
+//        for (auto& p : plot_calibrators_) {
+//            p.setGridColor(grid_color);
+//        }
+//        for (auto& p : plot_pre_processed_) {
+//            p.setGridColor(grid_color);
+//        }
+//        for (auto& ps : plot_features_) {
+//            for (auto& p : ps) {
+//                p.setGridColor(grid_color);
+//            }
+//        }
+//        plot_testdata_window_.setGridColor(grid_color);
+//        plot_testdata_overview_.setGridColor(grid_color);
+//
+//        for (auto& p : plot_samples_) {
+//            p.setGridColor(grid_color);
+//        }
+//        for (auto& p : plot_samples_snapshots_) {
+//            p.setGridColor(grid_color);
+//        }
+//        for (auto& ps : plot_sample_features_) {
+//            for (auto& p : ps) {
+//                p.setGridColor(grid_color);
+//            }
+//        }
+//        plot_class_likelihoods_.setGridColor(grid_color);
+//        for (auto& p : plot_class_distances_) {
+//            p.setGridColor(grid_color);
+//        }
     }
 
     void onLineWidthSliderEvent(ofxDatGuiSliderEvent e) {
@@ -466,7 +511,7 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     // live + likelihood + class_distances
     //========================================================================
     InteractiveTimeSeriesPlot plot_class_likelihoods_;
-    vector<InteractiveTimeSeriesPlot> plot_class_distances_;
+    vector<InteractiveTimeSeriesPlot *> plot_class_distances_;
     void onClassLikelihoodsPlotValueHighlight(
         InteractiveTimeSeriesPlot::ValueHighlightedCallbackArgs arg);
     void onClassDistancePlotValueHighlight(
@@ -565,9 +610,6 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     //========================================================================
     // Utils
     //========================================================================
-    string getTrainingDataAdvice();
-    string training_data_advice_ = "";
-
     void updateEventReceived(ofEventArgs& arg);  // For renaming
     uint32_t update_counter_ = 0;
     std::shared_ptr<ofConsoleFileLoggerChannel> logger_;

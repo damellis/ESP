@@ -14,11 +14,13 @@ get_platform () {
     case $(uname -s) in
         Linux)
             case $(uname -m) in
-                x86)    arch=32  ;;
-                i?86)   arch=32  ;;
-                ia64)   arch=64  ;;
-                amd64)  arch=64  ;;
-                x86_64) arch=64  ;;
+                x86)    arch=32      ;;
+                i?86)   arch=32      ;;
+                ia64)   arch=64      ;;
+                amd64)  arch=64      ;;
+                x86_64) arch=64      ;;
+                armv6l) arch=armv6l  ;;
+                armv7l) arch=armv6l  ;;
                 *)
                     echo "Non-32/64 architecture ... Really?!"
                     exit -1
@@ -51,6 +53,11 @@ get_of () {
             ;;
         linux32)
             OF_RELEASE=${OF_PREFIX}/of_v0.9.3_linux32_release.tar.gz
+            curl $OF_RELEASE > third-party/of.tar.gz
+            tar -zxf third-party/of.tar.gz -C third-party
+            ;;
+        linuxarmv6l)
+            OF_RELEASE=${OF_PREFIX}/of_v0.9.3_linuxarmv6l_release.tar.gz
             curl $OF_RELEASE > third-party/of.tar.gz
             tar -zxf third-party/of.tar.gz -C third-party
             ;;

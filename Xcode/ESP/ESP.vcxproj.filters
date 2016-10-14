@@ -16,7 +16,6 @@
     <ClCompile Include="..\..\third-party\openFrameworks\addons\ofxDatGui\src\core\ofxDatGuiComponent.cpp" />
     <ClCompile Include="..\..\third-party\openFrameworks\addons\ofxDatGui\src\libs\ofxSmartFont\ofxSmartFont.cpp" />
     <ClCompile Include="..\..\third-party\openFrameworks\addons\ofxDatGui\src\ofxDatGui.cpp" />
-    <ClCompile Include="..\..\third-party\openFrameworks\addons\ofxGrt\src\ofxGrtMatrixPlot.cpp" />
     <ClCompile Include="..\..\third-party\openFrameworks\addons\ofxGrt\src\ofxGrtTimeseriesPlot.cpp" />
     <ClCompile Include="..\..\third-party\openFrameworks\addons\ofxNetwork\src\ofxTCPClient.cpp" />
     <ClCompile Include="..\..\third-party\openFrameworks\addons\ofxNetwork\src\ofxTCPManager.cpp" />
@@ -74,6 +73,9 @@
     <ClCompile Include="..\..\third-party\openFrameworks\addons\ofxOsc\libs\oscpack\src\osc\OscPrintReceivedElements.cpp" />
     <ClCompile Include="..\..\third-party\openFrameworks\addons\ofxOsc\libs\oscpack\src\osc\OscReceivedElements.cpp" />
     <ClCompile Include="..\..\third-party\openFrameworks\addons\ofxOsc\libs\oscpack\src\osc\OscTypes.cpp" />
+    <ClCompile Include="src\ofxGrtSettings.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">

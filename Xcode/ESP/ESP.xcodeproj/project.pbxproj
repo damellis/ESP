@@ -38,6 +38,50 @@
 		812173921D75051C00ED6CCB /* libgdp.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 812173911D75051C00ED6CCB /* libgdp.dylib */; };
 		812173941D75053300ED6CCB /* libep.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 812173931D75053300ED6CCB /* libep.dylib */; };
 		812465E91D95D8FA007C6203 /* libgrt.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 495B69A01D82649B006C9620 /* libgrt.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		813D4DB31D9F22AD0072E061 /* ofxGrtSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 813D4DB21D9F22AD0072E061 /* ofxGrtSettings.cpp */; };
+		81645F811DA4492D00B68093 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4B69E1D0A3A1BDC003C02F2 /* main.cpp */; };
+		81645F821DA4492D00B68093 /* ofApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4B69E1E0A3A1BDC003C02F2 /* ofApp.cpp */; };
+		81645F831DA4492D00B68093 /* calibrator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 742976D3B768B07D2ECA7769 /* calibrator.cpp */; };
+		81645F841DA4492D00B68093 /* Filter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80C6A5328E1B1427512111BE /* Filter.cpp */; };
+		81645F851DA4492D00B68093 /* iostream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C0CFF2807560843A7557422B /* iostream.cpp */; };
+		81645F861DA4492D00B68093 /* istream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18C4BE08EEF363F2E25EBFC4 /* istream.cpp */; };
+		81645F871DA4492D00B68093 /* MFCC.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 025A192361B62C1398A89AC2 /* MFCC.cpp */; };
+		81645F881DA4492D00B68093 /* ofConsoleFileLoggerChannel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DF61345029808B2EBC7FBFCA /* ofConsoleFileLoggerChannel.cpp */; };
+		81645F891DA4492D00B68093 /* ofYesNoDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FCBDC70636473D6125DC091E /* ofYesNoDialog.cpp */; };
+		81645F8A1DA4492D00B68093 /* ostream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FACCFB9E3EA79675FAB70179 /* ostream.cpp */; };
+		81645F8B1DA4492D00B68093 /* plotter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 865FC8E136AE2D537FCE53FA /* plotter.cpp */; };
+		81645F8C1DA4492D00B68093 /* ThresholdDetection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 81C472C0D9D4AB03D8ABB14F /* ThresholdDetection.cpp */; };
+		81645F8D1DA4492D00B68093 /* training-data-manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0064E13C7937D72B75EEFCE5 /* training-data-manager.cpp */; };
+		81645F8E1DA4492D00B68093 /* training.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE5BBDC80A9D957F761903D3 /* training.cpp */; };
+		81645F8F1DA4492D00B68093 /* tuneable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B41658326AAF509E0B38863 /* tuneable.cpp */; };
+		81645F901DA4492D00B68093 /* ofxGrtSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 813D4DB21D9F22AD0072E061 /* ofxGrtSettings.cpp */; };
+		81645F911DA4498F00B68093 /* ofxDatGuiComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 711F7111DF40061A3DC49469 /* ofxDatGuiComponent.cpp */; };
+		81645F921DA449AF00B68093 /* ofxSmartFont.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00C32701B394C1DD8762AD1E /* ofxSmartFont.cpp */; };
+		81645F931DA449AF00B68093 /* ofxDatGui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8B699EEC2E838CB52082554A /* ofxDatGui.cpp */; };
+		81645F941DA449E000B68093 /* ofxGrtTimeseriesPlot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3016C29D8E0735FBAEF55DFA /* ofxGrtTimeseriesPlot.cpp */; };
+		81645F951DA449FF00B68093 /* ofxTCPClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04340107C0F930FA3BA8D191 /* ofxTCPClient.cpp */; };
+		81645F961DA449FF00B68093 /* ofxTCPManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 620EA7DA087511AEC72CEE67 /* ofxTCPManager.cpp */; };
+		81645F971DA449FF00B68093 /* ofxTCPServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CEC6C6144D8BAECBF2EBF24 /* ofxTCPServer.cpp */; };
+		81645F981DA449FF00B68093 /* ofxUDPManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3A5BF7C4CF117CF4E48E03AF /* ofxUDPManager.cpp */; };
+		81645F991DA44A4200B68093 /* ofxOscBundle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3FDE1283BACBFFDBDCD6CF18 /* ofxOscBundle.cpp */; };
+		81645F9A1DA44A4200B68093 /* ofxOscMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2BBB4D6F17F95E8290C34D8 /* ofxOscMessage.cpp */; };
+		81645F9B1DA44A4200B68093 /* ofxOscParameterSync.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D6A0822542134B8FAAD3FF03 /* ofxOscParameterSync.cpp */; };
+		81645F9C1DA44A4200B68093 /* ofxOscReceiver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3604479606DB8FED289EA50B /* ofxOscReceiver.cpp */; };
+		81645F9D1DA44A4200B68093 /* ofxOscSender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B03A4783D241CCB16F57D4AC /* ofxOscSender.cpp */; };
+		81645F9E1DA44A4200B68093 /* IpEndpointName.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 13FBB65B54152B0A6B6C4C1D /* IpEndpointName.cpp */; };
+		81645F9F1DA44A4200B68093 /* NetworkingUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 49EA4327CA52EECBC0D0EC91 /* NetworkingUtils.cpp */; };
+		81645FA01DA44A4200B68093 /* UdpSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92F6DC616909431703CE88BE /* UdpSocket.cpp */; };
+		81645FA11DA44A4200B68093 /* OscOutboundPacketStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1B4699CC697947F16CFA0294 /* OscOutboundPacketStream.cpp */; };
+		81645FA21DA44A4200B68093 /* OscPrintReceivedElements.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B92A77F6915BFFF5BFB041BF /* OscPrintReceivedElements.cpp */; };
+		81645FA31DA44A4200B68093 /* OscReceivedElements.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6A7105E26A17F790083BA2EA /* OscReceivedElements.cpp */; };
+		81645FA41DA44A4200B68093 /* OscTypes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DB9864D52C89D859AF07159C /* OscTypes.cpp */; };
+		81645FA51DA44A5200B68093 /* ofxParagraph.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A0B4FE6D3EADF19C5E8A120B /* ofxParagraph.cpp */; };
+		81645FA61DA44A8100B68093 /* openFrameworksDebug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4328148138ABC890047C5CB /* openFrameworksDebug.a */; };
+		81645FA71DA44A9600B68093 /* libgrt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 495B69A01D82649B006C9620 /* libgrt.dylib */; };
+		81F948D21DB152CB0059A2AA /* libep.3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 81FF4CEB1D99BCA600F3C7A9 /* libep.3.0.dylib */; };
+		81F948D31DB152CB0059A2AA /* libep.3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 81FF4CEB1D99BCA600F3C7A9 /* libep.3.0.dylib */; };
+		81F948D41DB152CB0059A2AA /* libgdp.0.7.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 81FF4CEC1D99BCA600F3C7A9 /* libgdp.0.7.dylib */; };
+		81F948D51DB152CB0059A2AA /* libgdp.0.7.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 81FF4CEC1D99BCA600F3C7A9 /* libgdp.0.7.dylib */; };
 		81FF4CE91D99BC8700F3C7A9 /* libgdp.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 812173911D75051C00ED6CCB /* libgdp.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		81FF4CEA1D99BC8700F3C7A9 /* libep.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 812173931D75053300ED6CCB /* libep.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		81FF4CED1D99BCA600F3C7A9 /* libep.3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 81FF4CEB1D99BCA600F3C7A9 /* libep.3.0.dylib */; };
@@ -55,7 +99,6 @@
 		CC6267BBA6858F8D55EF15DE /* OscReceivedElements.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6A7105E26A17F790083BA2EA /* OscReceivedElements.cpp */; };
 		D061E673175451B41D75F3DA /* training-data-manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0064E13C7937D72B75EEFCE5 /* training-data-manager.cpp */; };
 		DD956AF23DA8C97565D245E4 /* ofxSlider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FBE3DD02DBD21EB4812C6B1 /* ofxSlider.cpp */; };
-		E2565612498DE15079C283A3 /* ofxGrtMatrixPlot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7ACE6957882556257F46BB94 /* ofxGrtMatrixPlot.cpp */; };
 		E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4328148138ABC890047C5CB /* openFrameworksDebug.a */; };
 		E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4B69E1D0A3A1BDC003C02F2 /* main.cpp */; };
 		E4B69E210A3A1BDC003C02F2 /* ofApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4B69E1E0A3A1BDC003C02F2 /* ofApp.cpp */; };
@@ -67,6 +110,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		81645FA81DA44AB400B68093 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E4328143138ABC890047C5CB /* openFrameworksLib.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = E4B27C1410CBEB8E00536013;
+			remoteInfo = openFrameworks;
+		};
 		E4328147138ABC890047C5CB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = E4328143138ABC890047C5CB /* openFrameworksLib.xcodeproj */;
@@ -168,13 +218,15 @@
 		758A107287611C953539AF3F /* ofxDatGui2dPad.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxDatGui2dPad.h; path = "../../third-party/openFrameworks/addons/ofxDatGui/src/components/ofxDatGui2dPad.h"; sourceTree = SOURCE_ROOT; };
 		787A0D517B1A87C9E9E5D821 /* ofxDatGuiTextBlock.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxDatGuiTextBlock.h; path = "../../third-party/openFrameworks/addons/ofxDatGui/src/components/ofxDatGuiTextBlock.h"; sourceTree = SOURCE_ROOT; };
 		7A451F0A26AD1F6604C914AF /* ofxGrt.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxGrt.h; path = "../../third-party/openFrameworks/addons/ofxGrt/src/ofxGrt.h"; sourceTree = SOURCE_ROOT; };
-		7ACE6957882556257F46BB94 /* ofxGrtMatrixPlot.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxGrtMatrixPlot.cpp; path = "../../third-party/openFrameworks/addons/ofxGrt/src/ofxGrtMatrixPlot.cpp"; sourceTree = SOURCE_ROOT; };
 		7DCB1F9D3560D19E614EEA45 /* ofxDatGuiButton.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxDatGuiButton.h; path = "../../third-party/openFrameworks/addons/ofxDatGui/src/components/ofxDatGuiButton.h"; sourceTree = SOURCE_ROOT; };
 		806F715C55B9B786D65F7B33 /* ofxDatGuiSlider.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxDatGuiSlider.h; path = "../../third-party/openFrameworks/addons/ofxDatGui/src/components/ofxDatGuiSlider.h"; sourceTree = SOURCE_ROOT; };
 		80C6A5328E1B1427512111BE /* Filter.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = Filter.cpp; path = src/Filter.cpp; sourceTree = SOURCE_ROOT; };
 		81138735982711ADFE03B269 /* ofxOscReceiver.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxOscReceiver.h; path = "../../third-party/openFrameworks/addons/ofxOsc/src/ofxOscReceiver.h"; sourceTree = SOURCE_ROOT; };
 		812173911D75051C00ED6CCB /* libgdp.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libgdp.dylib; path = "../../third-party/gdp/libs/libgdp.dylib"; sourceTree = "<group>"; };
 		812173931D75053300ED6CCB /* libep.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libep.dylib; path = "../../third-party/gdp/libs/libep.dylib"; sourceTree = "<group>"; };
+		813D4DB01D9F1F750072E061 /* ofxGrtSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofxGrtSettings.h; path = "../../third-party/ofxGrt/src/ofxGrtSettings.h"; sourceTree = "<group>"; };
+		813D4DB21D9F22AD0072E061 /* ofxGrtSettings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxGrtSettings.cpp; sourceTree = "<group>"; };
+		81645F781DA448E500B68093 /* libesp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libesp.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		81C472C0D9D4AB03D8ABB14F /* ThresholdDetection.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ThresholdDetection.cpp; path = src/ThresholdDetection.cpp; sourceTree = SOURCE_ROOT; };
 		81FF4CEB1D99BCA600F3C7A9 /* libep.3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libep.3.0.dylib; path = "../../third-party/gdp/libs/libep.3.0.dylib"; sourceTree = "<group>"; };
 		81FF4CEC1D99BCA600F3C7A9 /* libgdp.0.7.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libgdp.0.7.dylib; path = "../../third-party/gdp/libs/libgdp.0.7.dylib"; sourceTree = "<group>"; };
@@ -228,7 +280,6 @@
 		E53D01ADA7297C38566E691F /* tuneable.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = tuneable.h; path = src/tuneable.h; sourceTree = SOURCE_ROOT; };
 		E5CEDF73A0C5DE9DCF26AD98 /* ofxNetworkUtils.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxNetworkUtils.h; path = "../../third-party/openFrameworks/addons/ofxNetwork/src/ofxNetworkUtils.h"; sourceTree = SOURCE_ROOT; };
 		E6E1CCAB2CBF9C8C5C790E53 /* matplotlibcpp.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = matplotlibcpp.h; path = src/matplotlibcpp.h; sourceTree = SOURCE_ROOT; };
-		E8E4F579AC50F26DFCEA5753 /* ofxGrtMatrixPlot.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxGrtMatrixPlot.h; path = "../../third-party/openFrameworks/addons/ofxGrt/src/ofxGrtMatrixPlot.h"; sourceTree = SOURCE_ROOT; };
 		EDFFC15C24D96B7A0E0970F8 /* ofxDatGuiIntObject.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxDatGuiIntObject.h; path = "../../third-party/openFrameworks/addons/ofxDatGui/src/core/ofxDatGuiIntObject.h"; sourceTree = SOURCE_ROOT; };
 		EFC6C5C6880965184B7DD17E /* TimerListener.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = TimerListener.h; path = "../../third-party/openFrameworks/addons/ofxOsc/libs/oscpack/src/ip/TimerListener.h"; sourceTree = SOURCE_ROOT; };
 		EFCD5BEBBBD7C1DD65C70735 /* OscOutboundPacketStream.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = OscOutboundPacketStream.h; path = "../../third-party/openFrameworks/addons/ofxOsc/libs/oscpack/src/osc/OscOutboundPacketStream.h"; sourceTree = SOURCE_ROOT; };
@@ -240,6 +291,19 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		81645F751DA448E500B68093 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				81F948D21DB152CB0059A2AA /* libep.3.0.dylib in Frameworks */,
+				81F948D31DB152CB0059A2AA /* libep.3.0.dylib in Frameworks */,
+				81F948D41DB152CB0059A2AA /* libgdp.0.7.dylib in Frameworks */,
+				81F948D51DB152CB0059A2AA /* libgdp.0.7.dylib in Frameworks */,
+				81645FA61DA44A8100B68093 /* openFrameworksDebug.a in Frameworks */,
+				81645FA71DA44A9600B68093 /* libgrt.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E4B69B590A3A1756003C02F2 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -343,9 +407,8 @@
 		82E22615FB1180BAE563C3BF /* src */ = {
 			isa = PBXGroup;
 			children = (
+				813D4DB01D9F1F750072E061 /* ofxGrtSettings.h */,
 				7A451F0A26AD1F6604C914AF /* ofxGrt.h */,
-				7ACE6957882556257F46BB94 /* ofxGrtMatrixPlot.cpp */,
-				E8E4F579AC50F26DFCEA5753 /* ofxGrtMatrixPlot.h */,
 				3016C29D8E0735FBAEF55DFA /* ofxGrtTimeseriesPlot.cpp */,
 				8C2208E103C17F4A39DECE6F /* ofxGrtTimeseriesPlot.h */,
 			);
@@ -556,6 +619,7 @@
 				BB4B014C10F69532006C3DED /* addons */,
 				6948EE371B920CB800B5AC1A /* local_addons */,
 				E4B69B5B0A3A1756003C02F2 /* ESPDebug.app */,
+				81645F781DA448E500B68093 /* libesp.a */,
 			);
 			sourceTree = "<group>";
 		};
@@ -597,6 +661,7 @@
 				3B41658326AAF509E0B38863 /* tuneable.cpp */,
 				E53D01ADA7297C38566E691F /* tuneable.h */,
 				5939D84F8D015C2971814643 /* user.h */,
+				813D4DB21D9F22AD0072E061 /* ofxGrtSettings.cpp */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -625,7 +690,35 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		81645F761DA448E500B68093 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
+		81645F771DA448E500B68093 /* esp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 81645F801DA448E500B68093 /* Build configuration list for PBXNativeTarget "esp" */;
+			buildPhases = (
+				81645F741DA448E500B68093 /* Sources */,
+				81645F751DA448E500B68093 /* Frameworks */,
+				81645F761DA448E500B68093 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				81645FA91DA44AB400B68093 /* PBXTargetDependency */,
+			);
+			name = esp;
+			productName = esp;
+			productReference = 81645F781DA448E500B68093 /* libesp.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 		E4B69B5A0A3A1756003C02F2 /* ESP */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = E4B69B5F0A3A1757003C02F2 /* Build configuration list for PBXNativeTarget "ESP" */;
@@ -653,6 +746,12 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0730;
+				TargetAttributes = {
+					81645F771DA448E500B68093 = {
+						CreatedOnToolsVersion = 8.0;
+						ProvisioningStyle = Automatic;
+					};
+				};
 			};
 			buildConfigurationList = E4B69B4D0A3A1720003C02F2 /* Build configuration list for PBXProject "ESP" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -676,6 +775,7 @@
 			projectRoot = "";
 			targets = (
 				E4B69B5A0A3A1756003C02F2 /* ESP */,
+				81645F771DA448E500B68093 /* esp */,
 			);
 		};
 /* End PBXProject section */
@@ -721,6 +821,50 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		81645F741DA448E500B68093 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				81645F811DA4492D00B68093 /* main.cpp in Sources */,
+				81645F821DA4492D00B68093 /* ofApp.cpp in Sources */,
+				81645F831DA4492D00B68093 /* calibrator.cpp in Sources */,
+				81645F841DA4492D00B68093 /* Filter.cpp in Sources */,
+				81645F851DA4492D00B68093 /* iostream.cpp in Sources */,
+				81645F861DA4492D00B68093 /* istream.cpp in Sources */,
+				81645F871DA4492D00B68093 /* MFCC.cpp in Sources */,
+				81645F881DA4492D00B68093 /* ofConsoleFileLoggerChannel.cpp in Sources */,
+				81645F901DA4492D00B68093 /* ofxGrtSettings.cpp in Sources */,
+				81645F891DA4492D00B68093 /* ofYesNoDialog.cpp in Sources */,
+				81645F8A1DA4492D00B68093 /* ostream.cpp in Sources */,
+				81645F8B1DA4492D00B68093 /* plotter.cpp in Sources */,
+				81645F8C1DA4492D00B68093 /* ThresholdDetection.cpp in Sources */,
+				81645F8D1DA4492D00B68093 /* training-data-manager.cpp in Sources */,
+				81645F8E1DA4492D00B68093 /* training.cpp in Sources */,
+				81645F8F1DA4492D00B68093 /* tuneable.cpp in Sources */,
+				81645F911DA4498F00B68093 /* ofxDatGuiComponent.cpp in Sources */,
+				81645F921DA449AF00B68093 /* ofxSmartFont.cpp in Sources */,
+				81645F931DA449AF00B68093 /* ofxDatGui.cpp in Sources */,
+				81645F941DA449E000B68093 /* ofxGrtTimeseriesPlot.cpp in Sources */,
+				81645F951DA449FF00B68093 /* ofxTCPClient.cpp in Sources */,
+				81645F961DA449FF00B68093 /* ofxTCPManager.cpp in Sources */,
+				81645F971DA449FF00B68093 /* ofxTCPServer.cpp in Sources */,
+				81645F981DA449FF00B68093 /* ofxUDPManager.cpp in Sources */,
+				81645F991DA44A4200B68093 /* ofxOscBundle.cpp in Sources */,
+				81645F9A1DA44A4200B68093 /* ofxOscMessage.cpp in Sources */,
+				81645F9B1DA44A4200B68093 /* ofxOscParameterSync.cpp in Sources */,
+				81645F9C1DA44A4200B68093 /* ofxOscReceiver.cpp in Sources */,
+				81645F9D1DA44A4200B68093 /* ofxOscSender.cpp in Sources */,
+				81645F9E1DA44A4200B68093 /* IpEndpointName.cpp in Sources */,
+				81645F9F1DA44A4200B68093 /* NetworkingUtils.cpp in Sources */,
+				81645FA01DA44A4200B68093 /* UdpSocket.cpp in Sources */,
+				81645FA11DA44A4200B68093 /* OscOutboundPacketStream.cpp in Sources */,
+				81645FA21DA44A4200B68093 /* OscPrintReceivedElements.cpp in Sources */,
+				81645FA31DA44A4200B68093 /* OscReceivedElements.cpp in Sources */,
+				81645FA41DA44A4200B68093 /* OscTypes.cpp in Sources */,
+				81645FA51DA44A5200B68093 /* ofxParagraph.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E4B69B580A3A1756003C02F2 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -733,6 +877,7 @@
 				48F7FEF8914B64EA7053CD0A /* istream.cpp in Sources */,
 				743B450E16FD9E34D6574B82 /* MFCC.cpp in Sources */,
 				5BA995B9ABFEEA977EEDCC22 /* ofConsoleFileLoggerChannel.cpp in Sources */,
+				813D4DB31D9F22AD0072E061 /* ofxGrtSettings.cpp in Sources */,
 				604149DCA85B250E1F86313C /* ofYesNoDialog.cpp in Sources */,
 				357D15F566DCDFCB63C78A2A /* ostream.cpp in Sources */,
 				3A591B4F82A615BB559B0944 /* plotter.cpp in Sources */,
@@ -744,7 +889,6 @@
 				306E281E881AEFC343501AF8 /* ofxDatGuiComponent.cpp in Sources */,
 				637A06C23B6F54498F35B81F /* ofxSmartFont.cpp in Sources */,
 				9E339FEC563CF250C60DBD84 /* ofxDatGui.cpp in Sources */,
-				E2565612498DE15079C283A3 /* ofxGrtMatrixPlot.cpp in Sources */,
 				798434EF9EE5EE2E41E2F0DE /* ofxGrtTimeseriesPlot.cpp in Sources */,
 				A9F16933D69101A8B2D7DC24 /* ofxBaseGui.cpp in Sources */,
 				281E397702AFF84B373377A5 /* ofxButton.cpp in Sources */,
@@ -777,6 +921,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		81645FA91DA44AB400B68093 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = openFrameworks;
+			targetProxy = 81645FA81DA44AB400B68093 /* PBXContainerItemProxy */;
+		};
 		E4EEB9AC138B136A00A80321 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = openFrameworks;
@@ -785,6 +934,66 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		81645F7E1DA448E500B68093 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CODE_SIGN_IDENTITY = "-";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				EXECUTABLE_PREFIX = lib;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"../../third-party/grt",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		81645F7F1DA448E500B68093 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CODE_SIGN_IDENTITY = "-";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				EXECUTABLE_PREFIX = lib;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"../../third-party/grt",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		E4B69B4E0A3A1720003C02F2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E4EB6923138AFD0F00A09F29 /* Project.xcconfig */;
@@ -831,7 +1040,7 @@
 					"../../third-party/gdp",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CPLUSPLUSFLAGS = (
 					"-D__MACOSX_CORE__",
 					"-mtune=native",
@@ -891,6 +1100,7 @@
 					"../../third-party/gdp",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CPLUSPLUSFLAGS = (
 					"-D__MACOSX_CORE__",
 					"-mtune=native",
@@ -1032,6 +1242,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		81645F801DA448E500B68093 /* Build configuration list for PBXNativeTarget "esp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				81645F7E1DA448E500B68093 /* Debug */,
+				81645F7F1DA448E500B68093 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		E4B69B4D0A3A1720003C02F2 /* Build configuration list for PBXProject "ESP" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

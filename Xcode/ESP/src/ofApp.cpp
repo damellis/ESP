@@ -20,20 +20,19 @@ const uint32_t kDelayBeforeTraining = 50;  // milliseconds
 
 // Instructions for each tab.
 static const char* kCalibrateInstruction =
-    "Calibration: Use key 1-9 to record calibration samples (required for "
-    "training)";
+    "Collect the specified samples to calibrate ESP to your sensor. Must be completed before using the rest of the system.";
 
 static const char* kPipelineInstruction =
-    "Pipeline.";
+    "Live data at each stage of the machine learning pipeline. Classifier uses the data (\"features\") from the last stage.";
 
 static const char* kTrainingInstruction =
-    "Training: Hold 1-9 to record samples.";
+    "Press and hold keys `1` to `9` to collect examples of the classes of phenomena you want to classify.";
 
 static const char* kAnalysisInstruction =
-    "Analysis: Hold `r` to record test data. ";
+    "Press and hold `r` to record test data, which will be re-classified every time you retrain the classifier.";
 
 static const char* kPredictionInstruction =
-    "Prediction.";
+    "The relative likelihood of each class of training data and the \"distance\" to each class of training data.";
 
 const double kPipelineHeightWeight = 0.3;
 const ofColor kSerialSelectionColor = ofColor::fromHex(0x00FF00);
@@ -52,51 +51,6 @@ static std::string kLogDirectory = "%APPDATA%/ESP/";
 // Utility functions forward declaration
 string encodeName(const string &name);
 string decodeName(const string &name);
-
-class Palette {
-  public:
-    vector<ofColor> generate(uint32_t n) {
-        // TODO(benzh) fill instead of re-generate.
-        if (n > size) {
-            size = n;
-            do_generate(size);
-        }
-
-        std::vector<ofColor> sliced(colors.begin(), colors.begin() + n);
-        return sliced;
-    }
-
-    Palette() : size(256) {
-        do_generate(size);
-    }
-  private:
-    void do_generate(uint32_t n) {
-        uint32_t numDimensions = n;
-        // Code snippet from ofxGrtTimeseriesPlot.cpp
-
-        colors.resize(n);
-        // Setup the default colors
-        if( numDimensions >= 1 ) colors[0] = ofColor(255,0,0); //red
-        if( numDimensions >= 2 ) colors[1] = ofColor(0,255,0); //green
-        if( numDimensions >= 3 ) colors[2] = ofColor(0,0,255); //blue
-        if( numDimensions >= 4 ) colors[3] = ofColor::orange;
-        if( numDimensions >= 5 ) colors[4] = ofColor::purple;
-        if( numDimensions >= 6 ) colors[5] = ofColor::brown;
-        if( numDimensions >= 7 ) colors[6] = ofColor::pink;
-        if( numDimensions >= 8 ) colors[7] = ofColor::grey;
-        if( numDimensions >= 9 ) colors[8] = ofColor::cyan;
-
-        //Randomize the remaining colors
-        for(unsigned int n=9; n<numDimensions; n++){
-            colors[n][0] = ofRandom(50,255);
-            colors[n][1] = ofRandom(50,255);
-            colors[n][2] = ofRandom(50,255);
-        }
-    }
-
-    uint32_t size;
-    std::vector<ofColor> colors;
-};
 
 void ofApp::useCalibrator(Calibrator &calibrator) {
     calibrator_ = &calibrator;
@@ -122,10 +76,6 @@ void ofApp::useOStream(OStreamVector &stream) {
 
 void ofApp::useTrainingSampleChecker(TrainingSampleChecker checker) {
     training_sample_checker_ = checker;
-}
-
-void ofApp::useTrainingDataAdvice(string advice) {
-    training_data_advice_ = advice;
 }
 
 // TODO(benzh): initialize other members as well.
@@ -217,12 +167,7 @@ void ofApp::setup() {
         state_ = AppState::kPipeline;
     }
 
-    if (training_data_advice_ == "")
-        training_data_advice_ = getTrainingDataAdvice();
-
     istream_->onDataReadyEvent(this, &ofApp::onDataIn);
-
-    Palette color_palette;
 
     predicted_label_buffer_.resize(buffer_size_);
     predicted_class_labels_buffer_.resize(buffer_size_);
@@ -234,12 +179,18 @@ void ofApp::setup() {
     plot_raw_.setDrawGrid(true);
     plot_raw_.setDrawInfoText(true);
     plot_raw_.setChannelNames(istream_labels);
+    plot_raw_.setAxisTitle("Time", "");
+    plot_raw_.setChannelColors(color_palette_.generate(istream_->getNumOutputDimensions()));
+    plot_raw_.setLinkRanges(true);
     plot_inputs_.setup(buffer_size_, istream_->getNumOutputDimensions(), "Input");
     plot_inputs_.setDrawGrid(true);
     plot_inputs_.setDrawInfoText(true);
     plot_inputs_.setChannelNames(istream_labels);
     plot_inputs_.onRangeSelected(this, &ofApp::onInputPlotRangeSelection, NULL);
     plot_inputs_.onValueHighlighted(this, &ofApp::onInputPlotValueSelection, NULL);
+    plot_inputs_.setAxisTitle("Time", "");
+    plot_inputs_.setChannelColors(color_palette_.generate(istream_->getNumOutputDimensions()));
+    plot_inputs_.setLinkRanges(true);
     if (istream_->getNumOutputDimensions() >= kTooManyFeaturesThreshold) {
         plot_inputs_snapshot_.setup(istream_->getNumOutputDimensions(), 1, "Snapshot");
         plot_inputs_.setDrawInfoText(false); // this will be too long to show
@@ -248,21 +199,30 @@ void ofApp::setup() {
     plot_testdata_window_.setup(buffer_size_, istream_->getNumOutputDimensions(), "Test Data");
     plot_testdata_window_.setDrawGrid(true);
     plot_testdata_window_.setDrawInfoText(true);
+    plot_testdata_window_.setChannelColors(color_palette_.generate(istream_->getNumOutputDimensions()));
 
     plot_testdata_overview_.setup(istream_->getNumOutputDimensions(), "Overview");
     plot_testdata_overview_.onRangeSelected(this, &ofApp::onTestOverviewPlotSelection, NULL);
 
     plot_class_likelihoods_.setup(buffer_size_, kNumMaxLabels_, "Class Likelihoods");
     plot_class_likelihoods_.setDrawInfoText(true);
-    // plot_class_likelihoods_.setColorPalette(color_palette.generate(kNumMaxLabels_));
+    plot_class_likelihoods_.setChannelColors(color_palette_.generate(kNumMaxLabels_));
     plot_class_likelihoods_.onValueHighlighted(this, &ofApp::onClassLikelihoodsPlotValueHighlight, NULL);
+    plot_class_likelihoods_.setAxisTitle("Time", "Likelihood (%)");
+    plot_class_likelihoods_.setLinkRanges(true);
 
     plot_class_distances_.resize(kNumMaxLabels_);
     for (int i = 0; i < kNumMaxLabels_; i++) {
-        InteractiveTimeSeriesPlot &plot = plot_class_distances_[i];
-        plot.setup(buffer_size_, 2, std::to_string(i + 1));
-        plot.setChannelNames({ "Threshold", "Actual" });
-        plot.onValueHighlighted(this, &ofApp::onClassDistancePlotValueHighlight, NULL);
+        InteractiveTimeSeriesPlot *plot = plot_class_distances_[i] = new InteractiveTimeSeriesPlot();
+        plot->setup(buffer_size_, 2, std::to_string(i + 1));
+        plot->setChannelNames({ "Threshold", "Actual" });
+        plot->onValueHighlighted(this, &ofApp::onClassDistancePlotValueHighlight, NULL);
+        plot->setDrawInfoText(true);
+        plot->setDrawPlotValue(false);
+        plot->setDrawGrid(false);
+        plot->setAxisTitle("", "");
+        plot->setChannelColors({ofColor(0, 255, 0), ofColor(255,255,255)});
+        plot->setLinkRanges(true);
     }
 
     // Parse the user supplied pipeline and extract information:
@@ -278,11 +238,11 @@ void ofApp::setup() {
     for (int i = 0; i < num_preprocessing_modules_; i++) {
         PreProcessing* pp = pipeline_->getPreProcessingModule(i);
         uint32_t dim = pp->getNumOutputDimensions();
-        ofxGrtTimeseriesPlot plot;
-        plot.setup(buffer_size_, dim, "PreProcessing Stage " + std::to_string(i));
-        plot.setDrawGrid(true);
-        plot.setDrawInfoText(true);
-        // plot.setColorPalette(color_palette.generate(dim));
+        ofxGrtTimeseriesPlot *plot = new ofxGrtTimeseriesPlot();
+        plot->setup(buffer_size_, dim, "PreProcessing Stage " + std::to_string(i));
+        plot->setDrawGrid(true);
+        plot->setDrawInfoText(true);
+        // plot.setColorPalette(color_palette_.generate(dim));
         plot_pre_processed_.push_back(plot);
 
         // the final stage pre-processing can be used as the live feature plots
@@ -298,17 +258,20 @@ void ofApp::setup() {
     // 2. Parse features.
     num_feature_modules_ = pipeline_->getNumFeatureExtractionModules();
     for (int i = 0; i < num_feature_modules_; i++) {
-        vector<ofxGrtTimeseriesPlot> feature_at_stage_i;
+        vector<ofxGrtTimeseriesPlot *> feature_at_stage_i;
 
         FeatureExtraction* fe = pipeline_->getFeatureExtractionModule(i);
         uint32_t feature_dim = fe->getNumOutputDimensions();
 
         if (feature_dim < kTooManyFeaturesThreshold) {
             for (int i = 0; i < feature_dim; i++) {
-                ofxGrtTimeseriesPlot plot;
-                plot.setup(buffer_size_, 1, "Feature " + std::to_string(i));
-                plot.setDrawInfoText(true);
-                // plot.setColorPalette(color_palette.generate(feature_dim));
+                ofxGrtTimeseriesPlot *plot = new ofxGrtTimeseriesPlot();
+                plot->setup(buffer_size_, 1, "Feature " + std::to_string(i));
+                plot->setDrawGrid(false);
+                plot->setDrawInfoText(true);
+                plot->setDrawPlotValue(false);
+                plot->setAxisTitle("", "");
+                // plot.setColorPalette(color_palette_.generate(feature_dim));
                 feature_at_stage_i.push_back(plot);
             }
             // Each feature will be draw with a height of stage_height *
@@ -317,11 +280,13 @@ void ofApp::setup() {
             num_pipeline_stages_ += ceil(feature_dim * kPipelineHeightWeight);
         } else {
             // We will have only one here.
-            ofxGrtTimeseriesPlot plot;
-            plot.setup(feature_dim, 1, "Feature");
-            plot.setDrawGrid(true);
-            plot.setDrawInfoText(true);
-            // plot.setColorPalette(color_palette.generate(feature_dim));
+            ofxGrtTimeseriesPlot *plot = new ofxGrtTimeseriesPlot();
+            plot->setup(feature_dim, 1, "Feature");
+            plot->setDrawGrid(true);
+            plot->setDrawInfoText(true);
+            plot->setDrawPlotValue(false);
+            plot->setAxisTitle("Dimension", "");
+            // plot.setColorPalette(color_palette_.generate(feature_dim));
             feature_at_stage_i.push_back(plot);
 
             // Since we will be drawing each feature in a separate plot, count them
@@ -348,8 +313,10 @@ void ofApp::setup() {
         for (uint32_t i = 0; i < calibrators.size(); i++) {
             uint32_t label_dim = istream_->getNumOutputDimensions();
             Plotter plot;
-            plot.setup(label_dim, calibrators[i].getName(), calibrators[i].getDescription());
-            plot.setColorPalette(color_palette.generate(label_dim));
+            plot.setup(label_dim, calibrators[i].getName(),
+                calibrators[i].getDescription() + "\nPress and hold `" +
+                std::to_string(i + 1) + "` to record.");
+            plot.setColorPalette(color_palette_.generate(label_dim));
             plot_calibrators_.push_back(plot);
         }
     }
@@ -358,7 +325,7 @@ void ofApp::setup() {
         uint32_t label_dim = istream_->getNumOutputDimensions();
         Plotter plot;
         plot.setup(label_dim, training_data_manager_.getLabelName(i + 1));
-        plot.setColorPalette(color_palette.generate(label_dim));
+        plot.setColorPalette(color_palette_.generate(label_dim));
         plot_samples_.push_back(plot);
 
         if (istream_->getNumOutputDimensions() >= kTooManyFeaturesThreshold) {
@@ -373,7 +340,7 @@ void ofApp::setup() {
             for (int j = 0; j < num_final_features; j++) {
                 Plotter plot;
                 plot.setup(1, "Feature " + std::to_string(j + 1));
-                plot.setColorPalette(color_palette.generate(label_dim));
+                plot.setColorPalette(color_palette_.generate(label_dim));
                 feature_plots.push_back(plot);
             }
         } else {
@@ -382,7 +349,7 @@ void ofApp::setup() {
             // The case of many features (like FFT), draw a single plot.
             Plotter plot;
             plot.setup(1, "Feature");
-            plot.setColorPalette(color_palette.generate(label_dim));
+            plot.setColorPalette(color_palette_.generate(label_dim));
             feature_plots.push_back(plot);
         }
         plot_sample_features_.push_back(feature_plots);
@@ -695,6 +662,7 @@ void ofApp::updateTestWindowPlot() {
     plot_testdata_window_.reset();
     for (int i = start; i < end; i++) {
         plot_testdata_window_.setup(end - start, istream_->getNumInputDimensions(), "Test Data");
+        plot_testdata_window_.setChannelColors(color_palette_.generate(istream_->getNumOutputDimensions()));
         for (int i = start; i < end; i++) {
             if (pipeline_->getTrained()) {
                 int predicted_label = test_data_predicted_class_labels_[i];
@@ -1286,30 +1254,6 @@ void ofApp::doRelabelTrainingSample(uint32_t source, uint32_t target) {
               "target training number " + std::to_string(num_target));
 }
 
-string ofApp::getTrainingDataAdvice() {
-    if (!pipeline_->getIsClassifierSet()) return "";
-    if (dynamic_cast<DTW *>(pipeline_->getClassifier())) {
-        return "This algorithm picks a representative sample for each class "
-            "and looks for the class with the closest representative sample. "
-            "As a result, you don't need a lot of training data but bad "
-            "training samples can cause problems.";
-    }
-    if (dynamic_cast<ANBC *>(pipeline_->getClassifier())) {
-        return "This algorithm uses an average of the training data. "
-            "As a result, recording additional training data can help the "
-            "performance of the algorithm. For each class, try to record "
-            "training data that represents the range of situations you want "
-            "to be recognized.";
-    }
-    if (dynamic_cast<SVM *>(pipeline_->getClassifier())) {
-        return "This algorithm looks at the boundaries between the different "
-            "classes of training data. As a result, it can help to record "
-            "additional data at the boundaries between the different classes "
-            "you want to recognize.";
-    }
-    return "";
-}
-
 //--------------------------------------------------------------
 void ofApp::update() {
     save_load_folder_->update();
@@ -1416,7 +1360,7 @@ void ofApp::update() {
                     getSupportsClassDistanceToNullRejectionCoefficient()) {
                     double nullRejectionCoeff =
                         pipeline_->getClassifier()->getNullRejectionCoeff();
-                    plot_class_distances_[predicted_class_labels_[i] - 1].update(
+                    plot_class_distances_[predicted_class_labels_[i] - 1]->update(
                         vector<double>{
                             nullRejectionCoeff,
                             predicted_class_distances_[i]
@@ -1424,7 +1368,7 @@ void ofApp::update() {
                         "");
                 } else {
                     vector<double> thresholds = pipeline_->getClassifier()->getNullRejectionThresholds();
-                    plot_class_distances_[predicted_class_labels_[i] - 1].update(
+                    plot_class_distances_[predicted_class_labels_[i] - 1]->update(
                         vector<double>{
                             (thresholds.size() > i ? thresholds[i] : 0.0),
                             predicted_class_distances_[i]
@@ -1455,11 +1399,11 @@ void ofApp::update() {
             if (data.size() < kTooManyFeaturesThreshold) {
                 for (int k = 0; k < data.size(); k++) {
                     vector<double> v = {data[k]};
-                    plot_live_features_[k].update(v);
+                    plot_live_features_[k]->update(v);
                 }
             } else {
                 assert(plot_live_features_.size() == 1);
-                plot_live_features_[0].setData(data);
+                plot_live_features_[0]->setData(data);
             }
         }
 
@@ -1471,25 +1415,30 @@ void ofApp::update() {
             // Till this point, either `pipeline_->predict` or
             // `pipeline->preProcessData` has been called. It's safe to directly
             // get the data and update the plots in the PIPELINE tab.
+            
+            // don't update the last plot, because it's already being updated
+            // via plot_live_features_.
 
             // Pre-processed data
-            for (j = 0; j < pipeline_->getNumPreProcessingModules(); j++) {
+            for (j = 0;
+                 j + (pipeline_->getNumFeatureExtractionModules() == 0 ? 1 : 0)
+                   < pipeline_->getNumPreProcessingModules(); j++) {
                 data = pipeline_->getPreProcessedData(j);
-                plot_pre_processed_[j].update(data);
+                plot_pre_processed_[j]->update(data);
             }
 
             // feature data
-            for (j = 0; j < pipeline_->getNumFeatureExtractionModules(); j++) {
+            for (j = 0; j + 1 < pipeline_->getNumFeatureExtractionModules(); j++) {
                 // Working on j-th stage.
                 data = pipeline_->getFeatureExtractionData(j);
                 if (data.size() < kTooManyFeaturesThreshold) {
                     for (int k = 0; k < data.size(); k++) {
                         vector<double> v = { data[k] };
-                        plot_features_[j][k].update(v);
+                        plot_features_[j][k]->update(v);
                     }
                 } else {
                     assert(plot_features_[j].size() == 1);
-                    plot_features_[j][0].setData(data);
+                    plot_features_[j][0]->setData(data);
                 }
             }
 
@@ -1573,19 +1522,35 @@ void ofApp::draw() {
 
     if (pipeline_->getClassifier() != nullptr) {
         ofDrawBitmapString(
-            "Calibration\tPipeline\tAnalysis\tTraining\tPrediction",
+            "Calibration\tPipeline\tTraining\tPrediction\tAnalysis",
             left_margin * 2, top_margin);
     } else {
         ofDrawBitmapString("Calibration\tPipeline\tAnalysis",
                            left_margin * 2, top_margin);
     }
-
+    
     ofDrawBitmapString(getAppStateInstruction(), left_margin,
                        top_margin + margin);
 
     ofColor red = ofColor(0xFF, 0, 0);
     uint32_t tab_start = 0;
     uint32_t kTabWidth = 126;
+    
+    string classifier = (pipeline_->getClassifier() == nullptr ? "none" :
+                         pipeline_->getClassifier()->getClassifierType());
+    ofDrawBitmapString("Classifier: ",
+                       left_margin * 2 + kTabWidth * 5 + 50, top_margin);
+    ofPushStyle();
+    ofSetColor(ofColor(0x40, 0x40, 0xFF));
+    ofDrawBitmapString(classifier,
+                       left_margin * 2 + kTabWidth * 5 + 50 + 8 * strlen("Classifier: "),
+                       top_margin);
+    ofDrawLine(left_margin * 2 + kTabWidth * 5 + 50 + 8 * strlen("Classifier: "),
+               top_margin + 2,
+               left_margin * 2 + kTabWidth * 5 + 50 + 8 * strlen("Classifier: ") +
+                 8 * classifier.size(),
+               top_margin + 2);
+    ofPopStyle();
 
     switch (fragment_) {
         case CALIBRATION:
@@ -1602,27 +1567,31 @@ void ofApp::draw() {
             tab_start += kTabWidth;
             break;
         case ANALYSIS:
-            ofDrawColoredBitmapString(red, "\t\t\t\tAnalysis",
+            ofDrawColoredBitmapString(red,
+                                      (pipeline_->getClassifier() == nullptr ?
+                                       "\t\t\t\tAnalysis" :
+                                       "\t\t\t\t\t\t\t\tAnalysis"),
                                       left_margin * 2, top_margin);
             drawAnalysis();
             enableTrainingSampleGUI(false);
-            tab_start += 2 * kTabWidth;
+            tab_start += (pipeline_->getClassifier() == nullptr ?
+                          2 * kTabWidth : 4 * kTabWidth);
             break;
         case TRAINING:
             if (pipeline_->getClassifier() == nullptr) { break; }
-            ofDrawColoredBitmapString(red, "\t\t\t\t\t\tTraining",
+            ofDrawColoredBitmapString(red, "\t\t\t\tTraining",
                                       left_margin * 2, top_margin);
             drawTrainingInfo();
             enableTrainingSampleGUI(true);
-            tab_start += 3 * kTabWidth;
+            tab_start += 2 * kTabWidth;
             break;
         case PREDICTION:
             if (pipeline_->getClassifier() == nullptr) { break; }
-            ofDrawColoredBitmapString(red, "\t\t\t\t\t\t\t\tPrediction",
+            ofDrawColoredBitmapString(red, "\t\t\t\t\t\tPrediction",
                                       left_margin * 2, top_margin);
             drawPrediction();
             enableTrainingSampleGUI(false);
-            tab_start += 4 * kTabWidth;
+            tab_start += 3 * kTabWidth;
             break;
         default:
             ofLog(OF_LOG_ERROR) << "Unknown tag!";
@@ -1635,6 +1604,7 @@ void ofApp::draw() {
     uint32_t bottom = top_margin + 5;
     uint32_t ceiling = 30;
     tab_start += left_margin;
+    ofSetColor(text_color_);
     ofDrawLine(0, bottom, tab_start, bottom);
     ofDrawLine(tab_start, bottom, tab_start, ceiling);
     ofDrawLine(tab_start, ceiling, tab_start + kTabWidth, ceiling);
@@ -1689,7 +1659,7 @@ void ofApp::drawLiveFeatures(uint32_t stage_left, uint32_t stage_top,
     uint32_t height = stage_height / plot_live_features_.size();
 
     for (int j = 0; j < plot_live_features_.size(); j++) {
-        plot_live_features_[j].draw(stage_left, stage_top, stage_width, height);
+        plot_live_features_[j]->draw(stage_left, stage_top, stage_width, height);
         stage_top += height;
     }
 }
@@ -1743,7 +1713,7 @@ void ofApp::drawLivePipeline() {
     for (int i = 0; i < pipeline_->getNumPreProcessingModules(); i++) {
         // working on pre-processing stage i.
         ofPushStyle();
-        plot_pre_processed_[i].
+        plot_pre_processed_[i]->
                 draw(stage_left, stage_top, stage_width, stage_height);
         ofPopStyle();
         stage_top += stage_height + margin;
@@ -1756,7 +1726,7 @@ void ofApp::drawLivePipeline() {
         uint32_t height = plot_features_[i].size() == 1 ?
                 stage_height : stage_height * kPipelineHeightWeight;
         for (int j = 0; j < plot_features_[i].size(); j++) {
-            plot_features_[i][j].draw(stage_left, stage_top, stage_width, height);
+            plot_features_[i][j]->draw(stage_left, stage_top, stage_width, height);
             stage_top += height;
         }
         ofPopStyle();
@@ -1774,21 +1744,9 @@ void ofApp::drawTrainingInfo() {
     uint32_t stage_height =
         (ofGetHeight() - margin_top
          - margin // between the two plots
-         - 72 // indices (1 / 3) and scores for training samples
+         - 70 // indices (1 / 3) and scores for training samples
          - 35 // bottom margin and status message
          - training_sample_guis_[0]->getHeight()) / 2;
-
-    // need to create the paragraph and calculate its height to determine the
-    // height of the stages (input and training sample plots).
-    ofxParagraph paragraph(training_data_advice_, stage_width);
-    paragraph.setFont("ofxbraitsch/fonts/Verdana.ttf", 11);
-    paragraph.setColor(0xffffff);
-    paragraph.setIndent(0);
-    paragraph.setLeading(0);
-
-    if (training_data_advice_ != "") {
-        stage_height -= paragraph.getHeight() / 2;
-    }
 
     // 1. Draw Input
     ofPushStyle();
@@ -1800,40 +1758,11 @@ void ofApp::drawTrainingInfo() {
     ofPopStyle();
     stage_top += stage_height + margin;
 
-    // 2. Draw advice for training data (if any)
-    if (training_data_advice_ != "") {
-        paragraph.draw(stage_left, stage_top);
-        stage_top += paragraph.getHeight();
-    }
-
-    // 3. Draw prediction related (likelihood/distance)
+    // 3. Draw samples (with features if requested).
     uint32_t width = stage_width / kNumMaxLabels_;
     float minY = plot_inputs_.getRanges().first;
     float maxY = plot_inputs_.getRanges().second;
 
-    for (int i = 0; i < predicted_class_distances_.size() &&
-                    i < predicted_class_likelihoods_.size(); i++) {
-        ofColor backgroundColor, textColor;
-        UINT label = predicted_class_labels_[i];
-        uint32_t x = stage_left + (label - 1) * width;
-        if (predicted_label_ == label) {
-            backgroundColor = ofColor(255);
-            textColor = ofColor(0);
-        } else {
-            backgroundColor = ofGetBackgroundColor();
-            textColor = ofColor(255);
-        }
-        double likelihood = predicted_class_likelihoods_[i];
-        double distance = predicted_class_distances_[i];
-        ofDrawBitmapString(
-            std::to_string((int) (likelihood * 100)) + "% (" +
-            std::to_string(distance).substr(0,4) + ")",
-            x, stage_top);
-    }
-
-    stage_top += 12;
-
-    // 4. Draw samples (with features if requested).
     for (uint32_t i = 0; i < kNumMaxLabels_; i++) {
         uint32_t label = i + 1;
         uint32_t x = stage_left + i * width;
@@ -1889,55 +1818,66 @@ void ofApp::drawTrainingInfo() {
         plot_sample_button_locations_[i].second.set(
             x + width - 20, stage_top + stage_height, 20, 20);
 
-        ofDrawBitmapString("Closeness To:", x, stage_top + stage_height + 32);
+        ofDrawBitmapString("Score: ", x, stage_top + stage_height + 32);
+        if (training_data_manager_.hasSampleClassLikelihoods(
+                label, plot_sample_indices_[i])) {
+            double score = training_data_manager_.getSampleClassLikelihoods(
+                label, plot_sample_indices_[i])[i + 1];
+            // We highlight:
+            // (1) the threshold is not set, use a gradient red;
+            // (2) the threshold is set and the score is smaller, red
+            if (true_positive_threshold_ == 0) {
+                // the lower the score => the less likely it is to be
+                // classified correctly => the more red we want to draw
+                // => the less green and blue it should have
+                ofSetColor(255, 255 * score, 255 * score);
+            } else if (score < true_positive_threshold_) {
+                ofSetColor(255, 0, 0);
+            }
+            ofDrawBitmapString(std::to_string((int) (score * 100)) + string("%"),
+                x + 8 * strlen("Score: "), stage_top + stage_height + 32);
+            ofSetColor(255);
+        } else {
+            ofDrawBitmapString("-",
+                x + 8 * strlen("Score: "), stage_top + stage_height + 32);
+        }
+        ofDrawBitmapString("Confusion (%)",
+            x, stage_top + stage_height + 44);
 
         for (int j = 0; j < kNumMaxLabels_; j++) {
+            if (i == j) continue;
             ofDrawBitmapString(std::to_string(j + 1),
                                x + j * width / kNumMaxLabels_,
-                               stage_top + stage_height + 44);
+                               stage_top + stage_height + 56);
 
             if (training_data_manager_.hasSampleClassLikelihoods(
                     label, plot_sample_indices_[i])) {
                 double score = training_data_manager_.getSampleClassLikelihoods(
                     label, plot_sample_indices_[i])[j + 1];
-                if (i == j) {
-                    // We highlight:
-                    // (1) the threshold is not set, use a gradient red;
-                    // (2) the threshold is set and the score is smaller, red
-                    if (true_positive_threshold_ == 0) {
-                        // the lower the score => the less likely it is to be
-                        // classified correctly => the more red we want to draw
-                        // => the less green and blue it should have
-                        ofSetColor(255, 255 * score, 255 * score);
-                    } else if (score < true_positive_threshold_) {
-                        ofSetColor(255, 0, 0);
-                    }
-                } else {
-                    // We highlight:
-                    // (1) the threshold is not set, use a gradient red;
-                    // (2) the threshold is set and the score is larger, red
-                    if (false_negative_threshold_ == 0) {
-                        // the higher the score => the more confused it is with
-                        // another class => the more red we want to draw => the
-                        // less green and blue it should have
-                        ofSetColor(255, 255 * (1.0 - score), 255 * (1.0 - score));
-                    } else if (score > false_negative_threshold_) {
-                        ofSetColor(255, 0, 0);
-                    }
+                // We highlight:
+                // (1) the threshold is not set, use a gradient red;
+                // (2) the threshold is set and the score is larger, red
+                if (false_negative_threshold_ == 0) {
+                    // the higher the score => the more confused it is with
+                    // another class => the more red we want to draw => the
+                    // less green and blue it should have
+                    ofSetColor(255, 255 * (1.0 - score), 255 * (1.0 - score));
+                } else if (score > false_negative_threshold_) {
+                    ofSetColor(255, 0, 0);
                 }
                 ofDrawBitmapString(std::to_string((int) (score * 100)),
                     x + j * width / kNumMaxLabels_,
-                    stage_top + stage_height + 56);
+                    stage_top + stage_height + 68);
                 ofSetColor(255);
             } else {
                 ofDrawBitmapString("-", x + j * width / kNumMaxLabels_,
-                    stage_top + stage_height + 56);
+                    stage_top + stage_height + 68);
             }
         }
 
         // TODO(dmellis): only update these values when the screen size changes.
         training_sample_guis_[i]->setPosition(x + margin / 8,
-                                              stage_top + stage_height + 60);
+                                              stage_top + stage_height + 72);
         training_sample_guis_[i]->setWidth(width - margin / 4);
         training_sample_guis_[i]->draw();
     }
@@ -2017,7 +1957,7 @@ void ofApp::drawPrediction() {
     uint32_t height = stage_height / kNumMaxLabels_;
     double minDistance = 0.0, maxDistance = 1.0;
     for (int i = 0; i < kNumMaxLabels_; i++) {
-        plot_class_distances_[i].draw(stage_left, stage_top, stage_width, height);
+        plot_class_distances_[i]->draw(stage_left, stage_top, stage_width, height);
         stage_top += height;
     }
 }
@@ -2146,7 +2086,7 @@ void ofApp::afterTrainModel() {
     updateTestWindowPlot();
     pipeline_->reset();
     for (int i = 0; i < plot_class_distances_.size(); i++)
-        plot_class_distances_[i].reset();
+        plot_class_distances_[i]->reset();
 }
 
 void ofApp::scoreTrainingData(bool leaveOneOut) {
@@ -2561,36 +2501,45 @@ void ofApp::mouseReleased(int x, int y, int button) {
     // Tab click detection
     const uint32_t left_margin = 10;
     const uint32_t top_margin = 45;
-    const uint32_t tab_width = 120;
+    const uint32_t tab_width = 126;
 
     // Potential new state will be updated if tab switch is invoked. Record it
     // with the current state and assign its value back at the end of this
     // function.
     AppState potential_new_state = state_;
     Fragment potential_new_fragment = fragment_;
-    if (x > left_margin && y > 25 && y < top_margin + 5) {
-        if (x < left_margin + tab_width) {
+    if (x > 2 * left_margin && y > 25 && y < top_margin + 5) {
+        if (x < 2 * left_margin + tab_width) {
             potential_new_state = AppState::kCalibration;
             potential_new_fragment = CALIBRATION;
             ESP_EVENT("Jump to CALIBRATION tab (mouse)");
-        } else if (x < left_margin + 2 * tab_width) {
+        } else if (x < 2 * left_margin + 2 * tab_width) {
             potential_new_state = AppState::kPipeline;
             potential_new_fragment = PIPELINE;
             ESP_EVENT("Jump to PIPELINE tab (mouse)");
-        } else if (x < left_margin + 3 * tab_width) {
-            potential_new_state = AppState::kAnalysis;
-            potential_new_fragment = ANALYSIS;
-            ESP_EVENT("Jump to ANALYSIS tab (mouse)");
-        } else if (x < left_margin + 4 * tab_width
+        } else if (x < 2 * left_margin + 3 * tab_width
                    && pipeline_->getClassifier() != nullptr) {
             potential_new_state = AppState::kTraining;
             potential_new_fragment = TRAINING;
             ESP_EVENT("Jump to TRAINING tab (mouse)");
-        } else if (x < left_margin + 5 * tab_width
+        } else if (x < 2 * left_margin + 4 * tab_width
                    && pipeline_->getClassifier() != nullptr) {
             potential_new_state = AppState::kPrediction;
             potential_new_fragment = PREDICTION;
             ESP_EVENT("Jump to PREDICTION tab (mouse)");
+        } else if (x < 2 * left_margin + 5 * tab_width ||
+                   (x < 2 * left_margin + 3 * tab_width
+                    && pipeline_->getClassifier() == nullptr)) {
+            potential_new_state = AppState::kAnalysis;
+            potential_new_fragment = ANALYSIS;
+            ESP_EVENT("Jump to ANALYSIS tab (mouse)");
+        } else if (pipeline_->getClassifier() != nullptr
+                   && x > 2 * left_margin + 5 * tab_width + 50 + 8 * strlen("Classifier: ")
+                   && x < 2 * left_margin + 5 * tab_width + 50 + 8 * strlen("Classifier: ") +
+                      8 * pipeline_->getClassifier()->getClassifierType().size()
+                   && state_ != AppState::kConfiguration) {
+            ofLaunchBrowser("http://www.nickgillian.com/wiki/pmwiki.php/GRT/" +
+                            pipeline_->getClassifier()->getClassifierType());
         }
     }
 
@@ -2719,10 +2668,6 @@ void useStream(IOStreamVector &stream) {
 
 void useTrainingSampleChecker(TrainingSampleChecker checker) {
     ((ofApp *) ofGetAppPtr())->useTrainingSampleChecker(checker);
-}
-
-void useTrainingDataAdvice(string advice) {
-    ((ofApp *) ofGetAppPtr())->useTrainingDataAdvice(advice);
 }
 
 void useLeaveOneOutScoring(bool enable) {
