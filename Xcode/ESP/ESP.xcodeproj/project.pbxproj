@@ -956,6 +956,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"../../third-party/grt",
+					/opt/local/include,
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -984,6 +985,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"../../third-party/grt",
+					/opt/local/include,
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
