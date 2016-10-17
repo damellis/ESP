@@ -242,7 +242,8 @@ void ofApp::setup() {
         plot->setup(buffer_size_, dim, "PreProcessing Stage " + std::to_string(i));
         plot->setDrawGrid(true);
         plot->setDrawInfoText(true);
-        // plot.setColorPalette(color_palette_.generate(dim));
+        plot->setChannelColors(color_palette_.generate(dim));
+        plot->setLinkRanges(true);
         plot_pre_processed_.push_back(plot);
 
         // the final stage pre-processing can be used as the live feature plots
@@ -1396,12 +1397,21 @@ void ofApp::update() {
         if (num_preprocessing_modules_ + num_feature_modules_ > 0) {
             vector<double> data = getLastStageProcessedData();
 
-            if (data.size() < kTooManyFeaturesThreshold) {
+            if (pipeline_->getNumFeatureExtractionModules() == 0) {
+                // no feature extraction modules, so we're showing the last
+                // stage of pre-processing, which is a single, timeseries plot.
+                plot_live_features_[0]->update(data);
+            } else if (data.size() < kTooManyFeaturesThreshold) {
+                // here, we're showing the last stage of feature extraction,
+                // one plot per feature.
                 for (int k = 0; k < data.size(); k++) {
                     vector<double> v = {data[k]};
                     plot_live_features_[k]->update(v);
                 }
             } else {
+                // here we're showing all features from the last stage of the
+                // pipeline on a single plot, because there are too many to
+                // create a separate plot for each.
                 assert(plot_live_features_.size() == 1);
                 plot_live_features_[0]->setData(data);
             }
