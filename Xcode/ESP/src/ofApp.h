@@ -301,7 +301,23 @@ class ofApp : public ofBaseApp, public GRT::Observer<GRT::ErrorLogMessage> {
     // visual: live plots are across all tabs
     //========================================================================
     InteractiveTimeSeriesPlot plot_inputs_;
-    vector<ofxGrtTimeseriesPlot *> plot_live_features_;  // live features
+    vector<ofxGrtTimeseriesPlot *> plot_live_features_;  // live features.
+                                                         // pointers to objects
+                                                         // shared by the last
+                                                         // pipeline stage --
+                                                         // the last element of
+                                                         // either
+                                                         // plot_pre_processed_
+                                                         // or plot_features_.
+                                                         // in the former case,
+                                                         // this will contain
+                                                         // a single, multi-
+                                                         // dimensional plot;
+                                                         // in the latter case,
+                                                         // multiple plots
+                                                         // (unless we're
+                                                         // over the feature
+                                                         // threshold).
     ofxGrtTimeseriesPlot plot_inputs_snapshot_;  // a spectrum of the most
                                                  // recent input vector, shown
                                                  // only if the number of input

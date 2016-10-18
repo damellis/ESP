@@ -182,6 +182,7 @@ void ofApp::setup() {
     plot_raw_.setAxisTitle("Time", "");
     plot_raw_.setChannelColors(color_palette_.generate(istream_->getNumOutputDimensions()));
     plot_raw_.setLinkRanges(true);
+    plot_raw_.setIncludeAxisLabelsInPlotDimensions(false, true);
     plot_inputs_.setup(buffer_size_, istream_->getNumOutputDimensions(), "Input");
     plot_inputs_.setDrawGrid(true);
     plot_inputs_.setDrawInfoText(true);
@@ -191,6 +192,7 @@ void ofApp::setup() {
     plot_inputs_.setAxisTitle("Time", "");
     plot_inputs_.setChannelColors(color_palette_.generate(istream_->getNumOutputDimensions()));
     plot_inputs_.setLinkRanges(true);
+    plot_inputs_.setIncludeAxisLabelsInPlotDimensions(false, true);
     if (istream_->getNumOutputDimensions() >= kTooManyFeaturesThreshold) {
         plot_inputs_snapshot_.setup(istream_->getNumOutputDimensions(), 1, "Snapshot");
         plot_inputs_.setDrawInfoText(false); // this will be too long to show
@@ -200,6 +202,7 @@ void ofApp::setup() {
     plot_testdata_window_.setDrawGrid(true);
     plot_testdata_window_.setDrawInfoText(true);
     plot_testdata_window_.setChannelColors(color_palette_.generate(istream_->getNumOutputDimensions()));
+    plot_testdata_window_.setIncludeAxisLabelsInPlotDimensions(false, true);
 
     plot_testdata_overview_.setup(istream_->getNumOutputDimensions(), "Overview");
     plot_testdata_overview_.onRangeSelected(this, &ofApp::onTestOverviewPlotSelection, NULL);
@@ -210,6 +213,7 @@ void ofApp::setup() {
     plot_class_likelihoods_.onValueHighlighted(this, &ofApp::onClassLikelihoodsPlotValueHighlight, NULL);
     plot_class_likelihoods_.setAxisTitle("Time", "Likelihood (%)");
     plot_class_likelihoods_.setLinkRanges(true);
+    plot_class_likelihoods_.setIncludeAxisLabelsInPlotDimensions(false, true);
 
     plot_class_distances_.resize(kNumMaxLabels_);
     for (int i = 0; i < kNumMaxLabels_; i++) {
@@ -223,6 +227,7 @@ void ofApp::setup() {
         plot->setAxisTitle("", "");
         plot->setChannelColors({ofColor(0, 255, 0), ofColor(255,255,255)});
         plot->setLinkRanges(true);
+        plot->setIncludeAxisLabelsInPlotDimensions(false, false);
     }
 
     // Parse the user supplied pipeline and extract information:
@@ -242,7 +247,9 @@ void ofApp::setup() {
         plot->setup(buffer_size_, dim, "PreProcessing Stage " + std::to_string(i));
         plot->setDrawGrid(true);
         plot->setDrawInfoText(true);
-        // plot.setColorPalette(color_palette_.generate(dim));
+        plot->setChannelColors(color_palette_.generate(dim));
+        plot->setLinkRanges(true);
+        plot->setIncludeAxisLabelsInPlotDimensions(false, false);
         plot_pre_processed_.push_back(plot);
 
         // the final stage pre-processing can be used as the live feature plots
@@ -271,6 +278,7 @@ void ofApp::setup() {
                 plot->setDrawInfoText(true);
                 plot->setDrawPlotValue(false);
                 plot->setAxisTitle("", "");
+                plot->setIncludeAxisLabelsInPlotDimensions(false, false);
                 // plot.setColorPalette(color_palette_.generate(feature_dim));
                 feature_at_stage_i.push_back(plot);
             }
@@ -286,6 +294,7 @@ void ofApp::setup() {
             plot->setDrawInfoText(true);
             plot->setDrawPlotValue(false);
             plot->setAxisTitle("Dimension", "");
+            plot->setIncludeAxisLabelsInPlotDimensions(false, true);
             // plot.setColorPalette(color_palette_.generate(feature_dim));
             feature_at_stage_i.push_back(plot);
 
@@ -1396,12 +1405,21 @@ void ofApp::update() {
         if (num_preprocessing_modules_ + num_feature_modules_ > 0) {
             vector<double> data = getLastStageProcessedData();
 
-            if (data.size() < kTooManyFeaturesThreshold) {
+            if (pipeline_->getNumFeatureExtractionModules() == 0) {
+                // no feature extraction modules, so we're showing the last
+                // stage of pre-processing, which is a single, timeseries plot.
+                plot_live_features_[0]->update(data);
+            } else if (data.size() < kTooManyFeaturesThreshold) {
+                // here, we're showing the last stage of feature extraction,
+                // one plot per feature.
                 for (int k = 0; k < data.size(); k++) {
                     vector<double> v = {data[k]};
                     plot_live_features_[k]->update(v);
                 }
             } else {
+                // here we're showing all features from the last stage of the
+                // pipeline on a single plot, because there are too many to
+                // create a separate plot for each.
                 assert(plot_live_features_.size() == 1);
                 plot_live_features_[0]->setData(data);
             }
