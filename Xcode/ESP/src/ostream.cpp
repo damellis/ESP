@@ -39,6 +39,26 @@ void MacOSKeyboardOStream::sendKey(char c) {
 #endif
 }
 
+void MacOSKeyboardOStream::sendKeyCode(uint16_t key) {
+#if __APPLE__
+    if (ofGetElapsedTimeMillis() < elapsed_time_ + kGracePeriod) {
+        return;
+    }
+    elapsed_time_ = ofGetElapsedTimeMillis();
+
+    // Get the process number for the front application.
+    ProcessSerialNumber psn = { 0, kNoProcess };
+    GetFrontProcess( &psn );
+
+    CGEventRef key_down = CGEventCreateKeyboardEvent(NULL, key, true);
+    CGEventRef key_up = CGEventCreateKeyboardEvent(NULL, key, false);
+    CGEventPostToPSN(&psn, key_down);
+    CGEventPostToPSN(&psn, key_up);
+    CFRelease(key_down);
+    CFRelease(key_up);
+#endif
+}
+
 void MacOSKeyboardOStream::sendString(const std::string& str) {
 #if __APPLE__
     // Get the process number for the front application.
