@@ -77,30 +77,41 @@ class MacOSKeyboardOStream : public OStream {
   public:
     /**
      @brief Create a MacOSKeyboardOStream instance, specifying the key presses
-     to emulate for each predicted class label.
+     to emulate for each predicted class label. Note that class 0 is the GRT's
+     special null prediction label and is not used to generate key presses.
 
-     @param key_mapping: a map from predicted class labels to keys. Note that
-     class 0 is the GRT's special null prediction label and is not used to
-     generate key presses.
+     @param key_mapping: a map from predicted class labels to characters. If
+     a label maps to character 0, the corresponding entry from the
+     key_code_mapping parameter is used instead.
+     @param key_code_mapping: a map from predicted class labels to key codes (see
+     http://stackoverflow.com/questions/3202629/where-can-i-find-a-list-of-mac-virtual-key-codes
+     for a list of key codes). only used if the character for the corresponding
+     label is 0.
     */
-    MacOSKeyboardOStream(std::map<uint32_t, char> key_mapping)
-            : key_mapping_(key_mapping) {
+    MacOSKeyboardOStream(std::map<uint32_t, char> key_mapping,
+                         std::map<uint32_t, uint16_t> key_code_mapping =
+                         std::map<uint32_t, uint16_t>())
+            : key_mapping_(key_mapping), key_code_mapping_(key_code_mapping) {
     }
 
     /**
      @brief Create a MacOSKeyboardOStream instance, specifying the key presses
      to emulate for each predicted class label.
 
-     @param count: the number of keys specified
-     @param ...: the key to "press" upon prediction of the corresponding class
-     label. Each key is a UTF16 character passed as an int. The first key
-     specified corresponds to class label 1, the second to class label 2, etc.
+     @param count: the number of classes specified
+     @param ...: the character to "press" upon prediction of the corresponding
+     class label (a UTF16 character passed as an int). If the character is 0,
+     an additional argument will be read and treated as a key code (see
+     http://stackoverflow.com/questions/3202629/where-can-i-find-a-list-of-mac-virtual-key-codes
+     for a list of key codes). The first character (or key code) specified
+     corresponds to class label 1, the second to class label 2, etc.
     */
     MacOSKeyboardOStream(uint32_t count, ...) {
         va_list args;
         va_start(args, count);
         for (uint32_t i = 1; i <= count; i++) {
             key_mapping_[i] = va_arg(args, int);
+            if (key_mapping_[i] == 0) key_code_mapping_[i] = va_arg(args, int);
         }
         va_end(args);
     }
@@ -109,21 +120,29 @@ class MacOSKeyboardOStream : public OStream {
         if (has_started_) {
             if (getChar(label) != '\0') {
                 sendKey(getChar(label));
+            } else if (getKeyCode(label) != -1) {
+                sendKeyCode(getKeyCode(label));
             }
         }
     }
 
   private:
+    void sendKeyCode(uint16_t key);
     void sendKey(char c);
-
     void sendString(const std::string& str);
 
     char getChar(uint32_t label) {
         return key_mapping_[label];
     }
+  
+    int getKeyCode(uint32_t label) {
+        if (key_code_mapping_.count(label) > 0) return key_code_mapping_[label];
+        return -1;
+    }
 
     uint64_t elapsed_time_ = 0;
     std::map<uint32_t, char> key_mapping_;
+    std::map<uint32_t, uint16_t> key_code_mapping_;
 };
 
 /**
