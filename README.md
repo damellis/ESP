@@ -57,6 +57,7 @@ involved, but should be easy to follow:
 # Install required package
 sudo apt-get -y install doxygen
 sudo apt-get -y install cmake
+sudo apt-get -y install libblas-dev
 
 # Then build openFrameworks
 sudo third-party/openFrameworks/scripts/ci/linux/install.sh
