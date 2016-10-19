@@ -114,10 +114,10 @@ set(ESP_SRC
   ${ESP_PATH}/src/training.cpp
   ${ESP_PATH}/src/training-data-manager.cpp
   ${ESP_PATH}/src/tuneable.cpp
-  ${ESP_PATH}/src/user.cpp
+  ${ESP_PATH}/src/main.cpp
 )
 
-set(ESP_MAIN ${ESP_PATH}/src/main.cpp)
+set(ESP_USER ${ESP_PATH}/src/user.cpp)
 
 ## OS dependent library configuration
 if(APPLE)
@@ -162,7 +162,7 @@ target_link_libraries(${PROJECT} PUBLIC
   )
 
 set(APP "ESP-bin")
-add_executable(${APP} ${ESP_MAIN})
+add_executable(${APP} ${ESP_USER})
 ## Use the same name for the application (ESP.app on Mac OS)
 set_target_properties(${APP} PROPERTIES OUTPUT_NAME ${PROJECT})
 
