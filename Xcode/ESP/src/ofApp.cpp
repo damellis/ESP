@@ -2331,21 +2331,22 @@ void ofApp::keyReleased(int key) {
         // Pressing 1-9 will turn the samples into training data
         if (key >= '1' && key <= '9') {
             label_ = key - '0';
-            training_data_manager_.addSample(key - '0', sample_data_);
-            int num_samples =
-                training_data_manager_.getNumSampleForLabel(label_);
+            if (training_data_manager_.addSample(key - '0', sample_data_)) {
+                int num_samples =
+                    training_data_manager_.getNumSampleForLabel(label_);
 
-            ESP_EVENT("Converting " +
-                      std::to_string(sample_data_.getNumRows()) +
-                      " data points from live data to class " +
-                      std::to_string(label_));
+                ESP_EVENT("Converting " +
+                          std::to_string(sample_data_.getNumRows()) +
+                          " data points from live data to class " +
+                          std::to_string(label_));
 
-            plot_samples_[label_ - 1].setData(sample_data_);
-            plot_sample_indices_[label_ - 1] = num_samples - 1;
+                plot_samples_[label_ - 1].setData(sample_data_);
+                plot_sample_indices_[label_ - 1] = num_samples - 1;
 
-            updatePlotSamplesSnapshot(label_ - 1);
+                updatePlotSamplesSnapshot(label_ - 1);
 
-            should_save_training_data_ = true;
+                should_save_training_data_ = true;
+            }
         }
         // Reset the status of the GUI
         assert(state_ == AppState::kTrainingHistoryRecording);
@@ -2391,20 +2392,21 @@ void ofApp::keyReleased(int key) {
 
             scoreImpactOfTrainingSample(label_, sample_data_);
 
-            training_data_manager_.addSample(label_, sample_data_);
-            int num_samples =
-                training_data_manager_.getNumSampleForLabel(label_);
+            if (training_data_manager_.addSample(label_, sample_data_)) {
+                int num_samples =
+                    training_data_manager_.getNumSampleForLabel(label_);
 
-            plot_samples_[label_ - 1].setData(sample_data_);
-            plot_sample_indices_[label_ - 1] = num_samples - 1;
+                plot_samples_[label_ - 1].setData(sample_data_);
+                plot_sample_indices_[label_ - 1] = num_samples - 1;
 
-            updatePlotSamplesSnapshot(label_ - 1);
+                updatePlotSamplesSnapshot(label_ - 1);
 
-            should_save_training_data_ = true;
+                should_save_training_data_ = true;
 
-            ESP_EVENT("Collected " + std::to_string(sample_data_.getNumRows()) +
-                      " data points for training class " +
-                      std::to_string(label_));
+                ESP_EVENT("Collected " + std::to_string(sample_data_.getNumRows()) +
+                          " data points for training class " +
+                          std::to_string(label_));
+            }
             return;
         }
         break;

@@ -69,15 +69,18 @@ bool TrainingDataManager::addSample(
     uint32_t label, const GRT::MatrixDouble& sample) {
     CHECK_LABEL(label);
 
-    // By default, set the name be <false, ""> so we will use the default name.
-    training_sample_names_[label].push_back(
-        std::make_pair(false, std::string()));
-    training_sample_scores_[label].push_back(std::make_pair(false, 0.0));
-    training_sample_class_likelihoods_[label].push_back(std::make_pair(false, std::vector<double>()));
-    data_.addSample(label, sample);
-    num_samples_per_label_[label]++;
+    if (data_.addSample(label, sample)) {
+        // By default, set the name be <false, ""> so we will use the default name.
+        training_sample_names_[label].push_back(
+            std::make_pair(false, std::string()));
+        training_sample_scores_[label].push_back(std::make_pair(false, 0.0));
+        training_sample_class_likelihoods_[label].push_back(std::make_pair(false, std::vector<double>()));
+        num_samples_per_label_[label]++;
 
-    return true;
+        return true;
+    }
+    
+    return false;
 }
 
 std::string TrainingDataManager::getLabelName(uint32_t label) {
