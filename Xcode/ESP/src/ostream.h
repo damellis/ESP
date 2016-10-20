@@ -78,10 +78,7 @@ class MacPowerPointOStream : public OStream {
   public:
     MacPowerPointOStream() {}
     virtual void onReceive(uint32_t label) {
-        cout << "onReceive(" << label << ")" << endl;
         if (has_started_) {
-            cout << "started." << endl;
-            system("osascript -e 'tell application \"Microsoft PowerPoint\" to get slide show view of slide show window of active presentation'");
             if (label == 1) {
                 system("osascript -e 'tell application \"Microsoft PowerPoint\" to go to next slide of slide show view of slide show window of active presentation'");
             } else if (label == 2) {
