@@ -180,7 +180,7 @@ void BaseSerialInputStream::readSerial() {
     int sleep_time = 1000 / (baud_ / 10); // sleep about long enough to receive a byte
     ofLog() << "Serial port will be read every " << sleep_time << " ms";
     while (has_started_) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(sleep_time));
+        //std::this_thread::sleep_for(std::chrono::milliseconds(sleep_time));
         const int kBufSize = 32;
         unsigned char buf[kBufSize];
         while (serial_->available() > 0) {

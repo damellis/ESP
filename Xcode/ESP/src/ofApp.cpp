@@ -99,7 +99,7 @@ ofApp::ofApp() : fragment_(TRAINING),
 //--------------------------------------------------------------
 void ofApp::setup() {
     ofSetEscapeQuitsApp(false);
-    ofSetFrameRate(120);
+    ofSetFrameRate(60);
 
 #if __APPLE__ || __linux__
     // Expand ~ to /Users/JohnDoe or /home/johndoe
@@ -1266,6 +1266,8 @@ void ofApp::doRelabelTrainingSample(uint32_t source, uint32_t target) {
 
 //--------------------------------------------------------------
 void ofApp::update() {
+
+    //cout << ofGetFrameRate() << endl;
     save_load_folder_->update();
     pause_button_->update();
     train_model_button_->update();
