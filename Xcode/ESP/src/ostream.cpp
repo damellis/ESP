@@ -171,8 +171,10 @@ void MacOSKeyboardOStream::sendKey(char c) {
     CGEventRef key_up = CGEventCreateKeyboardEvent(NULL, 0, false);
     CGEventKeyboardSetUnicodeString(key_down, 1, &uni_char);
     CGEventKeyboardSetUnicodeString(key_up, 1, &uni_char);
-    CGEventPostToPSN(&psn, key_down);
-    CGEventPostToPSN(&psn, key_up);
+//    CGEventPostToPSN(&psn, key_down);
+//    CGEventPostToPSN(&psn, key_up);
+    CGEventPost(kCGHIDEventTap, key_down);
+    CGEventPost(kCGHIDEventTap, key_up);
     CFRelease(key_down);
     CFRelease(key_up);
 #endif
@@ -191,8 +193,10 @@ void MacOSKeyboardOStream::sendKeyCode(uint16_t key) {
 
     CGEventRef key_down = CGEventCreateKeyboardEvent(NULL, key, true);
     CGEventRef key_up = CGEventCreateKeyboardEvent(NULL, key, false);
-    CGEventPostToPSN(&psn, key_down);
-    CGEventPostToPSN(&psn, key_up);
+//    CGEventPostToPSN(&psn, key_down);
+//    CGEventPostToPSN(&psn, key_up);
+    CGEventPost(kCGHIDEventTap, key_down);
+    CGEventPost(kCGHIDEventTap, key_up);
     CFRelease(key_down);
     CFRelease(key_up);
 #endif
