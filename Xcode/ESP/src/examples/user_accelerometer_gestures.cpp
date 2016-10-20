@@ -10,11 +10,6 @@ Calibrator calibrator;
 TcpOStream oStream("localhost", 5204);
 GDPOutputStream oStream2("edu.berkeley.eecs.bid.mellis.esp2");
 
-//std::map<uint32_t, char> key_mapping = { {1, 0}, {2, 0}, {3, ' '} };
-//std::map<uint32_t, uint16_t> key_code_mapping = { {1, 0x7C}, {2, 0x7B} };
-//MacOSKeyboardOStream oStream(key_mapping, key_code_mapping);
-//MacOSKeyboardOStream oStream(3, 0, 0x7C, 0, 0x7B, ' '); // right, left, space
-
 MatrixDouble uprightData, upsideDownData;
 bool haveUprightData = false, haveUpsideDownData = false;
 double range;
