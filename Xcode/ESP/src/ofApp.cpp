@@ -99,6 +99,7 @@ ofApp::ofApp() : fragment_(TRAINING),
 //--------------------------------------------------------------
 void ofApp::setup() {
     ofSetEscapeQuitsApp(false);
+    ofSetFrameRate(120);
 
 #if __APPLE__ || __linux__
     // Expand ~ to /Users/JohnDoe or /home/johndoe
