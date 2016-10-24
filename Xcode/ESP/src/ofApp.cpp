@@ -1300,10 +1300,18 @@ void ofApp::update() {
             }
         }
     }
+    
+    MatrixDouble input;
 
-    std::lock_guard<std::mutex> guard(input_data_mutex_);
-    for (int i = 0; i < input_data_.getNumRows(); i++){
-        vector<double> raw_data = input_data_.getRowVector(i);
+    {
+        std::lock_guard<std::mutex> guard(input_data_mutex_);
+        for (int i = 0; i < input_data_.getNumRows(); i++)
+            input.push_back(input_data_.getRowVector(i));
+        input_data_.clear();
+    }
+    
+    for (int i = 0; i < input.getNumRows(); i++){
+        vector<double> raw_data = input.getRowVector(i);
         vector<double> data_point;
         plot_raw_.update(raw_data);
         if (calibrator_ == nullptr) {
@@ -2007,7 +2015,8 @@ void ofApp::exit() {
 
 void ofApp::onDataIn(GRT::MatrixDouble input) {
     std::lock_guard<std::mutex> guard(input_data_mutex_);
-    input_data_ = input;
+    for (int i = 0; i < input.getNumRows(); i++)
+        input_data_.push_back(input.getRowVector(i));
 }
 
 void ofApp::pauseResume() {
@@ -2017,6 +2026,8 @@ void ofApp::pauseResume() {
         class_likelihood_values_.resize(0);
         class_distance_values_.resize(0);
     }
+    
+    std::lock_guard<std::mutex> guard(input_data_mutex_);
     input_data_.clear();
 
     ESP_EVENT("Toggle streaming");
