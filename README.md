@@ -4,7 +4,10 @@
 
 This project aims to help novices make sophisticated use of sensors in interactive projects through the application of machine learning. It works on Mac OS X, Windows, and Linux.
 
-## Installation
+Check out our [paper](http://dl.acm.org/citation.cfm?id=3064735)
+and [video](https://youtu.be/5nDCG4vkFP0) for detailed descriptions.
+
+## Installation for users
 
 The easiest way to use ESP is through the [Processing](http://processing.org) Development Environment (PDE). See the [Processing ESP mode](https://github.com/damellis/processing-esp-mode) for details.
 
