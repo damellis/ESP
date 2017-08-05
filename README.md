@@ -16,7 +16,7 @@ The easiest way to use ESP is through the [Processing](http://processing.org) De
 Pre-requisites: you'll need git plus Xcode on Mac OS X, Visual Studio on Windows, and CMake on Linux. To install, first clone this repository, then run the setup script:
 
 ```
-git clone https://github.com/damellis/ESP.git
+git clone --recursive https://github.com/damellis/ESP.git
 cd ESP
 ./setup.sh
 ```
