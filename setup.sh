@@ -38,7 +38,7 @@ get_platform () {
     esac
 }
 
-OF_PREFIX=http://openframeworks.cc/versions/v0.9.3
+OF_PREFIX=https://openframeworks.cc/versions/v0.9.3
 get_of () {
     case $PLATFORM in
         osx)
