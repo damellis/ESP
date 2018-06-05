@@ -26,6 +26,7 @@ branches:
 before_script:
   # Take care of dependencies.
   - sed -i -e 's/git@github.com:/https:\/\/github.com\//' .gitmodules
+  - sudo apt-get -y install ca-certificates
   - ./setup.sh
   - >
     if [ "$OS" = "OSX" ]; then
@@ -39,7 +40,6 @@ before_script:
       sudo apt-get -y install doxygen
       sudo apt-get -y install cmake
       sudo apt-get -y install libblas-dev
-      sudo apt-get -y install ca-certificates
       # Build GRT
       cd third-party/grt/build
       mkdir -p tmp && cd tmp
